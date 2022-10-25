@@ -1,0 +1,24 @@
+table {
+  width: 100%;
+}
+
+td, th {
+  white-space: pre-line;
+  word-wrap: break-word;
+  max-width: 10em;
+}
+
+.mat-card {
+  width: 60em;
+}
+
+.outline {
+  border-style: solid;
+  border-width: thin;
+  border-color: lightgrey;
+}
+
+.align-right {
+  text-align: right;
+  justify-content: flex-end;
+}

@@ -1,0 +1,22 @@
+table {
+  width: 100%;
+}
+
+.mat-card {
+  width: 40em;
+}
+
+.outline {
+  border-style: solid;
+  border-width: thin;
+  border-color: lightgrey;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.align-right {
+  text-align: right;
+  justify-content: flex-end;
+}

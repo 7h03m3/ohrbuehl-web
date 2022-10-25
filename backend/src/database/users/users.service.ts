@@ -1,15 +1,15 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "../entities/user.entity";
+import { UserEntity } from "../entities/user.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserCreateDto } from "../../shared/dtos/user-create.dto";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {
+  constructor(@InjectRepository(UserEntity) private usersRepository: Repository<UserEntity>) {
   }
 
-  findAll(): Promise<User[]> {
+  findAll(): Promise<UserEntity[]> {
     return this.usersRepository.find({
       select: {
         id: true,
@@ -22,11 +22,11 @@ export class UsersService {
     });
   }
 
-  findOne(id: number): Promise<User> {
+  findOne(id: number): Promise<UserEntity> {
     return this.usersRepository.findOneBy({ id });
   }
 
-  async findOneByName(name: string): Promise<User> | undefined {
+  async findOneByName(name: string): Promise<UserEntity> | undefined {
     return this.usersRepository.findOneBy({ userName: name });
   }
 
@@ -34,8 +34,8 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async createUser(userCreateDto: UserCreateDto, hashedPassword: string): Promise<User> {
-    let entity = new User();
+  async createUser(userCreateDto: UserCreateDto, hashedPassword: string): Promise<UserEntity> {
+    let entity = new UserEntity();
     entity.userName = userCreateDto.userName;
     entity.firstName = userCreateDto.firstName;
     entity.lastName = userCreateDto.lastName;
@@ -48,9 +48,9 @@ export class UsersService {
     return entity;
   }
 
-  async updateUser(user: User): Promise<any> {
+  async updateUser(user: UserEntity): Promise<any> {
     await this.usersRepository.createQueryBuilder()
-      .update(User)
+      .update(UserEntity)
       .set({
         firstName: user.firstName,
         lastName: user.lastName,
@@ -61,9 +61,9 @@ export class UsersService {
       .execute();
   }
 
-  async updateUserWithPassword(user: User, hashedPassword: string): Promise<any> {
+  async updateUserWithPassword(user: UserEntity, hashedPassword: string): Promise<any> {
     await this.usersRepository.createQueryBuilder()
-      .update(User)
+      .update(UserEntity)
       .set({
         firstName: user.firstName,
         lastName: user.lastName,

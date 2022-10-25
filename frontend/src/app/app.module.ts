@@ -15,10 +15,36 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./auth/auth-interceptor";
 import {AdminComponent} from './admin/admin.component';
 import {AdminUserListComponent} from './admin/components/admin-user-list/admin-user-list.component';
-import { AdminUserCreateComponent } from './admin/components/admin-user-create/admin-user-create.component';
-import { MainWelcomeComponent } from './main/main-welcome/main-welcome.component';
-import { AdminUserDeleteDialogComponent } from './admin/components/admin-user-delete-dialog/admin-user-delete-dialog.component';
-import { AdminUserEditComponent } from './admin/components/admin-user-edit/admin-user-edit.component';
+import {AdminUserCreateComponent} from './admin/components/admin-user-create/admin-user-create.component';
+import {MainWelcomeComponent} from './main/main-welcome/main-welcome.component';
+import {
+  AdminUserDeleteDialogComponent
+} from './admin/components/admin-user-delete-dialog/admin-user-delete-dialog.component';
+import {AdminUserEditComponent} from './admin/components/admin-user-edit/admin-user-edit.component';
+import {
+  AdminOrganizationListComponent
+} from './admin/components/admin-organization-list/admin-organization-list.component';
+import {
+  AdminOrganizationCreateComponent
+} from './admin/components/admin-organization-create/admin-organization-create.component';
+import {
+  AdminOrganizationEditComponent
+} from './admin/components/admin-organization-edit/admin-organization-edit.component';
+import {
+  AdminOrganizationDeleteDialogComponent
+} from './admin/components/admin-organization-delete-dialog/admin-organization-delete-dialog.component';
+import {
+  AdminBulletPriceCreateComponent
+} from './admin/components/admin-bullet-price-create/admin-bullet-price-create.component';
+import {
+  AdminBulletPriceDeleteDialogComponent
+} from './admin/components/admin-bullet-price-delete-dialog/admin-bullet-price-delete-dialog.component';
+import {
+  AdminBulletPriceListComponent
+} from './admin/components/admin-bullet-price-list/admin-bullet-price-list.component';
+import {
+  AdminBulletPriceEditComponent
+} from './admin/components/admin-bullet-price-edit/admin-bullet-price-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +58,15 @@ import { AdminUserEditComponent } from './admin/components/admin-user-edit/admin
     AdminUserCreateComponent,
     MainWelcomeComponent,
     AdminUserDeleteDialogComponent,
-    AdminUserEditComponent
+    AdminUserEditComponent,
+    AdminOrganizationListComponent,
+    AdminOrganizationCreateComponent,
+    AdminOrganizationEditComponent,
+    AdminOrganizationDeleteDialogComponent,
+    AdminBulletPriceCreateComponent,
+    AdminBulletPriceDeleteDialogComponent,
+    AdminBulletPriceListComponent,
+    AdminBulletPriceEditComponent
   ],
   imports: [
     BrowserModule,

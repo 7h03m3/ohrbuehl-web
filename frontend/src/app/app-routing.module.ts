@@ -7,6 +7,24 @@ import {AdminUserListComponent} from "./admin/components/admin-user-list/admin-u
 import {AdminUserCreateComponent} from "./admin/components/admin-user-create/admin-user-create.component";
 import {MainWelcomeComponent} from "./main/main-welcome/main-welcome.component";
 import {AdminUserEditComponent} from "./admin/components/admin-user-edit/admin-user-edit.component";
+import {
+  AdminBulletPriceListComponent
+} from "./admin/components/admin-bullet-price-list/admin-bullet-price-list.component";
+import {
+  AdminBulletPriceEditComponent
+} from "./admin/components/admin-bullet-price-edit/admin-bullet-price-edit.component";
+import {
+  AdminBulletPriceCreateComponent
+} from "./admin/components/admin-bullet-price-create/admin-bullet-price-create.component";
+import {
+  AdminOrganizationListComponent
+} from "./admin/components/admin-organization-list/admin-organization-list.component";
+import {
+  AdminOrganizationEditComponent
+} from "./admin/components/admin-organization-edit/admin-organization-edit.component";
+import {
+  AdminOrganizationCreateComponent
+} from "./admin/components/admin-organization-create/admin-organization-create.component";
 
 
 const routes: Routes = [
@@ -29,6 +47,25 @@ const routes: Routes = [
       {
         path: 'user-create',
         component: AdminUserCreateComponent
+      },
+      {
+        path: 'bullet-price-list',
+        component: AdminBulletPriceListComponent
+      }, {
+        path: 'bullet-price-edit',
+        component: AdminBulletPriceEditComponent
+      }, {
+        path: 'bullet-price-create',
+        component: AdminBulletPriceCreateComponent
+      }, {
+        path: 'organization-list',
+        component: AdminOrganizationListComponent
+      }, {
+        path: 'organization-edit',
+        component: AdminOrganizationEditComponent
+      }, {
+        path: 'organization-create',
+        component: AdminOrganizationCreateComponent
       }]
   },
   {path: 'shot-number', component: ShotNumbersComponent},

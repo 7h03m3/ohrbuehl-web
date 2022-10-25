@@ -1,7 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./entities/user.entity";
+import { UserEntity } from "./entities/user.entity";
 import { UsersModule } from "./users/users.module";
+import { OrganizationsModule } from "./organizations/organizations.module";
+import { BulletPriceModule } from "./bullet-price/bullet-price.module";
+import { OrganizationEntity } from "./entities/organization.entity";
+import { BulletPriceEntity } from "./entities/bullet-price.entity";
 
 @Module({
   imports: [
@@ -12,10 +16,12 @@ import { UsersModule } from "./users/users.module";
       username: "admin",
       password: "12345",
       database: "ohrbuehl-web",
-      entities: [User],
+      entities: [UserEntity, OrganizationEntity, BulletPriceEntity],
       synchronize: true
     }),
-    UsersModule
+    UsersModule,
+    OrganizationsModule,
+    BulletPriceModule
   ]
 })
 export class DatabaseModule {

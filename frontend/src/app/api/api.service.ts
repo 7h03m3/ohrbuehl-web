@@ -5,6 +5,10 @@ import {JwtLoginInformation} from "../shared/dtos/jwt-login-information.dto";
 import {UserDto} from "../shared/dtos/user.dto";
 import {UserCreateDto} from "../shared/dtos/user-create.dto";
 import {UserUpdateDto} from "../shared/dtos/user-update.dto";
+import {OrganizationDto} from "../shared/dtos/organization.dto";
+import {OrganizationCreateDto} from "../shared/dtos/organization-create.dto";
+import {BulletPriceDto} from "../shared/dtos/bullet-price.dto";
+import {BulletPriceCreateDto} from "../shared/dtos/bullet-price-create.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +16,8 @@ import {UserUpdateDto} from "../shared/dtos/user-update.dto";
 export class ApiService {
   baseUrl: string = "http://127.0.0.1:3000/";
   userUrl: string = this.baseUrl + "users";
+  organizationUrl: string = this.baseUrl + "organizations";
+  bulletPricesUrl: string = this.baseUrl + "bullet-prices";
 
   constructor(private http: HttpClient) {
   }
@@ -38,5 +44,49 @@ export class ApiService {
 
   deleteUser(id: string): Observable<any> {
     return this.http.delete(this.userUrl + "/" + id);
+  }
+
+  getAllOrganization(): Observable<OrganizationDto[]> {
+    return this.http.get<OrganizationDto[]>(this.organizationUrl);
+  }
+
+  getAllNativeOrganization(): Observable<OrganizationDto[]> {
+    return this.http.get<OrganizationDto[]>(this.organizationUrl + "/native");
+  }
+
+  public getOrganization(id: number): Observable<OrganizationDto> {
+    return this.http.get<OrganizationDto>(this.organizationUrl + "/" + id);
+  }
+
+  createOrganization(createOrganization: OrganizationCreateDto): Observable<OrganizationDto> {
+    return this.http.post<OrganizationDto>(this.organizationUrl, createOrganization);
+  }
+
+  updateOrganization(updateOrganization: OrganizationDto): Observable<OrganizationDto> {
+    return this.http.put<OrganizationDto>(this.organizationUrl, updateOrganization);
+  }
+
+  deleteOrganization(id: string): Observable<any> {
+    return this.http.delete(this.organizationUrl + "/" + id);
+  }
+  
+  getAllBulletPrices(): Observable<BulletPriceDto[]> {
+    return this.http.get<BulletPriceDto[]>(this.bulletPricesUrl);
+  }
+
+  public getBulletPrice(id: number): Observable<BulletPriceDto> {
+    return this.http.get<BulletPriceDto>(this.bulletPricesUrl + "/" + id);
+  }
+
+  createBulletPrice(createBulletPrice: BulletPriceCreateDto): Observable<BulletPriceDto> {
+    return this.http.post<BulletPriceDto>(this.bulletPricesUrl, createBulletPrice);
+  }
+
+  updateBulletPrice(updateBulletPrice: BulletPriceDto): Observable<BulletPriceDto> {
+    return this.http.put<BulletPriceDto>(this.bulletPricesUrl, updateBulletPrice);
+  }
+
+  deleteBulletPrice(id: string): Observable<any> {
+    return this.http.delete(this.bulletPricesUrl + "/" + id);
   }
 }

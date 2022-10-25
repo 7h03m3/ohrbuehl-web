@@ -1,0 +1,28 @@
+<mat-form-field appearance="outline" class="number-input">
+  <mat-label>Scheibe</mat-label>
+  <input matInput maxlength="2" [min]="minTrack" [max]="maxTrack" type="number"
+         [(ngModel)]="assignmentTrackStart">
+  <mat-hint>Zahl von {{minTrack}} - {{maxTrack}}</mat-hint>
+</mat-form-field>
+bis
+<mat-form-field appearance="outline" class="number-input">
+  <mat-label>Scheibe</mat-label>
+  <input matInput maxlength="2" type="number" [min]="minTrack" [max]="maxTrack" [(ngModel)]="assignmentTrackEnd">
+  <mat-hint>Zahl von {{minTrack}} - {{maxTrack}}</mat-hint>
+</mat-form-field>
+<mat-form-field appearance="outline" class="number-input">
+  <mat-label>Schussgeld</mat-label>
+  <input matInput type="number" min="0.05" [(ngModel)]="assignmentShotPrice">
+  <span matSuffix>Fr.</span>
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="organization-input">
+  <mat-label>Organisation</mat-label>
+  <mat-select placeholder="Bitte auswählen" [(ngModel)]="assignmentOrganization">
+    <mat-option *ngFor="let organization of organizations" [value]="organization.id">
+      {{organization.fullName}} ({{organization.abbreviation}})
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="doAssignment()">Zuordnen</button>
+

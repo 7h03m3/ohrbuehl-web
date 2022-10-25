@@ -1,0 +1,63 @@
+<mat-stepper #stepper>
+  <mat-step editable="false">
+    <ng-template matStepLabel>SIUS Data Datei hochladen</ng-template>
+    <button type="button" mat-raised-button (click)="fileInput.click()" color="primary">Datei hochladen</button>
+    <input hidden (change)="onFileSelected(stepper)" accept=".csv" #fileInput type="file" id="csv-file">
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Eingaben</ng-template>
+    <form [formGroup]="dateForm" (ngSubmit)="saveDateTime(stepper)">
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-hint>Datum</mat-hint>
+          <input matInput type="Date" formControlName="date">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-hint>Startzeit</mat-hint>
+          <input matInput type="Time" formControlName="startTime">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-hint>Endzeit</mat-hint>
+          <input matInput type="Time" formControlName="endTime">
+        </mat-form-field>
+      </p>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!dateForm.valid">Weiter</button>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Scheiben zuordnen</ng-template>
+    <p>
+      <button mat-raised-button color="primary" (click)="stepper.next()" [disabled]="nextButtonDisabled">Weiter</button>
+    </p>
+    <p>
+      <app-track-assignment [(shotNumberBilling)]="shotNumberBilling" [organizations]="organizations"
+                            [minTrack]="minTrack" [maxTrack]="maxTrack"
+                            (shotNumberBillingChange)="checkIfAllFilledIn()"></app-track-assignment>
+    </p>
+    <app-shot-number-table [(shotNumberBilling)]="shotNumberBilling" [organizations]="organizations"
+                           [editDisabled]="false"
+                           (shotNumberBillingChange)="checkIfAllFilledIn()"></app-shot-number-table>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Kontrolle</ng-template>
+    <table>
+      <tr>
+        <td>Datum</td>
+        <td>:</td>
+        <td>{{this.shotNumberBilling.dateString}}</td>
+      </tr>
+      <tr>
+        <td>Zeit</td>
+        <td>:</td>
+        <td>{{this.shotNumberBilling.startTime}} - {{this.shotNumberBilling.endTime}}</td>
+    </table>
+    <br>
+    <app-shot-number-table [(shotNumberBilling)]="shotNumberBilling"
+                           [organizations]="organizations" [editDisabled]="true"></app-shot-number-table>
+  </mat-step>
+</mat-stepper>
+

@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  mysql-db:
+    image: mysql:8.0.29
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 2beer4me@ohrbuehl
+      MYSQL_DATABASE: ohrbuehl-web
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 12345
+    volumes:
+      - .\db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    links: 
+      - mysql-db
+    depends_on:
+      - mysql-db
+    environment:
+      PMA_ARBITRARY: 0
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306

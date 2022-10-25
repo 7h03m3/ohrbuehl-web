@@ -1,0 +1,30 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <button mat-button routerLink="/">
+      Schiessanlage Ohrbühl
+    </button>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button>
+      <mat-icon>face6</mat-icon>
+    </button>
+
+
+    <button *ngIf="isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
+      <mat-icon>admin_panel_settings</mat-icon>
+    </button>
+
+    <button *ngIf="isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
+      <mat-icon>login</mat-icon>
+    </button>
+
+    <button (click)="logout()" *ngIf="isLoggedIn() == true" mat-icon-button matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <p *ngIf="isLoggedIn()">
+      {{getUserRole()}}
+    </p>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

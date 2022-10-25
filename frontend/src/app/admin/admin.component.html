@@ -1,0 +1,20 @@
+<mat-drawer-container class="admin-sidenav-container">
+  <mat-drawer #drawer class="admin-sidenav" id="side" mode="side" opened>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option routerLink="./user-list">
+        Benutzer
+        <mat-icon mat-list-icon>list</mat-icon>
+      </mat-list-option>
+      <mat-list-option routerLink="./user-create">
+        Benutzer erstellen
+        <mat-icon mat-list-icon>add</mat-icon>
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="admin-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,1 +1,44 @@
-<p>admin-user-list works!</p>
+<mat-card class="mat-elevation-z0 outline">
+  <table [dataSource]="userList$" mat-table>
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th *matHeaderCellDef mat-header-cell> Benutzername</th>
+      <td *matCellDef="let element" mat-cell> {{element.userName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <th *matHeaderCellDef mat-header-cell> Vorname</th>
+      <td *matCellDef="let element" mat-cell> {{element.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+      <th *matHeaderCellDef mat-header-cell> Nackname</th>
+      <td *matCellDef="let element" mat-cell> {{element.lastName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th *matHeaderCellDef mat-header-cell> Rolle</th>
+      <td *matCellDef="let element" mat-cell> {{getRoleText(element.roles)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef class="align-right" mat-header-cell> Aktion</th>
+      <td *matCellDef="let element" class="align-right" mat-cell>
+        <button (click)="editUser(element.id)" mat-icon-button matTooltip="Benutzer löschen">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="deleteUser(element.id, element.firstName, element.lastName)" mat-icon-button
+                matTooltip="Benutzer löschen">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</mat-card>

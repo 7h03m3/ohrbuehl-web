@@ -3,6 +3,7 @@ import {AuthService} from "./auth/auth.service";
 import {Role} from "./shared/enums/role.enum";
 
 import {Router} from "@angular/router";
+import {UserLocalData} from "./shared/classes/user-local-data";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import {Router} from "@angular/router";
 export class AppComponent {
   title = 'frontend';
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private userLocalData: UserLocalData) {
   }
 
   public isLoggedIn(): boolean {
@@ -22,10 +23,13 @@ export class AppComponent {
   public isAdmin(): boolean {
     return (this.getUserRole() == Role.Admin);
   }
-
-
+  
   public getUserRole(): Role {
     return this.authService.getRole();
+  }
+
+  public getRoleText(): string {
+    return this.userLocalData.convertRoleText(this.getUserRole());
   }
 
   public logout() {

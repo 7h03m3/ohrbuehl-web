@@ -62,4 +62,21 @@ export class UserLocalData {
     localStorage.setItem(this.userIdKey, loginInformation.id.toString());
     localStorage.setItem(this.userRolesKey, loginInformation.roles);
   }
+
+  public convertRoleText(role: string) {
+    switch (role) {
+      case "admin":
+        return "Administrator";
+      case "user":
+        return "Benutzer";
+      case "shootingRangeManager":
+        return "Standwart";
+      case "clubPresident":
+        return "Vereinspräsident";
+      case "eventOrganizer":
+        return "Anlassorganisator";
+      default:
+        return "";
+    }
+  }
 }

@@ -1,32 +1,32 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
     <form #userCreateForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3>Benutzer erstellen</h3>
+      <h3>Benutzer editieren</h3>
       <mat-error *ngIf="!formValid">
         Bitte alle Daten eingeben.
       </mat-error>
 
       <mat-form-field>
-        <input [(ngModel)]="userCreateDto.userName" matInput name="userName" placeholder="Benutzername" required>
+        <input [(ngModel)]="user.userName" matInput name="userName" placeholder="Benutzername" required>
         <mat-error>
           Bitte einen Spitznamen angeben.
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <input [(ngModel)]="userCreateDto.firstName" matInput name="firstName" placeholder="Vorname" required>
+        <input [(ngModel)]="user.firstName" matInput name="firstName" placeholder="Vorname" required>
         <mat-error>
           Bitte einen Vornamen angeben.
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input [(ngModel)]="userCreateDto.lastName" matInput name="lastName" placeholder="Nachname" required>
+        <input [(ngModel)]="user.lastName" matInput name="lastName" placeholder="Nachname" required>
         <mat-error>
           Bitte einen Nachnamen angeben.
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-select [(ngModel)]="userCreateDto.roles" name="userRole">
+        <mat-select [(ngModel)]="user.roles" name="userRole">
           <mat-option *ngFor="let userRole of userRoles" [value]="userRole">
             {{getRoleText(userRole)}}
           </mat-option>
@@ -34,8 +34,8 @@
       </mat-form-field>
 
       <mat-form-field>
-        <input [(ngModel)]="userCreateDto.password" [type]="hidePassword ? 'password' : 'text'" matInput name="password"
-               placeholder="Passwort" required>
+        <input [(ngModel)]="user.password" [type]="hidePassword ? 'password' : 'text'" matInput name="password"
+               placeholder="Passwort">
         <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hidePassword" mat-icon-button
                 matSuffix>

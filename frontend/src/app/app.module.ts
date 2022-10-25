@@ -17,6 +17,8 @@ import {AdminComponent} from './admin/admin.component';
 import {AdminUserListComponent} from './admin/components/admin-user-list/admin-user-list.component';
 import { AdminUserCreateComponent } from './admin/components/admin-user-create/admin-user-create.component';
 import { MainWelcomeComponent } from './main/main-welcome/main-welcome.component';
+import { AdminUserDeleteDialogComponent } from './admin/components/admin-user-delete-dialog/admin-user-delete-dialog.component';
+import { AdminUserEditComponent } from './admin/components/admin-user-edit/admin-user-edit.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { MainWelcomeComponent } from './main/main-welcome/main-welcome.component
     AdminComponent,
     AdminUserListComponent,
     AdminUserCreateComponent,
-    MainWelcomeComponent
+    MainWelcomeComponent,
+    AdminUserDeleteDialogComponent,
+    AdminUserEditComponent
   ],
   imports: [
     BrowserModule,

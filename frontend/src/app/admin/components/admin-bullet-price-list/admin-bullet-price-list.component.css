@@ -5,11 +5,11 @@ table {
 td, th {
   white-space: pre-line;
   word-wrap: break-word;
-  max-width: 10em;
+  max-width: 12em;
 }
 
 .mat-card {
-  width: 60em;
+  min-width: 60em;
 }
 
 .outline {

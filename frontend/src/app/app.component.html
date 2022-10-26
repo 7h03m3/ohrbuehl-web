@@ -18,12 +18,10 @@
       <mat-icon>login</mat-icon>
     </button>
 
-    <button (click)="logout()" *ngIf="isLoggedIn() == true" mat-icon-button matTooltip="Logout">
+    <button (click)="logout()" *ngIf="isLoggedIn() == true" mat-button matTooltip="Logout">
       <mat-icon>logout</mat-icon>
-    </button>
-    <p *ngIf="isLoggedIn()">
       {{getRoleText()}}
-    </p>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
 

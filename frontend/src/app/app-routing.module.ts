@@ -25,13 +25,17 @@ import {
 import {
   AdminOrganizationCreateComponent
 } from "./admin/components/admin-organization-create/admin-organization-create.component";
+import {RoleGuardService} from "./auth/role-guard.service";
+import {Role} from "./shared/enums/role.enum";
 
 
 const routes: Routes = [
   {path: '', component: MainWelcomeComponent},
   {path: 'login', component: LoginComponent},
   {
-    path: 'admin', component: AdminComponent, children: [
+    path: 'admin', component: AdminComponent, canActivate: [RoleGuardService], data: {
+      expectedRole: Role.Admin
+    }, children: [
       {
         path: '',
         component: AdminUserListComponent

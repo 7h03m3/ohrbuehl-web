@@ -4,13 +4,14 @@ import {catchError, EMPTY, map, Observable} from "rxjs";
 import {Role} from "../shared/enums/role.enum";
 import {JwtLoginInformation} from "../shared/dtos/jwt-login-information.dto";
 import {UserLocalData} from "../shared/classes/user-local-data";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private api: ApiService, private userData: UserLocalData) {
+  constructor(private api: ApiService, private userData: UserLocalData, public jwtHelper: JwtHelperService) {
   }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -26,7 +27,12 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    return this.userData.isUserAccessTokenSet();
+    const accessToken = this.userData.getUserAccessToken();
+    if (accessToken) {
+      return (this.jwtHelper.isTokenExpired(accessToken) == false);
+    }
+
+    return false;
   }
 
   public getRole(): Role {

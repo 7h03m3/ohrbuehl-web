@@ -7,11 +7,13 @@ import { OrganizationsController } from "./organizations/organizations.controlle
 import { BulletPricesController } from "./bullet-prices/bullet-prices.controller";
 import { OrganizationsModule } from "../database/organizations/organizations.module";
 import { BulletPriceModule } from "../database/bullet-price/bullet-price.module";
+import { InvoiceController } from "./invoice/invoice.controller";
+import { InvoiceModule } from "../invoice/invoice.module";
 
 @Module({
-  imports: [UsersModule, OrganizationsModule, BulletPriceModule, AuthModule],
+  imports: [UsersModule, OrganizationsModule, BulletPriceModule, InvoiceModule, AuthModule],
   providers: [],
-  controllers: [UsersController, AuthController, OrganizationsController, BulletPricesController],
+  controllers: [UsersController, AuthController, OrganizationsController, BulletPricesController, InvoiceController],
   exports: []
 })
 export class ControllerModule {

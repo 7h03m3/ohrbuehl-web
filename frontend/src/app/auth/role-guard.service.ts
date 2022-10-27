@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from "./auth.service";
-import {ActivatedRouteSnapshot, CanActivate, Router} from "@angular/router";
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from "@angular/router";
 import {Role} from "../shared/enums/role.enum";
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuardService implements CanActivate {
+export class RoleGuardService implements CanActivate, CanActivateChild {
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -21,5 +21,12 @@ export class RoleGuardService implements CanActivate {
 
     this.router.navigate(['login']);
     return false;
+  }
+
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    if (!childRoute.parent) {
+      return false;
+    }
+    return this.canActivate(childRoute.parent);
   }
 }

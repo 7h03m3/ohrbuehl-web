@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {JwtLoginInformation} from "../shared/dtos/jwt-login-information.dto";
 import {UserDto} from "../shared/dtos/user.dto";
@@ -9,6 +9,7 @@ import {OrganizationDto} from "../shared/dtos/organization.dto";
 import {OrganizationCreateDto} from "../shared/dtos/organization-create.dto";
 import {BulletPriceDto} from "../shared/dtos/bullet-price.dto";
 import {BulletPriceCreateDto} from "../shared/dtos/bullet-price-create.dto";
+import {InvoiceDto} from "../shared/dtos/invoice.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class ApiService {
   userUrl: string = this.baseUrl + "users";
   organizationUrl: string = this.baseUrl + "organizations";
   bulletPricesUrl: string = this.baseUrl + "bullet-prices";
+  invoicesUrl: string = this.baseUrl + "invoice";
 
   constructor(private http: HttpClient) {
   }
@@ -69,7 +71,7 @@ export class ApiService {
   deleteOrganization(id: string): Observable<any> {
     return this.http.delete(this.organizationUrl + "/" + id);
   }
-  
+
   getAllBulletPrices(): Observable<BulletPriceDto[]> {
     return this.http.get<BulletPriceDto[]>(this.bulletPricesUrl);
   }
@@ -88,5 +90,15 @@ export class ApiService {
 
   deleteBulletPrice(id: string): Observable<any> {
     return this.http.delete(this.bulletPricesUrl + "/" + id);
+  }
+
+  getInvoice(invoiceData: InvoiceDto) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.post(this.invoicesUrl, invoiceData, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob'
+    });
   }
 }

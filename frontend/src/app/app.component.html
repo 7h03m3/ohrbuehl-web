@@ -4,10 +4,12 @@
     <button mat-button routerLink="/">
       Schiessanlage Ohrbühl
     </button>
-    <span class="toolbar-spacer"></span>
-    <button mat-icon-button>
-      <mat-icon>face6</mat-icon>
+
+    <button *ngIf="isShootingRangeManager()" mat-button matTooltip="Standwart" routerLink="/shooting-range">
+      Standwart
     </button>
+
+    <span class="toolbar-spacer"></span>
 
 
     <button *ngIf="isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">

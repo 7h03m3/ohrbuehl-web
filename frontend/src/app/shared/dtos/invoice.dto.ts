@@ -1,6 +1,6 @@
-import { InvoiceItemDto } from "./invoice-item.dto";
-import { InvoiceCreditorDto } from "./invoice-creditor.dto";
-import { InvoiceDebtorDto } from "./invoice-debtor.dto";
+import {InvoiceItemDto} from "./invoice-item.dto";
+import {InvoiceCreditorDto} from "./invoice-creditor.dto";
+import {InvoiceDebtorDto} from "./invoice-debtor.dto";
 
 export class InvoiceDto {
   id: number = 0;
@@ -8,6 +8,6 @@ export class InvoiceDto {
   title: string = "";
   filename: string = "";
   creditor: InvoiceCreditorDto = new InvoiceCreditorDto();
-  debtor: InvoiceDebtorDto | undefined;
+  debtor: InvoiceDebtorDto = new InvoiceDebtorDto();
   items: InvoiceItemDto[] = Array<InvoiceItemDto>();
 }

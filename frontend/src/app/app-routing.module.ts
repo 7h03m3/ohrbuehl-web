@@ -27,11 +27,25 @@ import {
 } from "./admin/components/admin-organization-create/admin-organization-create.component";
 import {RoleGuardService} from "./auth/role-guard.service";
 import {Role} from "./shared/enums/role.enum";
+import {ShootingRangeComponent} from "./shooting-range/shooting-range.component";
+import {ShootingRangeInvoicesComponent} from "./shooting-range/shooting-range-bills/shooting-range-invoices.component";
 
 
 const routes: Routes = [
   {path: '', component: MainWelcomeComponent},
   {path: 'login', component: LoginComponent},
+  {
+    path: 'shooting-range', component: ShootingRangeComponent, canActivate: [RoleGuardService], data: {
+      expectedRole: Role.ShootingRangeManager
+    }, children: [
+      {
+        path: '',
+        component: ShootingRangeInvoicesComponent
+      }, {
+        path: 'invoices',
+        component: ShootingRangeInvoicesComponent
+      }]
+  },
   {
     path: 'admin', component: AdminComponent, canActivate: [RoleGuardService], data: {
       expectedRole: Role.Admin

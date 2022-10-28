@@ -1,0 +1,97 @@
+<table [dataSource]="invoiceData.items" class="full-width" mat-table>
+  <ng-container matColumnDef="position">
+    <th *matHeaderCellDef mat-header-cell>Pos.</th>
+    <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.position}}</td>
+    <td *matFooterCellDef mat-footer-cell></td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th *matHeaderCellDef class="full-width" mat-header-cell>Beschreibung</th>
+    <td *matCellDef="let element" class="full-width" mat-cell> {{element.description}}</td>
+    <td *matFooterCellDef mat-footer-cell></td>
+  </ng-container>
+
+  <ng-container matColumnDef="amount">
+    <th *matHeaderCellDef mat-header-cell>Anzahl</th>
+    <td *matCellDef="let element" mat-cell> {{element.amount}} </td>
+    <td *matFooterCellDef mat-footer-cell></td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th *matHeaderCellDef mat-header-cell>Preis</th>
+    <td *matCellDef="let element" class="no-wrap" mat-cell> {{getCostString(element.price)}} </td>
+    <td *matFooterCellDef class="no-wrap" mat-footer-cell>Total</td>
+  </ng-container>
+
+  <ng-container matColumnDef="total">
+    <th *matHeaderCellDef mat-header-cell>Total</th>
+    <td *matCellDef="let element" class="no-wrap" mat-cell> {{getCostString(element.price * element.amount)}}</td>
+    <td *matFooterCellDef class="no-wrap" mat-footer-cell> {{getCostString(getTotalCost())}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell></th>
+    <td *matCellDef="let element" mat-cell>
+      <button (click)="onRemoveItem(element.position)" mat-button matTooltip="Löschen">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </td>
+    <td *matFooterCellDef mat-footer-cell></td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
+</table>
+
+<mat-expansion-panel [expanded]="newInvoiceItemExpanded">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Neuer Rechnungsposten
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+  <form #invoiceItemForm="ngForm" (ngSubmit)="onAddItem(invoiceItemForm)">
+    <table class="full-width">
+      <tr>
+        <td class="full-width">
+          <mat-form-field class="full-width">
+            <input [(ngModel)]="invoiceItem.description" matInput name="description"
+                   placeholder="Beschreibung" required
+                   type="text">
+            <mat-error>
+              Bitte eine Beschreibung angeben.
+            </mat-error>
+          </mat-form-field>
+        </td>
+
+        <td>
+          <mat-form-field class="amount-form-field">
+            <input [(ngModel)]="invoiceItem.amount" matInput name="amount" placeholder="Anzahl"
+                   required type="number">
+            <mat-error>
+              Bitte eine Anzahl angeben.
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="price-form-field">
+            <input [(ngModel)]="invoiceItem.price" matInput name="price" placeholder="Preis" required type="number">
+            <span matSuffix>{{this.currencyString}}</span>
+            <mat-error>
+              Bitte einen Preis angeben.
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <button [disabled]="!invoiceItemForm.form.valid" color="primary" mat-raised-button>Hinzufügen</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</mat-expansion-panel>
+
+<p>
+  <button (click)="onSubmit()" [disabled]="!dataValid" class="full-width" color="primary" mat-raised-button>Weiter
+  </button>
+</p>

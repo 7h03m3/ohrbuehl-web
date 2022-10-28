@@ -21,9 +21,13 @@ export class AppComponent {
   }
 
   public isAdmin(): boolean {
-    return (this.getUserRole() == Role.Admin);
+    return this.authService.isAdmin();
   }
-  
+
+  public isShootingRangeManager(): boolean {
+    return this.authService.isShootingRangeManager();
+  }
+
   public getUserRole(): Role {
     return this.authService.getRole();
   }

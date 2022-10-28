@@ -1,0 +1,34 @@
+.expansion-panel-spacer {
+  flex: 1 1 auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+  text-align: left;
+}
+
+th.mat-header-cell {
+  padding-right: 1em;
+  text-align: left;
+}
+
+td.mat-cell {
+  padding-right: 1em;
+}
+
+td.mat-footer-cell {
+  border-bottom-style: none;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+

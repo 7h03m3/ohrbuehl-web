@@ -1,0 +1,13 @@
+.full-width {
+  width: 100%;
+}
+
+.street-number-form-field {
+  border: 1px;
+  alignment: right;
+  width: 5em;
+}
+
+.expansion-panel-spacer {
+  flex: 1 1 auto;
+}

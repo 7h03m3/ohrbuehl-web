@@ -26,6 +26,10 @@ export class AuthService {
       }));
   }
 
+  public logout() {
+    this.userData.destroySession();
+  }
+
   public isLoggedIn() {
     const accessToken = this.userData.getUserAccessToken();
     if (accessToken) {
@@ -43,7 +47,12 @@ export class AuthService {
     return this.userData.getUserRoll();
   }
 
-  public logout() {
-    this.userData.destroySession();
+  public isAdmin(): boolean {
+    return (this.getRole() == Role.Admin);
+  }
+
+  public isShootingRangeManager(): boolean {
+    const userRole = this.getRole();
+    return ((userRole == Role.ShootingRangeManager) || (userRole == Role.Admin));
   }
 }

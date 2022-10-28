@@ -1,0 +1,41 @@
+.full-width {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  padding-right: 1em;
+  text-align: left;
+}
+
+td.mat-cell {
+  padding-right: 1em;
+}
+
+td.mat-footer-cell {
+  border-bottom-style: none;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.amount-form-field {
+  border: 1px;
+  alignment: right;
+  width: 5em;
+}
+
+.price-form-field {
+  border: 1px;
+  alignment: right;
+  width: 7em;
+}
+
+
+
+
+

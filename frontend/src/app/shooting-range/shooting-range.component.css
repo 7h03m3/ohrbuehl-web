@@ -1,16 +1,16 @@
-.admin-sidenav-container {
+.shooting-range-sidenav-container {
   width: auto;
   height: 93%;
   background: white;
 }
 
-.admin-sidenav {
+.shooting-range-sidenav {
   height: auto;
   width: 15rem;
   background: white;
 }
 
-.admin-content {
+.shooting-range-content {
   flex: auto;
   height: auto;
   width: auto;

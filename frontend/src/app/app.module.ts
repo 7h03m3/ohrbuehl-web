@@ -46,6 +46,13 @@ import {
   AdminBulletPriceEditComponent
 } from './admin/components/admin-bullet-price-edit/admin-bullet-price-edit.component';
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
+import {ShootingRangeComponent} from './shooting-range/shooting-range.component';
+import {ShootingRangeInvoicesComponent} from './shooting-range/shooting-range-bills/shooting-range-invoices.component';
+import {
+  InvoiceInformationComponent
+} from "./shooting-range/shooting-range-bills/components/invoice-information/invoice-information.component";
+import { InvoiceItemEditComponent } from './shooting-range/shooting-range-bills/components/invoice-item-edit/invoice-item-edit.component';
+import { InvoiceDetailViewComponent } from './shooting-range/shooting-range-bills/components/invoice-detail-view/invoice-detail-view.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +74,12 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
     AdminBulletPriceCreateComponent,
     AdminBulletPriceDeleteDialogComponent,
     AdminBulletPriceListComponent,
-    AdminBulletPriceEditComponent
+    AdminBulletPriceEditComponent,
+    ShootingRangeComponent,
+    ShootingRangeInvoicesComponent,
+    InvoiceInformationComponent,
+    InvoiceItemEditComponent,
+    InvoiceDetailViewComponent
   ],
   imports: [
     BrowserModule,

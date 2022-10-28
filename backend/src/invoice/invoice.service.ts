@@ -45,7 +45,9 @@ export class InvoiceService {
     }
     this.addCreditorAddresses(data.creditor, pdf);
     this.addTitle(invoiceData.title, pdf);
-    this.addDateAndCity(invoiceData.creditor.city, invoiceData.date, pdf);
+    this.addPaymentTerm("Zahlungsbedingungen 60 Tage netto", pdf);
+    this.addDate(invoiceData.date, pdf);
+    this.addInvoiceId(invoiceData.id, pdf);
     this.addTable(invoiceData.items, totalAmount, pdf);
 
     pdf.addQRBill("A4");
@@ -54,7 +56,8 @@ export class InvoiceService {
       const fileStream = createReadStream(tempFilename);
       response.set({
         "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=" + invoiceData.filename
+        "Content-Disposition": "attachment; filename=" + invoiceData.filename,
+        "Access-Control-Expose-Headers": "Content-Disposition"
       });
 
       fileStream.pipe(response).on("close", () => {
@@ -66,12 +69,12 @@ export class InvoiceService {
 
   private addDebtorAddresses(debtor: Debtor, pdf: PDF) {
     const debtorAddress = debtor.name + "\n" +
-      debtor.address + "\n" +
+      debtor.address + " " + debtor.buildingNumber + "\n" +
       debtor.zip + " " + debtor.city;
 
     pdf.fontSize(12);
     pdf.font("Helvetica");
-    pdf.text(debtorAddress, this.mm2Pt(130), this.mm2Pt(60), {
+    pdf.text(debtorAddress, this.mm2Pt(130), this.mm2Pt(50), {
       width: this.mm2Pt(70),
       height: this.mm2Pt(50),
       align: "left"
@@ -80,13 +83,13 @@ export class InvoiceService {
 
   private addCreditorAddresses(creditor: Creditor, pdf: PDF) {
     const creditorAddress = creditor.name + "\n" +
-      creditor.address + "\n" +
+      creditor.address + " " + creditor.buildingNumber + "\n" +
       creditor.zip + " " + creditor.city;
 
     pdf.fontSize(12);
     pdf.fillColor("black");
     pdf.font("Helvetica");
-    pdf.text(creditorAddress, this.mm2Pt(20), this.mm2Pt(35), {
+    pdf.text(creditorAddress, this.mm2Pt(20), this.mm2Pt(25), {
       width: this.mm2Pt(100),
       height: this.mm2Pt(50),
       align: "left"
@@ -96,20 +99,42 @@ export class InvoiceService {
   private addTitle(title: string, pdf: PDF) {
     pdf.fontSize(14);
     pdf.font("Helvetica-Bold");
-    pdf.text(title, this.mm2Pt(20), this.mm2Pt(100), {
+    pdf.text(title, this.mm2Pt(20), this.mm2Pt(90), {
       width: this.mm2Pt(170),
       align: "left"
     });
   }
 
-  private addDateAndCity(city: string, dateNumber: number, pdf: PDF) {
-    const date = new Date(dateNumber);
-    const dateString = city + ", " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+  private addPaymentTerm(term: string, pdf: PDF) {
+    pdf.fontSize(10);
+    pdf.font("Helvetica");
+    pdf.text(term, this.mm2Pt(20), this.mm2Pt(100), {
+      width: this.mm2Pt(170),
+      align: "left"
+    });
+  }
 
-    pdf.fontSize(11);
+  private addDate(dateNumber: number, pdf: PDF) {
+    const date = new Date(dateNumber);
+    const dateString = "Datum: " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+
+    pdf.fontSize(8);
     pdf.font("Helvetica");
 
-    pdf.text(dateString, this.mm2Pt(130), this.mm2Pt(90), {
+    pdf.text(dateString, this.mm2Pt(130), this.mm2Pt(71), {
+      width: this.mm2Pt(70),
+      height: this.mm2Pt(50),
+      align: "left"
+    });
+  }
+
+  private addInvoiceId(invoiceNumber: number, pdf: PDF) {
+    const dateString = "Rechnungsnummer: " + invoiceNumber;
+
+    pdf.fontSize(8);
+    pdf.font("Helvetica");
+
+    pdf.text(dateString, this.mm2Pt(130), this.mm2Pt(75), {
       width: this.mm2Pt(70),
       height: this.mm2Pt(50),
       align: "left"
@@ -126,9 +151,11 @@ export class InvoiceService {
       width: this.mm2Pt(170),
       x: this.mm2Pt(20),
       y: this.mm2Pt(110),
+      lineWidth: 1,
       rows: [
         {
-          height: 20,
+          height: 24,
+          padding: [8, 0, 0, 4],
           fillColor: "#ECF0F1",
           columns: [
             {

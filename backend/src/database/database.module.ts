@@ -6,6 +6,10 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { BulletPriceModule } from './bullet-price/bullet-price.module';
 import { OrganizationEntity } from './entities/organization.entity';
 import { BulletPriceEntity } from './entities/bullet-price.entity';
+import { InvoiceModule } from './invoice/invoice.module';
+import { InvoiceItemModule } from './invoice-item/invoice-item.module';
+import { InvoiceEntity } from './entities/invoice.entity';
+import { InvoiceItemEntity } from './entities/invoice-item.entity';
 
 @Module({
   imports: [
@@ -16,12 +20,20 @@ import { BulletPriceEntity } from './entities/bullet-price.entity';
       username: 'admin',
       password: '12345',
       database: 'ohrbuehl-web',
-      entities: [UserEntity, OrganizationEntity, BulletPriceEntity],
+      entities: [
+        UserEntity,
+        OrganizationEntity,
+        BulletPriceEntity,
+        InvoiceEntity,
+        InvoiceItemEntity,
+      ],
       synchronize: true,
     }),
     UsersModule,
     OrganizationsModule,
     BulletPriceModule,
+    InvoiceModule,
+    InvoiceItemModule,
   ],
 })
 export class DatabaseModule {}

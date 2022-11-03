@@ -1,13 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { OrganizationEntity } from "../entities/organization.entity";
-import { OrganizationCreateDto } from "../../shared/dtos/organization-create.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrganizationEntity } from '../entities/organization.entity';
+import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 
 @Injectable()
 export class OrganizationsService {
-  constructor(@InjectRepository(OrganizationEntity) private organizationsRepository: Repository<OrganizationEntity>) {
-  }
+  constructor(
+    @InjectRepository(OrganizationEntity)
+    private organizationsRepository: Repository<OrganizationEntity>,
+  ) {}
 
   findAll(): Promise<OrganizationEntity[]> {
     return this.organizationsRepository.find();
@@ -30,7 +32,7 @@ export class OrganizationsService {
   }
 
   async create(createDto: OrganizationCreateDto): Promise<OrganizationEntity> {
-    let entity = new OrganizationEntity();
+    const entity = new OrganizationEntity();
     entity.name = createDto.name;
     entity.abbreviation = createDto.abbreviation;
     entity.managerId = createDto.managerId;

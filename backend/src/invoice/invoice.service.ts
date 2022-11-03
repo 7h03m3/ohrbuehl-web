@@ -1,21 +1,20 @@
-import { Injectable, Res } from "@nestjs/common";
-import { PDF } from "swissqrbill";
-import { Creditor, Data, Debtor } from "swissqrbill/lib/node/cjs/shared/types";
-import { createReadStream, unlink } from "fs";
-import { PDFRow, PDFTable } from "swissqrbill/lib/node/cjs/pdf/extended-pdf";
-import { InvoiceDto } from "../shared/dtos/invoice.dto";
-import { InvoiceItemDto } from "../shared/dtos/invoice-item.dto";
+import { Injectable, Res } from '@nestjs/common';
+import { PDF } from 'swissqrbill';
+import { Creditor, Data, Debtor } from 'swissqrbill/lib/node/cjs/shared/types';
+import { createReadStream, unlink } from 'fs';
+import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
+import { InvoiceDto } from '../shared/dtos/invoice.dto';
+import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
 
 @Injectable()
 export class InvoiceService {
-  constructor() {
-  }
+  constructor() {}
 
   async generateDummy(invoiceData: InvoiceDto, @Res() response) {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
 
     const data: Data = {
-      currency: "CHF",
+      currency: 'CHF',
       amount: totalAmount,
       message: invoiceData.title,
       creditor: {
@@ -25,119 +24,141 @@ export class InvoiceService {
         zip: invoiceData.creditor.zip,
         city: invoiceData.creditor.city,
         account: invoiceData.creditor.account,
-        country: "CH"
-      }
+        country: 'CH',
+      },
     };
 
-    const tempFilename: string = "./" + this.getRandomFilename() + ".pdf";
-    const pdf = await new PDF(data, tempFilename, { "autoGenerate": false, "size": "A4" });
+    const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
+    const pdf = await new PDF(data, tempFilename, {
+      autoGenerate: false,
+      size: 'A4',
+    });
 
-    if ((invoiceData.debtor) && (invoiceData.debtor.name != "")) {
+    if (invoiceData.debtor && invoiceData.debtor.name != '') {
       data.debtor = {
         name: invoiceData.debtor.name,
         address: invoiceData.debtor.address,
         buildingNumber: invoiceData.debtor.buildingNumber,
         zip: invoiceData.debtor.zip,
         city: invoiceData.debtor.city,
-        country: "CH"
+        country: 'CH',
       };
       this.addDebtorAddresses(data.debtor, pdf);
     }
     this.addCreditorAddresses(data.creditor, pdf);
     this.addTitle(invoiceData.title, pdf);
-    this.addPaymentTerm("Zahlungsbedingungen 60 Tage netto", pdf);
+    this.addPaymentTerm('Zahlungsbedingungen 60 Tage netto', pdf);
     this.addDate(invoiceData.date, pdf);
     this.addInvoiceId(invoiceData.id, pdf);
     this.addTable(invoiceData.items, totalAmount, pdf);
 
-    pdf.addQRBill("A4");
+    pdf.addQRBill('A4');
     pdf.end();
-    pdf.on("finish", () => {
+    pdf.on('finish', () => {
       const fileStream = createReadStream(tempFilename);
       response.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=" + invoiceData.filename,
-        "Access-Control-Expose-Headers": "Content-Disposition"
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=' + invoiceData.filename,
+        'Access-Control-Expose-Headers': 'Content-Disposition',
       });
 
-      fileStream.pipe(response).on("close", () => {
-        unlink(tempFilename, () => {
-        });
+      fileStream.pipe(response).on('close', () => {
+        unlink(tempFilename, () => {});
       });
     });
   }
 
   private addDebtorAddresses(debtor: Debtor, pdf: PDF) {
-    const debtorAddress = debtor.name + "\n" +
-      debtor.address + " " + debtor.buildingNumber + "\n" +
-      debtor.zip + " " + debtor.city;
+    const debtorAddress =
+      debtor.name +
+      '\n' +
+      debtor.address +
+      ' ' +
+      debtor.buildingNumber +
+      '\n' +
+      debtor.zip +
+      ' ' +
+      debtor.city;
 
     pdf.fontSize(12);
-    pdf.font("Helvetica");
+    pdf.font('Helvetica');
     pdf.text(debtorAddress, this.mm2Pt(130), this.mm2Pt(50), {
       width: this.mm2Pt(70),
       height: this.mm2Pt(50),
-      align: "left"
+      align: 'left',
     });
   }
 
   private addCreditorAddresses(creditor: Creditor, pdf: PDF) {
-    const creditorAddress = creditor.name + "\n" +
-      creditor.address + " " + creditor.buildingNumber + "\n" +
-      creditor.zip + " " + creditor.city;
+    const creditorAddress =
+      creditor.name +
+      '\n' +
+      creditor.address +
+      ' ' +
+      creditor.buildingNumber +
+      '\n' +
+      creditor.zip +
+      ' ' +
+      creditor.city;
 
     pdf.fontSize(12);
-    pdf.fillColor("black");
-    pdf.font("Helvetica");
+    pdf.fillColor('black');
+    pdf.font('Helvetica');
     pdf.text(creditorAddress, this.mm2Pt(20), this.mm2Pt(25), {
       width: this.mm2Pt(100),
       height: this.mm2Pt(50),
-      align: "left"
+      align: 'left',
     });
   }
 
   private addTitle(title: string, pdf: PDF) {
     pdf.fontSize(14);
-    pdf.font("Helvetica-Bold");
+    pdf.font('Helvetica-Bold');
     pdf.text(title, this.mm2Pt(20), this.mm2Pt(90), {
       width: this.mm2Pt(170),
-      align: "left"
+      align: 'left',
     });
   }
 
   private addPaymentTerm(term: string, pdf: PDF) {
     pdf.fontSize(10);
-    pdf.font("Helvetica");
+    pdf.font('Helvetica');
     pdf.text(term, this.mm2Pt(20), this.mm2Pt(100), {
       width: this.mm2Pt(170),
-      align: "left"
+      align: 'left',
     });
   }
 
   private addDate(dateNumber: number, pdf: PDF) {
     const date = new Date(dateNumber);
-    const dateString = "Datum: " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    const dateString =
+      'Datum: ' +
+      date.getDate() +
+      '.' +
+      (date.getMonth() + 1) +
+      '.' +
+      date.getFullYear();
 
     pdf.fontSize(8);
-    pdf.font("Helvetica");
+    pdf.font('Helvetica');
 
     pdf.text(dateString, this.mm2Pt(130), this.mm2Pt(71), {
       width: this.mm2Pt(70),
       height: this.mm2Pt(50),
-      align: "left"
+      align: 'left',
     });
   }
 
   private addInvoiceId(invoiceNumber: number, pdf: PDF) {
-    const dateString = "Rechnungsnummer: " + invoiceNumber;
+    const dateString = 'Rechnungsnummer: ' + invoiceNumber;
 
     pdf.fontSize(8);
-    pdf.font("Helvetica");
+    pdf.font('Helvetica');
 
     pdf.text(dateString, this.mm2Pt(130), this.mm2Pt(75), {
       width: this.mm2Pt(70),
       height: this.mm2Pt(50),
-      align: "left"
+      align: 'left',
     });
   }
 
@@ -156,26 +177,30 @@ export class InvoiceService {
         {
           height: 24,
           padding: [8, 0, 0, 4],
-          fillColor: "#ECF0F1",
+          fillColor: '#ECF0F1',
           columns: [
             {
-              text: "Pos.",
-              width: positionWidth
-            }, {
-              text: "Bezeichnung"
-            }, {
-              text: "Anzahl",
-              width: amountWidth
-            }, {
-              text: "Preis",
-              width: priceWidth
-            }, {
-              text: "Total",
-              width: totalWidth
-            }
-          ]
-        }
-      ]
+              text: 'Pos.',
+              width: positionWidth,
+            },
+            {
+              text: 'Bezeichnung',
+            },
+            {
+              text: 'Anzahl',
+              width: amountWidth,
+            },
+            {
+              text: 'Preis',
+              width: priceWidth,
+            },
+            {
+              text: 'Total',
+              width: totalWidth,
+            },
+          ],
+        },
+      ],
     };
 
     items.forEach((entry) => {
@@ -186,23 +211,27 @@ export class InvoiceService {
       height: 40,
       columns: [
         {
-          text: "",
-          width: positionWidth
-        }, {
-          text: ""
-        }, {
-          text: "",
-          width: amountWidth
-        }, {
-          text: "Rechnungstotal",
-          font: "Helvetica-Bold",
-          width: priceWidth
-        }, {
-          text: "CHF " + this.getPriceString(totalAmount),
+          text: '',
+          width: positionWidth,
+        },
+        {
+          text: '',
+        },
+        {
+          text: '',
+          width: amountWidth,
+        },
+        {
+          text: 'Rechnungstotal',
+          font: 'Helvetica-Bold',
+          width: priceWidth,
+        },
+        {
+          text: 'CHF ' + this.getPriceString(totalAmount),
           width: totalWidth,
-          font: "Helvetica-Bold"
-        }
-      ]
+          font: 'Helvetica-Bold',
+        },
+      ],
     };
 
     table.rows.push(totalAmountRowItem);
@@ -213,7 +242,7 @@ export class InvoiceService {
   private getTotalAmount(items: InvoiceItemDto[]): number {
     let totalAmount = 0;
     items.forEach((entry) => {
-      totalAmount += (entry.amount * entry.price);
+      totalAmount += entry.amount * entry.price;
     });
 
     return totalAmount;
@@ -225,45 +254,49 @@ export class InvoiceService {
     const priceWidth = this.mm2Pt(30);
     const totalWidth = this.mm2Pt(30);
 
-    const total: number = (item.price * item.amount);
+    const total: number = item.price * item.amount;
 
     const rowItem: PDFRow = {
       columns: [
         {
           text: item.position,
-          width: positionWidth
-        }, {
+          width: positionWidth,
+        },
+        {
           text: item.description,
-          font: "Helvetica"
-        }, {
+          font: 'Helvetica',
+        },
+        {
           text: item.amount,
-          width: amountWidth
-        }, {
-          text: "CHF " + this.getPriceString(item.price),
+          width: amountWidth,
+        },
+        {
+          text: 'CHF ' + this.getPriceString(item.price),
           width: priceWidth,
-          font: "Helvetica"
-        }, {
-          text: "CHF " + this.getPriceString(total),
+          font: 'Helvetica',
+        },
+        {
+          text: 'CHF ' + this.getPriceString(total),
           width: totalWidth,
-          font: "Helvetica"
-        }
-      ]
+          font: 'Helvetica',
+        },
+      ],
     };
 
     table.rows.push(rowItem);
   }
 
   private getPriceString(price: number): string {
-    return price.toLocaleString("de-CH", {
+    return price.toLocaleString('de-CH', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-      useGrouping: true
+      useGrouping: true,
     });
   }
 
   private getRandomFilename(): string {
-    const crypto = require("crypto");
-    return crypto.randomBytes(20).toString("hex");
+    const crypto = require('crypto');
+    return crypto.randomBytes(20).toString('hex');
   }
 
   private mm2Pt(millimeters: number) {

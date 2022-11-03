@@ -1,15 +1,17 @@
-import { Injectable } from "@nestjs/common";
-import { UsersService } from "../database/users/users.service";
-import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
-import { JwtLoginInformation } from "../shared/dtos/jwt-login-information.dto";
+import { Injectable } from '@nestjs/common';
+import { UsersService } from '../database/users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
 
 @Injectable()
 export class AuthService {
-  hashRounds: number = 10;
+  hashRounds = 10;
 
-  constructor(private usersService: UsersService, private jwtService: JwtService) {
-  }
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByName(username);
@@ -28,7 +30,7 @@ export class AuthService {
   async login(user: any) {
     const payload = { userName: user.userName, id: user.id, roles: user.roles };
 
-    let loginInformation = new JwtLoginInformation();
+    const loginInformation = new JwtLoginInformation();
     loginInformation.access_token = this.jwtService.sign(payload);
     loginInformation.userName = user.userName;
     loginInformation.id = user.id;
@@ -41,7 +43,10 @@ export class AuthService {
     return await bcrypt.hash(password, this.hashRounds);
   }
 
-  async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
+  async comparePassword(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
     return await bcrypt.compare(password, hashedPassword);
   }
 }

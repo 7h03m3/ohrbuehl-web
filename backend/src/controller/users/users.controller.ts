@@ -1,17 +1,28 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { UsersService } from "../../database/users/users.service";
-import { UserEntity } from "../../database/entities/user.entity";
-import { Roles } from "../../shared/decorators/roles.decorator";
-import { JwtAuthGuard } from "../../auth/guards/jwt-auth.guard";
-import { RoleAuthGuard } from "../../auth/guards/role-auth-guard.service";
-import { Role } from "../../shared/enums/role.enum";
-import { UserCreateDto } from "../../shared/dtos/user-create.dto";
-import { AuthService } from "../../auth/auth.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { UsersService } from '../../database/users/users.service';
+import { UserEntity } from '../../database/entities/user.entity';
+import { Roles } from '../../shared/decorators/roles.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
+import { Role } from '../../shared/enums/role.enum';
+import { UserCreateDto } from '../../shared/dtos/user-create.dto';
+import { AuthService } from '../../auth/auth.service';
 
-@Controller("users")
+@Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService, private authService: AuthService) {
-  }
+  constructor(
+    private readonly userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -22,8 +33,8 @@ export class UsersController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get(":id")
-  getById(@Param("id") id: number): Promise<UserEntity> {
+  @Get(':id')
+  getById(@Param('id') id: number): Promise<UserEntity> {
     return this.userService.findOne(id);
   }
 
@@ -31,7 +42,9 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async createUser(@Body() createUserDto: UserCreateDto): Promise<UserEntity> {
-    const hashedPassword = await this.authService.hashPassword(createUserDto.password);
+    const hashedPassword = await this.authService.hashPassword(
+      createUserDto.password,
+    );
     return this.userService.createUser(createUserDto, hashedPassword);
   }
 
@@ -39,8 +52,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
   async updateUser(@Body() userDto: UserEntity): Promise<any> {
-    if (userDto.password != "") {
-      const hashedPassword = await this.authService.hashPassword(userDto.password);
+    if (userDto.password != '') {
+      const hashedPassword = await this.authService.hashPassword(
+        userDto.password,
+      );
       return this.userService.updateUserWithPassword(userDto, hashedPassword);
     } else {
       return this.userService.updateUser(userDto);
@@ -49,8 +64,8 @@ export class UsersController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Delete(":id")
-  async deleteUser(@Param("id") id: string): Promise<any> {
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string): Promise<any> {
     return this.userService.deleteUser(id);
   }
 }

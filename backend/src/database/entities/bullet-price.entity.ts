@@ -1,6 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("bullet-prices")
+@Entity('bullet-prices')
 export class BulletPriceEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,6 +11,6 @@ export class BulletPriceEntity {
   @Column()
   description: string;
 
-  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   price: number;
 }

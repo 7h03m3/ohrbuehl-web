@@ -1,5 +1,6 @@
 export class InvoiceCreditorDto {
   name: string;
+  addressAddition: string;
   address: string;
   buildingNumber: string;
   zip: number;
@@ -8,6 +9,7 @@ export class InvoiceCreditorDto {
 
   constructor() {
     this.name = '';
+    this.addressAddition = '';
     this.address = '';
     this.buildingNumber = '';
     this.zip = 0;

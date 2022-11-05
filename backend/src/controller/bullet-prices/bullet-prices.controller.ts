@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -33,9 +24,7 @@ export class BulletPricesController {
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
-  async create(
-    @Body() createDto: BulletPriceCreateDto,
-  ): Promise<BulletPriceEntity> {
+  async create(@Body() createDto: BulletPriceCreateDto): Promise<BulletPriceEntity> {
     return this.bulletPriceService.create(createDto);
   }
 

@@ -1,23 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgForm} from "@angular/forms";
-import {InvoiceDto} from "../../../../shared/dtos/invoice.dto";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InvoiceDto } from '../../../../shared/dtos/invoice.dto';
 
 @Component({
   selector: 'app-invoice-information',
   templateUrl: './invoice-information.component.html',
-  styleUrls: ['./invoice-information.component.css']
+  styleUrls: ['./invoice-information.component.css'],
 })
 export class InvoiceInformationComponent implements OnInit {
   @Input() invoiceData!: InvoiceDto;
   @Output() invoiceDataChange = new EventEmitter<InvoiceDto>();
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  onSubmit(form: NgForm) {
+  onSubmit() {
     this.invoiceDataChange.emit(this.invoiceData);
   }
 }

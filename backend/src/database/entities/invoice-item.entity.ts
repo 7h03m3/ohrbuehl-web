@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceEntity } from './invoice.entity';
 
 @Entity('invoice-item')
@@ -15,9 +15,10 @@ export class InvoiceItemEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 
   @ManyToOne((type) => InvoiceEntity, (invoice) => invoice.items)
-  invoices: InvoiceEntity[];
+  @JoinColumn({ name: 'invoiceId' })
+  invoice: InvoiceEntity;
 }

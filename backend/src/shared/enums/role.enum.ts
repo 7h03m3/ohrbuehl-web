@@ -4,5 +4,6 @@ export enum Role {
   ShootingRangeManager = 'shootingRangeManager',
   ClubPresident = 'clubPresident',
   EventOrganizer = 'eventOrganizer',
+  Cashier = 'cashier',
   Admin = 'admin',
 }

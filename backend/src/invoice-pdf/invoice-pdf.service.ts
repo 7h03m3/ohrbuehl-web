@@ -7,14 +7,21 @@ import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
 
 @Injectable()
-export class InvoiceService {
-  async generateDummy(invoiceData: InvoiceDto, @Res() response) {
+export class InvoicePdfService {
+  async generatePdf(invoiceData: InvoiceDto, @Res() response) {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
+    const invoiceMessage: string =
+      invoiceData.title +
+      ' / Nummer: ' +
+      invoiceData.id +
+      ' / ' +
+      'Datum: ' +
+      this.getDateString(invoiceData.date);
 
     const data: Data = {
       currency: 'CHF',
       amount: totalAmount,
-      message: invoiceData.title,
+      message: invoiceMessage,
       creditor: {
         name: invoiceData.creditor.name,
         address: invoiceData.creditor.address,
@@ -128,14 +135,7 @@ export class InvoiceService {
   }
 
   private addDate(dateNumber: number, pdf: PDF) {
-    const date = new Date(dateNumber);
-    const dateString =
-      'Datum: ' +
-      date.getDate() +
-      '.' +
-      (date.getMonth() + 1) +
-      '.' +
-      date.getFullYear();
+    const dateString = 'Datum: ' + this.getDateString(dateNumber);
 
     pdf.fontSize(8);
     pdf.font('Helvetica');
@@ -189,7 +189,7 @@ export class InvoiceService {
               width: amountWidth,
             },
             {
-              text: 'Preis',
+              text: 'Preis / Stk.',
               width: priceWidth,
             },
             {
@@ -299,5 +299,12 @@ export class InvoiceService {
 
   private mm2Pt(millimeters: number) {
     return millimeters * 2.8346456692913;
+  }
+
+  private getDateString(dateNumber: number) {
+    const date = new Date(dateNumber);
+    return (
+      date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+    );
   }
 }

@@ -1,5 +1,6 @@
 export class InvoiceDebtorDto {
   name: string;
+  addressAddition: string;
   address: string;
   buildingNumber: string;
   zip: number;
@@ -7,6 +8,7 @@ export class InvoiceDebtorDto {
 
   constructor() {
     this.name = '';
+    this.addressAddition = '';
     this.address = '';
     this.buildingNumber = '';
     this.zip = 0;

@@ -8,24 +8,22 @@ import { BulletPricesController } from './bullet-prices/bullet-prices.controller
 import { OrganizationsModule } from '../database/organizations/organizations.module';
 import { BulletPriceModule } from '../database/bullet-price/bullet-price.module';
 import { InvoiceController } from './invoice/invoice.controller';
-import { InvoiceModule } from '../invoice/invoice.module';
+import { InvoicePdfModule } from '../invoice-pdf/invoicePdfModule';
+import { InvoiceModule } from '../database/invoice/invoice.module';
+import { InvoiceItemModule } from '../database/invoice-item/invoice-item.module';
 
 @Module({
   imports: [
     UsersModule,
     OrganizationsModule,
     BulletPriceModule,
+    InvoicePdfModule,
     InvoiceModule,
+    InvoiceItemModule,
     AuthModule,
   ],
   providers: [],
-  controllers: [
-    UsersController,
-    AuthController,
-    OrganizationsController,
-    BulletPricesController,
-    InvoiceController,
-  ],
+  controllers: [UsersController, AuthController, OrganizationsController, BulletPricesController, InvoiceController],
   exports: [],
 })
 export class ControllerModule {}

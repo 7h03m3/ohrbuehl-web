@@ -1,12 +1,19 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceItemEntity } from './invoice-item.entity';
+import { InvoiceCreditorEntity } from './invoice-creditor.entity';
+import { InvoiceDebtorEntity } from './invoice-debtor.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('invoice')
 export class InvoiceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @OneToOne(() => UserEntity)
+  @JoinColumn()
+  creator: UserEntity;
+
+  @Column({ type: 'bigint' })
   date: number;
 
   @Column()
@@ -15,25 +22,15 @@ export class InvoiceEntity {
   @Column()
   filename: string;
 
-  @Column('simple-json')
-  creditor: {
-    name: string;
-    address: string;
-    buildingNumber: string;
-    zip: number;
-    city: string;
-    account: string;
-  };
+  @Column(() => InvoiceCreditorEntity)
+  creditor: InvoiceCreditorEntity;
 
-  @Column('simple-json')
-  debtor: {
-    name: string;
-    address: string;
-    buildingNumber: string;
-    zip: number;
-    city: string;
-  };
+  @Column(() => InvoiceDebtorEntity)
+  debtor: InvoiceDebtorEntity;
 
-  @OneToMany((type) => InvoiceItemEntity, (item) => item.id)
+  @OneToMany((type) => InvoiceItemEntity, (item) => item.invoice)
   items: InvoiceItemEntity[];
+
+  @Column({ default: false })
+  payed: boolean;
 }

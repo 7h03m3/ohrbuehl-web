@@ -1,4 +1,4 @@
-<form #invoiceInformationForm="ngForm" (ngSubmit)="onSubmit(invoiceInformationForm)">
+<form #invoiceInformationForm="ngForm" (ngSubmit)="onSubmit()">
   <mat-form-field class="full-width">
     <input [(ngModel)]="invoiceData.title" matInput name="title" placeholder="Titel" required type="text">
     <mat-error>
@@ -20,7 +20,7 @@
       <tr>
         <td colspan="2">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.debtor.name" matInput name="name" placeholder="Name" type="text">
+            <input [(ngModel)]="invoiceData.debtor.name" matInput name="debtor_name" placeholder="Name" type="text">
             <mat-error>
               Bitte einen Namen angeben.
             </mat-error>
@@ -30,7 +30,8 @@
       <tr>
         <td class="full-width">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.debtor.address" matInput name="address" placeholder="Adresse" type="text">
+            <input [(ngModel)]="invoiceData.debtor.address" matInput name="debtor_address" placeholder="Adresse"
+                   type="text">
             <mat-error>
               Bitte eine Addresse angeben.
             </mat-error>
@@ -38,7 +39,8 @@
         </td>
         <td>
           <mat-form-field class="street-number-form-field">
-            <input [(ngModel)]="invoiceData.debtor.buildingNumber" matInput name="buildingNumber" placeholder="Nummer"
+            <input [(ngModel)]="invoiceData.debtor.buildingNumber" matInput name="debtor_buildingNumber"
+                   placeholder="Nummer"
                    size="4"
                    type="text">
             <mat-error>
@@ -50,7 +52,7 @@
       <tr>
         <td class="full-width">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.debtor.city" matInput name="city" placeholder="Stadt" type="text">
+            <input [(ngModel)]="invoiceData.debtor.city" matInput name="debtor_city" placeholder="Stadt" type="text">
             <mat-error>
               Bitte eine Strassennummer angeben.
             </mat-error>
@@ -58,7 +60,7 @@
         </td>
         <td>
           <mat-form-field class="street-number-form-field">
-            <input [(ngModel)]="invoiceData.debtor.zip" matInput maxlength="4" minlength="4" name="zip"
+            <input [(ngModel)]="invoiceData.debtor.zip" matInput maxlength="4" minlength="4" name="debtor_zip"
                    placeholder="PLZ"
                    type="number">
             <mat-error>
@@ -85,7 +87,8 @@
       <tr>
         <td colspan="2">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.creditor.name" matInput name="name" placeholder="Name" required type="text">
+            <input [(ngModel)]="invoiceData.creditor.name" matInput name="creditor_name" placeholder="Name" required
+                   type="text">
             <mat-error>
               Bitte einen Namen angeben.
             </mat-error>
@@ -95,7 +98,8 @@
       <tr>
         <td class="full-width">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.creditor.address" matInput name="address" placeholder="Adresse" required
+            <input [(ngModel)]="invoiceData.creditor.address" matInput name="creditor_address" placeholder="Adresse"
+                   required
                    type="text">
             <mat-error>
               Bitte eine Addresse angeben.
@@ -104,7 +108,8 @@
         </td>
         <td>
           <mat-form-field class="street-number-form-field">
-            <input [(ngModel)]="invoiceData.creditor.buildingNumber" matInput name="buildingNumber" placeholder="Nummer"
+            <input [(ngModel)]="invoiceData.creditor.buildingNumber" matInput name="creditor_buildingNumber"
+                   placeholder="Nummer"
                    required size="4" type="text">
             <mat-error>
               Bitte eine Strassennummer angeben.
@@ -115,7 +120,7 @@
       <tr>
         <td class="full-width">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.creditor.city" matInput name="city" placeholder="Stadt" required
+            <input [(ngModel)]="invoiceData.creditor.city" matInput name="creditor_city" placeholder="Stadt" required
                    type="text">
             <mat-error>
               Bitte eine Strassennummer angeben.
@@ -124,7 +129,7 @@
         </td>
         <td>
           <mat-form-field class="street-number-form-field">
-            <input [(ngModel)]="invoiceData.creditor.zip" matInput maxlength="4" minlength="4" name="zip"
+            <input [(ngModel)]="invoiceData.creditor.zip" matInput maxlength="4" minlength="4" name="creditor_zip"
                    placeholder="PLZ" required type="number">
             <mat-error>
               Bitte eine Addresse angeben.
@@ -135,7 +140,8 @@
       <tr>
         <td colspan="2">
           <mat-form-field class="full-width">
-            <input [(ngModel)]="invoiceData.creditor.account" matInput name="account" placeholder="IBAN" required
+            <input [(ngModel)]="invoiceData.creditor.account" matInput name="creditor_account" placeholder="IBAN"
+                   required
                    type="text">
             <mat-error>
               Bitte eine IBAN angeben.

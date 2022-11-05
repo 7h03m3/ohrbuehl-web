@@ -1,18 +1,16 @@
-import {Injectable} from "@angular/core";
-import {Role} from "../enums/role.enum";
-import {JwtLoginInformation} from "../dtos/jwt-login-information.dto";
+import { Injectable } from '@angular/core';
+import { Role } from '../enums/role.enum';
+import { JwtLoginInformation } from '../dtos/jwt-login-information.dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UserLocalData {
   accessTokenKey: string = 'accessToken';
   userIdKey: string = 'userId';
   userRolesKey: string = 'userRoles';
 
-  constructor() {
-  }
+  constructor() {}
 
   public getUserAccessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
@@ -25,7 +23,7 @@ export class UserLocalData {
       return true;
     }
 
-    return false
+    return false;
   }
 
   public getUserRoll(): Role {
@@ -45,8 +43,9 @@ export class UserLocalData {
         return Role.EventOrganizer;
       case Role.Admin:
         return Role.Admin;
+      case Role.Cashier:
+        return Role.Cashier;
       default:
-
         return Role.Anonymous;
     }
   }
@@ -65,18 +64,20 @@ export class UserLocalData {
 
   public convertRoleText(role: string) {
     switch (role) {
-      case "admin":
-        return "Administrator";
-      case "user":
-        return "Benutzer";
-      case "shootingRangeManager":
-        return "Standwart";
-      case "clubPresident":
-        return "Vereinspräsident";
-      case "eventOrganizer":
-        return "Anlassorganisator";
+      case 'admin':
+        return 'Administrator';
+      case 'user':
+        return 'Benutzer';
+      case 'shootingRangeManager':
+        return 'Standwart';
+      case 'clubPresident':
+        return 'Vereinspräsident';
+      case 'eventOrganizer':
+        return 'Anlassorganisator';
+      case 'cashier':
+        return 'Kassier';
       default:
-        return "";
+        return '';
     }
   }
 }

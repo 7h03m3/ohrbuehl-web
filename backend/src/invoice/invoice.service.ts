@@ -8,8 +8,6 @@ import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
 
 @Injectable()
 export class InvoiceService {
-  constructor() {}
-
   async generateDummy(invoiceData: InvoiceDto, @Res() response) {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
 

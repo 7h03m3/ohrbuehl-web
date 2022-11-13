@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { NgForm } from '@angular/forms';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
@@ -23,6 +23,10 @@ export class InvoiceItemEditComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initInvoiceItem();
+    this.updateDataState();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     this.updateDataState();
   }
 

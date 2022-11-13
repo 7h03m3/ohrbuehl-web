@@ -19,7 +19,7 @@ services:
     depends_on:
       - ohrbuehl-web-mysql-db
     networks:
-      - webnet
+      - proxynet
       
   ohrbuehl-web-mysql-db:
     image: mysql:8.0.29
@@ -32,7 +32,7 @@ services:
     volumes:
       - .\db-data:/var/lib/mysql
     networks:
-      - webnet
+      - proxynet
 
   ohrbuehl-web-phpmyadmin:
     image: phpmyadmin
@@ -48,7 +48,7 @@ services:
       PMA_HOST: ohrbuehl-web-mysql-db
       PMA_PORT: 3306
     networks:
-      - webnet
+      - proxynet
       
 networks:
   proxynet:

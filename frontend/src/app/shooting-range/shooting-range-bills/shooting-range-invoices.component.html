@@ -1,41 +1,37 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
-    <form #userUpdateForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3>{{formTitle}}</h3>
-      <mat-error *ngIf="!formValid">
-        Bitte alle Daten eingeben.
-      </mat-error>
-      <mat-stepper #stepper linear>
-        <mat-step [editable]="true">
-          <ng-template matStepLabel>Allgemeine Informationen</ng-template>
-          <app-invoice-information (invoiceDataChange)="onStepSubmit(stepper)"
-                                   [(invoiceData)]="invoiceData"></app-invoice-information>
-        </mat-step>
-        <mat-step [editable]="true">
-          <ng-template matStepLabel>Rechnungsposten</ng-template>
-          <app-invoice-item-edit (invoiceDataChange)="onStepSubmit(stepper)" [(invoiceData)]="invoiceData">>
-          </app-invoice-item-edit>
-        </mat-step>
 
-        <mat-step [editable]="true">
-          <ng-template matStepLabel>Kontrolle</ng-template>
-          <app-invoice-detail-view [invoiceData]="invoiceData"></app-invoice-detail-view>
-          <p>
-          <table class="full-width">
-            <tr>
-              <td class="half-width">
-                <button (click)="onSave()" class="full-width" color="primary" mat-raised-button>Speichern</button>
-              </td>
-              <td class="half-width">
-                <button class="full-width" color="primary" mat-raised-button>Speichern & Download</button>
-              </td>
-            </tr>
-          </table>
-        </mat-step>
-      </mat-stepper>
-    </form>
+    <h3>{{formTitle}}</h3>
+    <mat-error *ngIf="!formValid">
+      Bitte alle Daten eingeben.
+    </mat-error>
+    <mat-stepper #stepper linear>
+      <mat-step [editable]="true">
+        <ng-template matStepLabel>Allgemeine Informationen</ng-template>
+        <app-invoice-information (invoiceDataChange)="onStepSubmit(stepper)"
+                                 [(invoiceData)]="invoiceData"></app-invoice-information>
+      </mat-step>
+      <mat-step [editable]="true">
+        <ng-template matStepLabel>Rechnungsposten</ng-template>
+        <app-invoice-item-edit (invoiceDataChange)="onStepSubmit(stepper)" [(invoiceData)]="invoiceData">>
+        </app-invoice-item-edit>
+      </mat-step>
+
+      <mat-step [editable]="true">
+        <ng-template matStepLabel>Kontrolle</ng-template>
+        <app-invoice-detail-view [invoiceData]="invoiceData"></app-invoice-detail-view>
+        <p>
+        <table class="full-width">
+          <tr>
+            <td class="half-width">
+              <button (click)="onSave()" class="full-width" color="primary" mat-raised-button>Speichern</button>
+            </td>
+            <td class="half-width">
+              <button class="full-width" color="primary" mat-raised-button>Speichern & Download</button>
+            </td>
+          </tr>
+        </table>
+      </mat-step>
+    </mat-stepper>
   </mat-card-content>
 </mat-card>
-
-
-<button (click)="downloadInvoice()" mat-button>Download</button>

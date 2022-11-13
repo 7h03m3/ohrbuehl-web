@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {InvoiceDto} from "../../../../shared/dtos/invoice.dto";
-import {NgForm} from "@angular/forms";
-import {InvoiceItemDto} from "../../../../shared/dtos/invoice-item.dto";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
+import { NgForm } from '@angular/forms';
+import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
 
 @Component({
   selector: 'app-invoice-item-edit',
   templateUrl: './invoice-item-edit.component.html',
-  styleUrls: ['./invoice-item-edit.component.css']
+  styleUrls: ['./invoice-item-edit.component.css'],
 })
 export class InvoiceItemEditComponent implements OnInit {
   @Input() invoiceData!: InvoiceDto;
@@ -14,13 +14,12 @@ export class InvoiceItemEditComponent implements OnInit {
 
   public invoiceItem: InvoiceItemDto = new InvoiceItemDto();
 
-  dataValid: boolean = false;
-  currencyString: string = " SFr.";
-  newInvoiceItemExpanded: boolean = true;
+  dataValid = false;
+  currencyString = ' SFr.';
+  newInvoiceItemExpanded = true;
   displayedColumns: string[] = ['position', 'description', 'amount', 'price', 'total', 'action'];
 
-  constructor() {
-  }
+  constructor() {}
 
   public ngOnInit(): void {
     this.initInvoiceItem();
@@ -56,29 +55,33 @@ export class InvoiceItemEditComponent implements OnInit {
   public getTotalCost(): number {
     let totalCost = 0;
     this.invoiceData.items.forEach((value) => {
-      totalCost += (value.amount * value.price);
-    })
+      totalCost += value.amount * value.price;
+    });
 
     return totalCost;
   }
 
   public getCostString(price: number): string {
-    return price.toLocaleString("de-CH", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      useGrouping: true
-    }) + " " + this.currencyString;
+    return (
+      price.toLocaleString('de-CH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true,
+      }) +
+      ' ' +
+      this.currencyString
+    );
   }
 
   private updateItemPositions() {
     this.invoiceData.items.forEach((value, index) => {
       value.position = index + 1;
-    })
+    });
   }
 
   private updateDataState() {
-    this.dataValid = (this.invoiceData.items.length != 0) && (this.getTotalCost() > 0);
-    this.newInvoiceItemExpanded = (this.invoiceData.items.length == 0);
+    this.dataValid = this.invoiceData.items.length != 0 && this.getTotalCost() > 0;
+    this.newInvoiceItemExpanded = this.invoiceData.items.length == 0;
   }
 
   private refreshTable() {
@@ -87,7 +90,7 @@ export class InvoiceItemEditComponent implements OnInit {
   }
 
   private initInvoiceItem() {
-    this.invoiceItem = new InvoiceItemDto()
+    this.invoiceItem = new InvoiceItemDto();
     this.invoiceItem.amount = 1;
     this.invoiceItem.price = 0.05;
   }

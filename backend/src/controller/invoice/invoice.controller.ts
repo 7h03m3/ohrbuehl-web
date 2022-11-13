@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -24,6 +25,9 @@ import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
+import { DateHelper } from '../../shared/classes/date-helper';
+import { UserDto } from '../../shared/dtos/user.dto';
+import { UserEntity } from '../../database/entities/user.entity';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -32,6 +36,7 @@ export class InvoiceController {
     private invoiceItemService: InvoiceItemService,
     private invoicePdfService: InvoicePdfService,
     private userService: UsersService,
+    private dateHelper: DateHelper,
   ) {}
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
@@ -51,13 +56,11 @@ export class InvoiceController {
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
-  async createInvoice(@Body() createDto: InvoiceCreateDto): Promise<any> {
-    const creatorId = 1; // TODO
-    const creator = await this.userService.findOne(creatorId);
-    if (!creator) {
-      const errorMessage = 'user with id ' + creatorId.toString() + ' not found';
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
+  async createInvoice(@Body() createDto: InvoiceCreateDto, @Request() req: any): Promise<any> {
+    const creatorId = req.user.id;
+    const creator = await this.getUser(creatorId);
+
+    createDto.filename = this.getInvoiceFilename(createDto.title, createDto.date);
 
     const newInvoice = await this.invoiceService.create(createDto, creator);
 
@@ -78,7 +81,10 @@ export class InvoiceController {
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
-  async update(@Body() updateDto: InvoiceDto): Promise<any> {
+  async update(@Body() updateDto: InvoiceDto, @Request() req: any): Promise<any> {
+    const creatorId = req.user.id;
+    updateDto.creator = await this.getUserAsDto(creatorId);
+    updateDto.filename = this.getInvoiceFilename(updateDto.title, updateDto.date);
     return this.invoiceService.update(updateDto);
   }
 
@@ -119,8 +125,39 @@ export class InvoiceController {
     return this.invoiceItemService.delete(id);
   }
 
-  @Post('pdf')
-  async getInvoice(@Body() invoiceData: InvoiceDto, @Res() response): Promise<any> {
+  @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('pdf/:id')
+  async downloadInvoice(@Param('id') id: number, @Res() response): Promise<any> {
+    const invoiceData: InvoiceEntity = await this.invoiceService.findOne(id);
+    if (!invoiceData) {
+      const errorMessage = 'invoice with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
     await this.invoicePdfService.generatePdf(invoiceData, response);
+  }
+
+  private getInvoiceFilename(title: string, date: number): string {
+    let filename = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    filename += '_' + this.dateHelper.getDateFileName(date) + '.pdf';
+    return filename;
+  }
+
+  private async getUser(userId: number): Promise<UserEntity> {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      const errorMessage = 'user with id ' + userId.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    return user;
+  }
+
+  private async getUserAsDto(userId: number): Promise<UserDto> {
+    const userEntity = await this.getUser(userId);
+    const userDto = new UserDto();
+    userDto.fillFromEntity(userEntity);
+    return userDto;
   }
 }

@@ -11,12 +11,13 @@ import { BulletPriceDto } from '../shared/dtos/bullet-price.dto';
 import { BulletPriceCreateDto } from '../shared/dtos/bullet-price-create.dto';
 import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { InvoiceCreateDto } from '../shared/dtos/invoice-create.dto';
+import { InvoiceListItemDto } from '../shared/dtos/invoice-list-item.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl: string = 'http://127.0.0.1:3000/';
+  baseUrl = 'http://127.0.0.1:3000/';
   userUrl: string = this.baseUrl + 'users';
   organizationUrl: string = this.baseUrl + 'organizations';
   bulletPricesUrl: string = this.baseUrl + 'bullet-prices';
@@ -63,22 +64,12 @@ export class ApiService {
     return this.http.get<OrganizationDto>(this.organizationUrl + '/' + id);
   }
 
-  createOrganization(
-    createOrganization: OrganizationCreateDto
-  ): Observable<OrganizationDto> {
-    return this.http.post<OrganizationDto>(
-      this.organizationUrl,
-      createOrganization
-    );
+  createOrganization(createOrganization: OrganizationCreateDto): Observable<OrganizationDto> {
+    return this.http.post<OrganizationDto>(this.organizationUrl, createOrganization);
   }
 
-  updateOrganization(
-    updateOrganization: OrganizationDto
-  ): Observable<OrganizationDto> {
-    return this.http.put<OrganizationDto>(
-      this.organizationUrl,
-      updateOrganization
-    );
+  updateOrganization(updateOrganization: OrganizationDto): Observable<OrganizationDto> {
+    return this.http.put<OrganizationDto>(this.organizationUrl, updateOrganization);
   }
 
   deleteOrganization(id: string): Observable<any> {
@@ -93,36 +84,42 @@ export class ApiService {
     return this.http.get<BulletPriceDto>(this.bulletPricesUrl + '/' + id);
   }
 
-  createBulletPrice(
-    createBulletPrice: BulletPriceCreateDto
-  ): Observable<BulletPriceDto> {
-    return this.http.post<BulletPriceDto>(
-      this.bulletPricesUrl,
-      createBulletPrice
-    );
+  createBulletPrice(createBulletPrice: BulletPriceCreateDto): Observable<BulletPriceDto> {
+    return this.http.post<BulletPriceDto>(this.bulletPricesUrl, createBulletPrice);
   }
 
-  updateBulletPrice(
-    updateBulletPrice: BulletPriceDto
-  ): Observable<BulletPriceDto> {
-    return this.http.put<BulletPriceDto>(
-      this.bulletPricesUrl,
-      updateBulletPrice
-    );
+  updateBulletPrice(updateBulletPrice: BulletPriceDto): Observable<BulletPriceDto> {
+    return this.http.put<BulletPriceDto>(this.bulletPricesUrl, updateBulletPrice);
   }
 
   deleteBulletPrice(id: string): Observable<any> {
     return this.http.delete(this.bulletPricesUrl + '/' + id);
   }
 
+  getInvoiceList(): Observable<InvoiceListItemDto[]> {
+    return this.http.get<InvoiceListItemDto[]>(this.invoicesUrl);
+  }
+
+  getInvoice(id: number): Observable<InvoiceDto> {
+    return this.http.get<InvoiceDto>(this.invoicesUrl + '/' + id);
+  }
+
   createInvoice(createDto: InvoiceCreateDto): Observable<InvoiceDto> {
     return this.http.post<InvoiceDto>(this.invoicesUrl, createDto);
   }
 
-  getInvoicePdf(invoiceData: InvoiceDto) {
+  updateInvoice(updateDto: InvoiceDto): Observable<InvoiceDto> {
+    return this.http.put<InvoiceDto>(this.invoicesUrl, updateDto);
+  }
+
+  deleteInvoice(id: number): Observable<any> {
+    return this.http.delete<any>(this.invoicesUrl + '/' + id);
+  }
+
+  getInvoicePdf(id: number) {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
-    return this.http.post(this.invoicesUrl + '/pdf', invoiceData, {
+    return this.http.get(this.invoicesUrl + '/pdf/' + id, {
       observe: 'response',
       headers: headers,
       responseType: 'blob',

@@ -1,8 +1,12 @@
 <mat-drawer-container class="shooting-range-sidenav-container">
   <mat-drawer #drawer class="shooting-range-sidenav" id="side" mode="side" opened>
     <mat-selection-list [multiple]="false">
-      <mat-list-option routerLink="./invoices">
+      <mat-list-option routerLink="./invoice-list">
         Rechnungen
+        <mat-icon mat-list-icon>list</mat-icon>
+      </mat-list-option>
+      <mat-list-option routerLink="./invoice-edit">
+        Rechnung erstellen
         <mat-icon mat-list-icon>money</mat-icon>
       </mat-list-option>
     </mat-selection-list>

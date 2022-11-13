@@ -12,6 +12,7 @@ export class InvoiceDto {
   creditor: InvoiceCreditorDto;
   debtor: InvoiceDebtorDto | undefined;
   items: InvoiceItemDto[];
+  payed: boolean;
 
   constructor() {
     this.id = 0;
@@ -22,5 +23,6 @@ export class InvoiceDto {
     this.creditor = new InvoiceCreditorDto();
     this.debtor = undefined;
     this.items = Array<InvoiceItemDto>();
+    this.payed = false;
   }
 }

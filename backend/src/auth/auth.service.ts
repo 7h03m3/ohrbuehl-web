@@ -8,10 +8,7 @@ import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
 export class AuthService {
   hashRounds = 10;
 
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByName(username);
@@ -43,10 +40,7 @@ export class AuthService {
     return await bcrypt.hash(password, this.hashRounds);
   }
 
-  async comparePassword(
-    password: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
+  async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
     return await bcrypt.compare(password, hashedPassword);
   }
 }

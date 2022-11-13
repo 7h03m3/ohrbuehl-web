@@ -1,0 +1,29 @@
+table {
+  width: 100%;
+}
+
+.mat-icon {
+  font-size: 2em;
+}
+
+.mat-card {
+  width: 50em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+  text-align: left;
+}
+
+th.mat-header-cell {
+  padding-right: 1em;
+  text-align: left;
+}
+
+td.mat-cell {
+  padding-right: 1em;
+}

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceItemEntity } from './invoice-item.entity';
 import { InvoiceCreditorEntity } from './invoice-creditor.entity';
 import { InvoiceDebtorEntity } from './invoice-debtor.entity';
@@ -9,8 +9,8 @@ export class InvoiceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => UserEntity)
-  @JoinColumn()
+  @ManyToOne((type) => UserEntity, (user) => user.invoices)
+  @JoinColumn({ name: 'creatorId' })
   creator: UserEntity;
 
   @Column({ type: 'bigint' })

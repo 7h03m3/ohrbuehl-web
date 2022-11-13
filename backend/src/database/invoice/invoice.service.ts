@@ -5,6 +5,7 @@ import { InvoiceEntity } from '../entities/invoice.entity';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
 import { UserEntity } from '../entities/user.entity';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
+import { InvoiceUpdateDto } from '../../shared/dtos/invoice-update.dto';
 
 @Injectable()
 export class InvoiceService {
@@ -63,7 +64,9 @@ export class InvoiceService {
     await this.invoiceRepository.delete(id);
   }
 
-  async update(updateDto: InvoiceDto): Promise<any> {
+  async update(invoiceDto: InvoiceDto): Promise<any> {
+    const updateDto = new InvoiceUpdateDto();
+    updateDto.fillFromDto(invoiceDto);
     await this.invoiceRepository.update({ id: updateDto.id }, updateDto);
   }
 }

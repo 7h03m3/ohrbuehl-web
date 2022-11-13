@@ -11,6 +11,7 @@ import { InvoiceController } from './invoice/invoice.controller';
 import { InvoicePdfModule } from '../invoice-pdf/invoicePdfModule';
 import { InvoiceModule } from '../database/invoice/invoice.module';
 import { InvoiceItemModule } from '../database/invoice-item/invoice-item.module';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { InvoiceItemModule } from '../database/invoice-item/invoice-item.module'
     InvoiceModule,
     InvoiceItemModule,
     AuthModule,
+    SharedModule,
   ],
   providers: [],
   controllers: [UsersController, AuthController, OrganizationsController, BulletPricesController, InvoiceController],

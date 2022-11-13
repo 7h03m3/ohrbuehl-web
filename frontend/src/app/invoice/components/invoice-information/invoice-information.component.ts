@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { InvoiceDto } from '../../../../shared/dtos/invoice.dto';
+import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 
 @Component({
   selector: 'app-invoice-information',

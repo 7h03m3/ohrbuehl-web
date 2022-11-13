@@ -3,12 +3,15 @@ import { PDF } from 'swissqrbill';
 import { Creditor, Data, Debtor } from 'swissqrbill/lib/node/cjs/shared/types';
 import { createReadStream, unlink } from 'fs';
 import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
-import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
+import { InvoiceEntity } from '../database/entities/invoice.entity';
+import { DateHelper } from '../shared/classes/date-helper';
 
 @Injectable()
 export class InvoicePdfService {
-  async generatePdf(invoiceData: InvoiceDto, @Res() response) {
+  constructor(private dateHelper: DateHelper) {}
+
+  async generatePdf(invoiceData: InvoiceEntity, @Res() response) {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
     const invoiceMessage: string =
       invoiceData.title +
@@ -16,7 +19,7 @@ export class InvoicePdfService {
       invoiceData.id +
       ' / ' +
       'Datum: ' +
-      this.getDateString(invoiceData.date);
+      this.dateHelper.getDateString(invoiceData.date);
 
     const data: Data = {
       currency: 'CHF',
@@ -75,15 +78,7 @@ export class InvoicePdfService {
 
   private addDebtorAddresses(debtor: Debtor, pdf: PDF) {
     const debtorAddress =
-      debtor.name +
-      '\n' +
-      debtor.address +
-      ' ' +
-      debtor.buildingNumber +
-      '\n' +
-      debtor.zip +
-      ' ' +
-      debtor.city;
+      debtor.name + '\n' + debtor.address + ' ' + debtor.buildingNumber + '\n' + debtor.zip + ' ' + debtor.city;
 
     pdf.fontSize(12);
     pdf.font('Helvetica');
@@ -135,7 +130,7 @@ export class InvoicePdfService {
   }
 
   private addDate(dateNumber: number, pdf: PDF) {
-    const dateString = 'Datum: ' + this.getDateString(dateNumber);
+    const dateString = 'Datum: ' + this.dateHelper.getDateString(dateNumber);
 
     pdf.fontSize(8);
     pdf.font('Helvetica');
@@ -299,12 +294,5 @@ export class InvoicePdfService {
 
   private mm2Pt(millimeters: number) {
     return millimeters * 2.8346456692913;
-  }
-
-  private getDateString(dateNumber: number) {
-    const date = new Date(dateNumber);
-    return (
-      date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
-    );
   }
 }

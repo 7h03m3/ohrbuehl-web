@@ -1,6 +1,17 @@
 version: '3.5'
 
 services:
+  ohrbuehl-web-frontend:
+    build: ../../frontend
+    image: ohrbuehl-frontend
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      BACKEND_URL: https://ohrbuehl.info/api
+    networks:
+      - proxynet
+      
   ohrbuehl-web-backend:
     build: ../../backend
     image: ohrbuehl-backend

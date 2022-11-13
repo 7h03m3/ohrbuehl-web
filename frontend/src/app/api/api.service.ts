@@ -12,12 +12,13 @@ import { BulletPriceCreateDto } from '../shared/dtos/bullet-price-create.dto';
 import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { InvoiceCreateDto } from '../shared/dtos/invoice-create.dto';
 import { InvoiceListItemDto } from '../shared/dtos/invoice-list-item.dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  baseUrl = 'http://127.0.0.1:3000/';
+  baseUrl = environment.backendBaseUrl;
   userUrl: string = this.baseUrl + 'users';
   organizationUrl: string = this.baseUrl + 'organizations';
   bulletPricesUrl: string = this.baseUrl + 'bullet-prices';

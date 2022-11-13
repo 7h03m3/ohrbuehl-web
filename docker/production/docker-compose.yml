@@ -7,8 +7,6 @@ services:
     restart: always
     ports:
       - 8081:80
-    environment:
-      BACKEND_URL: https://ohrbuehl.info/api
     networks:
       - proxynet
       
@@ -24,7 +22,7 @@ services:
       DATABASE_PORT: 3306
       DATABASE_USER: admin
       DATABASE_PASSWORD: 12345
-      DATABASE_NAME: ohrbuehl-web      
+      DATABASE_NAME: ohrbuehl-web
     links: 
       - ohrbuehl-web-mysql-db
     depends_on:

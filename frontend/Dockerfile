@@ -21,4 +21,4 @@ COPY  --from=build /usr/local/app/dist/* /usr/share/nginx/html
 EXPOSE 80
 
 # When the container starts, replace the env.js with values from environment variables
-CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/environment.template.ts > /usr/share/nginx/html/assets/environment.ts && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]

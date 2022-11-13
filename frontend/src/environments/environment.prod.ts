@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendBaseUrl: '${BACKEND_URL}',
+  backendBaseUrl: 'https://ohrbuehl.info/api/',
 };

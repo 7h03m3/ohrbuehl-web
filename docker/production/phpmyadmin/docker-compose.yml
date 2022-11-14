@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  ohrbuehl-web-phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    links: 
+      - ohrbuehl-web-mysql-db
+    depends_on:
+      - ohrbuehl-web-mysql-db
+    environment:
+      PMA_ARBITRARY: 0
+      PMA_HOST: ohrbuehl-web-mysql-db
+      PMA_PORT: 3306
+    networks:
+      - proxynet
+      
+networks:
+  proxynet:
+    name: webnet

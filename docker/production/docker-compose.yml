@@ -5,8 +5,6 @@ services:
     build: ../../frontend
     image: ohrbuehl-frontend
     restart: always
-    ports:
-      - 8081:80
     networks:
       - proxynet
       
@@ -14,8 +12,6 @@ services:
     build: ../../backend
     image: ohrbuehl-backend
     restart: always
-    ports:
-      - 3000:3000
     environment:
       PORT: 3000
       DATABASE_HOST: ohrbuehl-web-mysql-db
@@ -40,22 +36,6 @@ services:
       MYSQL_PASSWORD: 12345
     volumes:
       - .\db-data:/var/lib/mysql
-    networks:
-      - proxynet
-
-  ohrbuehl-web-phpmyadmin:
-    image: phpmyadmin
-    restart: always
-    ports:
-      - 8080:80
-    links: 
-      - ohrbuehl-web-mysql-db
-    depends_on:
-      - ohrbuehl-web-mysql-db
-    environment:
-      PMA_ARBITRARY: 0
-      PMA_HOST: ohrbuehl-web-mysql-db
-      PMA_PORT: 3306
     networks:
       - proxynet
       

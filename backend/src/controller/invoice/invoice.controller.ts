@@ -19,7 +19,6 @@ import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
 import { UsersService } from '../../database/users/users.service';
 import { InvoiceEntity } from '../../database/entities/invoice.entity';
 import { InvoiceItemService } from '../../database/invoice-item/invoice-item.service';
-import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceItemCreateDto } from '../../shared/dtos/invoice-item-create.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
@@ -28,6 +27,8 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { DateHelper } from '../../shared/classes/date-helper';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { UserEntity } from '../../database/entities/user.entity';
+import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
+import { InvoiceItemUpdateDto } from '../../shared/dtos/invoice-item-update.dto';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -115,7 +116,13 @@ export class InvoiceController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put('item')
   async updateItem(@Body() updateDto: InvoiceItemDto): Promise<any> {
-    return this.invoiceItemService.update(updateDto);
+    const updateItem = new InvoiceItemUpdateDto();
+    updateItem.id = updateDto.id;
+    updateItem.position = updateDto.position;
+    updateItem.amount = updateDto.amount;
+    updateItem.description = updateDto.description;
+    updateItem.price = updateDto.price;
+    return this.invoiceItemService.update(updateItem);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)

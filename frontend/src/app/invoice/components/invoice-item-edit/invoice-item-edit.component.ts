@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { NgForm } from '@angular/forms';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
+import { ApiService } from '../../../api/api.service';
 
 @Component({
   selector: 'app-invoice-item-edit',
@@ -19,7 +20,7 @@ export class InvoiceItemEditComponent implements OnInit {
   newInvoiceItemExpanded = true;
   displayedColumns: string[] = ['position', 'description', 'amount', 'price', 'total', 'action'];
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   public ngOnInit(): void {
     this.initInvoiceItem();
@@ -37,22 +38,41 @@ export class InvoiceItemEditComponent implements OnInit {
   public onAddItem(form: NgForm) {
     if (form.valid) {
       this.invoiceItem.position = this.invoiceData.items.length + 1;
-      this.invoiceData.items.push(this.invoiceItem);
 
-      this.refreshTable();
-      this.initInvoiceItem();
-      this.updateDataState();
+      if (this.isExistingInvoice() == true) {
+        this.invoiceItem.invoiceId = this.invoiceData.id;
+        this.apiService.createInvoiceItem(this.invoiceItem).subscribe((result) => {
+          this.invoiceItem.id = result;
+          this.invoiceData.items.push(this.invoiceItem);
+
+          this.initInvoiceItem();
+          this.refreshItemTable();
+        });
+      } else {
+        this.invoiceData.items.push(this.invoiceItem);
+        this.initInvoiceItem();
+        this.refreshItemTable();
+      }
     }
   }
 
   public onRemoveItem(index: number) {
     index -= 1;
     if (index > -1) {
-      this.invoiceData.items.splice(index, 1);
+      if (this.isExistingInvoice() == true) {
+        const itemToDelete = this.invoiceData.items[index];
+        this.apiService.deleteInvoiceItem(itemToDelete.id).subscribe((result) => {
+          this.invoiceData.items.splice(index, 1);
 
-      this.updateItemPositions();
-      this.refreshTable();
-      this.updateDataState();
+          this.updateItemPositions();
+          this.refreshItemTable();
+        });
+      } else {
+        this.invoiceData.items.splice(index, 1);
+
+        this.updateItemPositions();
+        this.refreshItemTable();
+      }
     }
   }
 
@@ -80,7 +100,16 @@ export class InvoiceItemEditComponent implements OnInit {
   private updateItemPositions() {
     this.invoiceData.items.forEach((value, index) => {
       value.position = index + 1;
+
+      if (this.isExistingInvoice() == true) {
+        this.apiService.updateInvoiceItem(value).subscribe();
+      }
     });
+  }
+
+  private refreshItemTable() {
+    this.refreshTable();
+    this.updateDataState();
   }
 
   private updateDataState() {
@@ -97,5 +126,9 @@ export class InvoiceItemEditComponent implements OnInit {
     this.invoiceItem = new InvoiceItemDto();
     this.invoiceItem.amount = 1;
     this.invoiceItem.price = 0.05;
+  }
+
+  private isExistingInvoice(): boolean {
+    return this.invoiceData.id != 0;
   }
 }

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InvoiceItemEntity } from '../entities/invoice-item.entity';
-import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceEntity } from '../entities/invoice.entity';
 import { InvoiceItemCreateDto } from '../../shared/dtos/invoice-item-create.dto';
+import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 
 @Injectable()
 export class InvoiceItemService {

@@ -13,6 +13,7 @@ import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { InvoiceCreateDto } from '../shared/dtos/invoice-create.dto';
 import { InvoiceListItemDto } from '../shared/dtos/invoice-list-item.dto';
 import { environment } from '../../environments/environment';
+import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class ApiService {
   organizationUrl: string = this.baseUrl + 'organizations';
   bulletPricesUrl: string = this.baseUrl + 'bullet-prices';
   invoicesUrl: string = this.baseUrl + 'invoice';
+  invoiceItemsUrl: string = this.invoicesUrl + '/item';
 
   constructor(private http: HttpClient) {}
 
@@ -115,6 +117,18 @@ export class ApiService {
 
   deleteInvoice(id: number): Observable<any> {
     return this.http.delete<any>(this.invoicesUrl + '/' + id);
+  }
+
+  createInvoiceItem(createDto: InvoiceItemDto): Observable<number> {
+    return this.http.post<number>(this.invoiceItemsUrl, createDto);
+  }
+
+  updateInvoiceItem(updateDto: InvoiceItemDto): Observable<InvoiceDto> {
+    return this.http.put<InvoiceDto>(this.invoiceItemsUrl, updateDto);
+  }
+
+  deleteInvoiceItem(id: number): Observable<any> {
+    return this.http.delete<any>(this.invoiceItemsUrl + '/' + id);
   }
 
   getInvoicePdf(id: number) {

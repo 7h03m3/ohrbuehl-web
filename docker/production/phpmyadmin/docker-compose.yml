@@ -6,10 +6,6 @@ services:
     restart: always
     ports:
       - 8080:80
-    links: 
-      - ohrbuehl-web-mysql-db
-    depends_on:
-      - ohrbuehl-web-mysql-db
     environment:
       PMA_ARBITRARY: 0
       PMA_HOST: ohrbuehl-web-mysql-db

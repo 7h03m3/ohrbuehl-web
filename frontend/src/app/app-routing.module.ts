@@ -33,7 +33,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ShootingRangeInvoicesComponent,
+        component: InvoiceListComponent,
       },
       {
         path: 'invoice-list',

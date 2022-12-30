@@ -1,6 +1,16 @@
 <mat-drawer-container class="shooting-range-sidenav-container">
   <mat-drawer #drawer class="shooting-range-sidenav" id="side" mode="side" opened>
     <mat-selection-list [multiple]="false">
+      <mat-list-option routerLink="./daily-accounting">
+        Tagesabrechnung
+        <mat-icon mat-list-icon>account_balance</mat-icon>
+      </mat-list-option>
+
+      <mat-list-option routerLink="./accounting-list">
+        Schusszahlen
+        <mat-icon mat-list-icon>list_alt</mat-icon>
+      </mat-list-option>
+
       <mat-list-option routerLink="./invoice-list">
         Rechnungen
         <mat-icon mat-list-icon>list</mat-icon>

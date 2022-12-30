@@ -4,11 +4,11 @@ import { MaterialModule } from './shared/material.module';
 import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { ShotNumbersComponent } from './shot-numbers/shot-numbers.component';
+import { ShootingRangeDailyAccountingComponent } from './shooting-range/components/daily-accounting/shooting-range-daily-accounting.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ShotNumberTableComponent } from './shot-numbers/components/shot-number-table/shot-number-table.component';
-import { TrackAssignmentComponent } from './shot-numbers/components/track-assignment/track-assignment.component';
+import { ShotNumberTableComponent } from './shooting-range/components/daily-accounting/components/shot-number-table/shot-number-table.component';
+import { TrackAssignmentComponent } from './shooting-range/components/daily-accounting/components/track-assignment/track-assignment.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './user/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -23,23 +23,30 @@ import { AdminOrganizationListComponent } from './admin/components/admin-organiz
 import { AdminOrganizationCreateComponent } from './admin/components/admin-organization-create/admin-organization-create.component';
 import { AdminOrganizationEditComponent } from './admin/components/admin-organization-edit/admin-organization-edit.component';
 import { AdminOrganizationDeleteDialogComponent } from './admin/components/admin-organization-delete-dialog/admin-organization-delete-dialog.component';
-import { AdminBulletPriceCreateComponent } from './admin/components/admin-bullet-price-create/admin-bullet-price-create.component';
-import { AdminBulletPriceDeleteDialogComponent } from './admin/components/admin-bullet-price-delete-dialog/admin-bullet-price-delete-dialog.component';
-import { AdminBulletPriceListComponent } from './admin/components/admin-bullet-price-list/admin-bullet-price-list.component';
-import { AdminBulletPriceEditComponent } from './admin/components/admin-bullet-price-edit/admin-bullet-price-edit.component';
+import { AdminShootingRangePriceCreateComponent } from './admin/components/admin-shooting-range-price-create/admin-shooting-range-price-create.component';
+import { AdminShootingRangePriceDeleteDialogComponent } from './admin/components/admin-shooting-range-price-delete-dialog/admin-shooting-range-price-delete-dialog.component';
+import { AdminShootingRangePriceListComponent } from './admin/components/admin-shooting-range-price-list/admin-shooting-range-price-list.component';
+import { AdminShootingRangePriceEditComponent } from './admin/components/admin-shooting-range-price-edit/admin-shooting-range-price-edit.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { ShootingRangeComponent } from './shooting-range/shooting-range.component';
-import { ShootingRangeInvoicesComponent } from './shooting-range/shooting-range-bills/shooting-range-invoices.component';
+import { ShootingRangeInvoicesComponent } from './shooting-range/components/invoices/shooting-range-invoices.component';
 import { InvoiceInformationComponent } from './invoice/components/invoice-information/invoice-information.component';
 import { InvoiceItemEditComponent } from './invoice/components/invoice-item-edit/invoice-item-edit.component';
 import { InvoiceDetailViewComponent } from './invoice/components/invoice-detail-view/invoice-detail-view.component';
 import { InvoiceListComponent } from './invoice/components/invoice-list/invoice-list.component';
 import { InvoiceViewComponent } from './invoice/components/invoice-view/invoice-view.component';
+import { AccountingTypeSelectionComponent } from './shooting-range/components/daily-accounting/components/accounting-type-selection/accounting-type-selection.component';
+import { EnterDateAndTimeComponent } from './shooting-range/components/daily-accounting/components/enter-date-and-time/enter-date-and-time.component';
+import { UploadSiusDataComponent } from './shooting-range/components/daily-accounting/components/upload-sius-data/upload-sius-data.component';
+import { ViewDetailComponent } from './shooting-range/components/daily-accounting/components/view-detail/view-detail.component';
+import { ShootingRangeAccountingListComponent } from './shooting-range/components/shooting-range-accounting-list/shooting-range-accounting-list.component';
+import { ShootingRangeAccountingViewComponent } from './shooting-range/components/shooting-range-accounting-view/shooting-range-accounting-view.component';
+import { ShootingRangeAccountingEditComponent } from './shooting-range/components/shooting-range-accounting-edit/shooting-range-accounting-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ShotNumbersComponent,
+    ShootingRangeDailyAccountingComponent,
     ShotNumberTableComponent,
     TrackAssignmentComponent,
     LoginComponent,
@@ -53,10 +60,10 @@ import { InvoiceViewComponent } from './invoice/components/invoice-view/invoice-
     AdminOrganizationCreateComponent,
     AdminOrganizationEditComponent,
     AdminOrganizationDeleteDialogComponent,
-    AdminBulletPriceCreateComponent,
-    AdminBulletPriceDeleteDialogComponent,
-    AdminBulletPriceListComponent,
-    AdminBulletPriceEditComponent,
+    AdminShootingRangePriceCreateComponent,
+    AdminShootingRangePriceDeleteDialogComponent,
+    AdminShootingRangePriceListComponent,
+    AdminShootingRangePriceEditComponent,
     ShootingRangeComponent,
     ShootingRangeInvoicesComponent,
     InvoiceInformationComponent,
@@ -64,6 +71,13 @@ import { InvoiceViewComponent } from './invoice/components/invoice-view/invoice-
     InvoiceDetailViewComponent,
     InvoiceListComponent,
     InvoiceViewComponent,
+    AccountingTypeSelectionComponent,
+    EnterDateAndTimeComponent,
+    UploadSiusDataComponent,
+    ViewDetailComponent,
+    ShootingRangeAccountingListComponent,
+    ShootingRangeAccountingViewComponent,
+    ShootingRangeAccountingEditComponent,
   ],
   imports: [
     BrowserModule,

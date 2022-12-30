@@ -21,6 +21,26 @@ export class OrganizationsController {
     return this.organizationsService.findAllNative();
   }
 
+  @Get('300m')
+  getAll300m(): Promise<OrganizationEntity[]> {
+    return this.organizationsService.findAll300m();
+  }
+
+  @Get('100m')
+  getAll100m(): Promise<OrganizationEntity[]> {
+    return this.organizationsService.findAll100m();
+  }
+
+  @Get('50m')
+  getAll50m(): Promise<OrganizationEntity[]> {
+    return this.organizationsService.findAll50m();
+  }
+
+  @Get('25m')
+  getAll25m(): Promise<OrganizationEntity[]> {
+    return this.organizationsService.findAll25m();
+  }
+
   @Get(':id')
   getById(@Param('id') id: number): Promise<OrganizationEntity> {
     return this.organizationsService.findOne(id);

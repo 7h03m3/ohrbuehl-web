@@ -4,20 +4,23 @@ import { UsersModule } from '../database/users/users.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from '../auth/auth.module';
 import { OrganizationsController } from './organizations/organizations.controller';
-import { BulletPricesController } from './bullet-prices/bullet-prices.controller';
+import { ShootingRangePricesController } from './shooting-range-price/shooting-range-prices.controller';
 import { OrganizationsModule } from '../database/organizations/organizations.module';
-import { BulletPriceModule } from '../database/bullet-price/bullet-price.module';
+import { ShootingRangePriceModule } from '../database/shooting-range-price/shooting-range-price.module';
 import { InvoiceController } from './invoice/invoice.controller';
 import { InvoicePdfModule } from '../invoice-pdf/invoicePdfModule';
 import { InvoiceModule } from '../database/invoice/invoice.module';
 import { InvoiceItemModule } from '../database/invoice-item/invoice-item.module';
 import { SharedModule } from '../shared/shared.module';
+import { ShootingRangeAccountingController } from './shooting-range-accounting/shooting-range-accounting.controller';
+import { ShootingRangeAccountingModule } from '../database/shooting-range-accounting/shooting-range-accounting.module';
 
 @Module({
   imports: [
     UsersModule,
     OrganizationsModule,
-    BulletPriceModule,
+    ShootingRangePriceModule,
+    ShootingRangeAccountingModule,
     InvoicePdfModule,
     InvoiceModule,
     InvoiceItemModule,
@@ -25,7 +28,15 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
   ],
   providers: [],
-  controllers: [UsersController, AuthController, OrganizationsController, BulletPricesController, InvoiceController],
+  controllers: [
+    UsersController,
+    AuthController,
+    OrganizationsController,
+    ShootingRangePricesController,
+    ShootingRangeAccountingController,
+    InvoiceController,
+    ShootingRangeAccountingController,
+  ],
   exports: [],
 })
 export class ControllerModule {}

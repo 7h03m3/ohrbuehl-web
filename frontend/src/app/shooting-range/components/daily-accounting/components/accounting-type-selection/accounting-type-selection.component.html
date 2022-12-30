@@ -1,0 +1,9 @@
+<label id="accounting-type-radio-group-label">Bitte Distanz wählen</label>
+
+<mat-radio-group [(ngModel)]="selectedType" aria-labelledby="accounting-type-radio-group-label"
+                 class="accounting-type-radio-group">
+  <mat-radio-button *ngFor="let type of accountingTypes" [value]="type" class="accounting-type-radio-button">
+    {{getAccountingTypeText(type)}}
+  </mat-radio-button>
+</mat-radio-group>
+<button (click)="onSubmit()" class="full-width" color="primary" mat-raised-button>Weiter</button>

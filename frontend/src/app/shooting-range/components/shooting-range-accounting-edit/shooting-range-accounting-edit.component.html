@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>Datum</td>
+        <td>:</td>
+        <td>{{getDateString(this.accountingData.date)}}</td>
+      </tr>
+      <tr>
+        <td>Zeit</td>
+        <td>:</td>
+        <td>{{this.accountingData.startTime}} - {{this.accountingData.endTime}}</td>
+      </tr>
+
+      <tr>
+        <td>Schüsse</td>
+        <td>:</td>
+        <td>{{this.accountingData.total}}</td>
+      </tr>
+    </table>
+
+    <!--
+    <app-shot-number-table (accountingDataChange)="onSave()" [(accountingData)]="accountingData" [editDisabled]="false"
+                           [organizations]="organizations" [prices]="prices"></app-shot-number-table>
+                           -->
+    <app-track-assignment (accountingDataChange)="onSave()"
+                          [(accountingData)]="accountingData"
+                          [maxTrack]="maxTrack" [minTrack]="minTrack" buttonText="Speichern"></app-track-assignment>
+  </mat-card-content>
+</mat-card>
+

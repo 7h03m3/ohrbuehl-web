@@ -1,24 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './user/login/login.component';
-import { ShotNumbersComponent } from './shot-numbers/shot-numbers.component';
+import { ShootingRangeDailyAccountingComponent } from './shooting-range/components/daily-accounting/shooting-range-daily-accounting.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminUserListComponent } from './admin/components/admin-user-list/admin-user-list.component';
 import { AdminUserCreateComponent } from './admin/components/admin-user-create/admin-user-create.component';
 import { MainWelcomeComponent } from './main/main-welcome/main-welcome.component';
 import { AdminUserEditComponent } from './admin/components/admin-user-edit/admin-user-edit.component';
-import { AdminBulletPriceListComponent } from './admin/components/admin-bullet-price-list/admin-bullet-price-list.component';
-import { AdminBulletPriceEditComponent } from './admin/components/admin-bullet-price-edit/admin-bullet-price-edit.component';
-import { AdminBulletPriceCreateComponent } from './admin/components/admin-bullet-price-create/admin-bullet-price-create.component';
+import { AdminShootingRangePriceListComponent } from './admin/components/admin-shooting-range-price-list/admin-shooting-range-price-list.component';
+import { AdminShootingRangePriceEditComponent } from './admin/components/admin-shooting-range-price-edit/admin-shooting-range-price-edit.component';
+import { AdminShootingRangePriceCreateComponent } from './admin/components/admin-shooting-range-price-create/admin-shooting-range-price-create.component';
 import { AdminOrganizationListComponent } from './admin/components/admin-organization-list/admin-organization-list.component';
 import { AdminOrganizationEditComponent } from './admin/components/admin-organization-edit/admin-organization-edit.component';
 import { AdminOrganizationCreateComponent } from './admin/components/admin-organization-create/admin-organization-create.component';
 import { RoleGuardService } from './auth/role-guard.service';
 import { Role } from './shared/enums/role.enum';
 import { ShootingRangeComponent } from './shooting-range/shooting-range.component';
-import { ShootingRangeInvoicesComponent } from './shooting-range/shooting-range-bills/shooting-range-invoices.component';
+import { ShootingRangeInvoicesComponent } from './shooting-range/components/invoices/shooting-range-invoices.component';
 import { InvoiceListComponent } from './invoice/components/invoice-list/invoice-list.component';
 import { InvoiceViewComponent } from './invoice/components/invoice-view/invoice-view.component';
+import { ShootingRangeAccountingListComponent } from './shooting-range/components/shooting-range-accounting-list/shooting-range-accounting-list.component';
+import { ShootingRangeAccountingViewComponent } from './shooting-range/components/shooting-range-accounting-view/shooting-range-accounting-view.component';
+import { ShootingRangeAccountingEditComponent } from './shooting-range/components/shooting-range-accounting-edit/shooting-range-accounting-edit.component';
 
 const routes: Routes = [
   { path: '', component: MainWelcomeComponent },
@@ -33,7 +36,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: InvoiceListComponent,
+        redirectTo: 'daily-accounting',
+        pathMatch: 'full',
       },
       {
         path: 'invoice-list',
@@ -46,6 +50,22 @@ const routes: Routes = [
       {
         path: 'invoice-view',
         component: InvoiceViewComponent,
+      },
+      {
+        path: 'daily-accounting',
+        component: ShootingRangeDailyAccountingComponent,
+      },
+      {
+        path: 'accounting-list',
+        component: ShootingRangeAccountingListComponent,
+      },
+      {
+        path: 'accounting-view',
+        component: ShootingRangeAccountingViewComponent,
+      },
+      {
+        path: 'accounting-edit',
+        component: ShootingRangeAccountingEditComponent,
       },
     ],
   },
@@ -74,16 +94,16 @@ const routes: Routes = [
         component: AdminUserCreateComponent,
       },
       {
-        path: 'bullet-price-list',
-        component: AdminBulletPriceListComponent,
+        path: 'price-list',
+        component: AdminShootingRangePriceListComponent,
       },
       {
-        path: 'bullet-price-edit',
-        component: AdminBulletPriceEditComponent,
+        path: 'price-edit',
+        component: AdminShootingRangePriceEditComponent,
       },
       {
-        path: 'bullet-price-create',
-        component: AdminBulletPriceCreateComponent,
+        path: 'price-create',
+        component: AdminShootingRangePriceCreateComponent,
       },
       {
         path: 'organization-list',
@@ -99,7 +119,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'shot-number', component: ShotNumbersComponent },
+  { path: 'shot-number', component: ShootingRangeDailyAccountingComponent },
 ];
 
 @NgModule({

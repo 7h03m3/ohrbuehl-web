@@ -3,13 +3,22 @@ import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
+import { DefaultValuesService } from '../default/default-values/default-values.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private defaultValues: DefaultValuesService,
   ) {}
+
+  async onApplicationBootstrap() {
+    const count = await this.usersRepository.count();
+    if (count == 0) {
+      await this.defaultValues.loadDefaultUsers(this.usersRepository);
+    }
+  }
 
   findAll(): Promise<UserEntity[]> {
     return this.usersRepository.find({
@@ -36,10 +45,7 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async createUser(
-    userCreateDto: UserCreateDto,
-    hashedPassword: string,
-  ): Promise<UserEntity> {
+  async createUser(userCreateDto: UserCreateDto, hashedPassword: string): Promise<UserEntity> {
     const entity = new UserEntity();
     entity.userName = userCreateDto.userName;
     entity.firstName = userCreateDto.firstName;
@@ -66,10 +72,7 @@ export class UsersService {
       .execute();
   }
 
-  async updateUserWithPassword(
-    user: UserEntity,
-    hashedPassword: string,
-  ): Promise<any> {
+  async updateUserWithPassword(user: UserEntity, hashedPassword: string): Promise<any> {
     await this.usersRepository
       .createQueryBuilder()
       .update(UserEntity)

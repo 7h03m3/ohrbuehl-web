@@ -1,0 +1,22 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="dateForm">
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-hint>Datum</mat-hint>
+      <input formControlName="date" matInput type="Date">
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-hint>Startzeit</mat-hint>
+      <input formControlName="startTime" matInput type="Time">
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-hint>Endzeit</mat-hint>
+      <input formControlName="endTime" matInput type="Time">
+    </mat-form-field>
+  </p>
+  <button [disabled]="!dateForm.valid" class="full-width" color="primary" mat-raised-button type="submit">Weiter
+  </button>
+</form>

@@ -3,7 +3,15 @@ table {
 }
 
 .mat-card {
-  width: 40em;
+  width: auto;
+}
+
+.mat-header-cell {
+  padding: 10px;
+}
+
+.mat-cell {
+  padding: 10px;
 }
 
 .outline {

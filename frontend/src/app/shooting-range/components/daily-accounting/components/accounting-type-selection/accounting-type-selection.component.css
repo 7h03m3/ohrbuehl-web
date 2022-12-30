@@ -1,0 +1,14 @@
+.accounting-type-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.accounting-type-radio-button {
+  margin: 5px;
+}
+
+.full-width {
+  width: 100%;
+}

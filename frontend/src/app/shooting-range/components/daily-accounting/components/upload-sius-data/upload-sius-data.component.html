@@ -1,0 +1,3 @@
+<button (click)="fileInput.click()" class="full-width" color="primary" mat-raised-button type="button">Datei hochladen
+</button>
+<input #fileInput (change)="onFileSelected()" accept=".csv" hidden id="csv-file" type="file">

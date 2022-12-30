@@ -27,3 +27,17 @@ th.mat-header-cell {
 td.mat-cell {
   padding-right: 1em;
 }
+
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 1rem;
+}
+
+.header-span {
+  margin-left: 1rem;
+}

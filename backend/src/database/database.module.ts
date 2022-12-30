@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
-import { BulletPriceModule } from './bullet-price/bullet-price.module';
+import { ShootingRangePriceModule } from './shooting-range-price/shooting-range-price.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { InvoiceItemModule } from './invoice-item/invoice-item.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { OrganizationEntity } from './entities/organization.entity';
-import { BulletPriceEntity } from './entities/bullet-price.entity';
+import { ShootingRangePriceEntity } from './entities/shooting-range-price.entity';
 import { InvoiceEntity } from './entities/invoice.entity';
 import { InvoiceItemEntity } from './entities/invoice-item.entity';
+import { ShootingRangeAccountingModule } from './shooting-range-accounting/shooting-range-accounting.module';
+import { ShootingRangeAccountingEntity } from './entities/shooting-range-accounting.entity';
+import { ShootingRangeAccountingUnitEntity } from './entities/shooting-range-accounting-unit.entity';
+import { DefaultValuesService } from './default/default-values/default-values.service';
 
 @Module({
   imports: [
@@ -24,7 +28,15 @@ import { InvoiceItemEntity } from './entities/invoice-item.entity';
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         database: configService.get('database.name'),
-        entities: [UserEntity, OrganizationEntity, BulletPriceEntity, InvoiceEntity, InvoiceItemEntity],
+        entities: [
+          UserEntity,
+          OrganizationEntity,
+          ShootingRangePriceEntity,
+          InvoiceEntity,
+          InvoiceItemEntity,
+          ShootingRangeAccountingEntity,
+          ShootingRangeAccountingUnitEntity,
+        ],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -32,9 +44,11 @@ import { InvoiceItemEntity } from './entities/invoice-item.entity';
 
     UsersModule,
     OrganizationsModule,
-    BulletPriceModule,
+    ShootingRangePriceModule,
     InvoiceModule,
     InvoiceItemModule,
+    ShootingRangeAccountingModule,
   ],
+  providers: [DefaultValuesService],
 })
 export class DatabaseModule {}

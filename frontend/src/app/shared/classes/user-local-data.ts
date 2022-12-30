@@ -6,9 +6,9 @@ import { JwtLoginInformation } from '../dtos/jwt-login-information.dto';
   providedIn: 'root',
 })
 export class UserLocalData {
-  accessTokenKey: string = 'accessToken';
-  userIdKey: string = 'userId';
-  userRolesKey: string = 'userRoles';
+  accessTokenKey = 'accessToken';
+  userIdKey = 'userId';
+  userRolesKey = 'userRoles';
 
   constructor() {}
 
@@ -76,6 +76,36 @@ export class UserLocalData {
         return 'Anlassorganisator';
       case 'cashier':
         return 'Kassier';
+      default:
+        return '';
+    }
+  }
+
+  public convertPriceTypeText(type: string) {
+    switch (type) {
+      case 'Section_300m':
+        return '300m';
+      case 'Section_100m':
+        return '100m';
+      case 'Section_50m':
+        return '50m';
+      case 'Section_25m':
+        return '25m';
+      default:
+        return '';
+    }
+  }
+
+  public convertAccountingTypeText(type: string) {
+    switch (type) {
+      case 'Section_300m':
+        return '300m';
+      case 'Section_100m':
+        return '100m';
+      case 'Section_50m':
+        return '50m';
+      case 'Section_25m':
+        return '25m';
       default:
         return '';
     }

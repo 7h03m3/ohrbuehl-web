@@ -1,0 +1,28 @@
+.mat-card {
+  width: auto;
+}
+
+.mat-header-cell {
+  padding: 10px;
+}
+
+.mat-cell {
+  padding: 10px;
+}
+
+.mat-icon {
+  font-size: 2em;
+}
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 1rem;
+}
+
+.header-span {
+  margin-left: 1rem;
+}

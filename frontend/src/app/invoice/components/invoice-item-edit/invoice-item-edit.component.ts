@@ -3,6 +3,7 @@ import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { NgForm } from '@angular/forms';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
 import { ApiService } from '../../../api/api.service';
+import { InvoiceItemApi } from '../../../api/classes/invoice-item-api';
 
 @Component({
   selector: 'app-invoice-item-edit',
@@ -14,13 +15,15 @@ export class InvoiceItemEditComponent implements OnInit {
   @Output() invoiceDataChange = new EventEmitter<InvoiceDto>();
 
   public invoiceItem: InvoiceItemDto = new InvoiceItemDto();
-
   dataValid = false;
   currencyString = ' SFr.';
   newInvoiceItemExpanded = true;
   displayedColumns: string[] = ['position', 'description', 'amount', 'price', 'total', 'action'];
+  private invoiceItemApi: InvoiceItemApi;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    this.invoiceItemApi = this.apiService.getInvoiceItem();
+  }
 
   public ngOnInit(): void {
     this.initInvoiceItem();
@@ -41,7 +44,7 @@ export class InvoiceItemEditComponent implements OnInit {
 
       if (this.isExistingInvoice() == true) {
         this.invoiceItem.invoiceId = this.invoiceData.id;
-        this.apiService.createInvoiceItem(this.invoiceItem).subscribe((result) => {
+        this.invoiceItemApi.create(this.invoiceItem).subscribe((result) => {
           this.invoiceItem.id = result;
           this.invoiceData.items.push(this.invoiceItem);
 
@@ -61,7 +64,7 @@ export class InvoiceItemEditComponent implements OnInit {
     if (index > -1) {
       if (this.isExistingInvoice() == true) {
         const itemToDelete = this.invoiceData.items[index];
-        this.apiService.deleteInvoiceItem(itemToDelete.id).subscribe((result) => {
+        this.invoiceItemApi.delete(itemToDelete.id).subscribe((result) => {
           this.invoiceData.items.splice(index, 1);
 
           this.updateItemPositions();
@@ -102,7 +105,7 @@ export class InvoiceItemEditComponent implements OnInit {
       value.position = index + 1;
 
       if (this.isExistingInvoice() == true) {
-        this.apiService.updateInvoiceItem(value).subscribe();
+        this.invoiceItemApi.update(value).subscribe();
       }
     });
   }

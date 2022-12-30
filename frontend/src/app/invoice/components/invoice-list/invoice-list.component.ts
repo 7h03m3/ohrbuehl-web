@@ -4,6 +4,7 @@ import { InvoiceListItemDto } from '../../../shared/dtos/invoice-list-item.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { Router } from '@angular/router';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
+import { InvoiceApi } from '../../../api/classes/invoice-api';
 
 @Component({
   selector: 'app-invoice-list',
@@ -13,13 +14,16 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
 export class InvoiceListComponent implements OnInit {
   invoiceList$: InvoiceListItemDto[] = [];
   displayedColumns: string[] = ['id', 'title', 'date', 'payed', 'creator', 'action'];
+  private invoiceApi: InvoiceApi;
 
   constructor(
     private apiService: ApiService,
     private stringHelper: StringHelper,
     private router: Router,
     private downloadHelper: DownloadHelper,
-  ) {}
+  ) {
+    this.invoiceApi = this.apiService.getInvoice();
+  }
 
   ngOnInit(): void {
     this.loadTable();
@@ -30,7 +34,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   public onDownload(id: number) {
-    this.apiService.getInvoicePdf(id).subscribe((response) => {
+    this.invoiceApi.getPdf(id).subscribe((response) => {
       this.downloadHelper.downloadPdfFile(response);
     });
   }
@@ -40,7 +44,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   public onDelete(id: number) {
-    this.apiService.deleteInvoice(id).subscribe((result) => {
+    this.invoiceApi.delete(id).subscribe((result) => {
       this.loadTable();
     });
   }
@@ -58,7 +62,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   private loadTable() {
-    this.apiService.getInvoiceList().subscribe((result) => {
+    this.invoiceApi.getAll().subscribe((result) => {
       this.invoiceList$ = result;
     });
   }

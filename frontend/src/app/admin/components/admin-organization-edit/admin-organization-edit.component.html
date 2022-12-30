@@ -14,15 +14,37 @@
       </mat-form-field>
 
       <mat-form-field>
-        <input [(ngModel)]="organization.abbreviation" matInput name="abbreviation" placeholder="Abkürzung"
-               required>
+        <input [(ngModel)]="organization.abbreviation" matInput name="abbreviation" placeholder="Abkürzung" required>
         <mat-error>
           Bitte eine Abkürzung angeben.
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field>
+        <input [(ngModel)]="organization.color" matInput name="color" placeholder="Farbe" required>
+        <mat-error>
+          Bitte eine Farbe angeben.
+        </mat-error>
+      </mat-form-field>
+
       <section align="left">
         <mat-checkbox [(ngModel)]="organization.native" name="native">Lokal</mat-checkbox>
+      </section>
+
+      <section align="left">
+        <mat-checkbox [(ngModel)]="organization.distance_300m" name="300m">300m</mat-checkbox>
+      </section>
+
+      <section align="left">
+        <mat-checkbox [(ngModel)]="organization.distance_100m" name="100m">100m</mat-checkbox>
+      </section>
+
+      <section align="left">
+        <mat-checkbox [(ngModel)]="organization.distance_50m" name="50m">50m</mat-checkbox>
+      </section>
+      
+      <section align="left">
+        <mat-checkbox [(ngModel)]="organization.distance_25m" name="25m">25m</mat-checkbox>
       </section>
 
       <button [disabled]="!userUpdateForm.form.valid" color="primary" mat-raised-button>Speichern</button>

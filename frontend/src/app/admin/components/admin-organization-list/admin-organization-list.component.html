@@ -15,9 +15,36 @@
       <td *matCellDef="let element" mat-cell> {{element.abbreviation}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="color">
+      <th *matHeaderCellDef mat-header-cell> Farbe</th>
+      <td *matCellDef="let element" mat-cell>
+        <button disabled mat-mini-fab style="background-color: {{element.color}}"></button>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="native">
       <th *matHeaderCellDef mat-header-cell> Lokal</th>
       <td *matCellDef="let element" mat-cell> {{element.native}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="300m">
+      <th *matHeaderCellDef mat-header-cell>300m</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance_300m}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="100m">
+      <th *matHeaderCellDef mat-header-cell>100m</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance_100m}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="50m">
+      <th *matHeaderCellDef mat-header-cell>50m</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance_50m}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="25m">
+      <th *matHeaderCellDef mat-header-cell>25m</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance_25m}}</td>
     </ng-container>
 
     <ng-container matColumnDef="action">
@@ -42,3 +69,4 @@
   </table>
 
 </mat-card>
+

@@ -11,7 +11,7 @@ export class InvoiceTemplates {
     invoiceData.creditor.buildingNumber = '139';
     invoiceData.creditor.city = 'Winterthur';
     invoiceData.creditor.zip = 8404;
-    invoiceData.creditor.account = 'CH8109000000907847005'; // Thomas
+    invoiceData.creditor.account = 'CH5000784297813352001';
 
     return invoiceData;
   }

@@ -12,6 +12,10 @@ export class AccountingApi extends BaseApi {
     return this.http.post<ShootingRangeAccountingDto>(this.url, createDto);
   }
 
+  public delete(id: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + id);
+  }
+
   public getList(): Observable<ShootingRangeAccountingDto[]> {
     return this.http.get<ShootingRangeAccountingDto[]>(this.url);
   }

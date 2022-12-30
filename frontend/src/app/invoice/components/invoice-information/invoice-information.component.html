@@ -1,6 +1,6 @@
 <form #invoiceInformationForm="ngForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Titel</mat-label>
+    <mat-hint>Titel</mat-hint>
     <input [(ngModel)]="invoiceData.title" matInput name="title" required type="text">
     <mat-error>
       Bitte einen Titel angeben.

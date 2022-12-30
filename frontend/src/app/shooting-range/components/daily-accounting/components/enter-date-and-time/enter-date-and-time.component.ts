@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
 
 @Component({
@@ -8,12 +8,12 @@ import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-
   styleUrls: ['./enter-date-and-time.component.css'],
 })
 export class EnterDateAndTimeComponent implements OnInit {
-  public dateForm: FormGroup = new FormGroup({});
+  public dateForm: UntypedFormGroup = new UntypedFormGroup({});
 
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.dateForm = this.formBuilder.group({

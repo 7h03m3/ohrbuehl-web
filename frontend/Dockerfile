@@ -1,7 +1,7 @@
 ###############
 ### STAGE 1: Build app
 ###############
-FROM node:19-alpine as build
+FROM node:lts-alpine as build
 
 WORKDIR /usr/local/app
 # Add the source code to app

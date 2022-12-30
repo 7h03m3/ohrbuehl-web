@@ -6,6 +6,7 @@ import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceTemplates } from '../../../invoice/components/invoice-templates';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InvoiceApi } from '../../../api/classes/invoice-api';
 
 @Component({
   selector: 'app-invoices',
@@ -17,13 +18,16 @@ export class ShootingRangeInvoicesComponent implements OnInit {
   public formTitle = 'Rechnung erstellen';
   public formValid = false;
   private templates = new InvoiceTemplates();
+  private invoiceApi: InvoiceApi;
 
   constructor(
     private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar,
-  ) {}
+  ) {
+    this.invoiceApi = this.apiService.getInvoice();
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {
@@ -31,7 +35,7 @@ export class ShootingRangeInvoicesComponent implements OnInit {
       if (!invoiceId) {
         this.invoiceData = this.templates.getEmpty();
       } else {
-        this.apiService.getInvoice(invoiceId).subscribe((response) => {
+        this.invoiceApi.getById(invoiceId).subscribe((response) => {
           this.invoiceData = response;
           this.invoiceData.date = new Date().getTime();
         });
@@ -56,11 +60,11 @@ export class ShootingRangeInvoicesComponent implements OnInit {
       createDto.items = this.invoiceData.items;
       createDto.payed = this.invoiceData.payed;
 
-      this.apiService.createInvoice(createDto).subscribe((result) => {
+      this.invoiceApi.create(createDto).subscribe((result) => {
         this.showSnackBar(createDto.title);
       });
     } else {
-      this.apiService.updateInvoice(this.invoiceData).subscribe((result) => {
+      this.invoiceApi.update(this.invoiceData).subscribe((result) => {
         this.showSnackBar(this.invoiceData.title);
       });
     }

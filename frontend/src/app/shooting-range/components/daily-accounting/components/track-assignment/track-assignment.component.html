@@ -1,28 +1,39 @@
+<p>
+  <button (click)="onSubmit()" [disabled]="nextButtonDisabled" class="full-width" color="primary" mat-raised-button>
+    {{buttonText}}
+  </button>
+</p>
+
 <mat-form-field appearance="outline" class="number-input">
   <mat-label>Scheibe</mat-label>
-  <input matInput maxlength="2" [min]="minTrack" [max]="maxTrack" type="number"
-         [(ngModel)]="assignmentTrackStart">
+  <input [(ngModel)]="assignmentTrackStart" [max]="maxTrack" [min]="minTrack" matInput maxlength="2"
+         type="number">
   <mat-hint>Zahl von {{minTrack}} - {{maxTrack}}</mat-hint>
 </mat-form-field>
 bis
 <mat-form-field appearance="outline" class="number-input">
   <mat-label>Scheibe</mat-label>
-  <input matInput maxlength="2" type="number" [min]="minTrack" [max]="maxTrack" [(ngModel)]="assignmentTrackEnd">
+  <input [(ngModel)]="assignmentTrackEnd" [max]="maxTrack" [min]="minTrack" matInput maxlength="2" type="number">
   <mat-hint>Zahl von {{minTrack}} - {{maxTrack}}</mat-hint>
 </mat-form-field>
-<mat-form-field appearance="outline" class="number-input">
+<mat-form-field appearance="outline">
   <mat-label>Schussgeld</mat-label>
-  <input matInput type="number" min="0.05" [(ngModel)]="assignmentShotPrice">
-  <span matSuffix>Fr.</span>
+  <mat-select [(ngModel)]="assignmentShotPrice" placeholder="Bitte auswählen">
+    <mat-option *ngFor="let price of prices" [value]="price.id">
+      {{price.name}} ({{price.price}} SFr.)
+    </mat-option>
+  </mat-select>
 </mat-form-field>
 
 <mat-form-field appearance="outline" class="organization-input">
   <mat-label>Organisation</mat-label>
-  <mat-select placeholder="Bitte auswählen" [(ngModel)]="assignmentOrganization">
+  <mat-select [(ngModel)]="assignmentOrganization" placeholder="Bitte auswählen">
     <mat-option *ngFor="let organization of organizations" [value]="organization.id">
-      {{organization.fullName}} ({{organization.abbreviation}})
+      {{organization.name}} ({{organization.abbreviation}})
     </mat-option>
   </mat-select>
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="doAssignment()">Zuordnen</button>
+<button (click)="doAssignment()" color="primary" mat-raised-button>Zuordnen</button>
 
+<app-shot-number-table (accountingDataChange)="checkIfAllFilledIn()" [(accountingData)]="accountingData"
+                       [editDisabled]="false" [organizations]="organizations" [prices]="prices"></app-shot-number-table>

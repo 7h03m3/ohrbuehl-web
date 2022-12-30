@@ -14,6 +14,14 @@
       </mat-form-field>
 
       <mat-form-field>
+        <mat-select [(ngModel)]="bulletPriceCreateDto.type" name="type">
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{getTypeText(type)}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
         <input [(ngModel)]="bulletPriceCreateDto.price" matInput min="0.05" name="price" placeholder="Preis"
                required type="number">
         <span matSuffix>Fr.</span>
@@ -24,7 +32,7 @@
 
       <mat-form-field>
         <textarea [(ngModel)]="bulletPriceCreateDto.description" matInput name="description" placeholder="Beschreibung"
-                  required rows="8">asdasd</textarea>
+                  required rows="8"></textarea>
         <mat-error>
           Bitte eine Beschreibung angeben.
         </mat-error>

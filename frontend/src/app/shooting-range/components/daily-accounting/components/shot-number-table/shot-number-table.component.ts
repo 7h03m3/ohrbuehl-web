@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ShotNumberBilling } from '../../shot-number-billing';
-import { Organization } from '../../organization';
+import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
+import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
+import { ShootingRangeAccountingUnitDto } from '../../../../../shared/dtos/shooting-range-accounting-unit.dto';
+import { ShootingRangePriceDto } from '../../../../../shared/dtos/shooting-range-price.dto';
 
 @Component({
   selector: 'app-shot-number-table',
@@ -8,32 +10,55 @@ import { Organization } from '../../organization';
   styleUrls: ['./shot-number-table.component.css'],
 })
 export class ShotNumberTableComponent implements OnInit {
-  @Input() shotNumberBilling!: ShotNumberBilling;
-  @Input() organizations!: Organization[];
+  @Input() accountingData!: ShootingRangeAccountingDto;
+  @Input() organizations!: OrganizationDto[];
+  @Input() prices!: ShootingRangePriceDto[];
   @Input() editDisabled = true;
-  @Output() shotNumberBillingChange = new EventEmitter<ShotNumberBilling>();
+  @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
 
   public displayedColumns: string[] = ['tracks', 'shots', 'shotPrice', 'organization'];
 
-  constructor() {}
+  public constructor() {}
 
-  ngOnInit(): void {}
+  public ngOnInit(): void {}
 
-  convertToFloat(event: any): number {
-    return parseFloat(event.target.value);
-  }
-
-  getOrganizationText(organizationId: number): string {
-    const found = this.organizations.find((element) => element.id == organizationId);
-
-    if (found == undefined) {
+  public getOrganizationText(accountingUnit: any): string {
+    if (accountingUnit == null) {
       return '';
     }
 
-    return found.fullName + ' (' + found.abbreviation + ')';
+    if (accountingUnit.organization == null) {
+      return '';
+    }
+
+    return accountingUnit.organization.name + ' (' + accountingUnit.organization.abbreviation + ')';
   }
 
-  dataChanged() {
-    this.shotNumberBillingChange.emit(this.shotNumberBilling);
+  public onPriceChange(element: ShootingRangeAccountingUnitDto, priceId: any) {
+    const price = this.prices.filter((x) => x.id == priceId)[0];
+    element.price = price;
+    this.accountingDataChange.emit(this.accountingData);
+  }
+
+  public onOrganizationChange(element: ShootingRangeAccountingUnitDto, organizationId: any) {
+    const organization = this.organizations.filter((x) => x.id == organizationId)[0];
+    element.organization = organization;
+    this.accountingDataChange.emit(this.accountingData);
+  }
+
+  public getBackgroundColor(): string {
+    return 'red';
+  }
+
+  public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {
+    if (element.organization.id == 0) {
+      return false;
+    }
+
+    if (element.price.id == 0) {
+      return false;
+    }
+
+    return true;
   }
 }

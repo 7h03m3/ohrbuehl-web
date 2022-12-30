@@ -1,49 +1,53 @@
-<table mat-table [dataSource]="this.shotNumberBilling.trackShots" class="mat-elevation-z8">
+<table [dataSource]="this.accountingData.items" class="mat-elevation-z8" mat-table>
 
   <ng-container matColumnDef="tracks">
-    <th mat-header-cell *matHeaderCellDef> Scheibe</th>
-    <td mat-cell *matCellDef="let element"> {{element.track}} </td>
+    <th *matHeaderCellDef mat-header-cell> Scheibe</th>
+    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)"
+        mat-cell>{{element.track}} </td>
   </ng-container>
 
   <ng-container matColumnDef="shots">
-    <th mat-header-cell *matHeaderCellDef> Schüsse</th>
-    <td mat-cell *matCellDef="let element"> {{element.shots}} </td>
+    <th *matHeaderCellDef mat-header-cell> Schüsse</th>
+    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell> {{element.amount}} </td>
   </ng-container>
 
   <ng-container matColumnDef="shotPrice">
-    <th mat-header-cell *matHeaderCellDef> Schussgeld</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
+    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
       <div *ngIf="editDisabled == false">
         <mat-form-field appearance="standard">
-          <input matInput type="number" min="0.01" step="0.05" (change)="element.shotPrice=convertToFloat($event)"
-                 [value]="element.shotPrice | number: '1.2-2'" [disabled]="editDisabled">
-          <span matSuffix>Fr.</span>
+          <mat-select (valueChange)="onPriceChange(element, $event)" [(value)]="element.price.id"
+                      placeholder="Bitte auswählen">
+            <mat-option *ngFor="let price of prices" [value]="price.id">
+              {{price.name}} ({{price.price}} SFr.)
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div *ngIf="editDisabled == true">
-        {{element.shotPrice | number: '1.2-2'}}
+        {{element.price.name}} ({{element.price.price}} SFr.)
       </div>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="organization">
-    <th mat-header-cell *matHeaderCellDef> Zuordnung</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell> Zuordnung</th>
+    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
       <div *ngIf="editDisabled == false">
-        <mat-select (selectionChange)="dataChanged()" [(value)]="element.organizationId"
-                    placeholder="Bitte auswählen" [disabled]="editDisabled">
+        <mat-select (valueChange)="onOrganizationChange(element, $event)" [(value)]="element.organization.id"
+                    [disabled]="editDisabled" placeholder="Bitte auswählen">
           <mat-option *ngFor="let organization of organizations" [value]="organization.id">
-            {{organization.fullName}} ({{organization.abbreviation}})
+            {{organization.name}} ({{organization.abbreviation}})
           </mat-option>
         </mat-select>
       </div>
 
       <div *ngIf="editDisabled == true">
-        {{getOrganizationText(element.organizationId)}}
+        {{getOrganizationText(element)}}
       </div>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 </table>

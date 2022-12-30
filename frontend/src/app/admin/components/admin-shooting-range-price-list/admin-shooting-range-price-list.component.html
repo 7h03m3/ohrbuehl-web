@@ -1,5 +1,5 @@
 <mat-card class="mat-elevation-z0 outline">
-  <table [dataSource]="bulletPriceList$" mat-table>
+  <table [dataSource]="priceList$" mat-table>
     <ng-container matColumnDef="id">
       <th *matHeaderCellDef mat-header-cell> ID</th>
       <td *matCellDef="let element" mat-cell> {{element.id}} </td>
@@ -8,6 +8,11 @@
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell> Name</th>
       <td *matCellDef="let element" mat-cell> {{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th *matHeaderCellDef mat-header-cell> Type</th>
+      <td *matCellDef="let element" mat-cell> {{getTypeText(element.type)}}</td>
     </ng-container>
 
     <ng-container matColumnDef="description">
@@ -22,7 +27,7 @@
 
     <ng-container matColumnDef="action">
       <th *matHeaderCellDef class="align-right" mat-header-cell> Aktion
-        <button color="accent" mat-icon-button matTooltip="Erstellen" routerLink="/admin/bullet-price-create">
+        <button color="accent" mat-icon-button matTooltip="Erstellen" routerLink="/admin/price-create">
           <mat-icon>add</mat-icon>
         </button>
       </th>

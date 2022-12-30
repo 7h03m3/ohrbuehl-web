@@ -1,5 +1,5 @@
 .mat-form-field {
-  padding: 1em;
+  padding: 0.5em;
 }
 
 .number-input {
@@ -8,4 +8,8 @@
 
 .organization-input {
   width: 30em;
+}
+
+.full-width {
+  width: 100%;
 }

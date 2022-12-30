@@ -1,12 +1,8 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="dateForm">
   <p>
     <mat-form-field appearance="outline">
-      <!--<mat-hint>Datum</mat-hint>
-            <input formControlName="date" matInput type="Date">-->
-
       <mat-label>Datum</mat-label>
       <input [matDatepicker]="picker" formControlName="date" matInput>
-      <mat-hint>DD.MM.YYYY</mat-hint>
       <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>

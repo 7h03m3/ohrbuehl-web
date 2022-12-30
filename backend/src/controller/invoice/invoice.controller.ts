@@ -12,7 +12,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { InvoicePdfService } from '../../invoice-pdf/invoice-pdf.service';
+import { InvoicePdfService } from '../../pdf/invoice-pdf/invoice-pdf.service';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
 import { InvoiceService } from '../../database/invoice/invoice.service';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';

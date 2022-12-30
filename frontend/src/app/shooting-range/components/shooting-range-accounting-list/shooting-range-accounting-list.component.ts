@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { AccountingApi } from '../../../api/classes/accounting-api';
+import { DownloadHelper } from '../../../shared/classes/download-helper';
 
 @Component({
   selector: 'app-shooting-range-accounting-list',
@@ -26,6 +27,7 @@ export class ShootingRangeAccountingListComponent implements OnInit {
     public dialog: MatDialog,
     private stringHelper: StringHelper,
     private userData: UserLocalData,
+    private downloadHelper: DownloadHelper,
   ) {
     this.accountingApi = this.apiService.getAccounting();
   }
@@ -38,7 +40,11 @@ export class ShootingRangeAccountingListComponent implements OnInit {
     this.router.navigate(['/shooting-range/accounting-view', { id: id }]);
   }
 
-  public onDownload(id: number) {}
+  public onDownload(id: number) {
+    this.accountingApi.getPdf(id).subscribe((response) => {
+      this.downloadHelper.downloadPdfFile(response);
+    });
+  }
 
   public onEdit(id: number) {
     this.router.navigate(['/shooting-range/accounting-edit', { id: id }]);

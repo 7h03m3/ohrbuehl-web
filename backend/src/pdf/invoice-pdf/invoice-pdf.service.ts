@@ -3,9 +3,9 @@ import { PDF } from 'swissqrbill';
 import { Creditor, Data, Debtor } from 'swissqrbill/lib/node/cjs/shared/types';
 import { createReadStream, unlink } from 'fs';
 import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
-import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
-import { InvoiceEntity } from '../database/entities/invoice.entity';
-import { DateHelper } from '../shared/classes/date-helper';
+import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
+import { InvoiceEntity } from '../../database/entities/invoice.entity';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class InvoicePdfService {

@@ -8,17 +8,19 @@ import { ShootingRangePricesController } from './shooting-range-price/shooting-r
 import { OrganizationsModule } from '../database/organizations/organizations.module';
 import { ShootingRangePriceModule } from '../database/shooting-range-price/shooting-range-price.module';
 import { InvoiceController } from './invoice/invoice.controller';
-import { InvoicePdfModule } from '../invoice-pdf/invoicePdfModule';
+import { InvoicePdfModule } from '../pdf/invoice-pdf/invoicePdfModule';
 import { InvoiceModule } from '../database/invoice/invoice.module';
 import { InvoiceItemModule } from '../database/invoice-item/invoice-item.module';
 import { SharedModule } from '../shared/shared.module';
 import { ShootingRangeAccountingController } from './shooting-range-accounting/shooting-range-accounting.controller';
 import { ShootingRangeAccountingModule } from '../database/shooting-range-accounting/shooting-range-accounting.module';
+import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting-range-accounting-pdf.module';
 
 @Module({
   imports: [
     UsersModule,
     OrganizationsModule,
+    ShootingRangeAccountingPdfModule,
     ShootingRangePriceModule,
     ShootingRangeAccountingModule,
     InvoicePdfModule,
@@ -35,7 +37,6 @@ import { ShootingRangeAccountingModule } from '../database/shooting-range-accoun
     ShootingRangePricesController,
     ShootingRangeAccountingController,
     InvoiceController,
-    ShootingRangeAccountingController,
   ],
   exports: [],
 })

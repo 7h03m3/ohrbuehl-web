@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ShootingRangeAccountingService } from '../../database/shooting-range-accounting/shooting-range-accounting.service';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
@@ -8,10 +20,14 @@ import { ShootingRangeAccountingCreateDto } from '../../shared/dtos/shooting-ran
 import { ShootingRangeAccountingEntity } from '../../database/entities/shooting-range-accounting.entity';
 import { ShootingRangeAccountingUnitEntity } from '../../database/entities/shooting-range-accounting-unit.entity';
 import { ShootingRangeAccountingDto } from '../../shared/dtos/shooting-range-accounting.dto';
+import { ShootingRangeAccountingPdfService } from '../../pdf/accounting-pdf/shooting-range-accounting-pdf.service';
 
 @Controller('shooting-range-accounting')
 export class ShootingRangeAccountingController {
-  constructor(private readonly accountingService: ShootingRangeAccountingService) {}
+  constructor(
+    private readonly accountingService: ShootingRangeAccountingService,
+    private accountingPdfService: ShootingRangeAccountingPdfService,
+  ) {}
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -50,6 +66,19 @@ export class ShootingRangeAccountingController {
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<any> {
     return this.accountingService.delete(id);
+  }
+
+  @Roles(Role.Admin, Role.ShootingRangeManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('pdf/:id')
+  async downloadReport(@Param('id') id: number, @Res() response): Promise<any> {
+    const accountingData: ShootingRangeAccountingEntity = await this.accountingService.findOne(id);
+    if (!accountingData) {
+      const errorMessage = 'accounting data with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.accountingPdfService.generatePdf(accountingData, response);
   }
 
   private sortItemsByTrack(items: ShootingRangeAccountingUnitEntity[]) {

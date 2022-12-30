@@ -1,49 +1,52 @@
-<mat-card class="mat-elevation-z0 outline">
-  <table [dataSource]="priceList$" mat-table>
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell> ID</th>
-      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
-    </ng-container>
+<mat-card>
+  <mat-card-content>
+    <table [dataSource]="priceList$" mat-table>
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell> ID</th>
+        <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th *matHeaderCellDef mat-header-cell> Name</th>
-      <td *matCellDef="let element" mat-cell> {{element.name}}</td>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell> Name</th>
+        <td *matCellDef="let element" mat-cell> {{element.name}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="type">
-      <th *matHeaderCellDef mat-header-cell> Type</th>
-      <td *matCellDef="let element" mat-cell> {{getTypeText(element.type)}}</td>
-    </ng-container>
+      <ng-container matColumnDef="type">
+        <th *matHeaderCellDef mat-header-cell> Type</th>
+        <td *matCellDef="let element" mat-cell> {{getTypeText(element.type)}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="description">
-      <th *matHeaderCellDef mat-header-cell> Beschreibung</th>
-      <td *matCellDef="let element" mat-cell> {{element.description}} </td>
-    </ng-container>
+      <ng-container matColumnDef="description">
+        <th *matHeaderCellDef mat-header-cell> Beschreibung</th>
+        <td *matCellDef="let element" mat-cell> {{element.description}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="price">
-      <th *matHeaderCellDef mat-header-cell> Preis</th>
-      <td *matCellDef="let element" mat-cell> {{element.price}} SFr.</td>
-    </ng-container>
+      <ng-container matColumnDef="price">
+        <th *matHeaderCellDef mat-header-cell> Preis</th>
+        <td *matCellDef="let element" mat-cell> {{element.price}} SFr.</td>
+      </ng-container>
 
-    <ng-container matColumnDef="action">
-      <th *matHeaderCellDef class="align-right" mat-header-cell> Aktion
-        <button color="accent" mat-icon-button matTooltip="Erstellen" routerLink="/admin/price-create">
-          <mat-icon>add</mat-icon>
-        </button>
-      </th>
-      <td *matCellDef="let element" class="align-right" mat-cell>
-        <button (click)="editBulletPrice(element.id)" mat-icon-button matTooltip="Schussgeld editieren">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button (click)="deleteBulletPrice(element.id, element.name)" mat-icon-button
-                matTooltip="Schussgeld löschen">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef class="align-right" mat-header-cell> Aktion
+          <button color="accent" mat-button matTooltip="Erstellen" routerLink="/admin/price-create">
+            <mat-icon>add</mat-icon>
+          </button>
+        </th>
+        <td *matCellDef="let element" class="align-right" mat-cell>
+          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="editBulletPrice(element.id)" matTooltip="Schussgeld editieren">
+              <mat-icon class="list-action-icon" color="primary" inline="true">edit</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="deleteBulletPrice(element.id, element.name)"
+                               matTooltip="Schussgeld löschen">
+              <mat-icon class="list-action-icon" color="primary" inline="true">delete</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+      </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
-
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+  </mat-card-content>
 </mat-card>

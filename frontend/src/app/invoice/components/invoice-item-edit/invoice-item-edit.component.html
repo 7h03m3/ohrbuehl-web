@@ -55,7 +55,8 @@
     <table class="full-width">
       <tr>
         <td class="full-width">
-          <mat-form-field class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Beschreibung</mat-label>
             <input [(ngModel)]="invoiceItem.description" matInput name="description"
                    placeholder="Beschreibung" required
                    type="text">
@@ -66,17 +67,18 @@
         </td>
 
         <td>
-          <mat-form-field class="amount-form-field">
-            <input [(ngModel)]="invoiceItem.amount" matInput name="amount" placeholder="Anzahl"
-                   required type="number">
+          <mat-form-field appearance="outline" class="amount-form-field">
+            <mat-label>Anzahl</mat-label>
+            <input [(ngModel)]="invoiceItem.amount" matInput name="amount" required type="number">
             <mat-error>
               Bitte eine Anzahl angeben.
             </mat-error>
           </mat-form-field>
         </td>
         <td>
-          <mat-form-field class="price-form-field">
-            <input [(ngModel)]="invoiceItem.price" matInput name="price" placeholder="Preis" required type="number">
+          <mat-form-field appearance="outline" class="price-form-field">
+            <mat-label>Preis</mat-label>
+            <input [(ngModel)]="invoiceItem.price" matInput name="price" required type="number">
             <span matSuffix>{{this.currencyString}}</span>
             <mat-error>
               Bitte einen Preis angeben.

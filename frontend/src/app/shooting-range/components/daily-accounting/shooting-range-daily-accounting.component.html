@@ -1,13 +1,13 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-header><h3>Tagesabrechnung</h3></mat-card-header>
   <mat-card-content>
-    <mat-stepper #stepper>
+    <mat-stepper #stepper linear>
       <mat-step editable="false">
         <ng-template matStepLabel>Distanz wählen</ng-template>
         <app-accounting-type-selection
           (selectedTypeChange)="onAccountingTypeSelected(stepper, $event)"></app-accounting-type-selection>
       </mat-step>
-      <mat-step *ngIf="stepEnableEnterData">
+      <mat-step *ngIf="stepEnableEnterData" editable="false">
         <ng-template matStepLabel>Eingaben</ng-template>
         <app-enter-date-and-time (accountingDataChange)="onDateSelected(stepper)"
                                  [(accountingData)]="accountingData"></app-enter-date-and-time>
@@ -19,7 +19,7 @@
                               [(accountingData)]="accountingData" [(maxTrack)]="maxTrack"
                               [(minTrack)]="minTrack"></app-upload-sius-data>
       </mat-step>
-      <mat-step *ngIf="stepEnableAssignTracks">
+      <mat-step *ngIf="stepEnableAssignTracks" editable="false">
         <ng-template matStepLabel>Scheiben zuordnen</ng-template>
 
 
@@ -31,7 +31,7 @@
 
 
       </mat-step>
-      <mat-step *ngIf="stepEnableCheck">
+      <mat-step *ngIf="stepEnableCheck" editable="false">
         <ng-template matStepLabel>Kontrolle</ng-template>
         <app-view-detail [accountingData]="accountingData"></app-view-detail>
       </mat-step>

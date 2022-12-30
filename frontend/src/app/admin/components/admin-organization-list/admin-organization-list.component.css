@@ -28,3 +28,16 @@ tr.mat-footer-row {
   text-align: right;
   justify-content: flex-end;
 }
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 2rem;
+}
+
+.list-action-icon {
+  font-size: 2em;
+}

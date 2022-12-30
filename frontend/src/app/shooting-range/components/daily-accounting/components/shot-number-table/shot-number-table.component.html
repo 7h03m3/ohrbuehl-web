@@ -15,14 +15,12 @@
     <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
     <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
       <div *ngIf="editDisabled == false">
-        <mat-form-field appearance="standard">
-          <mat-select (valueChange)="onPriceChange(element, $event)" [(value)]="element.price.id"
-                      placeholder="Bitte auswählen">
-            <mat-option *ngFor="let price of prices" [value]="price.id">
-              {{price.name}} ({{price.price}} SFr.)
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-select (valueChange)="onPriceChange(element, $event)" [(value)]="element.price.id"
+                    placeholder="Bitte auswählen">
+          <mat-option *ngFor="let price of prices" [value]="price.id">
+            {{price.name}} ({{price.price}} SFr.)
+          </mat-option>
+        </mat-select>
       </div>
       <div *ngIf="editDisabled == true">
         {{element.price.name}} ({{element.price.price}} SFr.)

@@ -5,11 +5,11 @@ table {
 td, th {
   white-space: pre-line;
   word-wrap: break-word;
-  max-width: 12em;
+  max-width: 32em;
 }
 
-.mat-card {
-  min-width: 60em;
+.mat-card-content {
+  width: auto;
 }
 
 .outline {
@@ -21,4 +21,17 @@ td, th {
 .align-right {
   text-align: right;
   justify-content: flex-end;
+}
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 2rem;
+}
+
+.list-action-icon {
+  font-size: 2em;
 }

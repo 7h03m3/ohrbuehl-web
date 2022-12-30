@@ -64,6 +64,7 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <table [dataSource]="invoiceData.items" class="full-width" mat-table>
+
     <ng-container matColumnDef="position">
       <th *matHeaderCellDef mat-header-cell>Pos.</th>
       <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.position}}</td>

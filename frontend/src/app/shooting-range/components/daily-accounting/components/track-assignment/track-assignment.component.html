@@ -16,7 +16,7 @@ bis
   <input [(ngModel)]="assignmentTrackEnd" [max]="maxTrack" [min]="minTrack" matInput maxlength="2" type="number">
   <mat-hint>Zahl von {{minTrack}} - {{maxTrack}}</mat-hint>
 </mat-form-field>
-<mat-form-field appearance="outline">
+<mat-form-field appearance="outline" class="price-input">
   <mat-label>Schussgeld</mat-label>
   <mat-select [(ngModel)]="assignmentShotPrice" placeholder="Bitte auswählen">
     <mat-option *ngFor="let price of prices" [value]="price.id">

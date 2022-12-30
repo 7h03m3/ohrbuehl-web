@@ -2,20 +2,19 @@
   <mat-drawer #drawer class="admin-sidenav" id="side" mode="side" opened>
     <mat-selection-list [multiple]="false">
       <mat-list-option routerLink="./user-list">
+        <mat-icon matListItemIcon>person</mat-icon>
         Benutzer
-        <mat-icon mat-list-icon>person</mat-icon>
       </mat-list-option>
       <mat-list-option routerLink="./organization-list">
+        <mat-icon matListItemIcon>corporate_fare</mat-icon>
         Organisationen
-        <mat-icon mat-list-icon>corporate_fare</mat-icon>
       </mat-list-option>
       <mat-list-option routerLink="./price-list">
+        <mat-icon matListItemIcon>money</mat-icon>
         Preise
-        <mat-icon mat-list-icon>money</mat-icon>
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>
-
   <mat-drawer-content>
     <div class="admin-content">
       <router-outlet></router-outlet>

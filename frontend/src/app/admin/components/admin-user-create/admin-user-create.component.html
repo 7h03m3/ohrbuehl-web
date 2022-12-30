@@ -6,26 +6,29 @@
         Bitte alle Daten eingeben.
       </mat-error>
 
-      <mat-form-field>
-        <input [(ngModel)]="userCreateDto.userName" matInput name="userName" placeholder="Benutzername" required>
+      <mat-form-field appearance="outline">
+        <mat-label>Benutzername</mat-label>
+        <input [(ngModel)]="userCreateDto.userName" matInput name="userName" required>
         <mat-error>
           Bitte einen Spitznamen angeben.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field>
-        <input [(ngModel)]="userCreateDto.firstName" matInput name="firstName" placeholder="Vorname" required>
+      <mat-form-field appearance="outline">
+        <mat-label>Vorname</mat-label>
+        <input [(ngModel)]="userCreateDto.firstName" matInput name="firstName" required>
         <mat-error>
           Bitte einen Vornamen angeben.
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input [(ngModel)]="userCreateDto.lastName" matInput name="lastName" placeholder="Nachname" required>
+      <mat-form-field appearance="outline">
+        <mat-label>Nachname</mat-label>
+        <input [(ngModel)]="userCreateDto.lastName" matInput name="lastName" required>
         <mat-error>
           Bitte einen Nachnamen angeben.
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-select [(ngModel)]="userCreateDto.roles" name="userRole">
           <mat-option *ngFor="let userRole of userRoles" [value]="userRole">
             {{getRoleText(userRole)}}
@@ -33,12 +36,12 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Passwort</mat-label>
         <input [(ngModel)]="userCreateDto.password" [type]="hidePassword ? 'password' : 'text'" matInput name="password"
-               placeholder="Passwort" required>
+               required>
         <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hidePassword" mat-icon-button
-                matSuffix>
+                [attr.aria-pressed]="hidePassword" mat-icon-button matSuffix>
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-error>

@@ -1,20 +1,26 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="dateForm">
   <p>
     <mat-form-field appearance="outline">
-      <mat-hint>Datum</mat-hint>
-      <input formControlName="date" matInput type="Date">
+      <!--<mat-hint>Datum</mat-hint>
+            <input formControlName="date" matInput type="Date">-->
+
+      <mat-label>Datum</mat-label>
+      <input [matDatepicker]="picker" formControlName="date" matInput>
+      <mat-hint>DD.MM.YYYY</mat-hint>
+      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </p>
   <p>
     <mat-form-field appearance="outline">
       <mat-hint>Startzeit</mat-hint>
-      <input formControlName="startTime" matInput type="Time">
+      <input formControlName="startTime" matInput required type="Time">
     </mat-form-field>
   </p>
   <p>
     <mat-form-field appearance="outline">
       <mat-hint>Endzeit</mat-hint>
-      <input formControlName="endTime" matInput type="Time">
+      <input formControlName="endTime" matInput required type="Time">
     </mat-form-field>
   </p>
   <button [disabled]="!dateForm.valid" class="full-width" color="primary" mat-raised-button type="submit">Weiter

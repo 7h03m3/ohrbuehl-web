@@ -6,14 +6,16 @@
         Bitte alle Daten eingeben.
       </mat-error>
 
-      <mat-form-field>
-        <input [(ngModel)]="bulletPriceCreateDto.name" matInput name="name" placeholder="Name" required>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input [(ngModel)]="bulletPriceCreateDto.name" matInput name="name" required>
         <mat-error>
           Bitte einen Namen angeben.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Typ</mat-label>
         <mat-select [(ngModel)]="bulletPriceCreateDto.type" name="type">
           <mat-option *ngFor="let type of types" [value]="type">
             {{getTypeText(type)}}
@@ -21,23 +23,23 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
-        <input [(ngModel)]="bulletPriceCreateDto.price" matInput min="0.05" name="price" placeholder="Preis"
-               required type="number">
+      <mat-form-field appearance="outline">
+        <mat-label>Preis</mat-label>
+        <input [(ngModel)]="bulletPriceCreateDto.price" matInput min="0.05" name="price" required type="number">
         <span matSuffix>Fr.</span>
         <mat-error>
           Bitte einen Preis angeben.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field>
-        <textarea [(ngModel)]="bulletPriceCreateDto.description" matInput name="description" placeholder="Beschreibung"
-                  required rows="8"></textarea>
+      <mat-form-field appearance="outline">
+        <mat-label>Beschreibung</mat-label>
+        <textarea [(ngModel)]="bulletPriceCreateDto.description" matInput name="description" required
+                  rows="8"></textarea>
         <mat-error>
           Bitte eine Beschreibung angeben.
         </mat-error>
       </mat-form-field>
-
 
       <button [disabled]="!userCreateForm.form.valid" color="primary" mat-raised-button>Erstellen</button>
     </form>

@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
 
 @Component({
-  selector: 'app-enter-date-and-time',
+  selector: 'app-shooting-range-accounting-step-enter-date-and-time',
   templateUrl: './enter-date-and-time.component.html',
   styleUrls: ['./enter-date-and-time.component.css'],
 })

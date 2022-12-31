@@ -6,7 +6,7 @@ import { AccountingApi } from '../../../../../api/classes/accounting-api';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-view-detail',
+  selector: 'app-shooting-range-accounting-step-view-detail',
   templateUrl: './view-detail.component.html',
   styleUrls: ['./view-detail.component.css'],
 })

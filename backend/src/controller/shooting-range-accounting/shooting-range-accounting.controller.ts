@@ -72,7 +72,7 @@ export class ShootingRangeAccountingController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('pdf/:id')
   async downloadReport(@Param('id') id: number, @Res() response): Promise<any> {
-    const accountingData: ShootingRangeAccountingEntity = await this.accountingService.findOne(id);
+    const accountingData: ShootingRangeAccountingEntity = await this.getById(id);
     if (!accountingData) {
       const errorMessage = 'accounting data with id ' + id.toString() + ' not found';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);

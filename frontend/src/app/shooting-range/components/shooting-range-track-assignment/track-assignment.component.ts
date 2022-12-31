@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
-import { ApiService } from '../../../../../api/api.service';
-import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
-import { ShootingRangePriceDto } from '../../../../../shared/dtos/shooting-range-price.dto';
-import { OrganizationApi } from '../../../../../api/classes/organization-api';
-import { ShootingRangePriceApi } from '../../../../../api/classes/shooting-range-price-api';
+import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
+import { ApiService } from '../../../api/api.service';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
+import { OrganizationApi } from '../../../api/classes/organization-api';
+import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
 
 @Component({
-  selector: 'app-track-assignment',
+  selector: 'app-shooting-range-track-assignment',
   templateUrl: './track-assignment.component.html',
   styleUrls: ['./track-assignment.component.css'],
 })

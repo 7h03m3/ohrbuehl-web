@@ -35,5 +35,6 @@ bis
 </mat-form-field>
 <button (click)="doAssignment()" color="primary" mat-raised-button>Zuordnen</button>
 
-<app-shot-number-table (accountingDataChange)="checkIfAllFilledIn()" [(accountingData)]="accountingData"
-                       [editDisabled]="false" [organizations]="organizations" [prices]="prices"></app-shot-number-table>
+<app-shooting-range-shot-number-table (accountingDataChange)="checkIfAllFilledIn()" [(accountingData)]="accountingData"
+                                      [editDisabled]="false" [organizations]="organizations"
+                                      [prices]="prices"></app-shooting-range-shot-number-table>

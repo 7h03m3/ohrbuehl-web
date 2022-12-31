@@ -4,7 +4,7 @@ import { CsvRecord } from '../../helpers/csv-record';
 import { ShootingRangeAccountingUnitDto } from '../../../../../shared/dtos/shooting-range-accounting-unit.dto';
 
 @Component({
-  selector: 'app-accounting-step-upload-sius-data',
+  selector: 'app-shooting-range-accounting-step-upload-sius-data',
   templateUrl: './accounting-step-upload-sius-data.component.html',
   styleUrls: ['./accounting-step-upload-sius-data.component.css'],
 })

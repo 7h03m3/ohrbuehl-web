@@ -3,7 +3,7 @@ import { ShootingRangeAccountingTypeEnum } from '../../../../../shared/enums/sho
 import { UserLocalData } from '../../../../../shared/classes/user-local-data';
 
 @Component({
-  selector: 'app-accounting-type-selection',
+  selector: 'app-shooting-range-accounting-step-type-selection',
   templateUrl: './accounting-type-selection.component.html',
   styleUrls: ['./accounting-type-selection.component.css'],
 })

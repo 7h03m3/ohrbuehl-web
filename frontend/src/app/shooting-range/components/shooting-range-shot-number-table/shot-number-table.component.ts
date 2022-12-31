@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
-import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
-import { ShootingRangeAccountingUnitDto } from '../../../../../shared/dtos/shooting-range-accounting-unit.dto';
-import { ShootingRangePriceDto } from '../../../../../shared/dtos/shooting-range-price.dto';
+import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
+import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 
 @Component({
-  selector: 'app-shot-number-table',
+  selector: 'app-shooting-range-shot-number-table',
   templateUrl: './shot-number-table.component.html',
   styleUrls: ['./shot-number-table.component.css'],
 })

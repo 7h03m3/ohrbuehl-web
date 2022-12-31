@@ -4,11 +4,11 @@ import { CsvRecord } from '../../helpers/csv-record';
 import { ShootingRangeAccountingUnitDto } from '../../../../../shared/dtos/shooting-range-accounting-unit.dto';
 
 @Component({
-  selector: 'app-upload-sius-data',
-  templateUrl: './upload-sius-data.component.html',
-  styleUrls: ['./upload-sius-data.component.css'],
+  selector: 'app-accounting-step-upload-sius-data',
+  templateUrl: './accounting-step-upload-sius-data.component.html',
+  styleUrls: ['./accounting-step-upload-sius-data.component.css'],
 })
-export class UploadSiusDataComponent implements OnInit {
+export class AccountingStepUploadSiusDataComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Input() minTrack!: string;
   @Input() maxTrack!: string;

@@ -18,14 +18,11 @@
         <td>{{this.accountingData.total}}</td>
       </tr>
     </table>
-
-    <!--
-    <app-shot-number-table (accountingDataChange)="onSave()" [(accountingData)]="accountingData" [editDisabled]="false"
-                           [organizations]="organizations" [prices]="prices"></app-shot-number-table>
-                           -->
-    <app-track-assignment (accountingDataChange)="onSave()"
-                          [(accountingData)]="accountingData"
-                          [maxTrack]="maxTrack" [minTrack]="minTrack" buttonText="Speichern"></app-track-assignment>
+    
+    <app-shooting-range-track-assignment (accountingDataChange)="onSave()"
+                                         [(accountingData)]="accountingData"
+                                         [maxTrack]="maxTrack" [minTrack]="minTrack"
+                                         buttonText="Speichern"></app-shooting-range-track-assignment>
   </mat-card-content>
 </mat-card>
 

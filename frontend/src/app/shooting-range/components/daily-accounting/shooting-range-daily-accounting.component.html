@@ -4,36 +4,39 @@
     <mat-stepper #stepper linear>
       <mat-step editable="false">
         <ng-template matStepLabel>Distanz wählen</ng-template>
-        <app-accounting-type-selection
-          (selectedTypeChange)="onAccountingTypeSelected(stepper, $event)"></app-accounting-type-selection>
+        <app-shooting-range-accounting-step-type-selection
+          (selectedTypeChange)="onAccountingTypeSelected(stepper, $event)"></app-shooting-range-accounting-step-type-selection>
       </mat-step>
       <mat-step *ngIf="stepEnableEnterData" editable="false">
         <ng-template matStepLabel>Eingaben</ng-template>
-        <app-enter-date-and-time (accountingDataChange)="onDateSelected(stepper)"
-                                 [(accountingData)]="accountingData"></app-enter-date-and-time>
+        <app-shooting-range-accounting-step-enter-date-and-time (accountingDataChange)="onDateSelected(stepper)"
+                                                                [(accountingData)]="accountingData"></app-shooting-range-accounting-step-enter-date-and-time>
       </mat-step>
 
       <mat-step *ngIf="stepEnableUploadSiusData" editable="false">
         <ng-template matStepLabel>SIUS Data Datei hochladen</ng-template>
-        <app-upload-sius-data (accountingDataChange)="onSiusDataUploaded(stepper)"
-                              [(accountingData)]="accountingData" [(maxTrack)]="maxTrack"
-                              [(minTrack)]="minTrack"></app-upload-sius-data>
+        <app-shooting-range-accounting-step-upload-sius-data (accountingDataChange)="onSiusDataUploaded(stepper)"
+                                                             [(accountingData)]="accountingData" [(maxTrack)]="maxTrack"
+                                                             [(minTrack)]="minTrack">
+        </app-shooting-range-accounting-step-upload-sius-data>
       </mat-step>
       <mat-step *ngIf="stepEnableAssignTracks" editable="false">
         <ng-template matStepLabel>Scheiben zuordnen</ng-template>
 
 
         <p>
-          <app-track-assignment (accountingDataChange)="onTrackAssigned(stepper)"
-                                [(accountingData)]="accountingData"
-                                [maxTrack]="maxTrack" [minTrack]="minTrack"></app-track-assignment>
+          <app-shooting-range-track-assignment (accountingDataChange)="onTrackAssigned(stepper)"
+                                               [(accountingData)]="accountingData"
+                                               [maxTrack]="maxTrack"
+                                               [minTrack]="minTrack"></app-shooting-range-track-assignment>
         </p>
 
 
       </mat-step>
       <mat-step *ngIf="stepEnableCheck" editable="false">
         <ng-template matStepLabel>Kontrolle</ng-template>
-        <app-view-detail [accountingData]="accountingData"></app-view-detail>
+        <app-shooting-range-accounting-step-view-detail
+          [accountingData]="accountingData"></app-shooting-range-accounting-step-view-detail>
       </mat-step>
     </mat-stepper>
   </mat-card-content>

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { CdkTreeModule } from '@angular/cdk/tree';
 import { PortalModule } from '@angular/cdk/portal';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,16 +30,12 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const materialModules = [
-  BrowserModule,
   FormsModule,
-  BrowserAnimationsModule,
-  CdkTreeModule,
+  ReactiveFormsModule,
   MatNativeDateModule,
   MatAutocompleteModule,
   MatButtonModule,
@@ -78,8 +73,6 @@ const materialModules = [
 @NgModule({
   imports: [...materialModules],
   exports: [...materialModules],
-  declarations: [
-    DeleteConfirmDialogComponent
-  ],
+  declarations: [DeleteConfirmDialogComponent],
 })
 export class MaterialModule {}

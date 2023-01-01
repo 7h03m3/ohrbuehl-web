@@ -5,8 +5,8 @@ import { ShotNumberTableComponent } from './components/shooting-range-shot-numbe
 import { TrackAssignmentComponent } from './components/shooting-range-track-assignment/track-assignment.component';
 import { ShootingRangeComponent } from './shooting-range.component';
 import { ShootingRangeInvoicesComponent } from './components/invoices/shooting-range-invoices.component';
-import { InvoiceInformationComponent } from '../invoice/components/invoice-information/invoice-information.component';
-import { InvoiceItemEditComponent } from '../invoice/components/invoice-item-edit/invoice-item-edit.component';
+import { InvoiceInformationComponent } from '../invoice/components/invoice-step-information/invoice-information.component';
+import { InvoiceItemEditComponent } from '../invoice/components/invoice-step-item-edit/invoice-item-edit.component';
 import { InvoiceDetailViewComponent } from '../invoice/components/invoice-detail-view/invoice-detail-view.component';
 import { InvoiceListComponent } from '../invoice/components/invoice-list/invoice-list.component';
 import { InvoiceViewComponent } from '../invoice/components/invoice-view/invoice-view.component';
@@ -19,6 +19,8 @@ import { ShootingRangeAccountingListComponent } from './components/shooting-rang
 import { ShootingRangeAccountingViewComponent } from './components/shooting-range-accounting-view/shooting-range-accounting-view.component';
 import { ShootingRangeAccountingEditComponent } from './components/shooting-range-accounting-edit/shooting-range-accounting-edit.component';
 import { ShootingRangeRoutingModule } from './shooting-range-routing.module';
+import { InvoiceTypeSelectionComponent } from '../invoice/components/invoice-step-type-selection/invoice-type-selection.component';
+import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoice-step-accounting-selection/invoice-accounting-selection.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +28,11 @@ import { ShootingRangeRoutingModule } from './shooting-range-routing.module';
     TrackAssignmentComponent,
     ShootingRangeComponent,
     ShootingRangeInvoicesComponent,
+    InvoiceTypeSelectionComponent,
     InvoiceInformationComponent,
     InvoiceItemEditComponent,
     InvoiceDetailViewComponent,
+    InvoiceAccountingSelectionComponent,
     InvoiceListComponent,
     InvoiceViewComponent,
     AccountingTypeSelectionComponent,

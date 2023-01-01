@@ -1,0 +1,9 @@
+.invoice-type-radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.invoice-type-radio-button {
+  margin: 0px;
+}

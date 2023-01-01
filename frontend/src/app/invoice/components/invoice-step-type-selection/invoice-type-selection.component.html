@@ -1,0 +1,8 @@
+<mat-radio-group [(ngModel)]="selectedType" aria-labelledby="invoice-type-radio-group-label"
+                 class="invoice-type-radio-group">
+  <mat-radio-button *ngFor="let type of invoiceTypes" [value]="type" class="invoice-type-radio-button">
+    {{getInvoiceTypeText(type)}}
+  </mat-radio-button>
+</mat-radio-group>
+<br>
+<button (click)="onSubmit()" class="full-width" color="primary" mat-raised-button>Weiter</button>

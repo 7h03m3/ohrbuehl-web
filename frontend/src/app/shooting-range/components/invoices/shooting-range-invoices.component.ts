@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../api/api.service';
 import { MatStepper } from '@angular/material/stepper';
 import { InvoiceCreateDto } from '../../../shared/dtos/invoice-create.dto';
@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceTemplates } from '../../../invoice/components/invoice-templates';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InvoiceApi } from '../../../api/classes/invoice-api';
+import { InvoiceTypeEnum } from '../../../shared/enums/invoice-type.enum';
+import { InvoiceItemEditComponent } from '../../../invoice/components/invoice-step-item-edit/invoice-item-edit.component';
 
 @Component({
   selector: 'app-invoices',
@@ -15,8 +17,15 @@ import { InvoiceApi } from '../../../api/classes/invoice-api';
 })
 export class ShootingRangeInvoicesComponent implements OnInit {
   public invoiceData: InvoiceDto = new InvoiceDto();
+  public invoiceType: InvoiceTypeEnum = InvoiceTypeEnum.Invoice_Custom;
   public formTitle = 'Rechnung erstellen';
   public formValid = false;
+  public stepEnableTypeSelection = false;
+  public stepEnableInformation = false;
+  public stepEnableAccountingSelection = false;
+  public stepEnableItemEdit = false;
+  public stepEnableCheck = false;
+  private invoiceItemEditComponent: any;
   private templates = new InvoiceTemplates();
   private invoiceApi: InvoiceApi;
 
@@ -25,16 +34,28 @@ export class ShootingRangeInvoicesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef,
   ) {
     this.invoiceApi = this.apiService.getInvoice();
   }
 
+  @ViewChild(InvoiceItemEditComponent)
+  set appShark(child: InvoiceItemEditComponent) {
+    this.invoiceItemEditComponent = child;
+  }
+
   ngOnInit(): void {
+    this.disableAllSteps();
+
     this.route.paramMap.subscribe((data) => {
       const invoiceId = Number(data.get('id'));
       if (!invoiceId) {
+        this.stepEnableTypeSelection = true;
         this.invoiceData = this.templates.getEmpty();
       } else {
+        this.stepEnableInformation = true;
+        this.stepEnableItemEdit = true;
+        this.stepEnableCheck = true;
         this.invoiceApi.getById(invoiceId).subscribe((response) => {
           this.invoiceData = response;
           this.invoiceData.date = new Date().getTime();
@@ -44,7 +65,32 @@ export class ShootingRangeInvoicesComponent implements OnInit {
     this.formValid = true;
   }
 
+  public onInvoiceTypeChange(stepper: MatStepper, invoiceType: string) {
+    this.invoiceType = invoiceType as unknown as InvoiceTypeEnum;
+    this.disableAllSteps();
+    this.stepEnableTypeSelection = true;
+
+    switch (this.invoiceType) {
+      default:
+      case InvoiceTypeEnum.Invoice_Custom:
+        this.stepEnableInformation = true;
+        this.stepEnableItemEdit = true;
+        this.stepEnableCheck = true;
+        break;
+      case InvoiceTypeEnum.Invoice_Shooting_Range_Accouning_Daily:
+        this.stepEnableAccountingSelection = true;
+        this.stepEnableInformation = true;
+        this.stepEnableItemEdit = true;
+        this.stepEnableCheck = true;
+        break;
+    }
+
+    this.changeDetector.detectChanges();
+    stepper.next();
+  }
+
   public onStepSubmit(stepper: MatStepper) {
+    this.invoiceItemEditComponent.ngOnChanges();
     stepper.next();
   }
 
@@ -68,6 +114,14 @@ export class ShootingRangeInvoicesComponent implements OnInit {
         this.showSnackBar(this.invoiceData.title);
       });
     }
+  }
+
+  private disableAllSteps() {
+    this.stepEnableTypeSelection = false;
+    this.stepEnableInformation = false;
+    this.stepEnableItemEdit = false;
+    this.stepEnableCheck = false;
+    this.stepEnableAccountingSelection = false;
   }
 
   private showSnackBar(title: string) {

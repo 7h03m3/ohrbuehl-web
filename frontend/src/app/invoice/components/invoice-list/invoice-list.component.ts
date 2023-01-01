@@ -5,6 +5,8 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { Router } from '@angular/router';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
 import { InvoiceApi } from '../../../api/classes/invoice-api';
+import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-invoice-list',
@@ -19,6 +21,7 @@ export class InvoiceListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private stringHelper: StringHelper,
+    public dialog: MatDialog,
     private router: Router,
     private downloadHelper: DownloadHelper,
   ) {
@@ -43,9 +46,17 @@ export class InvoiceListComponent implements OnInit {
     this.router.navigate(['/shooting-range/invoice-edit', { id: id }]);
   }
 
-  public onDelete(id: number) {
-    this.invoiceApi.delete(id).subscribe((result) => {
-      this.loadTable();
+  public onDelete(element: InvoiceListItemDto) {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      data: { itemName: 'Rechnung ' + element.title + ' (' + this.stringHelper.getDateString(+element.date) + ')' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.invoiceApi.delete(element.id).subscribe((result) => {
+          this.loadTable();
+        });
+      }
     });
   }
 

@@ -110,4 +110,15 @@ export class UserLocalData {
         return '';
     }
   }
+
+  public convertInvoiceTypeText(type: string) {
+    switch (type) {
+      case 'Invoice_Custom':
+        return 'Benutzerdefiniert';
+      case 'Invoice_Shooting_Range_Accouning_Daily':
+        return 'Schussgeldrechnung (Tag)';
+      default:
+        return '';
+    }
+  }
 }

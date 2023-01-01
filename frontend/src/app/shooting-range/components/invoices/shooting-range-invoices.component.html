@@ -6,18 +6,30 @@
       Bitte alle Daten eingeben.
     </mat-error>
     <mat-stepper #stepper linear>
-      <mat-step [editable]="true">
-        <ng-template matStepLabel>Allgemeine Informationen</ng-template>
-        <app-invoice-information (invoiceDataChange)="onStepSubmit(stepper)"
-                                 [(invoiceData)]="invoiceData"></app-invoice-information>
-      </mat-step>
-      <mat-step [editable]="true">
-        <ng-template matStepLabel>Rechnungsposten</ng-template>
-        <app-invoice-item-edit (invoiceDataChange)="onStepSubmit(stepper)" [(invoiceData)]="invoiceData">>
-        </app-invoice-item-edit>
+      <mat-step *ngIf="stepEnableTypeSelection">
+        <ng-template matStepLabel>Rechnungsart</ng-template>
+        <app-invoice-step-type-selection
+          (selectedTypeChange)="onInvoiceTypeChange(stepper, $event)"></app-invoice-step-type-selection>
       </mat-step>
 
-      <mat-step [editable]="true">
+      <mat-step *ngIf="stepEnableAccountingSelection" [editable]="true">
+        <ng-template matStepLabel>Schussgelddaten</ng-template>
+        <app-invoice-step-accounting-selection (invoiceDataChange)="onStepSubmit(stepper)"
+                                               [(invoiceData)]="invoiceData"></app-invoice-step-accounting-selection>
+      </mat-step>
+
+      <mat-step *ngIf="stepEnableInformation" [editable]="true">
+        <ng-template matStepLabel>Allgemeine Informationen</ng-template>
+        <app-invoice-step-information (invoiceDataChange)="onStepSubmit(stepper)"
+                                      [(invoiceData)]="invoiceData"></app-invoice-step-information>
+      </mat-step>
+      <mat-step *ngIf="stepEnableItemEdit" [editable]="true">
+        <ng-template matStepLabel>Rechnungsposten</ng-template>
+        <app-invoice-step-item-edit (invoiceDataChange)="onStepSubmit(stepper)" [(invoiceData)]="invoiceData">
+        </app-invoice-step-item-edit>
+      </mat-step>
+
+      <mat-step *ngIf="stepEnableCheck" [editable]="true">
         <ng-template matStepLabel>Kontrolle</ng-template>
         <app-invoice-detail-view [invoiceData]="invoiceData"></app-invoice-detail-view>
         <p>

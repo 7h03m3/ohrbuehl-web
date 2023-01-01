@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 
 @Component({
-  selector: 'app-invoice-information',
+  selector: 'app-invoice-step-information',
   templateUrl: './invoice-information.component.html',
   styleUrls: ['./invoice-information.component.css'],
 })

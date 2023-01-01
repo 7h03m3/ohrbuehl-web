@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { NgForm } from '@angular/forms';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
@@ -6,11 +6,11 @@ import { ApiService } from '../../../api/api.service';
 import { InvoiceItemApi } from '../../../api/classes/invoice-item-api';
 
 @Component({
-  selector: 'app-invoice-item-edit',
+  selector: 'app-invoice-step-item-edit',
   templateUrl: './invoice-item-edit.component.html',
   styleUrls: ['./invoice-item-edit.component.css'],
 })
-export class InvoiceItemEditComponent implements OnInit {
+export class InvoiceItemEditComponent implements OnInit, OnChanges {
   @Input() invoiceData!: InvoiceDto;
   @Output() invoiceDataChange = new EventEmitter<InvoiceDto>();
 

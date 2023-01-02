@@ -27,10 +27,17 @@
       </ng-container>
 
       <ng-container matColumnDef="action">
-        <th *matHeaderCellDef class="align-right" mat-header-cell> Aktion
-          <button color="accent" mat-button matTooltip="Erstellen" routerLink="/admin/price-create">
-            <mat-icon>add</mat-icon>
-          </button>
+        <th *matHeaderCellDef class="align-right" mat-header-cell>
+          <span>
+            Aktion
+          </span>
+          <span class="header-span">
+            <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+              <mat-button-toggle matTooltip="Erstellen" routerLink="/admin/price-create">
+                <mat-icon color="accent" inline="true">add</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </span>
         </th>
         <td *matCellDef="let element" class="align-right" mat-cell>
           <mat-button-toggle-group #elementGroup="matButtonToggleGroup">

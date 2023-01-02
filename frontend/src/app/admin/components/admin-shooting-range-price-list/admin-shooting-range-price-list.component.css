@@ -2,6 +2,10 @@ table {
   width: 100%;
 }
 
+.mat-icon {
+  font-size: 2em;
+}
+
 td, th {
   white-space: pre-line;
   word-wrap: break-word;
@@ -34,4 +38,8 @@ td, th {
 
 .list-action-icon {
   font-size: 2em;
+}
+
+.header-span {
+  margin-left: 0.5rem;
 }

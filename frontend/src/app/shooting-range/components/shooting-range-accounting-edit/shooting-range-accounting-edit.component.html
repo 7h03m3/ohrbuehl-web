@@ -1,24 +1,15 @@
 <mat-card>
   <mat-card-content>
-    <table>
-      <tr>
-        <td>Datum</td>
-        <td>:</td>
-        <td>{{getDateString(this.accountingData.date)}}</td>
-      </tr>
-      <tr>
-        <td>Zeit</td>
-        <td>:</td>
-        <td>{{this.accountingData.startTime}} - {{this.accountingData.endTime}}</td>
-      </tr>
-
-      <tr>
-        <td>Schüsse</td>
-        <td>:</td>
-        <td>{{this.accountingData.total}}</td>
-      </tr>
-    </table>
-
+    <mat-list>
+      <mat-list-item>
+        <mat-icon matListItemIcon>schedule</mat-icon>
+        {{getDateString(this.accountingData.date)}} {{this.accountingData.startTime}} - {{this.accountingData.endTime}}
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListItemIcon>play_for_work</mat-icon>
+        {{this.accountingData.total}} Schüsse
+      </mat-list-item>
+    </mat-list>
     <app-shooting-range-track-assignment (accountingDataChange)="onSave()"
                                          [(accountingData)]="accountingData"
                                          [maxTrack]="maxTrack" [minTrack]="minTrack"

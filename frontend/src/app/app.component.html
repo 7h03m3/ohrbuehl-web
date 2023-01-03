@@ -5,25 +5,35 @@
       Schiessanlage Ohrbühl
     </button>
 
-    <button *ngIf="isShootingRangeManager()" mat-button matTooltip="Standwart" routerLink="/shooting-range">
+    <button *ngIf="isShootingRangeManager()" color="accent" mat-flat-button routerLink="/shooting-range">
       Standwart
     </button>
 
     <span class="toolbar-spacer"></span>
 
-
     <button *ngIf="isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
-      <mat-icon>admin_panel_settings</mat-icon>
+      <mat-icon color="accent">admin_panel_settings</mat-icon>
     </button>
 
     <button *ngIf="isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
       <mat-icon>login</mat-icon>
     </button>
 
-    <button (click)="logout()" *ngIf="isLoggedIn() == true" mat-button matTooltip="Logout">
-      <mat-icon>logout</mat-icon>
-      {{getRoleText()}}
-    </button>
+
+    <p *ngIf="isLoggedIn() == true">
+      <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <span>Rolle: {{getRoleText()}}</span>
+        </button>
+      </mat-menu>
+
+      <button (click)="logout()" mat-icon-button matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </p>
   </mat-toolbar-row>
 </mat-toolbar>
 

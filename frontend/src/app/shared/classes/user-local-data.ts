@@ -111,6 +111,17 @@ export class UserLocalData {
     }
   }
 
+  public convertAccountingSelectionTypeText(type: string) {
+    switch (type) {
+      case 'Section_300m_SIUS_file':
+        return '300m (SIUS Data Datei)';
+      case 'Section_300m_manual':
+        return '300m (manuell)';
+      default:
+        return '';
+    }
+  }
+
   public convertInvoiceTypeText(type: string) {
     switch (type) {
       case 'Invoice_Custom':

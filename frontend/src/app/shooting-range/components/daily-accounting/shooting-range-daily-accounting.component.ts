@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { ShootingRangeAccountingTypeEnum } from '../../../shared/enums/shooting-range-accounting-type.enum';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
+import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 
 @Component({
   selector: 'app-shot-numbers',
@@ -16,6 +17,7 @@ export class ShootingRangeDailyAccountingComponent implements OnInit {
   public stepEnableUploadSiusData = false;
   public stepEnableEnterData = false;
   public stepEnableAssignTracks = false;
+  public stepEnableManualAssignTracks = false;
   public stepEnableCheck = false;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
@@ -25,19 +27,33 @@ export class ShootingRangeDailyAccountingComponent implements OnInit {
   }
 
   public onAccountingTypeSelected(stepper: MatStepper, accountingType: string) {
-    this.accountingData.type = accountingType as unknown as ShootingRangeAccountingTypeEnum;
-
     this.stepEnableUploadSiusData = false;
     this.stepEnableEnterData = false;
     this.stepEnableAssignTracks = false;
+    this.stepEnableManualAssignTracks = false;
     this.stepEnableCheck = false;
 
-    switch (this.accountingData.type) {
-      case ShootingRangeAccountingTypeEnum.Section_300m:
+    switch (accountingType) {
+      case 'Section_300m_SIUS_file':
+        this.accountingData.type = ShootingRangeAccountingTypeEnum.Section_300m;
         this.stepEnableUploadSiusData = true;
         this.stepEnableEnterData = true;
         this.stepEnableAssignTracks = true;
         this.stepEnableCheck = true;
+        break;
+
+      case 'Section_300m_manual':
+        this.stepEnableEnterData = true;
+        this.stepEnableManualAssignTracks = true;
+        this.stepEnableCheck = true;
+
+        this.minTrack = '6';
+        this.maxTrack = '70';
+        for (let i = 6; i <= 70; i++) {
+          const unit = new ShootingRangeAccountingUnitDto();
+          unit.track = i;
+          this.accountingData.items.push(unit);
+        }
         break;
     }
 

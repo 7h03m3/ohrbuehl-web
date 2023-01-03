@@ -5,6 +5,7 @@ import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 
 @Component({
   selector: 'app-shooting-range-track-assignment',
@@ -16,6 +17,7 @@ export class TrackAssignmentComponent implements OnInit {
   @Input() maxTrack = '0';
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Input() buttonText = 'Weiter';
+  @Input() manualEdit = false;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
   public nextButtonDisabled = true;
   public organizations = new Array<OrganizationDto>();
@@ -92,10 +94,23 @@ export class TrackAssignmentComponent implements OnInit {
       }
     });
 
+    if (this.manualEdit == true) {
+      allFilledIn = true;
+    }
+
     this.nextButtonDisabled = !allFilledIn;
   }
 
   public onSubmit() {
+    if (this.manualEdit == true) {
+      const clearedItems = new Array<ShootingRangeAccountingUnitDto>();
+      this.accountingData.items.forEach((item) => {
+        if (item.amount != 0 && item.price.id != 0 && item.organization.id != 0) {
+          clearedItems.push(item);
+        }
+      });
+      this.accountingData.items = clearedItems;
+    }
     this.accountingDataChange.emit(this.accountingData);
   }
 }

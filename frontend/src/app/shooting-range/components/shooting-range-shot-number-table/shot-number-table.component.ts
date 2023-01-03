@@ -14,6 +14,7 @@ export class ShotNumberTableComponent implements OnInit {
   @Input() organizations!: OrganizationDto[];
   @Input() prices!: ShootingRangePriceDto[];
   @Input() editDisabled = true;
+  @Input() editShots = false;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
 
   public displayedColumns: string[] = ['tracks', 'shots', 'shotPrice', 'organization'];
@@ -51,6 +52,10 @@ export class ShotNumberTableComponent implements OnInit {
   }
 
   public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {
+    if (this.editShots == true) {
+      return true;
+    }
+
     if (element.organization.id == 0) {
       return false;
     }

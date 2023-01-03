@@ -30,8 +30,17 @@
                                                [maxTrack]="maxTrack"
                                                [minTrack]="minTrack"></app-shooting-range-track-assignment>
         </p>
+      </mat-step>
+      <mat-step *ngIf="stepEnableManualAssignTracks" editable="false">
+        <ng-template matStepLabel>Schusszahlen eingeben</ng-template>
 
 
+        <p>
+          <app-shooting-range-track-assignment (accountingDataChange)="onTrackAssigned(stepper)"
+                                               [(accountingData)]="accountingData" [manualEdit]="true"
+                                               [maxTrack]="maxTrack"
+                                               [minTrack]="minTrack"></app-shooting-range-track-assignment>
+        </p>
       </mat-step>
       <mat-step *ngIf="stepEnableCheck" editable="false">
         <ng-template matStepLabel>Kontrolle</ng-template>

@@ -8,7 +8,16 @@
 
   <ng-container matColumnDef="shots">
     <th *matHeaderCellDef mat-header-cell> Schüsse</th>
-    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell> {{element.amount}} </td>
+    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+      <div *ngIf="editShots == false">
+        {{element.amount}}
+      </div>
+      <div *ngIf="editShots == true">
+        <mat-form-field appearance="outline" class="number-input" style="flex-direction: row">
+          <input [(ngModel)]="element.amount" matInput max="10000" min="0" type="number">
+        </mat-form-field>
+      </div>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="shotPrice">

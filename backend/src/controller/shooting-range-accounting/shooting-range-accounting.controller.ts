@@ -61,7 +61,7 @@ export class ShootingRangeAccountingController {
     return this.accountingService.update(dto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<any> {

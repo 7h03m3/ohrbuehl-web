@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from '../../database/users/users.service';
 import { UserEntity } from '../../database/entities/user.entity';
 import { Roles } from '../../shared/decorators/roles.decorator';
@@ -19,10 +10,7 @@ import { AuthService } from '../../auth/auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly userService: UsersService,
-    private authService: AuthService,
-  ) {}
+  constructor(private readonly userService: UsersService, private authService: AuthService) {}
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -42,9 +30,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async createUser(@Body() createUserDto: UserCreateDto): Promise<UserEntity> {
-    const hashedPassword = await this.authService.hashPassword(
-      createUserDto.password,
-    );
+    const hashedPassword = await this.authService.hashPassword(createUserDto.password);
     return this.userService.createUser(createUserDto, hashedPassword);
   }
 
@@ -53,9 +39,7 @@ export class UsersController {
   @Put()
   async updateUser(@Body() userDto: UserEntity): Promise<any> {
     if (userDto.password != '') {
-      const hashedPassword = await this.authService.hashPassword(
-        userDto.password,
-      );
+      const hashedPassword = await this.authService.hashPassword(userDto.password);
       return this.userService.updateUserWithPassword(userDto, hashedPassword);
     } else {
       return this.userService.updateUser(userDto);

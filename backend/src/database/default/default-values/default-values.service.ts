@@ -5,6 +5,7 @@ import { Role } from '../../../shared/enums/role.enum';
 import { ShootingRangePriceEntity } from '../../entities/shooting-range-price.entity';
 import { ShootingRangePriceTypeEnum } from '../../../shared/enums/shooting-range-price-type.enum';
 import { OrganizationEntity } from '../../entities/organization.entity';
+import { EventCategoryEntity } from '../../entities/event-category.entity';
 
 @Injectable()
 export class DefaultValuesService {
@@ -143,9 +144,24 @@ export class DefaultValuesService {
     );
 
     await this.addNewOrganization('Pistolenklub Seen', 'PKS', false, '#AED6F1', false, false, true, true, repository);
-    await this.addNewOrganization('SV Veltheim', 'SVV', false, '#D2B4DE', false, false, true, true, repository);
-    await this.addNewOrganization('Matchschützen', 'Match', true, '#AEB6BF', true, false, false, false, repository);
+    await this.addNewOrganization('Militär', 'MIL', false, '#D2B4DE', true, true, true, true, repository);
+    await this.addNewOrganization('Matchschützen', 'Match', false, '#AEB6BF', true, false, false, false, repository);
     await this.addNewOrganization('Ohrbühlvereine', 'Ohrbühl', false, '#FAD7A0', true, false, false, false, repository);
+  }
+
+  public async loadDefaultEventCategories(repository: Repository<EventCategoryEntity>) {
+    await this.addNewEventCategory('Allgemein', 'Allg.', repository);
+    await this.addNewEventCategory('Bundesübung (Gewehr)', 'BU', repository);
+    await this.addNewEventCategory('Bundesübung (Pistole)', 'BUP', repository);
+    await this.addNewEventCategory('Feldschiessen', 'FS', repository);
+    await this.addNewEventCategory('Nachschiesskurs', 'NSK', repository);
+  }
+
+  private async addNewEventCategory(name: string, abbreviation: string, repository: Repository<EventCategoryEntity>) {
+    const entity = new EventCategoryEntity();
+    entity.name = name;
+    entity.abbreviation = abbreviation;
+    await repository.save(entity);
   }
 
   private async addNewOrganization(

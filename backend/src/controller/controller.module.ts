@@ -15,6 +15,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ShootingRangeAccountingController } from './shooting-range-accounting/shooting-range-accounting.controller';
 import { ShootingRangeAccountingModule } from '../database/shooting-range-accounting/shooting-range-accounting.module';
 import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting-range-accounting-pdf.module';
+import { EventsController } from './events/events.controller';
+import { EventsModule } from '../database/events/events.module';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting
     InvoicePdfModule,
     InvoiceModule,
     InvoiceItemModule,
+    EventsModule,
     AuthModule,
     SharedModule,
   ],
@@ -37,6 +40,7 @@ import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting
     ShootingRangePricesController,
     ShootingRangeAccountingController,
     InvoiceController,
+    EventsController,
   ],
   exports: [],
 })

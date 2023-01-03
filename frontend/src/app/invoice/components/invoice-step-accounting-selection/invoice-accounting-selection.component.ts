@@ -67,12 +67,12 @@ export class InvoiceAccountingSelectionComponent {
       return;
     }
 
-    const accountingDataString = this.stringHelper.getDateString(+this.accountingData.date);
+    const accountingDateString = this.stringHelper.getDateString(+this.accountingData.date);
     this.invoiceData.title =
       'Schussgeld ' +
       organization.name +
       ' ' +
-      accountingDataString +
+      accountingDateString +
       ' ' +
       this.accountingData.startTime +
       ' - ' +

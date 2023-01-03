@@ -9,7 +9,7 @@ import { UserLocalData } from '../../../shared/classes/user-local-data';
 })
 export class InvoiceTypeSelectionComponent {
   public invoiceTypes = Object.values(InvoiceTypeEnum);
-  public selectedType: InvoiceTypeEnum = InvoiceTypeEnum.Invoice_Custom;
+  public selectedType: InvoiceTypeEnum = InvoiceTypeEnum.Invoice_Shooting_Range_Accounting_Daily;
   @Output() selectedTypeChange = new EventEmitter<InvoiceTypeEnum>();
 
   constructor(private userLocalData: UserLocalData) {}

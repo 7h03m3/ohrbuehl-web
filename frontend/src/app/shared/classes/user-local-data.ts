@@ -126,8 +126,10 @@ export class UserLocalData {
     switch (type) {
       case 'Invoice_Custom':
         return 'Benutzerdefiniert';
-      case 'Invoice_Shooting_Range_Accouning_Daily':
+      case 'Invoice_Shooting_Range_Accounting_Daily':
         return 'Schussgeldrechnung (Tag)';
+      case 'Invoice_Shooting_Range_Accounting_Military_25_50_100m':
+        return 'Schussgeldrechnung Militär (25m/50m/100m)';
       default:
         return '';
     }

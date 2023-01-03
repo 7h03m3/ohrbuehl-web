@@ -21,6 +21,7 @@ import { ShootingRangeAccountingEditComponent } from './components/shooting-rang
 import { ShootingRangeRoutingModule } from './shooting-range-routing.module';
 import { InvoiceTypeSelectionComponent } from '../invoice/components/invoice-step-type-selection/invoice-type-selection.component';
 import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoice-step-accounting-selection/invoice-accounting-selection.component';
+import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/invoice-step-accounting-military/invoice-step-accounting-military.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoi
     InvoiceItemEditComponent,
     InvoiceDetailViewComponent,
     InvoiceAccountingSelectionComponent,
+    InvoiceStepAccountingMilitaryComponent,
     InvoiceListComponent,
     InvoiceViewComponent,
     AccountingTypeSelectionComponent,

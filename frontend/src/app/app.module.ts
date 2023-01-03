@@ -12,6 +12,7 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, MainWelcomeComponent],
@@ -28,6 +29,7 @@ import { BrowserModule } from '@angular/platform-browser';
       useValue: JWT_OPTIONS,
     },
     JwtHelperService,
+    { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
   ],
   bootstrap: [AppComponent],
 })

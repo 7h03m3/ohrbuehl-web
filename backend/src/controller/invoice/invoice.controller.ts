@@ -146,7 +146,7 @@ export class InvoiceController {
   }
 
   private getInvoiceFilename(title: string, date: number): string {
-    let filename = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
     filename += '_' + this.dateHelper.getDateFileName(date) + '.pdf';
     return filename;
   }

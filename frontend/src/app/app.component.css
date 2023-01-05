@@ -2,5 +2,8 @@
   flex: 1 1 auto;
 }
 
+.toolbar-buttons {
+  margin-right: 0.5em;
+}
 
 

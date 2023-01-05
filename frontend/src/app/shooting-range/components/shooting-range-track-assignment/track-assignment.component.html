@@ -36,5 +36,5 @@ bis
 <button (click)="doAssignment()" color="primary" mat-raised-button>Zuordnen</button>
 
 <app-shooting-range-shot-number-table (accountingDataChange)="checkIfAllFilledIn()" [(accountingData)]="accountingData"
-                                      [editDisabled]="false" [organizations]="organizations"
+                                      [editDisabled]="false" [editShots]="manualEdit" [organizations]="organizations"
                                       [prices]="prices"></app-shooting-range-shot-number-table>

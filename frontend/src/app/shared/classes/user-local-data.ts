@@ -111,12 +111,25 @@ export class UserLocalData {
     }
   }
 
+  public convertAccountingSelectionTypeText(type: string) {
+    switch (type) {
+      case 'Section_300m_SIUS_file':
+        return '300m (SIUS Data Datei)';
+      case 'Section_300m_manual':
+        return '300m (manuell)';
+      default:
+        return '';
+    }
+  }
+
   public convertInvoiceTypeText(type: string) {
     switch (type) {
       case 'Invoice_Custom':
         return 'Benutzerdefiniert';
-      case 'Invoice_Shooting_Range_Accouning_Daily':
+      case 'Invoice_Shooting_Range_Accounting_Daily':
         return 'Schussgeldrechnung (Tag)';
+      case 'Invoice_Shooting_Range_Accounting_Military_25_50_100m':
+        return 'Schussgeldrechnung Militär (25m/50m/100m)';
       default:
         return '';
     }

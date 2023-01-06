@@ -1,4 +1,5 @@
 import { Role } from '../enums/role.enum';
+import { UserDto } from './user.dto';
 
 export class UserCreateDto {
   userName: string;
@@ -6,6 +7,7 @@ export class UserCreateDto {
   lastName: string;
   roles: Role;
   password: string;
+  manager: UserDto;
 
   constructor() {
     this.userName = '';
@@ -13,5 +15,6 @@ export class UserCreateDto {
     this.lastName = '';
     this.roles = Role.Anonymous;
     this.password = '';
+    this.manager = new UserDto();
   }
 }

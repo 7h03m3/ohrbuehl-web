@@ -5,23 +5,33 @@
       Schiessanlage Ohrbühl
     </button>
 
-    <button *ngIf="isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
+    <button *ngIf="authService.isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
             routerLink="/shooting-range">
       Standwart
     </button>
 
+    <button *ngIf="authService.isOrganizationManager()" class="toolbar-buttons" color="accent" mat-flat-button
+            routerLink="/organization-manager">
+      Vereinsmanager
+    </button>
+
+    <button *ngIf="authService.isEventOrganizer()" class="toolbar-buttons" color="accent" mat-flat-button
+            routerLink="/event-manager">
+      Anlassorganisator
+    </button>
+
     <span class="toolbar-spacer"></span>
 
-    <button *ngIf="isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
+    <button *ngIf="authService.isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
       <mat-icon color="accent">admin_panel_settings</mat-icon>
     </button>
 
-    <button *ngIf="isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
+    <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
       <mat-icon>login</mat-icon>
     </button>
 
 
-    <p *ngIf="isLoggedIn() == true">
+    <p *ngIf="authService.isLoggedIn() == true">
       <button [matMenuTriggerFor]="menu" mat-icon-button>
         <mat-icon>person</mat-icon>
       </button>

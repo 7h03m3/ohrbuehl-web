@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AdminOrganizationDeleteDialogComponent } from '../admin-organization-delete-dialog/admin-organization-delete-dialog.component';
 import { OrganizationApi } from '../../../api/classes/organization-api';
+import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { Observable } from 'rxjs';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 
 @Component({
   selector: 'app-admin-organization-list',
@@ -11,7 +13,7 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
   styleUrls: ['./admin-organization-list.component.css'],
 })
 export class AdminOrganizationListComponent implements OnInit {
-  organizationList$: any;
+  organizationList$ = new Observable<OrganizationDto[]>();
   displayedColumns: string[] = [
     'id',
     'name',
@@ -40,10 +42,8 @@ export class AdminOrganizationListComponent implements OnInit {
   }
 
   deleteOrganization(id: string, name: string) {
-    const dialogRef = this.dialog.open(AdminOrganizationDeleteDialogComponent, {
-      data: {
-        name: name,
-      },
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      data: { itemName: name },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

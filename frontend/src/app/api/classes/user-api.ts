@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
-import { UserUpdateDto } from '../../shared/dtos/user-update.dto';
 
 export class UserApi extends BaseApi {
   constructor(baseUrl: string, private http: HttpClient) {
@@ -22,7 +21,7 @@ export class UserApi extends BaseApi {
     return this.http.post<UserDto>(this.url, createUser);
   }
 
-  public update(updateUser: UserUpdateDto): Observable<UserDto> {
+  public update(updateUser: UserDto): Observable<UserDto> {
     return this.http.put<UserDto>(this.url, updateUser);
   }
 

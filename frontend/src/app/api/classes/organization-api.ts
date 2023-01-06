@@ -14,6 +14,10 @@ export class OrganizationApi extends BaseApi {
     return this.http.get<OrganizationDto[]>(this.url);
   }
 
+  public getAllDetail(): Observable<OrganizationDto[]> {
+    return this.http.get<OrganizationDto[]>(this.url + '/detail');
+  }
+
   public getAllNative(): Observable<OrganizationDto[]> {
     return this.http.get<OrganizationDto[]>(this.url + '/native');
   }
@@ -51,6 +55,14 @@ export class OrganizationApi extends BaseApi {
 
   public getById(id: number): Observable<OrganizationDto> {
     return this.http.get<OrganizationDto>(this.url + '/' + id);
+  }
+
+  public getByManagerId(managerId: number): Observable<OrganizationDto> {
+    return this.http.get<OrganizationDto>(this.url + '/byManager/' + managerId);
+  }
+
+  public getDetailById(id: number): Observable<OrganizationDto> {
+    return this.http.get<OrganizationDto>(this.url + '/detail/' + id);
   }
 
   public create(createOrganization: OrganizationCreateDto): Observable<OrganizationDto> {

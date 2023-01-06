@@ -7,9 +7,12 @@ import { AdminShootingRangePriceEditComponent } from './components/admin-shootin
 import { AdminShootingRangePriceCreateComponent } from './components/admin-shooting-range-price-create/admin-shooting-range-price-create.component';
 import { AdminOrganizationListComponent } from './components/admin-organization-list/admin-organization-list.component';
 import { AdminOrganizationEditComponent } from './components/admin-organization-edit/admin-organization-edit.component';
-import { AdminOrganizationCreateComponent } from './components/admin-organization-create/admin-organization-create.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
+import { AdminEventCategoryListComponent } from './components/admin-event-category-list/admin-event-category-list.component';
+import { AdminEventCategoryEditComponent } from './components/admin-event-category-edit/admin-event-category-edit.component';
+import { AdminEventShiftCategoryListComponent } from './components/admin-event-shift-category-list/admin-event-shift-category-list.component';
+import { AdminEventShiftCategoryEditComponent } from './components/admin-event-shift-category-edit/admin-event-shift-category-edit.component';
 
 const routes: Routes = [
   {
@@ -53,8 +56,20 @@ const routes: Routes = [
         component: AdminOrganizationEditComponent,
       },
       {
-        path: 'organization-create',
-        component: AdminOrganizationCreateComponent,
+        path: 'event-category-list',
+        component: AdminEventCategoryListComponent,
+      },
+      {
+        path: 'event-category-edit',
+        component: AdminEventCategoryEditComponent,
+      },
+      {
+        path: 'event-shift-category-list',
+        component: AdminEventShiftCategoryListComponent,
+      },
+      {
+        path: 'event-shift-category-edit',
+        component: AdminEventShiftCategoryEditComponent,
       },
     ],
   },

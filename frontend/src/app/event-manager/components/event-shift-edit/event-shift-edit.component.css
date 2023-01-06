@@ -1,0 +1,11 @@
+mat-form-field {
+  display: block;
+}
+
+.organization-select {
+  min-width: 13em;
+}
+
+.staff-select {
+  min-width: 20em;
+}

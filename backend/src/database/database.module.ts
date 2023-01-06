@@ -18,6 +18,9 @@ import { DefaultValuesService } from './default/default-values/default-values.se
 import { EventsModule } from './events/events.module';
 import { EventCategoryEntity } from './entities/event-category.entity';
 import { EventEntity } from './entities/event.entity';
+import { EventShiftEntity } from './entities/event-shift.entity';
+import { EventShiftCategoryEntity } from './entities/event-shift-category.entity';
+import { OrganizationMemberEntity } from './entities/organization-member.entity';
 
 @Module({
   imports: [
@@ -34,6 +37,7 @@ import { EventEntity } from './entities/event.entity';
         entities: [
           UserEntity,
           OrganizationEntity,
+          OrganizationMemberEntity,
           ShootingRangePriceEntity,
           InvoiceEntity,
           InvoiceItemEntity,
@@ -41,6 +45,8 @@ import { EventEntity } from './entities/event.entity';
           ShootingRangeAccountingUnitEntity,
           EventCategoryEntity,
           EventEntity,
+          EventShiftEntity,
+          EventShiftCategoryEntity,
         ],
         synchronize: true,
       }),

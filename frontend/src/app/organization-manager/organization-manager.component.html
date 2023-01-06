@@ -1,0 +1,19 @@
+<mat-drawer-container class="sidenav-container">
+  <mat-drawer #drawer class="sidenav" id="side" mode="side" opened>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option routerLink="./info">
+        <mat-icon matListItemIcon>info</mat-icon>
+        Informationen
+      </mat-list-option>
+      <mat-list-option routerLink="./member-list">
+        <mat-icon matListItemIcon>list</mat-icon>
+        Mitglieder
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

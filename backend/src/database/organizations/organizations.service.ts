@@ -4,11 +4,14 @@ import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { DefaultValuesService } from '../default/default-values/default-values.service';
+import { OrganizationDto } from '../../shared/dtos/organization.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class OrganizationsService {
   constructor(
     @InjectRepository(OrganizationEntity) private organizationsRepository: Repository<OrganizationEntity>,
+    private userService: UsersService,
     private defaultValues: DefaultValuesService,
   ) {}
 
@@ -21,6 +24,10 @@ export class OrganizationsService {
 
   findAll(): Promise<OrganizationEntity[]> {
     return this.organizationsRepository.find({ order: { name: 'ASC' } });
+  }
+
+  findAllDetail(): Promise<OrganizationEntity[]> {
+    return this.organizationsRepository.find({ order: { name: 'ASC' }, relations: { manager: true } });
   }
 
   findAllNative(): Promise<OrganizationEntity[]> {
@@ -47,6 +54,14 @@ export class OrganizationsService {
     return this.organizationsRepository.findOneBy({ id });
   }
 
+  findOneByManager(managerId: number): Promise<OrganizationEntity> {
+    return this.organizationsRepository.findOne({ where: { managerId: managerId }, relations: { manager: true } });
+  }
+
+  findOneDetail(id: number): Promise<OrganizationEntity> {
+    return this.organizationsRepository.findOne({ where: { id: id }, relations: { manager: true } });
+  }
+
   async findOneByName(name: string): Promise<OrganizationEntity> | undefined {
     return this.organizationsRepository.findOneBy({ name: name });
   }
@@ -59,12 +74,26 @@ export class OrganizationsService {
     const entity = new OrganizationEntity();
     entity.loadFromCreateDto(createDto);
 
+    if (createDto.manager.id != 0) {
+      entity.manager = await this.userService.findOne(createDto.manager.id);
+    } else {
+      entity.manager = null;
+    }
+
     await this.organizationsRepository.save(entity);
 
     return entity;
   }
 
-  async update(updateDto: OrganizationEntity): Promise<any> {
-    await this.organizationsRepository.update({ id: updateDto.id }, updateDto);
+  async update(updateDto: OrganizationDto): Promise<any> {
+    const entity = new OrganizationEntity();
+    entity.loadFromDto(updateDto);
+    if (updateDto.manager.id != 0) {
+      entity.manager = await this.userService.findOne(updateDto.manager.id);
+    } else {
+      entity.manager = null;
+    }
+
+    await this.organizationsRepository.update({ id: entity.id }, entity);
   }
 }

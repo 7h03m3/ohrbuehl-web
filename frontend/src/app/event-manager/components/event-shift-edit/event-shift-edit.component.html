@@ -1,0 +1,102 @@
+<h2>{{eventData.title}} ({{getTimeString(eventData)}})</h2>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Neue Schicht
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <form (ngSubmit)="onNewShift()" [formGroup]="newShiftForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Kategorie</mat-label>
+      <mat-select formControlName="categoryId" name="category" required>
+        <mat-option *ngFor="let category of categoryList" [value]="category.id">
+          {{category.name}} ({{category.abbreviation}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Startdatum</mat-label>
+      <input [matDatepicker]="picker" formControlName="date" matInput name="start_date">
+      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-hint>Startzeit</mat-hint>
+      <input formControlName="startTime" matInput name="start_time" required type="Time">
+      <mat-error>
+        Bitte eine Startzeit angeben.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-hint>Endzeit</mat-hint>
+      <input formControlName="endTime" matInput name="end_time" required type="Time">
+      <mat-error>
+        Bitte eine Endzeit angeben.
+      </mat-error>
+    </mat-form-field>
+
+    <button [disabled]="!newShiftForm.valid" class="full-width" color="primary" mat-raised-button>Speichern</button>
+  </form>
+</mat-expansion-panel>
+
+<mat-select> <!--[(ngModel)]="element.shift.organizationId"-->
+  <mat-option *ngFor="let item of organizationList" [value]="item.id">
+    {{item.abbreviation}}
+  </mat-option>
+</mat-select>
+
+<table [dataSource]="shiftList" mat-table>
+  <ng-container matColumnDef="time">
+    <th *matHeaderCellDef mat-header-cell>Zeit</th>
+    <td *matCellDef="let element" mat-cell> {{getShiftTimeString(element.shift)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+    <td *matCellDef="let element" mat-cell> {{element.shift.category.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="organization">
+    <th *matHeaderCellDef mat-header-cell>Verein</th>
+    <td *matCellDef="let element" class="organization-select" mat-cell>
+      <mat-select (valueChange)="onOrganizationChange(element, $event)" [(ngModel)]="element.shift.organizationId">
+        <mat-option *ngFor="let item of organizationList" [value]="item.id">
+          {{item.abbreviation}}
+        </mat-option>
+      </mat-select>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="staff">
+    <th *matHeaderCellDef mat-header-cell>Funktionär</th>
+    <td *matCellDef="let element" class="staff-select" mat-cell>
+      <mat-select (valueChange)="onStaffChange(element, $event)" [(ngModel)]="element.shift.assignedStaffId">
+        <mat-option *ngFor="let item of element.staffList" [value]="item.id">
+          {{item.firstName}} {{item.lastName}}
+        </mat-option>
+      </mat-select>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell>
+      Aktion
+    </th>
+    <td *matCellDef="let element" class="align-right" mat-cell>
+      <!--
+      <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+        <mat-button-toggle matTooltip="Schichten planen">
+          <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      -->
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>

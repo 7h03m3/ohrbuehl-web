@@ -1,0 +1,43 @@
+table {
+  width: 100%;
+}
+
+.mat-icon {
+  font-size: 2em;
+}
+
+.mat-card {
+  width: 40em;
+}
+
+.outline {
+  border-style: solid;
+  border-width: thin;
+  border-color: lightgrey;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.align-right {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 2rem;
+}
+
+.list-action-icon {
+  font-size: 2em;
+}
+
+.header-span {
+  margin-left: 0.5rem;
+}

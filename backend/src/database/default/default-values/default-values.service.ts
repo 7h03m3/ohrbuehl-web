@@ -6,6 +6,7 @@ import { ShootingRangePriceEntity } from '../../entities/shooting-range-price.en
 import { ShootingRangePriceTypeEnum } from '../../../shared/enums/shooting-range-price-type.enum';
 import { OrganizationEntity } from '../../entities/organization.entity';
 import { EventCategoryEntity } from '../../entities/event-category.entity';
+import { EventShiftCategoryEntity } from '../../entities/event-shift-category.entity';
 
 @Injectable()
 export class DefaultValuesService {
@@ -64,6 +65,14 @@ export class DefaultValuesService {
       'Position E',
       'Für sämtliche andere Schiessanlässe, wie Firmen- und Bankschiessen.',
       0.33,
+      ShootingRangePriceTypeEnum.Section_300m,
+      repository,
+    );
+
+    await this.addNewShootingRangePrice(
+      'Militär',
+      'Für sämtliche militärische Schiessanlässe',
+      0.3,
       ShootingRangePriceTypeEnum.Section_300m,
       repository,
     );
@@ -155,6 +164,31 @@ export class DefaultValuesService {
     await this.addNewEventCategory('Bundesübung (Pistole)', 'BUP', repository);
     await this.addNewEventCategory('Feldschiessen', 'FS', repository);
     await this.addNewEventCategory('Nachschiesskurs', 'NSK', repository);
+  }
+
+  public async loadDefaultEventShiftCategories(repository: Repository<EventShiftCategoryEntity>) {
+    await this.addNewEventShiftCategory('Admin. Chef', 'EDV', 0, repository);
+    await this.addNewEventShiftCategory('Türsteher', 'TH', 1, repository);
+    await this.addNewEventShiftCategory('Standblatt', 'SB', 2, repository);
+    await this.addNewEventShiftCategory('Abgabe DB/LA', 'DB', 3, repository);
+    await this.addNewEventShiftCategory('Kasse', 'KA', 4, repository);
+    await this.addNewEventShiftCategory('Munition', 'MU', 4, repository);
+    await this.addNewEventShiftCategory('Standchef', 'SC', 5, repository);
+    await this.addNewEventShiftCategory('Schützenmeister', 'SM', 6, repository);
+    await this.addNewEventShiftCategory('Warner', 'WN', 7, repository);
+  }
+
+  private async addNewEventShiftCategory(
+    name: string,
+    abbreviation: string,
+    position: number,
+    repository: Repository<EventShiftCategoryEntity>,
+  ) {
+    const entity = new EventShiftCategoryEntity();
+    entity.name = name;
+    entity.abbreviation = abbreviation;
+    entity.position = position;
+    await repository.save(entity);
   }
 
   private async addNewEventCategory(name: string, abbreviation: string, repository: Repository<EventCategoryEntity>) {

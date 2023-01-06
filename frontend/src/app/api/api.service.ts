@@ -9,6 +9,11 @@ import { ShootingRangePriceApi } from './classes/shooting-range-price-api';
 import { InvoiceApi } from './classes/invoice-api';
 import { InvoiceItemApi } from './classes/invoice-item-api';
 import { UserApi } from './classes/user-api';
+import { OrganizationMemberApi } from './classes/organization-member-api';
+import { EventCategoryApi } from './classes/event-category-api';
+import { EventShiftCategoryApi } from './classes/event-shift-category-api';
+import { EventApi } from './classes/event-api';
+import { EventShiftApi } from './classes/event-shift-api';
 
 @Injectable({
   providedIn: 'root',
@@ -17,18 +22,28 @@ export class ApiService {
   private baseUrl = environment.backendBaseUrl;
   private readonly accountingApi: AccountingApi;
   private readonly organizationApi: OrganizationApi;
+  private readonly organizationMemberApi: OrganizationMemberApi;
   private readonly shootingRangePriceApi: ShootingRangePriceApi;
   private readonly invoiceApi: InvoiceApi;
   private readonly invoiceItemApi: InvoiceItemApi;
   private readonly userApi: UserApi;
+  private readonly eventApi: EventApi;
+  private readonly eventShiftApi: EventShiftApi;
+  private readonly eventCategoryApi: EventCategoryApi;
+  private readonly eventShiftCategoryApi: EventShiftCategoryApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
     this.organizationApi = new OrganizationApi(this.baseUrl, this.http);
+    this.organizationMemberApi = new OrganizationMemberApi(this.baseUrl, this.http);
     this.shootingRangePriceApi = new ShootingRangePriceApi(this.baseUrl, this.http);
     this.invoiceApi = new InvoiceApi(this.baseUrl, this.http);
     this.invoiceItemApi = new InvoiceItemApi(this.baseUrl, this.http);
     this.userApi = new UserApi(this.baseUrl, this.http);
+    this.eventApi = new EventApi(this.baseUrl, this.http);
+    this.eventShiftApi = new EventShiftApi(this.baseUrl, this.http);
+    this.eventCategoryApi = new EventCategoryApi(this.baseUrl, this.http);
+    this.eventShiftCategoryApi = new EventShiftCategoryApi(this.baseUrl, this.http);
   }
 
   login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -58,7 +73,27 @@ export class ApiService {
     return this.organizationApi;
   }
 
+  getOrganizationMember(): OrganizationMemberApi {
+    return this.organizationMemberApi;
+  }
+
   getShootingRangePrice(): ShootingRangePriceApi {
     return this.shootingRangePriceApi;
+  }
+
+  getEvent(): EventApi {
+    return this.eventApi;
+  }
+
+  getEventShift(): EventShiftApi {
+    return this.eventShiftApi;
+  }
+
+  getEventCategory(): EventCategoryApi {
+    return this.eventCategoryApi;
+  }
+
+  getEventShiftCategory(): EventShiftCategoryApi {
+    return this.eventShiftCategoryApi;
   }
 }

@@ -1,0 +1,46 @@
+<mat-card>
+  <mat-card-content>
+    <table [dataSource]="eventList$" mat-table>
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell>ID</th>
+        <td *matCellDef="let element" mat-cell>{{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th *matHeaderCellDef mat-header-cell>Titel</th>
+        <td *matCellDef="let element" mat-cell> {{element.title}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+        <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <th *matHeaderCellDef mat-header-cell>Zeit</th>
+        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="shift">
+        <th *matHeaderCellDef mat-header-cell>Schichten</th>
+        <td *matCellDef="let element" mat-cell> {{getShiftString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell>
+          Aktion
+        </th>
+        <td *matCellDef="let element" class="align-right" mat-cell>
+          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
+              <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

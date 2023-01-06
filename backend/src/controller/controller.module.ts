@@ -17,6 +17,10 @@ import { ShootingRangeAccountingModule } from '../database/shooting-range-accoun
 import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting-range-accounting-pdf.module';
 import { EventsController } from './events/events.controller';
 import { EventsModule } from '../database/events/events.module';
+import { EventsCategoryController } from './events/events-category.controller';
+import { EventsShiftCategoryController } from './events/events-shift-category.controller';
+import { EventsShiftController } from './events/events-shift.controller';
+import { OrganizationsMemberController } from './organizations/organizations-member.controller';
 
 @Module({
   imports: [
@@ -37,10 +41,14 @@ import { EventsModule } from '../database/events/events.module';
     UsersController,
     AuthController,
     OrganizationsController,
+    OrganizationsMemberController,
     ShootingRangePricesController,
     ShootingRangeAccountingController,
     InvoiceController,
     EventsController,
+    EventsCategoryController,
+    EventsShiftCategoryController,
+    EventsShiftController,
   ],
   exports: [],
 })

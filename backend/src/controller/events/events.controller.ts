@@ -1,40 +1,55 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { EventsService } from '../../database/events/events.service';
-import { EventCategoryEntity } from '../../database/entities/event-category.entity';
+
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
-import { EventCategoryCreateDto } from '../../shared/dtos/event-category-create.dto';
-import { EventCategoryDto } from '../../shared/dtos/event-category.dto';
+import { EventCreateDto } from '../../shared/dtos/event-create.dto';
+import { EventEntity } from '../../database/entities/event.entity';
+import { EventDto } from '../../shared/dtos/event.dto';
+import { EventsShiftService } from '../../database/events/events-shift.service';
 
-@Controller('events')
+@Controller('events/')
 export class EventsController {
-  constructor(private readonly eventService: EventsService) {}
+  constructor(private readonly eventService: EventsService, private readonly shiftService: EventsShiftService) {}
 
-  @Get('category')
-  getAllCategories(): Promise<EventCategoryEntity[]> {
-    return this.eventService.findAllCategories();
+  @Get()
+  async getAll(): Promise<EventEntity[]> {
+    return await this.eventService.findAll();
   }
 
-  @Roles(Role.Admin)
+  @Get('byId/:id')
+  getById(@Param('id') id: number): Promise<EventEntity> {
+    return this.eventService.getById(id);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('withShifts')
+  async getAllWithShifts(): Promise<EventEntity[]> {
+    return await this.eventService.findAllWithShifts();
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
-  async createCategory(@Body() dto: EventCategoryCreateDto): Promise<EventCategoryEntity> {
-    return this.eventService.createCategory(dto);
+  async create(@Body() dto: EventCreateDto): Promise<EventEntity> {
+    return await this.eventService.create(dto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
-  async updateCategory(@Body() dto: EventCategoryDto): Promise<EventCategoryEntity> {
-    return this.eventService.updateCategory(dto);
+  async update(@Body() dto: EventDto): Promise<EventEntity> {
+    return this.eventService.update(dto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
-  async deleteCategory(@Param('id') id: string): Promise<any> {
-    return this.eventService.deleteCategory(id);
+  async delete(@Param('id') id: number): Promise<any> {
+    await this.shiftService.deleteByEventId(id);
+    return this.eventService.delete(id);
   }
 }

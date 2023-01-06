@@ -1,0 +1,9 @@
+<h2>{{organizationData.name}} ({{organizationData.abbreviation}})</h2>
+
+Distanzen:
+<ul>
+  <li *ngIf="organizationData.distance_300m">300m</li>
+  <li *ngIf="organizationData.distance_100m">100m</li>
+  <li *ngIf="organizationData.distance_50m">50m</li>
+  <li *ngIf="organizationData.distance_25m">25m</li>
+</ul>

@@ -1,25 +1,32 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { EventCategoryEntity } from './event-category.entity';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventCreateDto } from '../../shared/dtos/event-create.dto';
+import { EventShiftEntity } from './event-shift.entity';
 
 @Entity('events')
 export class EventEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  title: string;
+
+  @Column({ type: 'bigint' })
+  start: number;
+
+  @Column({ type: 'bigint' })
+  end: number;
+
   @ManyToOne((type) => EventCategoryEntity, (category) => category.events)
   @JoinColumn({ name: 'categoryId' })
   category: EventCategoryEntity;
 
-  @Column({ type: 'bigint' })
-  date: number;
-
   @Column()
-  startTime: string;
+  categoryId: number;
 
-  @Column()
-  endTime: string;
+  @OneToMany((type) => EventShiftEntity, (shift) => shift.event)
+  shifts: EventShiftEntity[];
 
   public loadFromDto(dto: EventDto) {
     this.loadFromCreateDto(dto);
@@ -27,8 +34,8 @@ export class EventEntity {
   }
 
   public loadFromCreateDto(dto: EventCreateDto) {
-    this.date = dto.date;
-    this.startTime = dto.startTime;
-    this.endTime = dto.endTime;
+    this.start = dto.start;
+    this.end = dto.end;
+    this.title = dto.title;
   }
 }

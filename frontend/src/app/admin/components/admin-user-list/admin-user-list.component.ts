@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { UserApi } from '../../../api/classes/user-api';
+import { Observable } from 'rxjs';
+import { UserDto } from '../../../shared/dtos/user.dto';
 
 @Component({
   selector: 'app-admin-user-list',
@@ -12,7 +14,7 @@ import { UserApi } from '../../../api/classes/user-api';
   styleUrls: ['./admin-user-list.component.css'],
 })
 export class AdminUserListComponent implements OnInit {
-  userList$: any;
+  userList$ = new Observable<UserDto[]>();
   displayedColumns: string[] = ['id', 'username', 'firstname', 'lastname', 'role', 'action'];
   private userApi: UserApi;
 

@@ -17,6 +17,23 @@ const routes: Routes = [
     },
   },
   {
+    path: 'organization-manager',
+    loadChildren: () =>
+      import('./organization-manager/organization-manager.module').then((m) => m.OrganizationManagerModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: Role.OrganizationManager,
+    },
+  },
+  {
+    path: 'event-manager',
+    loadChildren: () => import('./event-manager/event-manager.module').then((m) => m.EventManagerModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: Role.EventOrganizer,
+    },
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
     canActivate: [RoleGuardService],

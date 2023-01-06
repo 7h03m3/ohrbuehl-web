@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceEntity } from './invoice.entity';
+import { OrganizationEntity } from './organization.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -23,4 +24,7 @@ export class UserEntity {
 
   @OneToMany((type) => InvoiceEntity, (invoice) => invoice.creator)
   invoices: InvoiceEntity[];
+
+  @OneToMany((type) => OrganizationEntity, (organization) => organization.manager)
+  organizations: OrganizationEntity[];
 }

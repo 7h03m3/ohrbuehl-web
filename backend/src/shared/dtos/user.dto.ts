@@ -8,6 +8,7 @@ export class UserDto {
   lastName: string;
   roles: Role;
   password: string;
+  manager: UserDto;
 
   constructor() {
     this.id = 0;
@@ -16,6 +17,7 @@ export class UserDto {
     this.lastName = '';
     this.roles = Role.Anonymous;
     this.password = '';
+    this.manager = new UserDto();
   }
 
   public fillFromEntity(userEntity: UserEntity) {

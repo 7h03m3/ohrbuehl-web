@@ -1,0 +1,58 @@
+<mat-card>
+  <mat-card-content>
+    <table [dataSource]="eventList$" mat-table>
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell>ID</th>
+        <td *matCellDef="let element" mat-cell>{{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th *matHeaderCellDef mat-header-cell>Titel</th>
+        <td *matCellDef="let element" mat-cell> {{element.title}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+        <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th *matHeaderCellDef mat-header-cell>Datum</th>
+        <td *matCellDef="let element" mat-cell> {{getDateString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <th *matHeaderCellDef mat-header-cell>Zeit</th>
+        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell>
+          <span>
+            Aktion
+          </span>
+          <span class="header-span">
+            <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+              <mat-button-toggle (click)="onCreate()" matTooltip="Erstellen">
+                <mat-icon color="accent" inline="true">add</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </span>
+        </th>
+        <td *matCellDef="let element" class="align-right" mat-cell>
+          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="onEdit(element)" matTooltip="Editieren">
+              <mat-icon class="list-action-icon" color="primary" inline="true">edit</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="onDelete(element)" matTooltip="Löschen">
+              <mat-icon class="list-action-icon" color="primary" inline="true">delete</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

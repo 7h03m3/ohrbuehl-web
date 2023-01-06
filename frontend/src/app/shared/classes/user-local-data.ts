@@ -16,6 +16,15 @@ export class UserLocalData {
     return localStorage.getItem(this.accessTokenKey);
   }
 
+  public getUserId(): number {
+    const idString = localStorage.getItem(this.userIdKey);
+    if (idString == null) {
+      return 0;
+    }
+
+    return +idString;
+  }
+
   public isUserAccessTokenSet(): boolean {
     const accessToken = this.getUserAccessToken();
 
@@ -37,8 +46,8 @@ export class UserLocalData {
         return Role.User;
       case Role.ShootingRangeManager:
         return Role.ShootingRangeManager;
-      case Role.ClubPresident:
-        return Role.ClubPresident;
+      case Role.OrganizationManager:
+        return Role.OrganizationManager;
       case Role.EventOrganizer:
         return Role.EventOrganizer;
       case Role.Admin:
@@ -70,7 +79,7 @@ export class UserLocalData {
         return 'Benutzer';
       case 'shootingRangeManager':
         return 'Standwart';
-      case 'clubPresident':
+      case 'organizationManager':
         return 'Vereinspräsident';
       case 'eventOrganizer':
         return 'Anlassorganisator';

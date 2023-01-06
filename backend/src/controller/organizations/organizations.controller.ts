@@ -6,6 +6,7 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { OrganizationEntity } from '../../database/entities/organization.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
+import { OrganizationDto } from '../../shared/dtos/organization.dto';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -14,6 +15,13 @@ export class OrganizationsController {
   @Get()
   getAll(): Promise<OrganizationEntity[]> {
     return this.organizationsService.findAll();
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('detail')
+  getAllDetail(): Promise<OrganizationEntity[]> {
+    return this.organizationsService.findAllDetail();
   }
 
   @Get('native')
@@ -46,6 +54,20 @@ export class OrganizationsController {
     return this.organizationsService.findOne(id);
   }
 
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/byManager/:id')
+  getByManagerId(@Param('id') id: number): Promise<OrganizationEntity> {
+    return this.organizationsService.findOneByManager(id);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/detail/:id')
+  getDetailById(@Param('id') id: number): Promise<OrganizationEntity> {
+    return this.organizationsService.findOneDetail(id);
+  }
+
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
@@ -56,7 +78,7 @@ export class OrganizationsController {
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
-  async update(@Body() updateDto: OrganizationEntity): Promise<any> {
+  async update(@Body() updateDto: OrganizationDto): Promise<any> {
     return this.organizationsService.update(updateDto);
   }
 

@@ -1,9 +1,17 @@
-import {Role} from "../enums/role.enum";
+import { Role } from '../enums/role.enum';
 
 export class UserDto {
-  id: number = 0;
-  userName: string = "";
-  firstName: string = "";
-  lastName: string = "";
-  roles: Role = Role.Anonymous;
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  roles: Role;
+
+  public constructor() {
+    this.id = 0;
+    this.userName = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.roles = Role.Anonymous;
+  }
 }

@@ -16,7 +16,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 })
 export class EventListComponent {
   eventList$ = new Observable<EventDto[]>();
-  displayedColumns: string[] = ['id', 'title', 'category', 'date', 'time', 'action'];
+  displayedColumns: string[] = ['date', 'time', 'title', 'category', 'action'];
   private eventApi: EventApi;
 
   constructor(

@@ -4,9 +4,9 @@
   </mat-card-header>
   <mat-card-content>
     <table [dataSource]="eventList" mat-table>
-      <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell>ID</th>
-        <td *matCellDef="let element" mat-cell>{{element.event.id}} </td>
+      <ng-container matColumnDef="time">
+        <th *matHeaderCellDef mat-header-cell>Zeit</th>
+        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="title">
@@ -17,11 +17,6 @@
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell>Kategorie</th>
         <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell>Zeit</th>
-        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="shift">

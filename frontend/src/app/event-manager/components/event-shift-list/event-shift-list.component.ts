@@ -15,7 +15,7 @@ import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
 })
 export class EventShiftListComponent {
   eventList = new Array<EventShiftListItemDto>();
-  displayedColumns: string[] = ['id', 'title', 'category', 'time', 'shift', 'action'];
+  displayedColumns: string[] = ['time', 'title', 'category', 'shift', 'action'];
   private eventApi: EventApi;
 
   constructor(

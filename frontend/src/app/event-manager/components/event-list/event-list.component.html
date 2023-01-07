@@ -4,21 +4,6 @@
   </mat-card-header>
   <mat-card-content>
     <table [dataSource]="eventList$" mat-table>
-      <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell>ID</th>
-        <td *matCellDef="let element" mat-cell>{{element.id}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell>Titel</th>
-        <td *matCellDef="let element" mat-cell> {{element.title}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
-        <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
-      </ng-container>
-
       <ng-container matColumnDef="date">
         <th *matHeaderCellDef mat-header-cell>Datum</th>
         <td *matCellDef="let element" mat-cell> {{getDateString(element)}}</td>
@@ -27,6 +12,16 @@
       <ng-container matColumnDef="time">
         <th *matHeaderCellDef mat-header-cell>Zeit</th>
         <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
+      </ng-container>
+      
+      <ng-container matColumnDef="title">
+        <th *matHeaderCellDef mat-header-cell>Titel</th>
+        <td *matCellDef="let element" mat-cell> {{element.title}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+        <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">

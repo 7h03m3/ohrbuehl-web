@@ -45,9 +45,11 @@ tr.mat-footer-row {
 .assignment-okay {
   font-weight: bold;
   color: green;
+  text-align: center;
 }
 
 .assignment-not-okay {
   font-weight: bold;
   color: red;
+  text-align: center;
 }

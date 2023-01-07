@@ -178,8 +178,9 @@ export class EventShiftEditComponent {
     element.shift.organizationId = +selection;
     element.shift.assignedStaffId = 0;
     this.resetShiftStates(element);
-    this.shiftApi.update(element.shift).subscribe();
-    this.loadStaffList(element);
+    this.shiftApi.update(element.shift).subscribe((response) => {
+      this.fetch();
+    });
   }
 
   public onChangeStaff(element: EventShiftEditListItemDto, selection: number) {
@@ -270,25 +271,37 @@ export class EventShiftEditComponent {
         this.shiftList.push(item);
       });
 
-      this.shiftList.sort((a, b) => {
-        if (a.shift.category.position > b.shift.category.position) {
-          return 1;
-        }
+      this.sortList();
+    });
+  }
 
-        if (a.shift.category.position < b.shift.category.position) {
-          return -1;
-        }
+  private sortList() {
+    this.shiftList.sort((a, b) => {
+      if (a.shift.category.position > b.shift.category.position) {
+        return 1;
+      }
 
-        if (a.shift.organizationId > b.shift.organizationId) {
-          return 1;
-        }
+      if (a.shift.category.position < b.shift.category.position) {
+        return -1;
+      }
 
-        if (a.shift.organizationId < b.shift.organizationId) {
-          return -1;
-        }
+      if (a.shift.start > b.shift.start) {
+        return 1;
+      }
 
-        return 0;
-      });
+      if (a.shift.start < b.shift.start) {
+        return -1;
+      }
+
+      if (a.shift.organizationId > b.shift.organizationId) {
+        return 1;
+      }
+
+      if (a.shift.organizationId < b.shift.organizationId) {
+        return -1;
+      }
+
+      return 0;
     });
   }
 }

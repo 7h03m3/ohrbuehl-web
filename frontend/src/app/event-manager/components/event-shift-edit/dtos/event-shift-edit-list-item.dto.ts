@@ -1,7 +1,7 @@
 import { EventShiftDto } from '../../../../shared/dtos/event-shift.dto';
 import { OrganizationMemberDto } from '../../../../shared/dtos/organization-member.dto';
 
-export class EventShiftListItemDto {
+export class EventShiftEditListItemDto {
   shift: EventShiftDto;
   disableStaffList: boolean;
   staffList: OrganizationMemberDto[];

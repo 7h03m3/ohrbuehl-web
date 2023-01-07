@@ -17,6 +17,15 @@ export class EventShiftEntity {
   @Column({ type: 'bigint' })
   end: number;
 
+  @Column({ default: false })
+  locked: boolean;
+
+  @Column({ default: false })
+  done: boolean;
+
+  @Column({ default: false })
+  present: boolean;
+
   @ManyToOne((type) => EventShiftCategoryEntity, (category) => category.shifts)
   @JoinColumn({ name: 'categoryId' })
   category: EventShiftCategoryEntity;
@@ -53,5 +62,8 @@ export class EventShiftEntity {
   public loadFromCreateDto(dto: EventShiftCreateDto) {
     this.start = dto.start;
     this.end = dto.end;
+    this.locked = dto.locked;
+    this.done = dto.done;
+    this.present = dto.present;
   }
 }

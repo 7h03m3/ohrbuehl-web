@@ -1,11 +1,6 @@
 <mat-card>
   <mat-card-content>
     <table [dataSource]="memberList$" mat-table>
-      <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell> ID</th>
-        <td *matCellDef="let element" mat-cell> {{element.id}} </td>
-      </ng-container>
-
       <ng-container matColumnDef="firstname">
         <th *matHeaderCellDef mat-header-cell>Vorname</th>
         <td *matCellDef="let element" mat-cell> {{element.firstName}}</td>

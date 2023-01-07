@@ -34,7 +34,7 @@ export class OrganizationsMemberController {
     return this.memberService.findAll();
   }
 
-  @Roles(Role.Admin, Role.OrganizationManager)
+  @Roles(Role.Admin, Role.OrganizationManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('/byOrganization/:id')
   public async getAllByOrganization(@Param('id') id: number, @Request() req: any): Promise<OrganizationMemberEntity[]> {
@@ -78,8 +78,8 @@ export class OrganizationsMemberController {
   }
 
   private async checkAccessById(id: number, req: any) {
-    if (req.user.roles == Role.Admin) {
-      return true;
+    if (req.user.roles != Role.OrganizationManager) {
+      return;
     }
 
     const member = await this.memberService.getDetailById(id);
@@ -89,8 +89,8 @@ export class OrganizationsMemberController {
   }
 
   private async checkAccessByOrganization(organizationId: number, req: any) {
-    if (req.user.roles == Role.Admin) {
-      return true;
+    if (req.user.roles != Role.OrganizationManager) {
+      return;
     }
 
     const organization = await this.organizationService.findOne(organizationId);

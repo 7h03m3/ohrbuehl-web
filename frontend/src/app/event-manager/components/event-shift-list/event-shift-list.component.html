@@ -1,19 +1,22 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Schichtenplanung</mat-card-title>
+  </mat-card-header>
   <mat-card-content>
-    <table [dataSource]="eventList$" mat-table>
+    <table [dataSource]="eventList" mat-table>
       <ng-container matColumnDef="id">
         <th *matHeaderCellDef mat-header-cell>ID</th>
-        <td *matCellDef="let element" mat-cell>{{element.id}} </td>
+        <td *matCellDef="let element" mat-cell>{{element.event.id}} </td>
       </ng-container>
 
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell>Titel</th>
-        <td *matCellDef="let element" mat-cell> {{element.title}}</td>
+        <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
       </ng-container>
 
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell>Kategorie</th>
-        <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
+        <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="time">
@@ -23,7 +26,10 @@
 
       <ng-container matColumnDef="shift">
         <th *matHeaderCellDef mat-header-cell>Schichten</th>
-        <td *matCellDef="let element" mat-cell> {{getShiftString(element)}}</td>
+        <td *matCellDef="let element"
+            [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+            mat-cell> {{element.assignedShifts}}
+          / {{element.totalShifts}}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">

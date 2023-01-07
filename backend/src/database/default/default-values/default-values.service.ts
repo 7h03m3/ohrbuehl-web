@@ -23,7 +23,7 @@ export class DefaultValuesService {
   public async loadDefaultShootingRangePrices(repository: Repository<ShootingRangePriceEntity>) {
     await this.addNewShootingRangePrice(
       'Position A',
-      'Für obligatorische und freiwillige Übungen sowie Freundschaftsschiessen der Verbandsvereine.\n(inkl. Matchschützenvereinigung Winterthur und Einzelschüetzen.',
+      'Für obligatorische und freiwillige Übungen sowie Freundschaftsschiessen der Verbandsvereine.\n(inkl. Matchschützenvereinigung Winterthur und Einzelschützen.)',
       0.25,
       ShootingRangePriceTypeEnum.Section_300m,
       repository,
@@ -84,7 +84,7 @@ export class DefaultValuesService {
       'Arbeiterschiessverein Winterthur',
       'ASV',
       true,
-      '#E6B0AA',
+      '#A9CCE3',
       true,
       false,
       false,
@@ -96,7 +96,7 @@ export class DefaultValuesService {
       'Stadtschützen Winterthur',
       'Stadts.',
       true,
-      '#D7BDE2',
+      '#FF816D',
       true,
       false,
       true,
@@ -108,7 +108,7 @@ export class DefaultValuesService {
       'Standschützen Oberwinterthur',
       'StS Oberi.',
       true,
-      '#A9CCE3',
+      '#A9DFBF',
       true,
       false,
       false,
@@ -120,7 +120,7 @@ export class DefaultValuesService {
       'Schützenverein Wülflingen',
       'SVW',
       true,
-      '#A3E4D7',
+      '#FFED6D',
       true,
       false,
       false,
@@ -132,7 +132,7 @@ export class DefaultValuesService {
       'Feldschützengesellschaft Winterthur',
       'FSGW',
       true,
-      '#A9DFBF',
+      '#D7BDE2',
       true,
       false,
       false,
@@ -152,10 +152,32 @@ export class DefaultValuesService {
       repository,
     );
 
+    await this.addNewOrganization('Edelweiss Long Range', 'ELR', true, '#A2FF33', true, true, true, true, repository);
     await this.addNewOrganization('Pistolenklub Seen', 'PKS', false, '#AED6F1', false, false, true, true, repository);
     await this.addNewOrganization('Militär', 'MIL', false, '#D2B4DE', true, true, true, true, repository);
-    await this.addNewOrganization('Matchschützen', 'Match', false, '#AEB6BF', true, false, false, false, repository);
-    await this.addNewOrganization('Ohrbühlvereine', 'Ohrbühl', false, '#FAD7A0', true, false, false, false, repository);
+    await this.addNewOrganization(
+      'Matchschützen Winterthur',
+      'Match',
+      false,
+      '#AEB6BF',
+      true,
+      false,
+      false,
+      false,
+      repository,
+    );
+    await this.addNewOrganization('Ohrbühlverband', 'Ohrbühl', false, '#FAD7A0', true, false, false, false, repository);
+    await this.addNewOrganization(
+      'Zürcher Schiesssportverband',
+      'ZHSV',
+      false,
+      '#33C1FF',
+      true,
+      true,
+      true,
+      true,
+      repository,
+    );
   }
 
   public async loadDefaultEventCategories(repository: Repository<EventCategoryEntity>) {

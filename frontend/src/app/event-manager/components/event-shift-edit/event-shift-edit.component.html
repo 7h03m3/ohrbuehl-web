@@ -1,69 +1,24 @@
 <h2>{{eventData.title}} ({{getTimeString(eventData)}})</h2>
 
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Neue Schicht
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <form (ngSubmit)="onNewShift()" [formGroup]="newShiftForm">
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <mat-select formControlName="categoryId" name="category" required>
-        <mat-option *ngFor="let category of categoryList" [value]="category.id">
-          {{category.name}} ({{category.abbreviation}})
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Startdatum</mat-label>
-      <input [matDatepicker]="picker" formControlName="date" matInput name="start_date">
-      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-hint>Startzeit</mat-hint>
-      <input formControlName="startTime" matInput name="start_time" required type="Time">
-      <mat-error>
-        Bitte eine Startzeit angeben.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-hint>Endzeit</mat-hint>
-      <input formControlName="endTime" matInput name="end_time" required type="Time">
-      <mat-error>
-        Bitte eine Endzeit angeben.
-      </mat-error>
-    </mat-form-field>
-
-    <button [disabled]="!newShiftForm.valid" class="full-width" color="primary" mat-raised-button>Speichern</button>
-  </form>
-</mat-expansion-panel>
-
-<mat-select> <!--[(ngModel)]="element.shift.organizationId"-->
-  <mat-option *ngFor="let item of organizationList" [value]="item.id">
-    {{item.abbreviation}}
-  </mat-option>
-</mat-select>
-
 <table [dataSource]="shiftList" mat-table>
   <ng-container matColumnDef="time">
     <th *matHeaderCellDef mat-header-cell>Zeit</th>
-    <td *matCellDef="let element" mat-cell> {{getShiftTimeString(element.shift)}}</td>
+    <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}"
+        mat-cell> {{getShiftTimeString(element.shift)}}</td>
   </ng-container>
 
   <ng-container matColumnDef="category">
     <th *matHeaderCellDef mat-header-cell>Kategorie</th>
-    <td *matCellDef="let element" mat-cell> {{element.shift.category.name}} </td>
+    <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}"
+        mat-cell> {{element.shift.category.name}} </td>
   </ng-container>
 
   <ng-container matColumnDef="organization">
     <th *matHeaderCellDef mat-header-cell>Verein</th>
-    <td *matCellDef="let element" class="organization-select" mat-cell>
-      <mat-select (valueChange)="onOrganizationChange(element, $event)" [(ngModel)]="element.shift.organizationId">
+    <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}"
+        class="organization-select" mat-cell>
+      <mat-select (valueChange)="onChangeOrganization(element, $event)" [(ngModel)]="element.shift.organizationId"
+                  [disabled]="!isShiftEditable(element)">
         <mat-option *ngFor="let item of organizationList" [value]="item.id">
           {{item.abbreviation}}
         </mat-option>
@@ -73,8 +28,10 @@
 
   <ng-container matColumnDef="staff">
     <th *matHeaderCellDef mat-header-cell>Funktionär</th>
-    <td *matCellDef="let element" class="staff-select" mat-cell>
-      <mat-select (valueChange)="onStaffChange(element, $event)" [(ngModel)]="element.shift.assignedStaffId">
+    <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" class="staff-select"
+        mat-cell>
+      <mat-select (valueChange)="onChangeStaff(element, $event)" [(ngModel)]="element.shift.assignedStaffId"
+                  [disabled]="!isShiftEditable(element)">
         <mat-option *ngFor="let item of element.staffList" [value]="item.id">
           {{item.firstName}} {{item.lastName}}
         </mat-option>
@@ -84,16 +41,55 @@
 
   <ng-container matColumnDef="action">
     <th *matHeaderCellDef mat-header-cell>
-      Aktion
-    </th>
-    <td *matCellDef="let element" class="align-right" mat-cell>
-      <!--
-      <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
-        <mat-button-toggle matTooltip="Schichten planen">
-          <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
+      <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+        <mat-button-toggle (click)="onShiftNew()" matTooltip="Erstellen">
+          <mat-icon class="add-button-mat-icon" color="accent" inline="true">add</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
-      -->
+    </th>
+    <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" class="align-right"
+        mat-cell>
+      <button *ngIf="isShiftEditable(element)" [matMenuTriggerFor]="menu" mat-icon-button matTooltip="Menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <button (click)="onShiftSetLock(element, false)" *ngIf="isShiftLocked(element)" mat-icon-button
+              matTooltip="Gesperrt">
+        <mat-icon>lock</mat-icon>
+      </button>
+
+      <button (click)="onShiftSetDone(element, false, false)" *ngIf="isShiftDone(element) && isShiftPresent(element)"
+              mat-icon-button matTooltip="Anwesend">
+        <mat-icon class="green-icon">check_circle</mat-icon>
+      </button>
+
+      <button (click)="onShiftSetDone(element, false, false)" *ngIf="isShiftDone(element) && !isShiftPresent(element)"
+              mat-icon-button matTooltip="Nicht erschienen">
+        <mat-icon class="red-icon">cancel</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button (click)="onShiftSetDone(element, true, true)" *ngIf="isShiftFilledIn(element)" mat-menu-item>
+          <mat-icon class="green-icon">check_circle</mat-icon>
+          <span>Anwesend setzen</span>
+        </button>
+        <button (click)="onShiftSetDone(element, true, false)" *ngIf="isShiftFilledIn(element)" mat-menu-item>
+          <mat-icon class="red-icon">cancel</mat-icon>
+          <span>Nicht erschienen setzen</span>
+        </button>
+        <button (click)="onShiftSetLock(element, true)" *ngIf="isShiftFilledIn(element)" mat-menu-item>
+          <mat-icon>lock</mat-icon>
+          <span>Sperren</span>
+        </button>
+        <button (click)="onShiftEdit(element)" mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Bearbeiten</span>
+        </button>
+        <button (click)="onShiftDelete(element)" mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Löschen</span>
+        </button>
+      </mat-menu>
     </td>
   </ng-container>
 

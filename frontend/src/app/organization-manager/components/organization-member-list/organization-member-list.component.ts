@@ -17,7 +17,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 })
 export class OrganizationMemberListComponent {
   memberList$ = new Observable<OrganizationMemberDto[]>();
-  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'birthdate', 'vvaId', 'action'];
+  displayedColumns: string[] = ['firstname', 'lastname', 'birthdate', 'vvaId', 'action'];
 
   private organizationId = 0;
   private organizationApi: OrganizationApi;

@@ -7,9 +7,10 @@ import { EventShiftListComponent } from './components/event-shift-list/event-shi
 import { EventManagerComponent } from './event-manager.component';
 import { EventEditComponent } from './components/event-edit/event-edit.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
+import { EventShiftEditDialogComponent } from './components/event-shift-edit-dialog/event-shift-edit-dialog.component';
 
 @NgModule({
-  declarations: [EventManagerComponent, EventListComponent, EventShiftListComponent, EventEditComponent, EventShiftEditComponent],
+  declarations: [EventManagerComponent, EventListComponent, EventShiftListComponent, EventEditComponent, EventShiftEditComponent, EventShiftEditDialogComponent],
   imports: [CommonModule, MaterialModule, EventManagerRoutingModule],
 })
 export class EventManagerModule {}

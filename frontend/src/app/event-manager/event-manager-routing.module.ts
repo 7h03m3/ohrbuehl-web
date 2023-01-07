@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: EventListComponent,
+        component: EventShiftListComponent,
       },
       {
         path: 'event-list',

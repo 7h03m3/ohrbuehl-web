@@ -41,3 +41,13 @@ tr.mat-footer-row {
 .header-span {
   margin-left: 0.5rem;
 }
+
+.assignment-okay {
+  font-weight: bold;
+  color: green;
+}
+
+.assignment-not-okay {
+  font-weight: bold;
+  color: red;
+}

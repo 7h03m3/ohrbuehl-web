@@ -6,6 +6,9 @@ import { OrganizationMemberDto } from './organization-member.dto';
 export class EventShiftCreateDto {
   start: number;
   end: number;
+  locked: boolean;
+  done: boolean;
+  present: boolean;
   category: EventShiftCategoryDto;
   categoryId: number;
   event: EventDto;
@@ -18,6 +21,9 @@ export class EventShiftCreateDto {
   constructor() {
     this.start = Date.now();
     this.end = Date.now();
+    this.locked = false;
+    this.done = false;
+    this.present = false;
     this.category = new EventShiftCategoryDto();
     this.categoryId = 0;
     this.event = new EventDto();

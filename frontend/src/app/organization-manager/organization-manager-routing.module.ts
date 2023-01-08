@@ -4,6 +4,8 @@ import { OrganizationManagerComponent } from './organization-manager.component';
 import { OrganizationInformationComponent } from './components/organization-information/organization-information.component';
 import { OrganizationMemberListComponent } from './components/organization-member-list/organization-member-list.component';
 import { OrganizationMemberEditComponent } from './components/organization-member-edit/organization-member-edit.component';
+import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
+import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,14 @@ const routes: Routes = [
       {
         path: 'member-edit',
         component: OrganizationMemberEditComponent,
+      },
+      {
+        path: 'event-shift-list',
+        component: EventShiftListComponent,
+      },
+      {
+        path: 'event-shift-edit',
+        component: EventShiftEditComponent,
       },
     ],
   },

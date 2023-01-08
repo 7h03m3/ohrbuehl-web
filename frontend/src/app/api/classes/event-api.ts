@@ -17,6 +17,10 @@ export class EventApi extends BaseApi {
     return this.http.get<EventDto[]>(this.url + '/withShifts/');
   }
 
+  public getAllWithShiftsByOrganizationId(organizationId: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/withShiftsByOrganization/' + organizationId);
+  }
+
   public getById(id: number): Observable<EventDto> {
     return this.http.get<EventDto>(this.url + '/byId/' + id);
   }

@@ -6,6 +6,8 @@ import { OrganizationInformationComponent } from './components/organization-info
 import { OrganizationManagerComponent } from './organization-manager.component';
 import { OrganizationMemberListComponent } from './components/organization-member-list/organization-member-list.component';
 import { OrganizationMemberEditComponent } from './components/organization-member-edit/organization-member-edit.component';
+import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
+import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,8 @@ import { OrganizationMemberEditComponent } from './components/organization-membe
     OrganizationManagerComponent,
     OrganizationMemberListComponent,
     OrganizationMemberEditComponent,
+    EventShiftListComponent,
+    EventShiftEditComponent,
   ],
   imports: [CommonModule, MaterialModule, OrganizationManagerRoutingModule],
 })

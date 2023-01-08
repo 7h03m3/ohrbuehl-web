@@ -13,6 +13,10 @@ export class EventShiftApi extends BaseApi {
     return this.http.get<EventShiftDto[]>(this.url + '/' + eventId);
   }
 
+  public getAllByOrganization(eventId: number, organizationId: number): Observable<EventShiftDto[]> {
+    return this.http.get<EventShiftDto[]>(this.url + '/' + eventId + '/' + organizationId);
+  }
+
   public getById(id: number): Observable<EventShiftDto> {
     return this.http.get<EventShiftDto>(this.url + '/' + id);
   }
@@ -23,6 +27,10 @@ export class EventShiftApi extends BaseApi {
 
   public update(updateDto: EventShiftDto): Observable<EventShiftDto> {
     return this.http.put<EventShiftDto>(this.url, updateDto);
+  }
+
+  public updateAssignments(updateDto: EventShiftDto): Observable<EventShiftDto> {
+    return this.http.put<EventShiftDto>(this.url + '/assignments', updateDto);
   }
 
   public delete(id: number): Observable<any> {

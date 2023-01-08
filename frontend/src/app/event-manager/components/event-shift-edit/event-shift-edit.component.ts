@@ -15,6 +15,7 @@ import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.
 import { EventShiftEditDialogComponent } from '../event-shift-edit-dialog/event-shift-edit-dialog.component';
 import { EventShiftCreateDto } from '../../../shared/dtos/event-shift-create.dto';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { catchError, EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -30,7 +31,6 @@ export class EventShiftEditComponent {
   private eventId = 0;
   private eventApi: EventApi;
   private shiftApi: EventShiftApi;
-
   private organizationApi: OrganizationApi;
   private staffApi: OrganizationMemberApi;
 
@@ -48,7 +48,16 @@ export class EventShiftEditComponent {
 
   public ngOnInit(): void {
     this.organizationApi.getAllNative().subscribe((data) => {
-      this.organizationList = data;
+      this.organizationList = new Array<OrganizationDto>();
+
+      const notSelected = new OrganizationDto();
+      notSelected.abbreviation = '-';
+      this.organizationList.push(notSelected);
+
+      data = data.sort();
+      data.forEach((entry) => {
+        this.organizationList.push(entry);
+      });
     });
 
     this.route.paramMap.subscribe((data) => {
@@ -184,10 +193,20 @@ export class EventShiftEditComponent {
   }
 
   public onChangeStaff(element: EventShiftEditListItemDto, selection: number) {
+    const oldAssignedStaffId = element.shift.assignedStaffId;
     element.shift.assignedStaffId = +selection;
 
-    this.eliminateDuplicateStaff(element.shift.id, element.shift.assignedStaffId);
-    this.shiftApi.update(element.shift).subscribe();
+    this.shiftApi
+      .updateAssignments(element.shift)
+      .pipe(
+        catchError((response) => {
+          element.shift.assignedStaffId = oldAssignedStaffId;
+          return EMPTY;
+        }),
+      )
+      .subscribe((response) => {
+        this.eliminateDuplicateStaff(element.shift.id, element.shift.assignedStaffId);
+      });
   }
 
   public getOrganizationColor(element: EventShiftEditListItemDto) {
@@ -209,7 +228,6 @@ export class EventShiftEditComponent {
       if (listItem.shift.id != shiftId && listItem.shift.assignedStaffId == staffId) {
         listItem.shift.assignedStaffId = 0;
         this.resetShiftStates(listItem);
-        this.shiftApi.update(listItem.shift).subscribe();
       }
     });
   }

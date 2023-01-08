@@ -3,6 +3,7 @@ import { OrganizationEntity } from './organization.entity';
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
 import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-member-create.dto';
 import { EventShiftEntity } from './event-shift.entity';
+import { EventStaffPoolEntity } from './event-staff-pool.entity';
 
 @Entity('organization-member')
 export class OrganizationMemberEntity {
@@ -30,6 +31,9 @@ export class OrganizationMemberEntity {
 
   @OneToMany((type) => EventShiftEntity, (shift) => shift.assignedStaff)
   eventShifts: EventShiftEntity[];
+
+  @OneToMany((type) => EventStaffPoolEntity, (pool) => pool.event)
+  staffPool: EventStaffPoolEntity[];
 
   public loadFromDto(dto: OrganizationMemberDto) {
     this.loadFromCreateDto(dto);

@@ -9,10 +9,16 @@ import { EventCreateDto } from '../../shared/dtos/event-create.dto';
 import { EventEntity } from '../../database/entities/event.entity';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventsShiftService } from '../../database/events/events-shift.service';
+import { EventsMemberPoolService } from '../../database/events/events-member-pool.service';
+import { EventStaffPoolEntity } from '../../database/entities/event-staff-pool.entity';
 
 @Controller('events/')
 export class EventsController {
-  constructor(private readonly eventService: EventsService, private readonly shiftService: EventsShiftService) {}
+  constructor(
+    private readonly eventService: EventsService,
+    private readonly shiftService: EventsShiftService,
+    private eventMemberPoolService: EventsMemberPoolService,
+  ) {}
 
   @Get()
   async getAll(): Promise<EventEntity[]> {
@@ -61,7 +67,25 @@ export class EventsController {
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<any> {
     await this.shiftService.deleteByEventId(id);
+    await this.eventMemberPoolService.deleteByEventId(id);
     return this.eventService.delete(id);
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Post('/staff-pool/:eventId/:memberId')
+  async addToStaffPool(
+    @Param('eventId') eventId: number,
+    @Param('memberId') memberId: number,
+  ): Promise<EventStaffPoolEntity> {
+    return await this.eventMemberPoolService.addToPool(memberId, eventId);
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Delete('/staff-pool/:eventId/:memberId')
+  async removeFromStaffPool(@Param('eventId') eventId: number, @Param('memberId') memberId: number): Promise<any> {
+    return await this.eventMemberPoolService.removeFromPool(memberId, eventId);
   }
 
   private filterShiftsByOrganization(eventList: EventEntity[], organizationId: number) {

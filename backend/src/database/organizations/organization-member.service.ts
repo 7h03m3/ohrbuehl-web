@@ -11,7 +11,7 @@ export class OrganizationMemberService {
     @InjectRepository(OrganizationMemberEntity) private memberRepository: Repository<OrganizationMemberEntity>,
   ) {}
 
-  findAll(): Promise<OrganizationMemberEntity[]> {
+  public findAll(): Promise<OrganizationMemberEntity[]> {
     return this.memberRepository.find({
       order: {
         firstName: 'ASC',
@@ -20,7 +20,7 @@ export class OrganizationMemberService {
     });
   }
 
-  findAllByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
+  public findAllByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
     return this.memberRepository.find({
       relations: { organization: true },
       where: {
@@ -33,19 +33,19 @@ export class OrganizationMemberService {
     });
   }
 
-  getById(id: number): Promise<OrganizationMemberEntity> {
+  public getById(id: number): Promise<OrganizationMemberEntity> {
     return this.memberRepository.findOneBy({ id });
   }
 
-  getDetailById(id: number): Promise<OrganizationMemberEntity> {
+  public getDetailById(id: number): Promise<OrganizationMemberEntity> {
     return this.memberRepository.findOne({ where: { id: id }, relations: { organization: true } });
   }
 
-  async delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await this.memberRepository.delete(id);
   }
 
-  async create(createDto: OrganizationMemberCreateDto): Promise<OrganizationMemberEntity> {
+  public async create(createDto: OrganizationMemberCreateDto): Promise<OrganizationMemberEntity> {
     const entity = new OrganizationMemberEntity();
     entity.loadFromCreateDto(createDto);
 
@@ -54,7 +54,11 @@ export class OrganizationMemberService {
     return entity;
   }
 
-  async update(updateDto: OrganizationMemberDto): Promise<any> {
+  public async update(updateDto: OrganizationMemberDto): Promise<any> {
     await this.memberRepository.update({ id: updateDto.id }, updateDto);
+  }
+
+  public async updateEntity(updateEntity: OrganizationMemberEntity): Promise<any> {
+    await this.memberRepository.update({ id: updateEntity.id }, updateEntity);
   }
 }

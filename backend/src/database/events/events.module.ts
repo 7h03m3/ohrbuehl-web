@@ -10,15 +10,35 @@ import { EventShiftCategoryEntity } from '../entities/event-shift-category.entit
 import { EventsShiftService } from './events-shift.service';
 import { EventsShiftCategoryService } from './events-shift-category.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { EventsMemberPoolService } from './events-member-pool.service';
+import { EventStaffPoolEntity } from '../entities/event-staff-pool.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([EventCategoryEntity, EventEntity, EventShiftEntity, EventShiftCategoryEntity]),
+    TypeOrmModule.forFeature([
+      EventCategoryEntity,
+      EventEntity,
+      EventShiftEntity,
+      EventShiftCategoryEntity,
+      EventStaffPoolEntity,
+    ]),
     DefaultValuesModule,
     OrganizationsModule,
   ],
-  providers: [EventsService, EventsCategoryService, EventsShiftService, EventsShiftCategoryService],
+  providers: [
+    EventsService,
+    EventsCategoryService,
+    EventsShiftService,
+    EventsShiftCategoryService,
+    EventsMemberPoolService,
+  ],
   controllers: [],
-  exports: [EventsService, EventsCategoryService, EventsShiftService, EventsShiftCategoryService],
+  exports: [
+    EventsService,
+    EventsCategoryService,
+    EventsShiftService,
+    EventsShiftCategoryService,
+    EventsMemberPoolService,
+  ],
 })
 export class EventsModule {}

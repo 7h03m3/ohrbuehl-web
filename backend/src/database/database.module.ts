@@ -21,6 +21,7 @@ import { EventEntity } from './entities/event.entity';
 import { EventShiftEntity } from './entities/event-shift.entity';
 import { EventShiftCategoryEntity } from './entities/event-shift-category.entity';
 import { OrganizationMemberEntity } from './entities/organization-member.entity';
+import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { OrganizationMemberEntity } from './entities/organization-member.entity'
           EventEntity,
           EventShiftEntity,
           EventShiftCategoryEntity,
+          EventStaffPoolEntity,
         ],
         synchronize: true,
       }),

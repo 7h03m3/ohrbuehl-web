@@ -24,11 +24,22 @@ export class EventsController {
     return this.eventService.getById(id);
   }
 
-  @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('withShifts')
   async getAllWithShifts(): Promise<EventEntity[]> {
     return await this.eventService.findAllWithShifts();
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('withShiftsByOrganization/:organizationId')
+  async getAllWithShiftsByOrganizationId(@Param('organizationId') organizationId: number): Promise<EventEntity[]> {
+    const eventList = await this.eventService.findAllWithShifts();
+
+    this.filterShiftsByOrganization(eventList, organizationId);
+
+    return eventList;
   }
 
   @Roles(Role.Admin, Role.EventOrganizer)
@@ -51,5 +62,13 @@ export class EventsController {
   async delete(@Param('id') id: number): Promise<any> {
     await this.shiftService.deleteByEventId(id);
     return this.eventService.delete(id);
+  }
+
+  private filterShiftsByOrganization(eventList: EventEntity[], organizationId: number) {
+    eventList.forEach((event) => {
+      event.shifts = event.shifts.filter((shift) => {
+        return shift.organizationId == organizationId;
+      });
+    });
   }
 }

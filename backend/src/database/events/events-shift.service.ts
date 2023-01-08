@@ -23,9 +23,25 @@ export class EventsShiftService {
     private memberService: OrganizationMemberService,
   ) {}
 
+  public getById(id: number): Promise<EventShiftEntity> {
+    return this.shiftRepository.findOne({ where: { id: id } });
+  }
+
   public findByEventId(eventId: number): Promise<EventShiftEntity[]> {
     return this.shiftRepository.find({
       where: { eventId: eventId },
+      order: { start: 'DESC' },
+      relations: {
+        category: true,
+        organization: true,
+        assignedStaff: true,
+      },
+    });
+  }
+
+  public findByEventIdAndOrganizationId(eventId: number, organizationId: number): Promise<EventShiftEntity[]> {
+    return this.shiftRepository.find({
+      where: { eventId: eventId, organizationId: organizationId },
       order: { start: 'DESC' },
       relations: {
         category: true,
@@ -71,12 +87,93 @@ export class EventsShiftService {
     return entity;
   }
 
+  public async updateAssignedStaff(dto: EventShiftDto): Promise<any> {
+    if (dto.assignedStaffId != undefined || dto.assignedStaffId != 0) {
+      await this.clearExistingAssignment(dto.assignedStaffId, dto.eventId);
+    }
+
+    const queryBuilder = this.shiftRepository
+      .createQueryBuilder()
+      .update(EventShiftEntity)
+      .where('id = :id', { id: dto.id });
+
+    if (dto.assignedStaffId != undefined && dto.assignedStaffId != 0) {
+      queryBuilder.set({ assignedStaffId: dto.assignedStaffId });
+    } else {
+      queryBuilder.set({ assignedStaffId: null, assignedStaff: null });
+    }
+
+    return await queryBuilder.execute();
+  }
+
   public async delete(id: string): Promise<void> {
     await this.shiftRepository.delete(id);
   }
 
+  public async clearAllAssignments(memberId: number): Promise<void> {
+    await this.shiftRepository
+      .createQueryBuilder()
+      .update(EventShiftEntity)
+      .set({ assignedStaff: null, assignedStaffId: null, done: false, locked: false, present: false })
+      .where('assignedStaffId = :memberId', { memberId: memberId })
+      .execute();
+  }
+
+  public async clearAllAssignmentsByEventId(staffId: number, eventId: number): Promise<void> {
+    await this.shiftRepository
+      .createQueryBuilder()
+      .update(EventShiftEntity)
+      .set({ assignedStaff: null, assignedStaffId: null, done: false, locked: false, present: false })
+      .where('assignedStaffId = :staffId', { staffId: staffId })
+      .andWhere('eventId = :eventId', { eventId: eventId })
+      .execute();
+  }
+
+  public async countAssignmentsByEventId(staffId: number, eventId: number) {
+    return await this.shiftRepository.count({ where: { eventId: eventId, assignedStaffId: staffId } });
+  }
+
   public async deleteByEventId(id: number): Promise<void> {
     await this.shiftRepository.delete({ eventId: id });
+  }
+
+  private async checkIfLockedOrDoneByEventId(staffId: number, eventId: number) {
+    const lockCount = await this.getLockedCount(staffId, eventId);
+    const doneCount = await this.getDoneCount(staffId, eventId);
+
+    if (lockCount != 0 || doneCount != 0) {
+      const errorMessage = "it's not allowed, because shift entry is locked/done";
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  private async getLockedCount(staffId: number, eventId: number): Promise<number> {
+    return await this.shiftRepository.count({
+      where: {
+        assignedStaffId: staffId,
+        eventId: eventId,
+        locked: true,
+      },
+    });
+  }
+
+  private async getDoneCount(staffId: number, eventId: number): Promise<number> {
+    return await this.shiftRepository.count({
+      where: {
+        assignedStaffId: staffId,
+        eventId: eventId,
+        done: true,
+      },
+    });
+  }
+
+  private async clearExistingAssignment(staffId: number, eventId: number) {
+    const assignmentCount = await this.countAssignmentsByEventId(staffId, eventId);
+
+    if (assignmentCount > 0) {
+      await this.checkIfLockedOrDoneByEventId(staffId, eventId);
+      await this.clearAllAssignmentsByEventId(staffId, eventId);
+    }
   }
 
   private async getCategory(id: number): Promise<EventShiftCategoryEntity> {

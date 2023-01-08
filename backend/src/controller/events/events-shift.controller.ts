@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -12,14 +12,24 @@ import { EventShiftDto } from '../../shared/dtos/event-shift.dto';
 export class EventsShiftController {
   constructor(private shiftService: EventsShiftService) {}
 
-  @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':eventId')
-  getAll(@Param('eventId') eventId: number): Promise<EventShiftEntity[]> {
+  getAllByEvent(@Param('eventId') eventId: number): Promise<EventShiftEntity[]> {
     return this.shiftService.findByEventId(eventId);
   }
 
   @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get(':eventId/:organizationId')
+  getAllByEventAndOrganization(
+    @Param('eventId') eventId: number,
+    @Param('organizationId') organizationId: number,
+  ): Promise<EventShiftEntity[]> {
+    return this.shiftService.findByEventIdAndOrganizationId(eventId, organizationId);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async create(@Body() dto: EventShiftCreateDto): Promise<EventShiftEntity> {
@@ -31,6 +41,13 @@ export class EventsShiftController {
   @Put()
   async update(@Body() dto: EventShiftDto): Promise<EventShiftEntity> {
     return this.shiftService.update(dto);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Put('assignments')
+  async updateAssignments(@Body() dto: EventShiftDto, @Request() req: any): Promise<any> {
+    await this.shiftService.updateAssignedStaff(dto);
   }
 
   @Roles(Role.Admin, Role.EventOrganizer)

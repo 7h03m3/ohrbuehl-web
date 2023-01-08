@@ -20,12 +20,17 @@ import { OrganizationMemberEntity } from '../../database/entities/organization-m
 import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-member-create.dto';
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
 import { OrganizationsService } from '../../database/organizations/organizations.service';
+import { EventsShiftService } from '../../database/events/events-shift.service';
 
 @Controller('organizations/member')
 export class OrganizationsMemberController {
   private async;
 
-  constructor(private memberService: OrganizationMemberService, private organizationService: OrganizationsService) {}
+  constructor(
+    private memberService: OrganizationMemberService,
+    private organizationService: OrganizationsService,
+    private eventShiftService: EventsShiftService,
+  ) {}
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -74,6 +79,7 @@ export class OrganizationsMemberController {
   @Delete(':id')
   public async delete(@Param('id') id: string, @Request() req: any): Promise<any> {
     await this.checkAccessById(+id, req);
+    await this.eventShiftService.clearAllAssignments(+id);
     return this.memberService.delete(id);
   }
 

@@ -1,0 +1,38 @@
+mat-card {
+  min-width: 40em;
+}
+
+mat-table {
+  width: 100%;
+}
+
+tr.mat-mdc-footer-row td {
+  font-weight: bold;
+}
+
+.total-column {
+  border-width: 0px;
+  font-weight: bold;
+}
+
+th.bottom-text {
+  vertical-align: bottom;
+}
+
+th.rotated-text {
+  height: 130px;
+  white-space: nowrap;
+}
+
+th.rotated-text > div {
+  transform: translate(-12px, 50px) rotate(270deg);
+  width: 30px;
+}
+
+th.rotated-text > div > span {
+  padding: 5px 10px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}

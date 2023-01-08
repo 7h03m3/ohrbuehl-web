@@ -5,6 +5,7 @@ import { EventListComponent } from './components/event-list/event-list.component
 import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
 import { EventEditComponent } from './components/event-edit/event-edit.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
+import { StatisticEventShiftsBuComponent } from './components/statistic-event-shifts-bu/statistic-event-shifts-bu.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'event-shift-edit',
         component: EventShiftEditComponent,
+      },
+      {
+        path: 'statistic-event-shift',
+        component: StatisticEventShiftsBuComponent,
       },
     ],
   },

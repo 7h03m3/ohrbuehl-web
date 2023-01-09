@@ -59,10 +59,15 @@ export class EventsStaffPoolController {
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Delete()
-  async removeFromStaffPool(@Body() dto: EventStaffPoolDto, @Request() req: any): Promise<any> {
-    await this.checkStaffPoolAccess(dto.organizationId, req);
-    return await this.eventStaffPoolService.removeFromPool(dto);
+  @Delete('/:organizationId/:eventId/:memberId')
+  async removeFromStaffPool(
+    @Param('organizationId') organizationId: number,
+    @Param('eventId') eventId: number,
+    @Param('memberId') memberId: number,
+    @Request() req: any,
+  ): Promise<any> {
+    await this.checkStaffPoolAccess(organizationId, req);
+    return await this.eventStaffPoolService.removeFromPool(memberId, eventId);
   }
 
   private async checkStaffPoolAccess(organizationId: number, req: any) {

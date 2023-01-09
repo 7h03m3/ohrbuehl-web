@@ -55,8 +55,8 @@ export class EventsStaffPoolService {
     return this.repository.save(entity);
   }
 
-  public async removeFromPool(dto: EventStaffPoolDto): Promise<any> {
-    return await this.repository.delete({ memberId: dto.memberId, eventId: dto.eventId });
+  public async removeFromPool(memberId: number, eventId: number): Promise<any> {
+    return await this.repository.delete({ memberId: memberId, eventId: eventId });
   }
 
   public async deleteByEventId(eventId: number): Promise<void> {

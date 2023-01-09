@@ -9,6 +9,7 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { StringHelper } from '../../../shared/classes/string-helper';
+import {EventStaffPoolDto} from "../../../shared/dtos/event-staff-pool.dto";
 
 @Component({
   selector: 'app-organization-member-list',
@@ -58,8 +59,7 @@ export class OrganizationMemberListComponent {
   }
 
   public onEdit(element: OrganizationMemberDto) {
-    this.router.navigate([
-      '/organization-manager/member-edit',
+    this.router.navigate(['/organization-manager/member-edit',
       {
         id: element.id,
         organizationId: this.organizationId,

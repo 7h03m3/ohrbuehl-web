@@ -14,6 +14,7 @@ import { EventCategoryApi } from './classes/event-category-api';
 import { EventShiftCategoryApi } from './classes/event-shift-category-api';
 import { EventApi } from './classes/event-api';
 import { EventShiftApi } from './classes/event-shift-api';
+import {EventStaffPoolApi} from "./classes/event-staff-pool-api";
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,7 @@ export class ApiService {
   private readonly eventShiftApi: EventShiftApi;
   private readonly eventCategoryApi: EventCategoryApi;
   private readonly eventShiftCategoryApi: EventShiftCategoryApi;
+  private readonly  eventStaffPoolApi: EventStaffPoolApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -44,6 +46,7 @@ export class ApiService {
     this.eventShiftApi = new EventShiftApi(this.baseUrl, this.http);
     this.eventCategoryApi = new EventCategoryApi(this.baseUrl, this.http);
     this.eventShiftCategoryApi = new EventShiftCategoryApi(this.baseUrl, this.http);
+    this.eventStaffPoolApi = new EventStaffPoolApi(this.baseUrl, this.http);
   }
 
   login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -95,5 +98,9 @@ export class ApiService {
 
   getEventShiftCategory(): EventShiftCategoryApi {
     return this.eventShiftCategoryApi;
+  }
+
+  getStaffPool(): EventStaffPoolApi {
+    return this.eventStaffPoolApi;
   }
 }

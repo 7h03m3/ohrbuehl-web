@@ -7,12 +7,25 @@ import { OrganizationMemberService } from '../organizations/organization-member.
 import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
 
 @Injectable()
-export class EventsMemberPoolService {
+export class EventsStaffPoolService {
   constructor(
     @InjectRepository(EventStaffPoolEntity) private repository: Repository<EventStaffPoolEntity>,
     private eventService: EventsService,
     private memberService: OrganizationMemberService,
   ) {}
+
+  public async findAllByOrganization(organizationId: number): Promise<EventStaffPoolEntity[]> {
+    return this.repository.find({ where: { organizationId: organizationId } });
+  }
+
+  public async findAllByOrganizationAndEvent(organizationId: number, eventId: number): Promise<EventStaffPoolEntity[]> {
+    return this.repository.find({
+      where: { organizationId: organizationId, eventId: eventId },
+      relations: {
+        member: true,
+      },
+    });
+  }
 
   public async addToPool(dto: EventStaffPoolDto): Promise<EventStaffPoolEntity> {
     const entryCount = await this.getEntryCount(dto.memberId, dto.eventId);

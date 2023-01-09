@@ -21,6 +21,7 @@ import { EventsCategoryController } from './events/events-category.controller';
 import { EventsShiftCategoryController } from './events/events-shift-category.controller';
 import { EventsShiftController } from './events/events-shift.controller';
 import { OrganizationsMemberController } from './organizations/organizations-member.controller';
+import { EventsStaffPoolController } from './events/events-staff-pool.controller';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { OrganizationsMemberController } from './organizations/organizations-mem
     EventsCategoryController,
     EventsShiftCategoryController,
     EventsShiftController,
+    EventsStaffPoolController,
   ],
   exports: [],
 })

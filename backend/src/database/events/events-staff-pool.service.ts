@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { EventStaffPoolEntity } from '../entities/event-staff-pool.entity';
 import { EventsService } from './events.service';
 import { OrganizationMemberService } from '../organizations/organization-member.service';
+import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
 
 @Injectable()
 export class EventsMemberPoolService {
@@ -13,35 +14,36 @@ export class EventsMemberPoolService {
     private memberService: OrganizationMemberService,
   ) {}
 
-  public async addToPool(memberId: number, eventId: number): Promise<EventStaffPoolEntity> {
-    const entryCount = await this.getEntryCount(memberId, eventId);
+  public async addToPool(dto: EventStaffPoolDto): Promise<EventStaffPoolEntity> {
+    const entryCount = await this.getEntryCount(dto.memberId, dto.eventId);
     if (entryCount != 0) {
       const errorMessage =
-        'event staff pool entry with member id ' + memberId + ' and event id ' + eventId + ' does exist';
+        'event staff pool entry with member id ' + dto.memberId + ' and event id ' + dto.eventId + ' does exist';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    const event = await this.eventService.getById(eventId);
+    const event = await this.eventService.getById(dto.eventId);
     if (event == undefined) {
-      const errorMessage = 'event with id ' + eventId + ' does not exist';
+      const errorMessage = 'event with id ' + dto.eventId + ' does not exist';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    const member = await this.memberService.getById(memberId);
+    const member = await this.memberService.getById(dto.memberId);
     if (member == undefined) {
-      const errorMessage = 'organization member with id ' + memberId + ' does not exist';
+      const errorMessage = 'organization member with id ' + dto.memberId + ' does not exist';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     const entity = new EventStaffPoolEntity();
+    entity.loadFromDto(dto);
     entity.member = member;
     entity.event = event;
 
     return this.repository.save(entity);
   }
 
-  public async removeFromPool(memberId: number, eventId: number): Promise<any> {
-    return await this.repository.delete({ memberId: memberId, eventId: eventId });
+  public async removeFromPool(dto: EventStaffPoolDto): Promise<any> {
+    return await this.repository.delete({ memberId: dto.memberId, eventId: dto.eventId });
   }
 
   public async deleteByEventId(eventId: number): Promise<void> {

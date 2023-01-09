@@ -21,7 +21,7 @@ import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-memb
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { EventsShiftService } from '../../database/events/events-shift.service';
-import { EventsMemberPoolService } from '../../database/events/events-member-pool.service';
+import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
 
 @Controller('organizations/member')
 export class OrganizationsMemberController {
@@ -29,7 +29,7 @@ export class OrganizationsMemberController {
     private memberService: OrganizationMemberService,
     private organizationService: OrganizationsService,
     private eventShiftService: EventsShiftService,
-    private eventMemberPoolService: EventsMemberPoolService,
+    private eventStaffPoolService: EventsStaffPoolService,
   ) {}
 
   @Roles(Role.Admin)
@@ -79,7 +79,7 @@ export class OrganizationsMemberController {
   @Delete(':id')
   public async delete(@Param('id') id: string, @Request() req: any): Promise<any> {
     await this.checkAccessById(+id, req);
-    await this.eventMemberPoolService.deleteByMemberId(+id);
+    await this.eventStaffPoolService.deleteByMemberId(+id);
     await this.eventShiftService.clearAllAssignments(+id);
     return this.memberService.delete(id);
   }

@@ -10,7 +10,7 @@ import { EventShiftCategoryEntity } from '../entities/event-shift-category.entit
 import { EventsShiftService } from './events-shift.service';
 import { EventsShiftCategoryService } from './events-shift-category.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
-import { EventsMemberPoolService } from './events-member-pool.service';
+import { EventsStaffPoolService } from './events-staff-pool.service';
 import { EventStaffPoolEntity } from '../entities/event-staff-pool.entity';
 
 @Module({
@@ -30,7 +30,7 @@ import { EventStaffPoolEntity } from '../entities/event-staff-pool.entity';
     EventsCategoryService,
     EventsShiftService,
     EventsShiftCategoryService,
-    EventsMemberPoolService,
+    EventsStaffPoolService,
   ],
   controllers: [],
   exports: [
@@ -38,7 +38,7 @@ import { EventStaffPoolEntity } from '../entities/event-staff-pool.entity';
     EventsCategoryService,
     EventsShiftService,
     EventsShiftCategoryService,
-    EventsMemberPoolService,
+    EventsStaffPoolService,
   ],
 })
 export class EventsModule {}

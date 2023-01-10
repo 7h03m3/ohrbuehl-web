@@ -8,6 +8,9 @@ import { OrganizationMemberApi } from '../../../api/classes/organization-member-
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { EventDto } from '../../../shared/dtos/event.dto';
+import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { EventStaffPoolDto } from '../../../shared/dtos/event-staff-pool.dto';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-event-staff-pool-edit',
@@ -21,14 +24,17 @@ export class EventStaffPoolEditComponent {
   private organizationId = 0;
   private eventList = new Array<EventDto>();
   private memberList = new Array<OrganizationMemberDto>();
+  private staffPool = new Array<EventStaffPoolDto>();
   private eventApi: EventApi;
   private memberApi: OrganizationMemberApi;
+  private staffPoolApi: EventStaffPoolApi;
   private organizationApi: OrganizationApi;
 
   constructor(private apiService: ApiService, private userData: UserLocalData, private stringHelper: StringHelper) {
     this.organizationApi = this.apiService.getOrganization();
     this.eventApi = apiService.getEvent();
     this.memberApi = apiService.getOrganizationMember();
+    this.staffPoolApi = apiService.getStaffPool();
   }
 
   public ngOnInit(): void {
@@ -37,27 +43,84 @@ export class EventStaffPoolEditComponent {
 
       this.eventApi.getAll().subscribe((response) => {
         this.eventList = response;
-        console.log(this.eventList);
+
+        this.eventList.sort(function (a, b) {
+          if (a.start < b.start) {
+            return -1;
+          }
+
+          return 1;
+        });
 
         this.memberApi.getAllByOrganization(this.organizationId).subscribe((response) => {
           this.memberList = response;
-          console.log(this.memberList);
           this.fetch();
         });
       });
+
+      this.staffPoolApi.getAllByOrganization(this.organizationId).subscribe((response) => {
+        this.staffPool = response;
+      });
     });
+  }
+
+  public onCheckboxChange(
+    member: OrganizationMemberDto,
+    column: EventStaffPoolEditTableColumn,
+    event: MatCheckboxChange,
+  ) {
+    const dto = new EventStaffPoolDto();
+    dto.eventId = column.eventId;
+    dto.memberId = member.id;
+    dto.organizationId = this.organizationId;
+
+    if (event.checked) {
+      this.incrementColumnCount(column);
+      this.staffPoolApi.addStaff(dto).subscribe();
+    } else {
+      this.decrementColumnCount(column);
+      this.staffPoolApi.removeStaff(dto).subscribe();
+    }
+  }
+
+  public isInPool(member: OrganizationMemberDto, column: EventStaffPoolEditTableColumn): boolean {
+    const poolCount = this.staffPool.filter((value) => {
+      return value.eventId == column.eventId && value.memberId == member.id;
+    }).length;
+
+    return poolCount != 0;
+  }
+
+  private incrementColumnCount(column: EventStaffPoolEditTableColumn) {
+    column.totalCount = column.totalCount + 1;
+  }
+
+  private decrementColumnCount(column: EventStaffPoolEditTableColumn) {
+    if (column.totalCount > 0) {
+      column.totalCount = column.totalCount - 1;
+    }
   }
 
   private fetch() {
     this.dataSource = this.memberList;
 
     this.eventList.forEach((event) => {
-      const colum = new EventStaffPoolEditTableColumn();
-      colum.eventId = event.id;
-      colum.def = 'event' + event.id;
-      colum.header = this.getTimeString(event);
-      this.columns.push(colum);
-      this.displayedColumns.push(colum.def);
+      const column = new EventStaffPoolEditTableColumn();
+      column.eventId = event.id;
+      column.def = 'event' + event.id;
+      column.header = this.getTimeString(event);
+
+      this.columns.push(column);
+      this.displayedColumns.push(column.def);
+    });
+
+    this.columns.forEach((column) => {
+      column.totalCount = 0;
+      this.staffPool.forEach((entry) => {
+        if (entry.eventId == column.eventId) {
+          this.incrementColumnCount(column);
+        }
+      });
     });
   }
 

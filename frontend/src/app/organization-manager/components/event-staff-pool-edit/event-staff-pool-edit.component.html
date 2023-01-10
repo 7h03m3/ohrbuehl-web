@@ -6,11 +6,12 @@
   </ng-container>
 
   <ng-container *ngFor="let column of columns" [matColumnDef]="column.def">
-    <th *matHeaderCellDef mat-header-cell>
-      <div><span>{{column.header}}</span></div>
-    </th>
-    <td *matCellDef="let element" mat-cell> 0</td>
-    <td *matFooterCellDef mat-footer-cell>0</td>
+    <th *matHeaderCellDef class="column-header-event" mat-header-cell>{{column.header}}</th>
+    <td *matCellDef="let element" class="column-event" mat-cell>
+      <mat-checkbox (change)="onCheckboxChange(element, column, $event)"
+                    [checked]="isInPool(element, column)"></mat-checkbox>
+    </td>
+    <td *matFooterCellDef class="column-event" mat-footer-cell>{{column.totalCount}}</td>
   </ng-container>
 
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

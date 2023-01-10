@@ -1,5 +1,5 @@
 mat-card {
-  min-width: 40em;
+  min-width: auto;
 }
 
 mat-table {
@@ -8,6 +8,15 @@ mat-table {
 
 tr.mat-mdc-footer-row td {
   font-weight: bold;
+}
+
+.column-header-event {
+  width: 30px;
+}
+
+.column-event {
+  align-content: center;
+  text-align: center;
 }
 
 .total-column {

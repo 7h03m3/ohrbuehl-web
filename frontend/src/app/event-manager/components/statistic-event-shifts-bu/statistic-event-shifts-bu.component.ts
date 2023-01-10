@@ -34,7 +34,6 @@ export class StatisticEventShiftsBuComponent {
 
       this.organizationApi.getAllNative().subscribe((response) => {
         this.organizationList = response;
-        console.log(this.organizationList);
         this.tableComponent.fetch(this.eventList, this.organizationList);
       });
     });

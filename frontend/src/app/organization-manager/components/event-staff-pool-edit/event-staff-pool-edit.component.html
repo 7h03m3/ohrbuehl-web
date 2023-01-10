@@ -1,0 +1,19 @@
+<table [dataSource]="dataSource" mat-table>
+  <ng-container matColumnDef="member">
+    <th *matHeaderCellDef mat-header-cell>Mitglied</th>
+    <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.firstName}} {{element.lastName}}</td>
+    <td *matFooterCellDef mat-footer-cell></td>
+  </ng-container>
+
+  <ng-container *ngFor="let column of columns" [matColumnDef]="column.def">
+    <th *matHeaderCellDef mat-header-cell>
+      <div><span>{{column.header}}</span></div>
+    </th>
+    <td *matCellDef="let element" mat-cell> 0</td>
+    <td *matFooterCellDef mat-footer-cell>0</td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
+</table>

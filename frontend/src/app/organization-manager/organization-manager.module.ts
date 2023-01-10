@@ -8,6 +8,7 @@ import { OrganizationMemberListComponent } from './components/organization-membe
 import { OrganizationMemberEditComponent } from './components/organization-member-edit/organization-member-edit.component';
 import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
+import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { EventShiftEditComponent } from './components/event-shift-edit/event-shi
     OrganizationMemberEditComponent,
     EventShiftListComponent,
     EventShiftEditComponent,
+    EventStaffPoolEditComponent,
   ],
   imports: [CommonModule, MaterialModule, OrganizationManagerRoutingModule],
 })

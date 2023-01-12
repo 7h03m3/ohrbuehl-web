@@ -12,6 +12,8 @@ tr.mat-mdc-footer-row td {
 
 .column-header-event {
   width: 30px;
+  white-space: break-spaces;
+  text-align: center;
 }
 
 .column-event {

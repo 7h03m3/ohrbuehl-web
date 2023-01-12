@@ -41,7 +41,7 @@ export class EventStaffPoolEditComponent {
     this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
       this.organizationId = response.id;
 
-      this.eventApi.getAll().subscribe((response) => {
+      this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
         this.eventList = response;
 
         this.eventList.sort(function (a, b) {
@@ -108,7 +108,7 @@ export class EventStaffPoolEditComponent {
       const column = new EventStaffPoolEditTableColumn();
       column.eventId = event.id;
       column.def = 'event' + event.id;
-      column.header = this.getTimeString(event);
+      column.header = this.getTimeString(event) + '\n' + event.category.abbreviation;
 
       this.columns.push(column);
       this.displayedColumns.push(column.def);

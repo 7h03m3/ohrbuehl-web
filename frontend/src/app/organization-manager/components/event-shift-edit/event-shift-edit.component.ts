@@ -11,6 +11,7 @@ import { OrganizationMemberApi } from '../../../api/classes/organization-member-
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { catchError, EMPTY } from 'rxjs';
+import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -28,6 +29,7 @@ export class EventShiftEditComponent {
   private shiftApi: EventShiftApi;
   private organizationApi: OrganizationApi;
   private staffApi: OrganizationMemberApi;
+  private staffPoolApi: EventStaffPoolApi;
 
   constructor(
     private apiService: ApiService,
@@ -40,6 +42,7 @@ export class EventShiftEditComponent {
     this.shiftApi = this.apiService.getEventShift();
     this.organizationApi = this.apiService.getOrganization();
     this.staffApi = this.apiService.getOrganizationMember();
+    this.staffPoolApi = this.apiService.getStaffPool();
   }
 
   public ngOnInit(): void {
@@ -56,7 +59,7 @@ export class EventShiftEditComponent {
             this.eventData = data;
           });
 
-          this.staffApi.getAllByOrganization(this.organizationId).subscribe((response) => {
+          this.staffPoolApi.getAllByOrganizationAndEvent(this.organizationId, this.eventId).subscribe((poolList) => {
             this.staffList = new Array<OrganizationMemberDto>();
 
             const nonSelected = new OrganizationMemberDto();
@@ -65,8 +68,8 @@ export class EventShiftEditComponent {
 
             this.staffList.push(nonSelected);
 
-            response.forEach((staff) => {
-              this.staffList.push(staff);
+            poolList.forEach((poolEntry) => {
+              this.staffList.push(poolEntry.member);
             });
 
             this.fetch();

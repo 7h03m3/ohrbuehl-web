@@ -1,5 +1,5 @@
 <table [dataSource]="dataSource" mat-table>
-  <ng-container matColumnDef="member">
+  <ng-container matColumnDef="member" sticky>
     <th *matHeaderCellDef mat-header-cell>Mitglied</th>
     <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.firstName}} {{element.lastName}}</td>
     <td *matFooterCellDef mat-footer-cell></td>
@@ -14,7 +14,7 @@
     <td *matFooterCellDef class="column-event" mat-footer-cell>{{column.totalCount}}</td>
   </ng-container>
 
-  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
   <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
 </table>

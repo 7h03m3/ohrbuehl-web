@@ -76,5 +76,11 @@ export class EventsController {
         return shift.organizationId == organizationId;
       });
     });
+
+    eventList.forEach((event, index, list) => {
+      if (event.shifts.length == 0) {
+        list.splice(index, 1);
+      }
+    });
   }
 }

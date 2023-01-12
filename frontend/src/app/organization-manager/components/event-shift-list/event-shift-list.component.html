@@ -23,10 +23,14 @@
         <th *matHeaderCellDef mat-header-cell>Schichten</th>
         <td *matCellDef="let element"
             [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedShifts}}
-          / {{element.totalShifts}}</td>
+            mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="pool">
+        <th *matHeaderCellDef mat-header-cell>Im Pool</th>
+        <td *matCellDef="let element" class="total-pool" mat-cell> {{element.totalInPool}}</td>
+      </ng-container>
+      
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell>
           Aktion

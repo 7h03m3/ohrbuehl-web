@@ -8,6 +8,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
 import { OrganizationApi } from '../../../api/classes/organization-api';
+import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -16,9 +17,10 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 })
 export class EventShiftListComponent {
   eventList = new Array<EventShiftListItemDto>();
-  displayedColumns: string[] = ['time', 'title', 'category', 'shift', 'action'];
+  displayedColumns: string[] = ['time', 'title', 'category', 'shift', 'pool', 'action'];
   private organizationId = 0;
   private eventApi: EventApi;
+  private poolApi: EventStaffPoolApi;
   private organizationApi: OrganizationApi;
 
   constructor(
@@ -30,6 +32,7 @@ export class EventShiftListComponent {
     private stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
+    this.poolApi = this.apiService.getStaffPool();
     this.organizationApi = this.apiService.getOrganization();
   }
 
@@ -91,6 +94,10 @@ export class EventShiftListComponent {
             }
           });
         }
+
+        this.poolApi.getAllByOrganizationAndEvent(this.organizationId, event.id).subscribe((poolList) => {
+          element.totalInPool = poolList.length;
+        });
 
         this.eventList.push(element);
       });

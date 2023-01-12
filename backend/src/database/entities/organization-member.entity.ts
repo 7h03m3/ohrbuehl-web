@@ -22,6 +22,9 @@ export class OrganizationMemberEntity {
   @Column()
   vvaId: string;
 
+  @Column({ default: false })
+  rangeOfficer: boolean;
+
   @ManyToOne((type) => OrganizationEntity, (organization) => organization.members)
   @JoinColumn({ name: 'organizationId' })
   organization: OrganizationEntity;

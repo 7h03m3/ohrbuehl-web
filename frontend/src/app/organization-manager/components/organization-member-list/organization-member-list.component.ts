@@ -9,7 +9,6 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import {EventStaffPoolDto} from "../../../shared/dtos/event-staff-pool.dto";
 
 @Component({
   selector: 'app-organization-member-list',
@@ -18,7 +17,7 @@ import {EventStaffPoolDto} from "../../../shared/dtos/event-staff-pool.dto";
 })
 export class OrganizationMemberListComponent {
   memberList$ = new Observable<OrganizationMemberDto[]>();
-  displayedColumns: string[] = ['firstname', 'lastname', 'birthdate', 'vvaId', 'action'];
+  displayedColumns: string[] = ['firstname', 'lastname', 'birthdate', 'vvaId', 'rangeOfficer', 'action'];
 
   private organizationId = 0;
   private organizationApi: OrganizationApi;
@@ -59,7 +58,8 @@ export class OrganizationMemberListComponent {
   }
 
   public onEdit(element: OrganizationMemberDto) {
-    this.router.navigate(['/organization-manager/member-edit',
+    this.router.navigate([
+      '/organization-manager/member-edit',
       {
         id: element.id,
         organizationId: this.organizationId,

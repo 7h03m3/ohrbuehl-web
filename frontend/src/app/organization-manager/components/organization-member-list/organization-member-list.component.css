@@ -49,3 +49,9 @@ tr.mat-footer-row {
 .header-span {
   margin-left: 0.5rem;
 }
+
+.range-officer-icon {
+  font-size: 18pt;
+  color: green;
+  vertical-align: center;
+}

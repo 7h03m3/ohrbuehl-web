@@ -35,9 +35,15 @@
         </mat-error>
       </mat-form-field>
 
-      <button [disabled]="!memberForm.valid || buttonDisabled" class="full-width" color="primary" mat-raised-button>
-        Speichern
-      </button>
+      <section align="left">
+        <mat-checkbox formControlName="rangeOfficer">Schützenmeister</mat-checkbox>
+      </section>
+
+      <p>
+        <button [disabled]="!memberForm.valid || buttonDisabled" class="full-width" color="primary" mat-raised-button>
+          Speichern
+        </button>
+      </p>
     </form>
   </mat-card-content>
 </mat-card>

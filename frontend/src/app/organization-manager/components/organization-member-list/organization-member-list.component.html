@@ -23,6 +23,13 @@
         <td *matCellDef="let element" mat-cell> {{element.vvaId}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="rangeOfficer">
+        <th *matHeaderCellDef mat-header-cell>SM</th>
+        <td *matCellDef="let element" mat-cell>
+          <mat-icon *ngIf="element.rangeOfficer" class="range-officer-icon">done</mat-icon>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef class="align-right" mat-header-cell>
           <span class="header-span">

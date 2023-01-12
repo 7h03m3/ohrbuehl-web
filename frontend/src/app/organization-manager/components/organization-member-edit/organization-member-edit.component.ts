@@ -34,6 +34,7 @@ export class OrganizationMemberEditComponent {
       lastname: ['', [Validators.required]],
       birthday: ['', [Validators.required]],
       vvaid: [''],
+      rangeOfficer: [''],
     });
 
     this.route.paramMap.subscribe((data) => {
@@ -48,6 +49,7 @@ export class OrganizationMemberEditComponent {
           this.memberForm.controls['firstname'].setValue(this.memberData.firstName);
           this.memberForm.controls['lastname'].setValue(this.memberData.lastName);
           this.memberForm.controls['vvaid'].setValue(this.memberData.vvaId);
+          this.memberForm.controls['rangeOfficer'].setValue(this.memberData.rangeOfficer);
 
           const date = new Date(+this.memberData.birthdate);
           this.memberForm.controls['birthday'].setValue(date.toISOString());
@@ -65,6 +67,7 @@ export class OrganizationMemberEditComponent {
     this.memberData.vvaId = this.memberForm.controls['vvaid'].value;
     this.memberData.birthdate = Date.parse(this.memberForm.controls['birthday'].value);
     this.memberData.organizationId = this.organizationId;
+    this.memberData.rangeOfficer = this.memberForm.controls['rangeOfficer'].value;
 
     if (this.memberData.id == 0) {
       this.memberApi.create(this.memberData).subscribe((response) => {

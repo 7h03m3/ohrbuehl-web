@@ -5,6 +5,8 @@ export class OrganizationMemberCreateDto {
   firstName: string;
   lastName: string;
   birthdate: number;
+  phoneNumber: string;
+  emailAddress: string;
   vvaId: string;
   rangeOfficer: boolean;
   organizationId: number;
@@ -15,6 +17,8 @@ export class OrganizationMemberCreateDto {
     this.firstName = '';
     this.lastName = '';
     this.birthdate = Date.now();
+    this.phoneNumber = '';
+    this.emailAddress = '';
     this.vvaId = '';
     this.rangeOfficer = false;
     this.organizationId = 0;

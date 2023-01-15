@@ -10,6 +10,7 @@ import { EventShiftEditComponent } from './components/event-shift-edit/event-shi
 import { EventShiftEditDialogComponent } from './components/event-shift-edit-dialog/event-shift-edit-dialog.component';
 import { StatisticEventShiftsTableComponent } from './components/statistic-event-shifts/statistic-event-shifts-table.component';
 import { StatisticEventShiftsBuComponent } from './components/statistic-event-shifts-bu/statistic-event-shifts-bu.component';
+import { MemberInfoBottomSheetComponent } from './components/event-shift-edit/components/member-info-bottom-sheet/member-info-bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { StatisticEventShiftsBuComponent } from './components/statistic-event-sh
     EventShiftEditDialogComponent,
     StatisticEventShiftsTableComponent,
     StatisticEventShiftsBuComponent,
+    MemberInfoBottomSheetComponent,
   ],
   imports: [CommonModule, MaterialModule, EventManagerRoutingModule],
 })

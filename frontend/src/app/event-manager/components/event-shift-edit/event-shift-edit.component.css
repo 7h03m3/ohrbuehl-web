@@ -6,6 +6,10 @@ mat-form-field {
   min-width: 13em;
 }
 
+.align-right {
+  text-align: right;
+}
+
 .staff-select {
   min-width: 20em;
 }
@@ -29,4 +33,8 @@ mat-form-field {
 
 .red-icon {
   color: red;
+}
+
+.gray-icon {
+  color: gray;
 }

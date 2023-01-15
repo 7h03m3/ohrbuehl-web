@@ -33,7 +33,7 @@
       <mat-select (valueChange)="onChangeStaff(element, $event)" [(ngModel)]="element.shift.assignedStaffId"
                   [disabled]="!isShiftEditable(element)">
         <mat-option *ngFor="let item of element.staffList" [value]="item.id">
-          {{item.firstName}} {{item.lastName}}
+          {{stringHelper.getMemberNameWithSkills(item)}}
         </mat-option>
       </mat-select>
     </td>
@@ -49,6 +49,12 @@
     </th>
     <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" class="align-right"
         mat-cell>
+
+      <button (click)="onInfo(element)" *ngIf="isShiftFilledIn(element)" mat-icon-button
+              matTooltip="Mitgliedinformationen">
+        <mat-icon class="gray-icon">info</mat-icon>
+      </button>
+
       <button *ngIf="isShiftEditable(element)" [matMenuTriggerFor]="menu" mat-icon-button matTooltip="Menu">
         <mat-icon>more_vert</mat-icon>
       </button>

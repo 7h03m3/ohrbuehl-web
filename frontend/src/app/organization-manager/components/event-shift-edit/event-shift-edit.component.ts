@@ -36,7 +36,7 @@ export class EventShiftEditComponent {
     private userLocalData: UserLocalData,
     private route: ActivatedRoute,
     private userData: UserLocalData,
-    private stringHelper: StringHelper,
+    public stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.shiftApi = this.apiService.getEventShift();

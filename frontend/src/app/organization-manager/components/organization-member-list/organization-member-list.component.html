@@ -1,5 +1,9 @@
 <mat-card>
   <mat-card-content>
+    <mat-card-header>
+      <mat-card-title>Mitgliederliste</mat-card-title>
+    </mat-card-header>
+
     <table [dataSource]="memberList$" mat-table>
       <ng-container matColumnDef="firstname">
         <th *matHeaderCellDef mat-header-cell>Vorname</th>
@@ -16,6 +20,11 @@
         <td *matCellDef="let element" mat-cell>
           {{stringHelper.getDateString(element.birthdate)}}
         </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phoneNumber">
+        <th *matHeaderCellDef mat-header-cell>Telefon</th>
+        <td *matCellDef="let element" mat-cell> {{element.phoneNumber}} </td>
       </ng-container>
 
       <ng-container matColumnDef="vvaId">
@@ -52,7 +61,7 @@
         </td>
       </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
   </mat-card-content>

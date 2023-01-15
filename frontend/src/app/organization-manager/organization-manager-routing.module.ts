@@ -8,6 +8,7 @@ import { EventShiftListComponent } from './components/event-shift-list/event-shi
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
 import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
+import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       {
         path: 'member-edit',
         component: OrganizationMemberEditComponent,
+      },
+      {
+        path: 'member-import',
+        component: OrganizationMemberVvaImportComponent,
       },
       {
         path: 'event-shift-list',

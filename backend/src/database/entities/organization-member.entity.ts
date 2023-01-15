@@ -22,6 +22,12 @@ export class OrganizationMemberEntity {
   @Column()
   vvaId: string;
 
+  @Column()
+  phoneNumber: string;
+
+  @Column()
+  emailAddress: string;
+
   @Column({ default: false })
   rangeOfficer: boolean;
 
@@ -47,6 +53,8 @@ export class OrganizationMemberEntity {
     this.firstName = dto.firstName;
     this.lastName = dto.lastName;
     this.birthdate = dto.birthdate;
+    this.phoneNumber = dto.phoneNumber;
+    this.emailAddress = dto.emailAddress;
     this.vvaId = dto.vvaId;
     this.organizationId = dto.organizationId;
   }

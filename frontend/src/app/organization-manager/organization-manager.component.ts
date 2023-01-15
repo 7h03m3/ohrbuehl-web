@@ -6,13 +6,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./organization-manager.component.css'],
 })
 export class OrganizationManagerComponent {
+  public subMenuMember = false;
   public subMenuStatistic = false;
 
   public onStatisticSubmenu() {
+    this.resetSubmenus();
     this.subMenuStatistic = true;
+  }
+
+  public onMemberSubmenu() {
+    this.resetSubmenus();
+    this.subMenuMember = true;
   }
 
   public resetSubmenus() {
     this.subMenuStatistic = false;
+    this.subMenuMember = false;
   }
 }

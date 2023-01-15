@@ -5,10 +5,20 @@
         <mat-icon matListItemIcon>info</mat-icon>
         Informationen
       </mat-list-option>
-      <mat-list-option (click)="resetSubmenus()" routerLink="./member-list">
-        <mat-icon matListItemIcon>list</mat-icon>
+      <mat-list-option (click)="onMemberSubmenu()" routerLink="./member-list">
+        <mat-icon matListItemIcon>person</mat-icon>
         Mitglieder
       </mat-list-option>
+      <div *ngIf="subMenuMember">
+        <mat-list-option class="sidenav-sub-item" routerLink="./member-list">
+          <mat-icon matListItemIcon>list</mat-icon>
+          Mitgliederliste
+        </mat-list-option>
+        <mat-list-option class="sidenav-sub-item" routerLink="./member-import">
+          <mat-icon matListItemIcon>publish</mat-icon>
+          VVA-Import
+        </mat-list-option>
+      </div>
       <mat-list-option (click)="resetSubmenus()" routerLink="./event-staff-pool-edit">
         <mat-icon matListItemIcon>groups</mat-icon>
         Helfer-Pool
@@ -21,10 +31,12 @@
         <mat-icon matListItemIcon>bar_chart</mat-icon>
         Statistik
       </mat-list-option>
-      <mat-list-option *ngIf="subMenuStatistic" class="sidenav-sub-item" routerLink="./event-staff-statistic">
-        <mat-icon matListItemIcon>bar_chart</mat-icon>
-        Helferstatistik
-      </mat-list-option>
+      <div *ngIf="subMenuStatistic">
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-staff-statistic">
+          <mat-icon matListItemIcon>bar_chart</mat-icon>
+          Helferstatistik
+        </mat-list-option>
+      </div>
     </mat-selection-list>
   </mat-drawer>
   <mat-drawer-content>

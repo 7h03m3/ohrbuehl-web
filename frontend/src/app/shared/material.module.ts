@@ -32,6 +32,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 const materialModules = [
   FormsModule,
@@ -68,6 +69,7 @@ const materialModules = [
   PortalModule,
   MatDatepickerModule,
   MatRadioModule,
+  MatBottomSheetModule,
 ];
 
 @NgModule({

@@ -16,6 +16,8 @@ import { EventShiftEditDialogComponent } from '../event-shift-edit-dialog/event-
 import { EventShiftCreateDto } from '../../../shared/dtos/event-shift-create.dto';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { catchError, EMPTY } from 'rxjs';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-sheet/member-info-bottom-sheet.component';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -38,7 +40,8 @@ export class EventShiftEditComponent {
     private route: ActivatedRoute,
     private apiService: ApiService,
     public dialog: MatDialog,
-    private stringHelper: StringHelper,
+    public stringHelper: StringHelper,
+    private bottomSheet: MatBottomSheet,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.shiftApi = this.apiService.getEventShift();
@@ -151,6 +154,20 @@ export class EventShiftEditComponent {
     });
   }
 
+  public onInfo(element: EventShiftEditListItemDto) {
+    if (element.shift.assignedStaff != undefined) {
+      this.openMemberBottomSheet(element.shift.assignedStaff);
+    } else {
+      const memberList = element.staffList.filter((value) => {
+        return value.id == element.shift.assignedStaffId;
+      });
+
+      if (memberList.length != 0) {
+        this.openMemberBottomSheet(memberList[0]);
+      }
+    }
+  }
+
   public isShiftEditable(element: EventShiftEditListItemDto): boolean {
     return this.isShiftDone(element) == false && this.isShiftLocked(element) == false;
   }
@@ -221,6 +238,14 @@ export class EventShiftEditComponent {
     }
 
     return color;
+  }
+
+  private openMemberBottomSheet(member: OrganizationMemberDto) {
+    this.bottomSheet.open(MemberInfoBottomSheetComponent, {
+      data: {
+        member: member,
+      },
+    });
   }
 
   private eliminateDuplicateStaff(shiftId: number, staffId: number) {

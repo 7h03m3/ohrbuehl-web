@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { OrganizationMemberDto } from '../dtos/organization-member.dto';
 
 @Injectable({ providedIn: 'root' })
 export class StringHelper {
-  public getDateString(dateNumber: number) {
+  public getDateString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const days = this.addLeadingZero(date.getDate());
     const month = this.addLeadingZero(date.getMonth() + 1);
@@ -10,7 +11,7 @@ export class StringHelper {
     return days + '.' + month + '.' + year;
   }
 
-  public getTimeString(dateNumber: number) {
+  public getTimeString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const hours = this.addLeadingZero(date.getHours());
     const minutes = this.addLeadingZero(date.getMinutes());
@@ -28,6 +29,30 @@ export class StringHelper {
     }
 
     return date.getTime();
+  }
+
+  public getDateByDateString(dateString: string): number {
+    const dateStringArray = dateString.split('.');
+
+    const date = new Date();
+    date.setDate(Number.parseInt(dateStringArray[0]));
+    date.setMonth(Number.parseInt(dateStringArray[1]) - 1);
+    date.setFullYear(Number.parseInt(dateStringArray[2]));
+    return date.getTime();
+  }
+
+  public getMemberNameWithSkills(member: OrganizationMemberDto): string {
+    if (member == undefined) {
+      return '';
+    }
+
+    let name = member.firstName + ' ' + member.lastName;
+
+    if (member.rangeOfficer) {
+      name = name + ' (SM)';
+    }
+
+    return name;
   }
 
   private addLeadingZero(inputNumber: number): string {

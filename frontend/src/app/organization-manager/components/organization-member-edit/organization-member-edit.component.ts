@@ -33,6 +33,8 @@ export class OrganizationMemberEditComponent {
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       birthday: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      emailAddress: ['', [Validators.email, Validators.required]],
       vvaid: [''],
       rangeOfficer: [''],
     });
@@ -50,6 +52,8 @@ export class OrganizationMemberEditComponent {
           this.memberForm.controls['lastname'].setValue(this.memberData.lastName);
           this.memberForm.controls['vvaid'].setValue(this.memberData.vvaId);
           this.memberForm.controls['rangeOfficer'].setValue(this.memberData.rangeOfficer);
+          this.memberForm.controls['phoneNumber'].setValue(this.memberData.phoneNumber);
+          this.memberForm.controls['emailAddress'].setValue(this.memberData.emailAddress);
 
           const date = new Date(+this.memberData.birthdate);
           this.memberForm.controls['birthday'].setValue(date.toISOString());
@@ -66,6 +70,8 @@ export class OrganizationMemberEditComponent {
     this.memberData.lastName = this.memberForm.controls['lastname'].value;
     this.memberData.vvaId = this.memberForm.controls['vvaid'].value;
     this.memberData.birthdate = Date.parse(this.memberForm.controls['birthday'].value);
+    this.memberData.phoneNumber = this.memberForm.controls['phoneNumber'].value;
+    this.memberData.emailAddress = this.memberForm.controls['emailAddress'].value;
     this.memberData.organizationId = this.organizationId;
     this.memberData.rangeOfficer = this.memberForm.controls['rangeOfficer'].value;
 

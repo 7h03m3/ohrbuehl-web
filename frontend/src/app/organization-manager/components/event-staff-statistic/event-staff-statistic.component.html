@@ -1,4 +1,7 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Helferstatistik</mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     <table [dataSource]="dataSource" mat-table>
       <ng-container matColumnDef="name">
@@ -23,7 +26,7 @@
             mat-cell>{{element.notPresentCount}}</td>
       </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
   </mat-card-content>

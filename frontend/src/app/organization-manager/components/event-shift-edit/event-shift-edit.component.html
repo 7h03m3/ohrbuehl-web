@@ -17,11 +17,11 @@
       <mat-select (valueChange)="onChangeStaff(element, $event)" *ngIf="isShiftEditable(element)"
                   [(ngModel)]="element.assignedStaffId">
         <mat-option *ngFor="let item of staffList" [value]="item.id">
-          {{item.firstName}} {{item.lastName}}
+          {{stringHelper.getMemberNameWithSkills(item)}}
         </mat-option>
       </mat-select>
       <div *ngIf="!isShiftEditable(element)">
-        {{element.assignedStaff.firstName}} {{element.assignedStaff.lastName}}
+        {{stringHelper.getMemberNameWithSkills(element.assignedStaff)}}
       </div>
     </td>
   </ng-container>

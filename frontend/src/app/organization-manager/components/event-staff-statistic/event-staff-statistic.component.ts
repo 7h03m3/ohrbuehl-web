@@ -14,7 +14,7 @@ import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.
 })
 export class EventStaffStatisticComponent {
   public dataSource = new Array<EventStaffStatisticItem>();
-  public displayedColumns: string[] = ['name', 'shift-count', 'present-count', 'not-present-count'];
+  public displayedColumns: string[] = ['name', 'pool-count', 'shift-count', 'present-count', 'not-present-count'];
   private organizationId = 0;
   private memberList = new Array<OrganizationMemberDto>();
   private memberApi: OrganizationMemberApi;
@@ -28,7 +28,7 @@ export class EventStaffStatisticComponent {
   public ngOnInit(): void {
     this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
       this.organizationId = response.id;
-      this.memberApi.getAllWithShiftsByOrganization(this.organizationId).subscribe((response) => {
+      this.memberApi.getAllDetailedByOrganization(this.organizationId).subscribe((response) => {
         this.memberList = response;
         this.fetch();
       });
@@ -38,11 +38,12 @@ export class EventStaffStatisticComponent {
   private fetch() {
     this.dataSource = new Array<EventStaffStatisticItem>();
     this.memberList.forEach((member) => {
-      const shiftCount = member.eventShifts.length;
-      if (shiftCount != 0) {
+      const staffPoolCount = member.staffPool.length;
+      if (staffPoolCount != 0) {
         const listItem = new EventStaffStatisticItem();
         listItem.name = member.firstName + ' ' + member.lastName;
-        listItem.shiftCount = shiftCount;
+        listItem.poolCount = member.staffPool.length;
+        listItem.shiftCount = member.eventShifts.length;
         listItem.presentCount = this.getPresentCount(member.eventShifts);
         listItem.notPresentCount = this.getNotePresentCount(member.eventShifts);
         this.dataSource.push(listItem);

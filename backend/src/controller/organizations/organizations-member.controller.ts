@@ -49,13 +49,13 @@ export class OrganizationsMemberController {
 
   @Roles(Role.Admin, Role.OrganizationManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('/byOrganizationWithShifts/:id')
+  @Get('/byOrganizationDetailed/:id')
   public async getAllWithShiftsByOrganization(
     @Param('id') id: number,
     @Request() req: any,
   ): Promise<OrganizationMemberEntity[]> {
     await this.checkAccessByOrganization(id, req);
-    return this.memberService.findAllWithShiftsByOrganizationId(id);
+    return this.memberService.findAllDetailedByOrganizationId(id);
   }
 
   @Roles(Role.Admin, Role.OrganizationManager)

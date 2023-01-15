@@ -1,5 +1,6 @@
 import { OrganizationDto } from './organization.dto';
 import { EventShiftDto } from './event-shift.dto';
+import { EventStaffPoolDto } from './event-staff-pool.dto';
 
 export class OrganizationMemberCreateDto {
   firstName: string;
@@ -12,6 +13,7 @@ export class OrganizationMemberCreateDto {
   organizationId: number;
   organization: OrganizationDto;
   eventShifts: EventShiftDto[];
+  staffPool: EventStaffPoolDto[];
 
   constructor() {
     this.firstName = '';
@@ -24,5 +26,6 @@ export class OrganizationMemberCreateDto {
     this.organizationId = 0;
     this.organization = new OrganizationDto();
     this.eventShifts = new Array<EventShiftDto>();
+    this.staffPool = new Array<EventStaffPoolDto>();
   }
 }

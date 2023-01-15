@@ -33,9 +33,9 @@ export class OrganizationMemberService {
     });
   }
 
-  public findAllWithShiftsByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
+  public findAllDetailedByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
     return this.memberRepository.find({
-      relations: { organization: true, eventShifts: true },
+      relations: { organization: true, eventShifts: true, staffPool: true },
       where: {
         organizationId: id,
       },

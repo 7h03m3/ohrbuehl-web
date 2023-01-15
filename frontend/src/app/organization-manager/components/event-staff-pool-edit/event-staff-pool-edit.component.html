@@ -9,7 +9,7 @@
     <th *matHeaderCellDef class="column-header-event" mat-header-cell>{{column.header}}</th>
     <td *matCellDef="let element" class="column-event" mat-cell>
       <mat-checkbox (change)="onCheckboxChange(element, column, $event)"
-                    [checked]="isInPool(element, column)"></mat-checkbox>
+                    [checked]="isInPool(element, column)" matTooltip="{{column.header}}"></mat-checkbox>
     </td>
     <td *matFooterCellDef class="column-event" mat-footer-cell>{{column.totalCount}}</td>
   </ng-container>

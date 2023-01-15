@@ -9,6 +9,11 @@
         <td *matCellDef="let element" mat-cell> {{element.name}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="pool-count">
+        <th *matHeaderCellDef mat-header-cell>Pooldaten</th>
+        <td *matCellDef="let element" class="align-center" mat-cell> {{element.poolCount}}</td>
+      </ng-container>
+
       <ng-container matColumnDef="shift-count">
         <th *matHeaderCellDef mat-header-cell>Schichten</th>
         <td *matCellDef="let element" class="align-center" mat-cell> {{element.shiftCount}}</td>

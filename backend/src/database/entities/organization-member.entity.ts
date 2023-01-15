@@ -41,7 +41,7 @@ export class OrganizationMemberEntity {
   @OneToMany((type) => EventShiftEntity, (shift) => shift.assignedStaff)
   eventShifts: EventShiftEntity[];
 
-  @OneToMany((type) => EventStaffPoolEntity, (pool) => pool.event)
+  @OneToMany((type) => EventStaffPoolEntity, (pool) => pool.member)
   staffPool: EventStaffPoolEntity[];
 
   public loadFromDto(dto: OrganizationMemberDto) {

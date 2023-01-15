@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
+import { DownloadHelper } from '../../../shared/classes/download-helper';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -24,6 +25,7 @@ export class EventShiftListComponent {
     private userLocalData: UserLocalData,
     private router: Router,
     private stringHelper: StringHelper,
+    private downloadHelper: DownloadHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
   }
@@ -34,6 +36,12 @@ export class EventShiftListComponent {
 
   public onShiftPlaning(element: EventShiftListItemDto) {
     this.router.navigate(['/event-manager/event-shift-edit', { eventId: element.event.id }]);
+  }
+
+  public onDownload(element: EventShiftListItemDto) {
+    this.eventApi.getEventReport(element.event.id).subscribe((response) => {
+      this.downloadHelper.downloadPdfFile(response);
+    });
   }
 
   public getTimeString(element: EventShiftListItemDto): string {

@@ -33,6 +33,9 @@
         </th>
         <td *matCellDef="let element" class="align-right" mat-cell>
           <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="onDownload(element)" matTooltip="Download PDF">
+              <mat-icon color="primary" inline="true">file_download</mat-icon>
+            </mat-button-toggle>
             <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
               <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
             </mat-button-toggle>

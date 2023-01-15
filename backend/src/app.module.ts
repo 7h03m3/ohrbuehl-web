@@ -8,6 +8,7 @@ import { InvoicePdfModule } from './pdf/invoice-pdf/invoicePdfModule';
 import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { ShootingRangeAccountingPdfModule } from './pdf/accounting-pdf/shooting-range-accounting-pdf.module';
+import { EventReportPdfModule } from './pdf/events/event-report-pdf/event-report-pdf.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -19,6 +20,7 @@ import configuration from './config/configuration';
     InvoicePdfModule,
     ShootingRangeAccountingPdfModule,
     SharedModule,
+    EventReportPdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

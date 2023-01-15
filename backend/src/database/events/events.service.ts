@@ -26,6 +26,16 @@ export class EventsService {
     return this.eventRepository.findOne({ where: { id: id } });
   }
 
+  public getByIdDetailed(id: number): Promise<EventEntity> {
+    return this.eventRepository.findOne({
+      where: { id: id },
+      relations: {
+        category: true,
+        shifts: true,
+      },
+    });
+  }
+
   public async create(createDto: EventCreateDto): Promise<EventEntity> {
     const category = await this.getCategory(createDto.categoryId);
 

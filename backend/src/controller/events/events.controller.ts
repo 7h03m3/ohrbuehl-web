@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { EventsService } from '../../database/events/events.service';
 
 import { Roles } from '../../shared/decorators/roles.decorator';
@@ -10,6 +22,7 @@ import { EventEntity } from '../../database/entities/event.entity';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventsShiftService } from '../../database/events/events-shift.service';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
+import { EventReportPdfService } from '../../pdf/events/event-report-pdf/event-report-pdf.service';
 
 @Controller('events/')
 export class EventsController {
@@ -17,6 +30,7 @@ export class EventsController {
     private readonly eventService: EventsService,
     private readonly shiftService: EventsShiftService,
     private readonly eventStaffPoolService: EventsStaffPoolService,
+    private readonly eventReportPdfService: EventReportPdfService,
   ) {}
 
   @Get()
@@ -68,6 +82,49 @@ export class EventsController {
     await this.shiftService.deleteByEventId(id);
     await this.eventStaffPoolService.deleteByEventId(id);
     return this.eventService.delete(id);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('report/:id')
+  async downloadReport(@Param('id') id: number, @Res() response): Promise<any> {
+    const eventData: EventEntity = await this.eventService.getByIdDetailed(id);
+    if (!eventData) {
+      const errorMessage = 'event with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    eventData.shifts = await this.shiftService.findByEventId(eventData.id);
+
+    eventData.shifts.sort((a, b) => {
+      if (a.category.position > b.category.position) {
+        return 1;
+      }
+
+      if (a.category.position < b.category.position) {
+        return -1;
+      }
+
+      if (a.start > b.start) {
+        return 1;
+      }
+
+      if (a.start < b.start) {
+        return -1;
+      }
+
+      if (a.organizationId > b.organizationId) {
+        return 1;
+      }
+
+      if (a.organizationId < b.organizationId) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    await this.eventReportPdfService.generatePdf(eventData, response);
   }
 
   private filterShiftsByOrganization(eventList: EventEntity[], organizationId: number) {

@@ -1,5 +1,5 @@
 import { BaseApi } from './base-api';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventCreateDto } from '../../shared/dtos/event-create.dto';
@@ -35,5 +35,15 @@ export class EventApi extends BaseApi {
 
   public delete(id: number): Observable<any> {
     return this.http.delete(this.url + '/' + id);
+  }
+
+  public getEventReport(id: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/report/' + id, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
   }
 }

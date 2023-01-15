@@ -7,6 +7,7 @@ import { OrganizationMemberEditComponent } from './components/organization-membe
 import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
 import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
+import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'event-staff-pool-edit',
         component: EventStaffPoolEditComponent,
+      },
+      {
+        path: 'event-staff-statistic',
+        component: EventStaffStatisticComponent,
       },
     ],
   },

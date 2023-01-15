@@ -10,6 +10,10 @@
   background: white;
 }
 
+.sidenav-sub-item {
+  padding-left: 0.5em !important;
+}
+
 .sidenav-content {
   flex: auto;
   height: auto;

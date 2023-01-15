@@ -33,6 +33,19 @@ export class OrganizationMemberService {
     });
   }
 
+  public findAllWithShiftsByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
+    return this.memberRepository.find({
+      relations: { organization: true, eventShifts: true },
+      where: {
+        organizationId: id,
+      },
+      order: {
+        firstName: 'ASC',
+        lastName: 'ASC',
+      },
+    });
+  }
+
   public getById(id: number): Promise<OrganizationMemberEntity> {
     return this.memberRepository.findOneBy({ id });
   }

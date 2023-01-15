@@ -17,6 +17,10 @@ export class OrganizationMemberApi extends BaseApi {
     return this.http.get<OrganizationMemberDto[]>(this.url + '/byOrganization/' + organizationId);
   }
 
+  public getAllWithShiftsByOrganization(organizationId: number): Observable<OrganizationMemberDto[]> {
+    return this.http.get<OrganizationMemberDto[]>(this.url + '/byOrganizationWithShifts/' + organizationId);
+  }
+
   public getById(id: number): Observable<OrganizationMemberDto> {
     return this.http.get<OrganizationMemberDto>(this.url + '/' + id);
   }

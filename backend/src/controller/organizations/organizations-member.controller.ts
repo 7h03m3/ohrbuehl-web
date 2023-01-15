@@ -47,6 +47,17 @@ export class OrganizationsMemberController {
     return this.memberService.findAllByOrganizationId(id);
   }
 
+  @Roles(Role.Admin, Role.OrganizationManager, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/byOrganizationWithShifts/:id')
+  public async getAllWithShiftsByOrganization(
+    @Param('id') id: number,
+    @Request() req: any,
+  ): Promise<OrganizationMemberEntity[]> {
+    await this.checkAccessByOrganization(id, req);
+    return this.memberService.findAllWithShiftsByOrganizationId(id);
+  }
+
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')

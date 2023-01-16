@@ -1,19 +1,20 @@
 import { Injectable, Res } from '@nestjs/common';
 import { EventEntity } from '../../../database/entities/event.entity';
-import { createReadStream, unlink } from 'fs';
 import { DateHelper } from '../../../shared/classes/date-helper';
 import { EventReportPdfItem } from './classes/event-report-pdf-item';
-import { FileHelper } from '../../../shared/classes/file-helper';
+import { PdfBase } from '../../base/pdf-base.class';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
 
 @Injectable()
-export class EventReportPdfService {
-  constructor(private dateHelper: DateHelper, private fileHelper: FileHelper) {}
+export class EventReportPdfService extends PdfBase {
+  constructor(private dateHelper: DateHelper) {
+    super();
+  }
 
   async generatePdf(eventData: EventEntity, @Res() response) {
-    const tempFilename: string = './' + this.fileHelper.getRandomFilename() + '.pdf';
+    const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const filename = this.getFilename(eventData.title, eventData.start);
 
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
@@ -57,20 +58,7 @@ export class EventReportPdfService {
       prepareHeader: () => doc.font('Helvetica-Bold').fontSize(14),
     });
 
-    doc.end();
-
-    fileStream.on('finish', () => {
-      const fileStream = createReadStream(tempFilename);
-      response.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=' + filename,
-        'Access-Control-Expose-Headers': 'Content-Disposition',
-      });
-
-      fileStream.pipe(response).on('close', () => {
-        unlink(tempFilename, () => {});
-      });
-    });
+    this.finishDocument(doc, fileStream, tempFilename, filename, response);
   }
 
   private getFilename(title: string, date: number): string {

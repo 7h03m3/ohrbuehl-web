@@ -8,10 +8,13 @@ import { PDF } from 'swissqrbill';
 import { Data } from 'swissqrbill/lib/node/cjs/shared/types';
 import { DateHelper } from '../../shared/classes/date-helper';
 import { ShootingRangeAccountingTypeEnum } from '../../shared/enums/shooting-range-accounting-type.enum';
+import { PdfBase } from '../base/pdf-base.class';
 
 @Injectable()
-export class ShootingRangeAccountingPdfService {
-  constructor(private dateHelper: DateHelper) {}
+export class ShootingRangeAccountingPdfService extends PdfBase {
+  constructor(private dateHelper: DateHelper) {
+    super();
+  }
 
   async generatePdf(accountingData: ShootingRangeAccountingEntity, @Res() response) {
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
@@ -77,11 +80,6 @@ export class ShootingRangeAccountingPdfService {
         unlink(tempFilename, () => {});
       });
     });
-  }
-
-  private getRandomFilename(): string {
-    const crypto = require('crypto');
-    return crypto.randomBytes(20).toString('hex');
   }
 
   private getTimeFileString(time: string): string {
@@ -208,9 +206,5 @@ export class ShootingRangeAccountingPdfService {
     };
 
     table.rows.push(rowItem);
-  }
-
-  private mm2Pt(millimeters: number) {
-    return millimeters * 2.8346456692913;
   }
 }

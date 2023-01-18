@@ -15,7 +15,7 @@ export class EventsStaffPoolService {
   ) {}
 
   public async findAllByOrganization(organizationId: number): Promise<EventStaffPoolEntity[]> {
-    return this.repository.find({ where: { organizationId: organizationId } });
+    return this.repository.find({ where: { organizationId: organizationId }, relations: { member: true } });
   }
 
   public async findAllByOrganizationAndEvent(organizationId: number, eventId: number): Promise<EventStaffPoolEntity[]> {

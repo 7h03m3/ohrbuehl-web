@@ -26,6 +26,7 @@ import { EventReportPdfService } from '../../pdf/events/event-report-pdf/event-r
 import { EventOrganizationReportPdfService } from '../../pdf/events/event-organization-report-pdf/event-organization-report-pdf.service';
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { OrganizationMemberEntity } from '../../database/entities/organization-member.entity';
+import { SortHelper } from '../../shared/classes/sort-helper';
 
 @Controller('events/')
 export class EventsController {
@@ -36,6 +37,7 @@ export class EventsController {
     private readonly organizationService: OrganizationsService,
     private readonly eventReportPdfService: EventReportPdfService,
     private readonly eventOrganizationReportPdfService: EventOrganizationReportPdfService,
+    private sortHelper: SortHelper,
   ) {}
 
   @Get()
@@ -101,39 +103,13 @@ export class EventsController {
 
     eventData.shifts = await this.shiftService.findByEventId(eventData.id);
 
-    eventData.shifts.sort((a, b) => {
-      if (a.category.position > b.category.position) {
-        return 1;
-      }
-
-      if (a.category.position < b.category.position) {
-        return -1;
-      }
-
-      if (a.start > b.start) {
-        return 1;
-      }
-
-      if (a.start < b.start) {
-        return -1;
-      }
-
-      if (a.organizationId > b.organizationId) {
-        return 1;
-      }
-
-      if (a.organizationId < b.organizationId) {
-        return -1;
-      }
-
-      return 0;
-    });
+    this.sortHelper.sortShiftList(eventData.shifts);
 
     await this.eventReportPdfService.generatePdf(eventData, response);
   }
 
-  //@Roles(Role.Admin, Role.EventOrganizer)
-  //@UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Roles(Role.Admin, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('report/organization/:organizationId')
   async downloadOrganizationReport(@Param('organizationId') organizationId: number, @Res() response): Promise<any> {
     const organization = await this.organizationService.findOne(organizationId);
@@ -149,6 +125,9 @@ export class EventsController {
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
+    this.sortHelper.sortEventsByDate(eventList);
+
+    const staffPool = await this.eventStaffPoolService.findAllByOrganization(organizationId);
     const shiftList = await this.shiftService.findByOrganizationId(organizationId);
 
     const memberMap = new Map<number, OrganizationMemberEntity>();
@@ -159,9 +138,21 @@ export class EventsController {
       }
     });
 
-    const userList = Array.from(memberMap.values());
+    staffPool.forEach((poolEntry) => {
+      memberMap.set(poolEntry.memberId, poolEntry.member);
+    });
 
-    await this.eventOrganizationReportPdfService.generatePdf(organization, userList, eventList, shiftList, response);
+    const userList = Array.from(memberMap.values());
+    this.sortHelper.sortOrganizationMemberByName(userList);
+
+    await this.eventOrganizationReportPdfService.generatePdf(
+      organization,
+      userList,
+      eventList,
+      shiftList,
+      staffPool,
+      response,
+    );
   }
 
   private filterShiftsByOrganization(eventList: EventEntity[], organizationId: number) {

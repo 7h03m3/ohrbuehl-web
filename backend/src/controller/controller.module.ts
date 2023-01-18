@@ -23,6 +23,7 @@ import { EventsShiftController } from './events/events-shift.controller';
 import { OrganizationsMemberController } from './organizations/organizations-member.controller';
 import { EventsStaffPoolController } from './events/events-staff-pool.controller';
 import { EventReportPdfModule } from '../pdf/events/event-report-pdf/event-report-pdf.module';
+import { EventOrganizationReportPdfModule } from '../pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { EventReportPdfModule } from '../pdf/events/event-report-pdf/event-repor
     InvoiceItemModule,
     EventsModule,
     EventReportPdfModule,
+    EventOrganizationReportPdfModule,
     AuthModule,
     SharedModule,
   ],

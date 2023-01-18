@@ -23,6 +23,9 @@ import { EventDto } from '../../shared/dtos/event.dto';
 import { EventsShiftService } from '../../database/events/events-shift.service';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
 import { EventReportPdfService } from '../../pdf/events/event-report-pdf/event-report-pdf.service';
+import { EventOrganizationReportPdfService } from '../../pdf/events/event-organization-report-pdf/event-organization-report-pdf.service';
+import { OrganizationsService } from '../../database/organizations/organizations.service';
+import { OrganizationMemberEntity } from '../../database/entities/organization-member.entity';
 
 @Controller('events/')
 export class EventsController {
@@ -30,7 +33,9 @@ export class EventsController {
     private readonly eventService: EventsService,
     private readonly shiftService: EventsShiftService,
     private readonly eventStaffPoolService: EventsStaffPoolService,
+    private readonly organizationService: OrganizationsService,
     private readonly eventReportPdfService: EventReportPdfService,
+    private readonly eventOrganizationReportPdfService: EventOrganizationReportPdfService,
   ) {}
 
   @Get()
@@ -125,6 +130,38 @@ export class EventsController {
     });
 
     await this.eventReportPdfService.generatePdf(eventData, response);
+  }
+
+  //@Roles(Role.Admin, Role.EventOrganizer)
+  //@UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('report/organization/:organizationId')
+  async downloadOrganizationReport(@Param('organizationId') organizationId: number, @Res() response): Promise<any> {
+    const organization = await this.organizationService.findOne(organizationId);
+
+    if (organization == undefined) {
+      const errorMessage = 'organization with id ' + organizationId + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    const eventList = await this.eventService.findAll();
+    if (eventList.length == 0) {
+      const errorMessage = 'no events found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    const shiftList = await this.shiftService.findByOrganizationId(organizationId);
+
+    const memberMap = new Map<number, OrganizationMemberEntity>();
+
+    shiftList.forEach((shift) => {
+      if (shift.assignedStaff != undefined) {
+        memberMap.set(shift.assignedStaff.id, shift.assignedStaff);
+      }
+    });
+
+    const userList = Array.from(memberMap.values());
+
+    await this.eventOrganizationReportPdfService.generatePdf(organization, userList, eventList, shiftList, response);
   }
 
   private filterShiftsByOrganization(eventList: EventEntity[], organizationId: number) {

@@ -39,6 +39,18 @@ export class EventsShiftService {
     });
   }
 
+  public findByOrganizationId(organizationId: number): Promise<EventShiftEntity[]> {
+    return this.shiftRepository.find({
+      where: { organizationId: organizationId },
+      order: { start: 'DESC' },
+      relations: {
+        category: true,
+        organization: true,
+        assignedStaff: true,
+      },
+    });
+  }
+
   public findByEventIdAndOrganizationId(eventId: number, organizationId: number): Promise<EventShiftEntity[]> {
     return this.shiftRepository.find({
       where: { eventId: eventId, organizationId: organizationId },

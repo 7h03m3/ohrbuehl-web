@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { ShootingRangeAccountingPdfModule } from './pdf/accounting-pdf/shooting-range-accounting-pdf.module';
 import { EventReportPdfModule } from './pdf/events/event-report-pdf/event-report-pdf.module';
+import { EventOrganizationReportPdfModule } from './pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -21,6 +22,7 @@ import configuration from './config/configuration';
     ShootingRangeAccountingPdfModule,
     SharedModule,
     EventReportPdfModule,
+    EventOrganizationReportPdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

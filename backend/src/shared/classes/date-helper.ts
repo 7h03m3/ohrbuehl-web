@@ -10,6 +10,13 @@ export class DateHelper {
     return days + '.' + month + '.' + year;
   }
 
+  public getDayMonthString(dateNumber: number): string {
+    const date = new Date(+dateNumber);
+    const days = this.addLeadingZero(date.getDate());
+    const month = this.addLeadingZero(date.getMonth() + 1);
+    return days + '.' + month;
+  }
+
   public getTimeString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const hours = this.addLeadingZero(date.getHours());
@@ -20,6 +27,11 @@ export class DateHelper {
   public getDateFileName(dateNumber: number): string {
     const date = this.getDate(dateNumber);
     return date.getFullYear() + '_' + (date.getMonth() + 1) + '_' + date.getDate();
+  }
+
+  public getFullYear(dateNumber: number): string {
+    const date = this.getDate(dateNumber);
+    return date.getFullYear().toString();
   }
 
   private getDate(dateNumber: number): Date {

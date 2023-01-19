@@ -1,4 +1,4 @@
-export class EventReportPdfRowItemOptions {
+export class PdfTableRowItemOptions {
   fontSize: number;
   backgroundColor: string;
   backgroundOpacity: number;
@@ -10,12 +10,12 @@ export class EventReportPdfRowItemOptions {
   }
 }
 
-export class EventReportPdfRowItem {
+export class PdfTableRowItem {
   public label: string;
-  public options: EventReportPdfRowItemOptions;
+  public options: PdfTableRowItemOptions;
 
   constructor() {
     this.label = '';
-    this.options = new EventReportPdfRowItemOptions();
+    this.options = new PdfTableRowItemOptions();
   }
 }

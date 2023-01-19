@@ -61,6 +61,13 @@ export class EventOrganizationReportPdfService extends PdfBase {
       prepareHeader: () => {
         doc.font('Helvetica').fontSize(8);
       },
+      columnSpacing: 5,
+      divider: {
+        horizontal: {
+          disabled: false,
+          opacity: 1,
+        },
+      },
     });
 
     doc.addPage();

@@ -5,15 +5,24 @@ import { EventEntity } from '../../../database/entities/event.entity';
 import { OrganizationEntity } from '../../../database/entities/organization.entity';
 import { EventShiftEntity } from '../../../database/entities/event-shift.entity';
 import { OrganizationMemberEntity } from '../../../database/entities/organization-member.entity';
-import { EventReportPdfRowItem } from '../event-report-pdf/classes/event-report-pdf-row-item';
+import { PdfTableRowItem } from './classes/pdf-table-row-item';
 import { EventStaffPoolEntity } from '../../../database/entities/event-staff-pool.entity';
+import { PdfTableHeaderItem } from './classes/pdf-table-header-item';
+import { EventShiftCategoryEntity } from '../../../database/entities/event-shift-category.entity';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
 
+type Row = Record<string, PdfTableRowItem>;
+
 @Injectable()
 export class EventOrganizationReportPdfService extends PdfBase {
-  constructor(private dateHelper: DateHelper) {
+  private colorNotAvailable = '#000000';
+  private colorAvailable = '#4DFF00';
+  private colorShiftSet = '#FFA200';
+
+  constructor(private dateHelper: DateHelper, private sortHelper: SortHelper) {
     super();
   }
 
@@ -54,6 +63,9 @@ export class EventOrganizationReportPdfService extends PdfBase {
       },
     });
 
+    doc.addPage();
+    await this.addLegendTable(shiftList, doc);
+
     this.finishDocument(doc, fileStream, tempFilename, filename, response);
   }
 
@@ -65,7 +77,6 @@ export class EventOrganizationReportPdfService extends PdfBase {
     staffPool: EventStaffPoolEntity[],
   ) {
     memberList.forEach((member) => {
-      type Row = Record<string, EventReportPdfRowItem>;
       const row: Row = {};
 
       row['staff'] = this.getRowItem(member.firstName + ' ' + member.lastName);
@@ -75,15 +86,15 @@ export class EventOrganizationReportPdfService extends PdfBase {
         const memberShifts = this.getMemberShift(event.id, member.id, shiftList);
 
         if (memberShifts != undefined) {
-          this.setRowItemColor('#FFA200', 0.75, rowItem);
+          this.setRowItemColor(this.colorShiftSet, 0.75, rowItem);
           rowItem.label = memberShifts.category.abbreviation;
         } else {
           const pool = this.getStaffPoolEntry(event.id, member.id, staffPool);
 
           if (pool != undefined) {
-            this.setRowItemColor('#4DFF00', 0.5, rowItem);
+            this.setRowItemColor(this.colorAvailable, 0.5, rowItem);
           } else {
-            this.setRowItemColor('#000000', 0.5, rowItem);
+            this.setRowItemColor(this.colorNotAvailable, 0.5, rowItem);
           }
         }
 
@@ -92,6 +103,48 @@ export class EventOrganizationReportPdfService extends PdfBase {
 
       table.datas.push(row);
     });
+  }
+
+  private async addLegendTable(shiftList: EventShiftEntity[], doc: any) {
+    const table = {
+      title: {
+        label: 'Legende',
+        fontSize: 14,
+      },
+      subtitle: '',
+      headers: [],
+      datas: [],
+    };
+
+    table.headers.push(this.getHeaderItem('', 'item', 'center', 40));
+    table.headers.push(this.getHeaderItem(' Beschreibung', 'description', 'left', 120));
+
+    this.addLegendRow('', 'Nicht verfügbar', this.colorNotAvailable, 0.5, table);
+    this.addLegendRow('', 'Verfügbar', this.colorAvailable, 0.5, table);
+    this.addLegendRow('', 'Eingeteilt', this.colorShiftSet, 0.75, table);
+
+    const categoryMap = new Map<number, EventShiftCategoryEntity>();
+    shiftList.forEach((shift) => {
+      categoryMap.set(shift.category.id, shift.category);
+    });
+
+    const categoryArray = Array.from(categoryMap.values());
+    this.sortHelper.sortShiftCategoryByAbbreviation(categoryArray);
+
+    categoryArray.forEach((category) => {
+      this.addLegendRow(category.abbreviation, category.name, '', 0, table);
+    });
+
+    await doc.table(table);
+  }
+
+  private addLegendRow(itemText: string, description: string, color: string, opacity: number, table: any) {
+    const row: Row = {};
+    const itemShiftSet = this.getRowItem(itemText);
+    this.setRowItemColor(color, opacity, itemShiftSet);
+    row['item'] = itemShiftSet;
+    row['description'] = this.getRowItem(description);
+    table.datas.push(row);
   }
 
   private getMemberShift(
@@ -114,26 +167,30 @@ export class EventOrganizationReportPdfService extends PdfBase {
     });
   }
 
-  private getRowItem(label: string): EventReportPdfRowItem {
-    const rowItem = new EventReportPdfRowItem();
+  private getRowItem(label: string): PdfTableRowItem {
+    const rowItem = new PdfTableRowItem();
     rowItem.label = ' ' + label;
     rowItem.options.fontSize = 10;
 
     return rowItem;
   }
 
-  private setRowItemColor(color: string, opacity: number, item: EventReportPdfRowItem) {
+  private getHeaderItem(label: string, property: string, align: string, width: number) {
+    const item = new PdfTableHeaderItem();
+    item.label = label;
+    item.property = property;
+    item.align = align;
+    item.width = width;
+    return item;
+  }
+
+  private setRowItemColor(color: string, opacity: number, item: PdfTableRowItem) {
     item.options.backgroundOpacity = opacity;
     item.options.backgroundColor = color;
   }
 
   private addTableHeader(table: any, eventList: EventEntity[]) {
-    table.headers.push({
-      label: '',
-      property: 'staff',
-      align: 'left',
-      width: 150,
-    });
+    table.headers.push(this.getHeaderItem('', 'staff', 'left', 150));
 
     eventList.forEach((event) => {
       const headerString =
@@ -144,12 +201,7 @@ export class EventOrganizationReportPdfService extends PdfBase {
         event.category.abbreviation;
 
       const propertyString = 'event' + event.id;
-      table.headers.push({
-        label: headerString,
-        property: propertyString,
-        align: 'center',
-        width: 40,
-      });
+      table.headers.push(this.getHeaderItem(headerString, propertyString, 'center', 40));
     });
   }
 

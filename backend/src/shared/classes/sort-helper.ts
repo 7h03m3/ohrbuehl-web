@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventShiftEntity } from '../../database/entities/event-shift.entity';
 import { EventEntity } from '../../database/entities/event.entity';
 import { OrganizationMemberEntity } from '../../database/entities/organization-member.entity';
+import { EventShiftCategoryEntity } from '../../database/entities/event-shift-category.entity';
 
 @Injectable()
 export class SortHelper {
@@ -62,6 +63,19 @@ export class SortHelper {
         return -1;
       }
       if (a.lastName > b.lastName) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }
+
+  public sortShiftCategoryByAbbreviation(categoryList: EventShiftCategoryEntity[]) {
+    categoryList.sort((a, b) => {
+      if (a.abbreviation < b.abbreviation) {
+        return -1;
+      }
+      if (a.abbreviation > b.abbreviation) {
         return 1;
       }
 

@@ -44,6 +44,10 @@
         </mat-error>
       </mat-form-field>
 
+      <section align="left">
+        <mat-checkbox [(ngModel)]="eventData.public" name="public">Öffentlich sichtbar</mat-checkbox>
+      </section>
+
       <button [disabled]="!eventForm.form.valid" class="full-width" color="primary" mat-raised-button>Speichern</button>
     </form>
   </mat-card-content>

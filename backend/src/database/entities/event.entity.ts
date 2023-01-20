@@ -26,6 +26,9 @@ export class EventEntity {
   @Column()
   categoryId: number;
 
+  @Column({ default: false })
+  public: boolean;
+
   @OneToMany((type) => EventShiftEntity, (shift) => shift.event)
   shifts: EventShiftEntity[];
 
@@ -41,5 +44,6 @@ export class EventEntity {
     this.start = dto.start;
     this.end = dto.end;
     this.title = dto.title;
+    this.public = dto.public;
   }
 }

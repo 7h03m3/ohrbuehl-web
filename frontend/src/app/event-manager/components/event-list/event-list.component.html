@@ -13,7 +13,7 @@
         <th *matHeaderCellDef mat-header-cell>Zeit</th>
         <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
-      
+
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell>Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.title}}</td>
@@ -22,6 +22,11 @@
       <ng-container matColumnDef="category">
         <th *matHeaderCellDef mat-header-cell>Kategorie</th>
         <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="public">
+        <th *matHeaderCellDef mat-header-cell>Öffentlich</th>
+        <td *matCellDef="let element" mat-cell> {{element.public ? 'Ja' : 'Nein'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">

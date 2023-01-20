@@ -162,9 +162,11 @@ export class EventsController {
       });
     });
 
-    eventList.forEach((event, index, list) => {
+    const originList = Array.from(eventList);
+    originList.forEach((event) => {
       if (event.shifts.length == 0) {
-        list.splice(index, 1);
+        const index = eventList.indexOf(event);
+        eventList.splice(index, 1);
       }
     });
   }

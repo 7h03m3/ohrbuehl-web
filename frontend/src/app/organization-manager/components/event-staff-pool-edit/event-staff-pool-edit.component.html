@@ -1,6 +1,11 @@
 <table [dataSource]="dataSource" mat-table>
   <ng-container matColumnDef="member" sticky>
-    <th *matHeaderCellDef mat-header-cell>Mitglied</th>
+    <th *matHeaderCellDef mat-header-cell>
+      <mat-form-field appearance="outline">
+        <mat-label>Mitglied</mat-label>
+        <input #input (keyup)="applyFilter($event)" matInput>
+      </mat-form-field>
+    </th>
     <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.firstName}} {{element.lastName}}</td>
     <td *matFooterCellDef mat-footer-cell></td>
   </ng-container>

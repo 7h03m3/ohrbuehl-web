@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { EventStaffPoolEditTableColumn } from './classes/event-staff-pool-edit-table-column';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
 import { ApiService } from '../../../api/api.service';
@@ -11,6 +11,8 @@ import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 import { EventStaffPoolDto } from '../../../shared/dtos/event-staff-pool.dto';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AuthService } from '../../../auth/auth.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-event-staff-pool-edit',
@@ -20,7 +22,8 @@ import { AuthService } from '../../../auth/auth.service';
 export class EventStaffPoolEditComponent {
   public displayedColumns = ['member'];
   public columns = new Array<EventStaffPoolEditTableColumn>();
-  public dataSource = new Array<OrganizationMemberDto>();
+  public dataSource = new MatTableDataSource<OrganizationMemberDto>();
+  @ViewChild(MatSort) sort: any = MatSort;
   private organizationId = 0;
   private eventList = new Array<EventDto>();
   private memberList = new Array<OrganizationMemberDto>();
@@ -72,6 +75,10 @@ export class EventStaffPoolEditComponent {
     });
   }
 
+  public ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
   public onCheckboxChange(
     member: OrganizationMemberDto,
     column: EventStaffPoolEditTableColumn,
@@ -99,8 +106,17 @@ export class EventStaffPoolEditComponent {
     return poolCount != 0;
   }
 
+  public applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   private fetch() {
-    this.dataSource = this.memberList;
+    this.dataSource.data = this.memberList;
 
     this.eventList.forEach((event) => {
       const column = new EventStaffPoolEditTableColumn();

@@ -8,6 +8,7 @@ mat-table {
 
 tr.mat-mdc-footer-row td {
   font-weight: bold;
+  text-align: center;
 }
 
 .total-column {
@@ -15,22 +16,12 @@ tr.mat-mdc-footer-row td {
   font-weight: bold;
 }
 
-th.bottom-text {
+.cell-content-number {
+  text-align: center;
+}
+
+th {
   vertical-align: bottom;
-}
-
-th.rotated-text {
-  height: 130px;
-  white-space: nowrap;
-}
-
-th.rotated-text > div {
-  transform: translate(-12px, 50px) rotate(270deg);
-  width: 30px;
-}
-
-th.rotated-text > div > span {
-  padding: 5px 10px;
 }
 
 .no-wrap {

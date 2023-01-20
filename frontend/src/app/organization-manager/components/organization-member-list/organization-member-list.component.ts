@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
 import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
 import { ApiService } from '../../../api/api.service';
@@ -9,6 +8,9 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { AuthService } from '../../../auth/auth.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-organization-member-list',
@@ -16,9 +18,18 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrls: ['./organization-member-list.component.css'],
 })
 export class OrganizationMemberListComponent {
-  memberList$ = new Observable<OrganizationMemberDto[]>();
-  displayedColumns: string[] = ['firstname', 'lastname', 'birthdate', 'phoneNumber', 'vvaId', 'rangeOfficer', 'action'];
-
+  public dataSource = new MatTableDataSource<OrganizationMemberDto>();
+  public displayedColumns: string[] = [
+    'firstname',
+    'lastname',
+    'birthdate',
+    'phoneNumber',
+    'vvaId',
+    'rangeOfficer',
+    'action',
+  ];
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+  @ViewChild(MatSort) sort: any = MatSort;
   private organizationId = 0;
   private organizationApi: OrganizationApi;
   private memberApi: OrganizationMemberApi;
@@ -37,6 +48,20 @@ export class OrganizationMemberListComponent {
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();
     this.fetch();
+  }
+
+  public ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  public applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   public onDelete(element: OrganizationMemberDto) {
@@ -65,6 +90,8 @@ export class OrganizationMemberListComponent {
   }
 
   private fetch() {
-    this.memberList$ = this.memberApi.getAllByOrganization(this.organizationId);
+    this.memberApi.getAllByOrganization(this.organizationId).subscribe((response) => {
+      this.dataSource.data = response;
+    });
   }
 }

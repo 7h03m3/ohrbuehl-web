@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ApiService } from '../../../api/api.service';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-organization-information',
@@ -13,13 +13,16 @@ export class OrganizationInformationComponent {
   public organizationData = new OrganizationDto();
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData) {
+  constructor(private apiService: ApiService, private authService: AuthService) {
     this.organizationApi = this.apiService.getOrganization();
   }
 
-  ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationData = response;
-    });
+  async ngOnInit(): Promise<void> {
+    const organizationId = await this.authService.getManagingOrganizationId();
+    if (organizationId != 0) {
+      this.organizationApi.getById(organizationId).subscribe((response) => {
+        this.organizationData = response;
+      });
+    }
   }
 }

@@ -12,6 +12,7 @@ import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { catchError, EMPTY } from 'rxjs';
 import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -35,7 +36,7 @@ export class EventShiftEditComponent {
     private apiService: ApiService,
     private userLocalData: UserLocalData,
     private route: ActivatedRoute,
-    private userData: UserLocalData,
+    private authService: AuthService,
     public stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
@@ -45,37 +46,35 @@ export class EventShiftEditComponent {
     this.staffPoolApi = this.apiService.getStaffPool();
   }
 
-  public ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationId = response.id;
+  public async ngOnInit(): Promise<void> {
+    this.organizationId = await this.authService.getManagingOrganizationId();
 
-      this.route.paramMap.subscribe((data) => {
-        const idString = data.get('eventId');
+    this.route.paramMap.subscribe((data) => {
+      const idString = data.get('eventId');
 
-        if (idString != null) {
-          this.eventId = Number(idString);
+      if (idString != null) {
+        this.eventId = Number(idString);
 
-          this.eventApi.getById(this.eventId).subscribe((data) => {
-            this.eventData = data;
+        this.eventApi.getById(this.eventId).subscribe((data) => {
+          this.eventData = data;
+        });
+
+        this.staffPoolApi.getAllByOrganizationAndEvent(this.organizationId, this.eventId).subscribe((poolList) => {
+          this.staffList = new Array<OrganizationMemberDto>();
+
+          const nonSelected = new OrganizationMemberDto();
+          nonSelected.firstName = '-';
+          nonSelected.organizationId = 0;
+
+          this.staffList.push(nonSelected);
+
+          poolList.forEach((poolEntry) => {
+            this.staffList.push(poolEntry.member);
           });
 
-          this.staffPoolApi.getAllByOrganizationAndEvent(this.organizationId, this.eventId).subscribe((poolList) => {
-            this.staffList = new Array<OrganizationMemberDto>();
-
-            const nonSelected = new OrganizationMemberDto();
-            nonSelected.firstName = '-';
-            nonSelected.organizationId = 0;
-
-            this.staffList.push(nonSelected);
-
-            poolList.forEach((poolEntry) => {
-              this.staffList.push(poolEntry.member);
-            });
-
-            this.fetch();
-          });
-        }
-      });
+          this.fetch();
+        });
+      }
     });
   }
 
@@ -100,19 +99,19 @@ export class EventShiftEditComponent {
   }
 
   public isShiftEditable(element: EventShiftDto): boolean {
-    return this.isShiftDone(element) == false && this.isShiftLocked(element) == false;
+    return !this.isShiftDone(element) && !this.isShiftLocked(element);
   }
 
   public isShiftDone(element: EventShiftDto): boolean {
-    return element.done == true;
+    return element.done;
   }
 
   public isShiftLocked(element: EventShiftDto): boolean {
-    return element.locked == true;
+    return element.locked;
   }
 
   public isShiftPresent(element: EventShiftDto): boolean {
-    return this.isShiftDone(element) == true && element.present == true;
+    return this.isShiftDone(element) && element.present;
   }
 
   public onChangeStaff(element: EventShiftDto, selection: number) {
@@ -122,12 +121,12 @@ export class EventShiftEditComponent {
     this.shiftApi
       .updateAssignments(element)
       .pipe(
-        catchError((response) => {
+        catchError(() => {
           element.assignedStaffId = oldAssignedStaffId;
           return EMPTY;
         }),
       )
-      .subscribe((response) => {
+      .subscribe(() => {
         this.eliminateDuplicateStaff(element.id, element.assignedStaffId);
       });
   }

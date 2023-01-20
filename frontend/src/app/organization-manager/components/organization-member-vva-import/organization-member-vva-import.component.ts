@@ -4,9 +4,9 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
 import { ApiService } from '../../../api/api.service';
 import { OrganizationApi } from '../../../api/classes/organization-api';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-organization-member-vva-import',
@@ -22,19 +22,29 @@ export class OrganizationMemberVvaImportComponent {
 
   constructor(
     private apiService: ApiService,
-    private userData: UserLocalData,
     private snackBar: MatSnackBar,
     private router: Router,
+    private authService: AuthService,
     public stringHelper: StringHelper,
   ) {
     this.organizationApi = this.apiService.getOrganization();
     this.memberApi = apiService.getOrganizationMember();
   }
 
-  public ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationId = response.id;
-    });
+  private static mergeMemberData(existingMember: OrganizationMemberDto, csvMember: OrganizationMemberDto) {
+    existingMember.vvaId = csvMember.vvaId;
+
+    if (existingMember.emailAddress == '') {
+      existingMember.emailAddress = csvMember.emailAddress;
+    }
+
+    if (existingMember.phoneNumber == '') {
+      existingMember.phoneNumber = csvMember.phoneNumber;
+    }
+  }
+
+  public async ngOnInit(): Promise<void> {
+    this.organizationId = await this.authService.getManagingOrganizationId();
   }
 
   public onFileSelected() {
@@ -49,7 +59,7 @@ export class OrganizationMemberVvaImportComponent {
       csvData.forEach((csvMember) => {
         const existingMember = this.getExistingMember(csvMember);
         if (existingMember != undefined) {
-          this.mergeMemberData(existingMember, csvMember);
+          OrganizationMemberVvaImportComponent.mergeMemberData(existingMember, csvMember);
           this.memberApi.update(existingMember).subscribe();
         } else {
           this.memberList.push(csvMember);
@@ -59,18 +69,6 @@ export class OrganizationMemberVvaImportComponent {
 
       this.openSnackBar('VVA Daten Import war erfolgreich');
     });
-  }
-
-  private mergeMemberData(existingMember: OrganizationMemberDto, csvMember: OrganizationMemberDto) {
-    existingMember.vvaId = csvMember.vvaId;
-
-    if (existingMember.emailAddress == '') {
-      existingMember.emailAddress = csvMember.emailAddress;
-    }
-
-    if (existingMember.phoneNumber == '') {
-      existingMember.phoneNumber = csvMember.phoneNumber;
-    }
   }
 
   private getExistingMember(csvMember: OrganizationMemberDto): OrganizationMemberDto | undefined {

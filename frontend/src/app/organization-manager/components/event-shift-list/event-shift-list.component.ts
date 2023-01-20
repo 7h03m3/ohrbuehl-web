@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
 import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -21,26 +21,31 @@ export class EventShiftListComponent {
   private organizationId = 0;
   private eventApi: EventApi;
   private poolApi: EventStaffPoolApi;
-  private organizationApi: OrganizationApi;
 
   constructor(
     private apiService: ApiService,
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
-    private userData: UserLocalData,
+    private authService: AuthService,
     private stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.poolApi = this.apiService.getStaffPool();
-    this.organizationApi = this.apiService.getOrganization();
   }
 
-  public ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationId = response.id;
-      this.fetch();
-    });
+  private static isAssigned(shift: EventShiftDto): boolean {
+    return (
+      shift.assignedStaffId != null &&
+      shift.assignedStaffId != 0 &&
+      shift.organizationId != null &&
+      shift.organizationId != 0
+    );
+  }
+
+  public async ngOnInit(): Promise<void> {
+    this.organizationId = await this.authService.getManagingOrganizationId();
+    this.fetch();
   }
 
   public onShiftPlaning(element: EventShiftListItemDto) {
@@ -68,19 +73,9 @@ export class EventShiftListComponent {
     return element.totalShifts != 0;
   }
 
-  private isAssigned(shift: EventShiftDto): boolean {
-    return (
-      shift.assignedStaffId != null &&
-      shift.assignedStaffId != 0 &&
-      shift.organizationId != null &&
-      shift.organizationId != 0
-    );
-  }
-
   private fetch() {
     this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
       this.eventList = new Array<EventShiftListItemDto>();
-
       response.forEach((event) => {
         const element = new EventShiftListItemDto();
         element.event = event;
@@ -89,7 +84,7 @@ export class EventShiftListComponent {
           element.totalShifts = event.shifts.length;
 
           event.shifts.forEach((shift) => {
-            if (this.isAssigned(shift) == true) {
+            if (EventShiftListComponent.isAssigned(shift)) {
               element.assignedShifts = element.assignedShifts + 1;
             }
           });

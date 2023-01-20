@@ -6,9 +6,9 @@ import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OrganizationApi } from '../../../api/classes/organization-api';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { StringHelper } from '../../../shared/classes/string-helper';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-organization-member-list',
@@ -27,18 +27,16 @@ export class OrganizationMemberListComponent {
     private apiService: ApiService,
     public dialog: MatDialog,
     private router: Router,
-    private userData: UserLocalData,
+    private authService: AuthService,
     public stringHelper: StringHelper,
   ) {
     this.organizationApi = this.apiService.getOrganization();
     this.memberApi = this.apiService.getOrganizationMember();
   }
 
-  public ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationId = response.id;
-      this.fetch();
-    });
+  public async ngOnInit(): Promise<void> {
+    this.organizationId = await this.authService.getManagingOrganizationId();
+    this.fetch();
   }
 
   public onDelete(element: OrganizationMemberDto) {
@@ -48,13 +46,13 @@ export class OrganizationMemberListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.memberApi.delete(element.id).subscribe((data) => this.fetch());
+        this.memberApi.delete(element.id).subscribe(() => this.fetch());
       }
     });
   }
 
   public onCreate() {
-    this.router.navigate(['/organization-manager/member-edit', { organizationId: this.organizationId }]);
+    this.router.navigate(['/organization-manager/member-edit']);
   }
 
   public onEdit(element: OrganizationMemberDto) {
@@ -62,7 +60,6 @@ export class OrganizationMemberListComponent {
       '/organization-manager/member-edit',
       {
         id: element.id,
-        organizationId: this.organizationId,
       },
     ]);
   }

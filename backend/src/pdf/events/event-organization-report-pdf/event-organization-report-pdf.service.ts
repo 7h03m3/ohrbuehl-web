@@ -59,7 +59,7 @@ export class EventOrganizationReportPdfService extends PdfBase {
 
     await doc.table(table, {
       prepareHeader: () => {
-        doc.font('Helvetica').fontSize(8);
+        doc.font('Helvetica-Bold').fontSize(8);
       },
       columnSpacing: 5,
       divider: {

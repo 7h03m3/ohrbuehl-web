@@ -1,75 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Role } from '../enums/role.enum';
-import { JwtLoginInformation } from '../dtos/jwt-login-information.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserLocalData {
-  accessTokenKey = 'accessToken';
-  userIdKey = 'userId';
-  userRolesKey = 'userRoles';
-
   constructor() {}
-
-  public getUserAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
-  }
-
-  public getUserId(): number {
-    const idString = localStorage.getItem(this.userIdKey);
-    if (idString == null) {
-      return 0;
-    }
-
-    return +idString;
-  }
-
-  public isUserAccessTokenSet(): boolean {
-    const accessToken = this.getUserAccessToken();
-
-    if (accessToken) {
-      return true;
-    }
-
-    return false;
-  }
-
-  public getUserRoll(): Role {
-    const role = localStorage.getItem(this.userRolesKey);
-    if (!role) {
-      return Role.Anonymous;
-    }
-
-    switch (role) {
-      case Role.User:
-        return Role.User;
-      case Role.ShootingRangeManager:
-        return Role.ShootingRangeManager;
-      case Role.OrganizationManager:
-        return Role.OrganizationManager;
-      case Role.EventOrganizer:
-        return Role.EventOrganizer;
-      case Role.Admin:
-        return Role.Admin;
-      case Role.Cashier:
-        return Role.Cashier;
-      default:
-        return Role.Anonymous;
-    }
-  }
-
-  public destroySession() {
-    localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem(this.userIdKey);
-    localStorage.removeItem(this.userRolesKey);
-  }
-
-  public setSession(loginInformation: JwtLoginInformation) {
-    localStorage.setItem(this.accessTokenKey, loginInformation.access_token);
-    localStorage.setItem(this.userIdKey, loginInformation.id.toString());
-    localStorage.setItem(this.userRolesKey, loginInformation.roles);
-  }
 
   public convertRoleText(role: string) {
     switch (role) {

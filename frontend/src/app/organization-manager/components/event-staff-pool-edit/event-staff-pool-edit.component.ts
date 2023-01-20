@@ -5,12 +5,12 @@ import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { EventApi } from '../../../api/classes/event-api';
 import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 import { EventStaffPoolDto } from '../../../shared/dtos/event-staff-pool.dto';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-event-staff-pool-edit',
@@ -30,37 +30,45 @@ export class EventStaffPoolEditComponent {
   private staffPoolApi: EventStaffPoolApi;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData, private stringHelper: StringHelper) {
+  constructor(private apiService: ApiService, private authService: AuthService, private stringHelper: StringHelper) {
     this.organizationApi = this.apiService.getOrganization();
     this.eventApi = apiService.getEvent();
     this.memberApi = apiService.getOrganizationMember();
     this.staffPoolApi = apiService.getStaffPool();
   }
 
-  public ngOnInit(): void {
-    this.organizationApi.getByManagerId(this.userData.getUserId()).subscribe((response) => {
-      this.organizationId = response.id;
+  private static incrementColumnCount(column: EventStaffPoolEditTableColumn) {
+    column.totalCount = column.totalCount + 1;
+  }
 
-      this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
-        this.eventList = response;
+  private static decrementColumnCount(column: EventStaffPoolEditTableColumn) {
+    if (column.totalCount > 0) {
+      column.totalCount = column.totalCount - 1;
+    }
+  }
 
-        this.eventList.sort(function (a, b) {
-          if (a.start < b.start) {
-            return -1;
-          }
+  public async ngOnInit(): Promise<void> {
+    this.organizationId = await this.authService.getManagingOrganizationId();
 
-          return 1;
-        });
+    this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
+      this.eventList = response;
 
-        this.memberApi.getAllByOrganization(this.organizationId).subscribe((response) => {
-          this.memberList = response;
-          this.fetch();
-        });
+      this.eventList.sort(function (a, b) {
+        if (a.start < b.start) {
+          return -1;
+        }
+
+        return 1;
       });
 
-      this.staffPoolApi.getAllByOrganization(this.organizationId).subscribe((response) => {
-        this.staffPool = response;
+      this.memberApi.getAllByOrganization(this.organizationId).subscribe((response) => {
+        this.memberList = response;
+        this.fetch();
       });
+    });
+
+    this.staffPoolApi.getAllByOrganization(this.organizationId).subscribe((response) => {
+      this.staffPool = response;
     });
   }
 
@@ -75,10 +83,10 @@ export class EventStaffPoolEditComponent {
     dto.organizationId = this.organizationId;
 
     if (event.checked) {
-      this.incrementColumnCount(column);
+      EventStaffPoolEditComponent.incrementColumnCount(column);
       this.staffPoolApi.addStaff(dto).subscribe();
     } else {
-      this.decrementColumnCount(column);
+      EventStaffPoolEditComponent.decrementColumnCount(column);
       this.staffPoolApi.removeStaff(dto).subscribe();
     }
   }
@@ -89,16 +97,6 @@ export class EventStaffPoolEditComponent {
     }).length;
 
     return poolCount != 0;
-  }
-
-  private incrementColumnCount(column: EventStaffPoolEditTableColumn) {
-    column.totalCount = column.totalCount + 1;
-  }
-
-  private decrementColumnCount(column: EventStaffPoolEditTableColumn) {
-    if (column.totalCount > 0) {
-      column.totalCount = column.totalCount - 1;
-    }
   }
 
   private fetch() {
@@ -118,7 +116,7 @@ export class EventStaffPoolEditComponent {
       column.totalCount = 0;
       this.staffPool.forEach((entry) => {
         if (entry.eventId == column.eventId) {
-          this.incrementColumnCount(column);
+          EventStaffPoolEditComponent.incrementColumnCount(column);
         }
       });
     });

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-organization-member-edit',
@@ -22,26 +23,28 @@ export class OrganizationMemberEditComponent {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private formBuilder: UntypedFormBuilder,
   ) {
     this.memberApi = apiService.getOrganizationMember();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.memberForm = this.formBuilder.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       birthday: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      emailAddress: ['', [Validators.email, Validators.required]],
+      phoneNumber: [''],
+      emailAddress: ['', [Validators.email]],
       vvaid: [''],
       rangeOfficer: [''],
     });
 
+    this.organizationId = await this.authService.getManagingOrganizationId();
+
     this.route.paramMap.subscribe((data) => {
       const idString = data.get('id');
-      this.organizationId = Number(data.get('organizationId'));
 
       if (idString != null) {
         this.memberData.id = Number(idString);

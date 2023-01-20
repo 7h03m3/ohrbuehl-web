@@ -11,16 +11,30 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class OrganizationInformationComponent {
   public organizationData = new OrganizationDto();
+  public organizationList = new Array<OrganizationDto>();
+  public organizationId = 0;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService) {
+  constructor(private apiService: ApiService, public authService: AuthService) {
     this.organizationApi = this.apiService.getOrganization();
   }
 
   async ngOnInit(): Promise<void> {
-    const organizationId = await this.authService.getManagingOrganizationId();
-    if (organizationId != 0) {
-      this.organizationApi.getById(organizationId).subscribe((response) => {
+    await this.loadOrganizationData();
+    this.organizationApi.getAllNative().subscribe((response) => {
+      this.organizationList = response;
+    });
+  }
+
+  public async onOrganizationChange(organizationId: number) {
+    this.authService.setManagingOrganizationId(organizationId);
+    await this.loadOrganizationData();
+  }
+
+  private async loadOrganizationData() {
+    this.organizationId = await this.authService.getManagingOrganizationId();
+    if (this.organizationId != 0) {
+      this.organizationApi.getById(this.organizationId).subscribe((response) => {
         this.organizationData = response;
       });
     }

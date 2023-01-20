@@ -108,7 +108,11 @@ export class AuthService {
   private async queryManagingOrganizationId(): Promise<number> {
     const managerId$ = this.organizationApi.getByManagerId(this.getUserId());
     const organizationDto = await lastValueFrom(managerId$);
-    return organizationDto.id;
+    if (organizationDto) {
+      return organizationDto.id;
+    } else {
+      return 0;
+    }
   }
 
   private getUserRoll(): Role {
@@ -136,12 +140,14 @@ export class AuthService {
   }
 
   private destroySession() {
+    this.managingOrganizationId = 0;
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.userIdKey);
     localStorage.removeItem(this.userRolesKey);
   }
 
   private setSession(loginInformation: JwtLoginInformation) {
+    this.managingOrganizationId = 0;
     localStorage.setItem(this.accessTokenKey, loginInformation.access_token);
     localStorage.setItem(this.userIdKey, loginInformation.id.toString());
     localStorage.setItem(this.userRolesKey, loginInformation.roles);

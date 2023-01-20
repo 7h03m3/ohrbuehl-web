@@ -7,3 +7,14 @@ Distanzen:
   <li *ngIf="organizationData.distance_50m">50m</li>
   <li *ngIf="organizationData.distance_25m">25m</li>
 </ul>
+<br>
+<p *ngIf="authService.isAdmin()">
+  <mat-form-field appearance="outline">
+    <mat-label>Verein</mat-label>
+    <mat-select (valueChange)="onOrganizationChange($event)" [(ngModel)]="organizationId" name="manager">
+      <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
+        {{organization.abbreviation}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>

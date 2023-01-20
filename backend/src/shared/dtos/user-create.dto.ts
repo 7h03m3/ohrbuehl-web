@@ -1,13 +1,16 @@
 import { Role } from '../enums/role.enum';
-import { UserDto } from './user.dto';
+import { InvoiceDto } from './invoice.dto';
+import { OrganizationDto } from './organization.dto';
 
 export class UserCreateDto {
   userName: string;
   firstName: string;
   lastName: string;
-  roles: Role;
   password: string;
-  manager: UserDto;
+  roles: Role;
+  invoices: InvoiceDto[];
+  assignedOrganization: OrganizationDto;
+  assignedOrganizationId: number;
 
   constructor() {
     this.userName = '';
@@ -15,6 +18,8 @@ export class UserCreateDto {
     this.lastName = '';
     this.roles = Role.Anonymous;
     this.password = '';
-    this.manager = new UserDto();
+    this.invoices = new Array<InvoiceDto>();
+    this.assignedOrganization = new OrganizationDto();
+    this.assignedOrganizationId = 0;
   }
 }

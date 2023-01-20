@@ -34,8 +34,8 @@ export class EventStaffStatisticComponent {
     }).length;
   }
 
-  public async ngOnInit(): Promise<void> {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  public ngOnInit(): void {
+    this.organizationId = this.authService.getManagingOrganizationId();
     this.memberApi.getAllDetailedByOrganization(this.organizationId).subscribe((response) => {
       this.memberList = response;
       this.fetch();

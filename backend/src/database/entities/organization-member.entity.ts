@@ -56,6 +56,7 @@ export class OrganizationMemberEntity {
     this.phoneNumber = dto.phoneNumber;
     this.emailAddress = dto.emailAddress;
     this.vvaId = dto.vvaId;
+    this.rangeOfficer = dto.rangeOfficer;
     this.organizationId = dto.organizationId;
   }
 }

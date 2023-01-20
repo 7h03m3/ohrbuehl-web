@@ -17,13 +17,13 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { EventStaffPoolEntity } from '../../database/entities/event-staff-pool.entity';
 import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
-import { OrganizationsService } from '../../database/organizations/organizations.service';
+import { UsersService } from '../../database/users/users.service';
 
 @Controller('events/staff-pool')
 export class EventsStaffPoolController {
   constructor(
     private readonly eventStaffPoolService: EventsStaffPoolService,
-    private readonly organizationService: OrganizationsService,
+    private readonly userService: UsersService,
   ) {}
 
   @Roles(Role.Admin, Role.OrganizationManager)
@@ -75,9 +75,9 @@ export class EventsStaffPoolController {
       return;
     }
 
-    const organization = await this.organizationService.findOne(organizationId);
+    const user = await this.userService.findOne(req.user.id);
 
-    if (organization == null || organization.managerId != req.user.id) {
+    if (user == null || user.assignedOrganizationId != organizationId) {
       const errorMessage = 'not allowed to access organization with user id ' + req.user.id;
       throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
     }

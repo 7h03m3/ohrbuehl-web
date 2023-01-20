@@ -57,10 +57,6 @@ export class OrganizationApi extends BaseApi {
     return this.http.get<OrganizationDto>(this.url + '/' + id);
   }
 
-  public getByManagerId(managerId: number): Observable<OrganizationDto> {
-    return this.http.get<OrganizationDto>(this.url + '/byManager/' + managerId);
-  }
-
   public getDetailById(id: number): Observable<OrganizationDto> {
     return this.http.get<OrganizationDto>(this.url + '/detail/' + id);
   }

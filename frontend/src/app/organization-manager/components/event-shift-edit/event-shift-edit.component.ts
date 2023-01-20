@@ -46,8 +46,8 @@ export class EventShiftEditComponent {
     this.staffPoolApi = this.apiService.getStaffPool();
   }
 
-  public async ngOnInit(): Promise<void> {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  public ngOnInit(): void {
+    this.organizationId = this.authService.getManagingOrganizationId();
 
     this.route.paramMap.subscribe((data) => {
       const idString = data.get('eventId');

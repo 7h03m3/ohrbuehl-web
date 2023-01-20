@@ -22,6 +22,7 @@ import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { EventsShiftService } from '../../database/events/events-shift.service';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
+import { UsersService } from '../../database/users/users.service';
 
 @Controller('organizations/member')
 export class OrganizationsMemberController {
@@ -30,7 +31,13 @@ export class OrganizationsMemberController {
     private organizationService: OrganizationsService,
     private eventShiftService: EventsShiftService,
     private eventStaffPoolService: EventsStaffPoolService,
+    private userService: UsersService,
   ) {}
+
+  private static throwForbidden(req: any) {
+    const errorMessage = 'not allowed to access organization with user id ' + req.user.id;
+    throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
+  }
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -101,9 +108,8 @@ export class OrganizationsMemberController {
     }
 
     const member = await this.memberService.getDetailById(id);
-    if (member == null || member.organization.managerId != req.user.id) {
-      this.throwForbidden(req);
-    }
+
+    await this.checkAccessByOrganization(member.organizationId, req);
   }
 
   private async checkAccessByOrganization(organizationId: number, req: any) {
@@ -111,15 +117,10 @@ export class OrganizationsMemberController {
       return;
     }
 
-    const organization = await this.organizationService.findOne(organizationId);
+    const user = await this.userService.findOne(req.user.id);
 
-    if (organization == null || organization.managerId != req.user.id) {
-      this.throwForbidden(req);
+    if (user == null || user.assignedOrganizationId != organizationId) {
+      OrganizationsMemberController.throwForbidden(req);
     }
-  }
-
-  private throwForbidden(req: any) {
-    const errorMessage = 'not allowed to access organization with user id ' + req.user.id;
-    throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
   }
 }

@@ -25,13 +25,26 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { userName: user.userName, id: user.id, roles: user.roles };
+    const userEntity = await this.usersService.findOne(user.id);
+
+    let assignedOrganizationId = 0;
+    if (userEntity.assignedOrganizationId != null) {
+      assignedOrganizationId = userEntity.assignedOrganizationId;
+    }
+
+    const payload = {
+      userName: user.userName,
+      id: user.id,
+      roles: user.roles,
+      assignedOrganizationId: assignedOrganizationId,
+    };
 
     const loginInformation = new JwtLoginInformation();
     loginInformation.access_token = this.jwtService.sign(payload);
     loginInformation.userName = user.userName;
     loginInformation.id = user.id;
     loginInformation.roles = user.roles;
+    loginInformation.assignedOrganizationId = assignedOrganizationId;
 
     return loginInformation;
   }

@@ -19,20 +19,20 @@ export class OrganizationInformationComponent {
     this.organizationApi = this.apiService.getOrganization();
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.loadOrganizationData();
+  ngOnInit(): void {
+    this.loadOrganizationData();
     this.organizationApi.getAllNative().subscribe((response) => {
       this.organizationList = response;
     });
   }
 
-  public async onOrganizationChange(organizationId: number) {
+  public onOrganizationChange(organizationId: number) {
     this.authService.setManagingOrganizationId(organizationId);
-    await this.loadOrganizationData();
+    this.loadOrganizationData();
   }
 
-  private async loadOrganizationData() {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  private loadOrganizationData() {
+    this.organizationId = this.authService.getManagingOrganizationId();
     if (this.organizationId != 0) {
       this.organizationApi.getById(this.organizationId).subscribe((response) => {
         this.organizationData = response;

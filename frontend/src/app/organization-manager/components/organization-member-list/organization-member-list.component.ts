@@ -34,8 +34,8 @@ export class OrganizationMemberListComponent {
     this.memberApi = this.apiService.getOrganizationMember();
   }
 
-  public async ngOnInit(): Promise<void> {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  public ngOnInit(): void {
+    this.organizationId = this.authService.getManagingOrganizationId();
     this.fetch();
   }
 

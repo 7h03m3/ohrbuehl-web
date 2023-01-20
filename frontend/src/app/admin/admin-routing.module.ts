@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
 import { AdminUserEditComponent } from './components/admin-user-edit/admin-user-edit.component';
-import { AdminUserCreateComponent } from './components/admin-user-create/admin-user-create.component';
 import { AdminShootingRangePriceListComponent } from './components/admin-shooting-range-price-list/admin-shooting-range-price-list.component';
 import { AdminShootingRangePriceEditComponent } from './components/admin-shooting-range-price-edit/admin-shooting-range-price-edit.component';
 import { AdminShootingRangePriceCreateComponent } from './components/admin-shooting-range-price-create/admin-shooting-range-price-create.component';
@@ -31,10 +30,7 @@ const routes: Routes = [
         path: 'user-edit',
         component: AdminUserEditComponent,
       },
-      {
-        path: 'user-create',
-        component: AdminUserCreateComponent,
-      },
+
       {
         path: 'price-list',
         component: AdminShootingRangePriceListComponent,

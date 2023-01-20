@@ -22,15 +22,7 @@
           Bitte eine Abkürzung angeben.
         </mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="organization.manager.id" name="manager">
-          <mat-option *ngFor="let user of userList" [value]="user.id">
-            {{getUserName(user)}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
+      
       <mat-form-field appearance="outline">
         <mat-label>Farbe</mat-label>
         <input [(ngModel)]="organization.color" matInput name="color" required>

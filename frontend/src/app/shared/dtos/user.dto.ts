@@ -1,17 +1,10 @@
-import { Role } from '../enums/role.enum';
+import { UserCreateDto } from './user-create.dto';
 
-export class UserDto {
+export class UserDto extends UserCreateDto {
   id: number;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  roles: Role;
 
   public constructor() {
+    super();
     this.id = 0;
-    this.userName = '';
-    this.firstName = '';
-    this.lastName = '';
-    this.roles = Role.Anonymous;
   }
 }

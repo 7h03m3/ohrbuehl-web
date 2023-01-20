@@ -43,8 +43,8 @@ export class EventShiftListComponent {
     );
   }
 
-  public async ngOnInit(): Promise<void> {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  public ngOnInit(): void {
+    this.organizationId = this.authService.getManagingOrganizationId();
     this.fetch();
   }
 

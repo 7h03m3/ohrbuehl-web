@@ -5,11 +5,14 @@ import { InvoiceEntity } from '../entities/invoice.entity';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
 import { UserEntity } from '../entities/user.entity';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
-import { InvoiceUpdateDto } from '../../shared/dtos/invoice-update.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class InvoiceService {
-  constructor(@InjectRepository(InvoiceEntity) private invoiceRepository: Repository<InvoiceEntity>) {}
+  constructor(
+    @InjectRepository(InvoiceEntity) private invoiceRepository: Repository<InvoiceEntity>,
+    private userService: UsersService,
+  ) {}
 
   findAll(): Promise<InvoiceEntity[]> {
     return this.invoiceRepository.find({
@@ -64,9 +67,10 @@ export class InvoiceService {
     await this.invoiceRepository.delete(id);
   }
 
-  async update(invoiceDto: InvoiceDto): Promise<any> {
-    const updateDto = new InvoiceUpdateDto();
-    updateDto.fillFromDto(invoiceDto);
-    await this.invoiceRepository.update({ id: updateDto.id }, updateDto);
+  async update(invoiceDto: InvoiceDto, creator: UserEntity): Promise<any> {
+    const entity = new InvoiceEntity();
+    entity.fillFromDto(invoiceDto);
+    entity.creator = creator;
+    await this.invoiceRepository.update({ id: entity.id }, entity);
   }
 }

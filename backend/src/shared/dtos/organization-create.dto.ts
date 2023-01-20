@@ -1,5 +1,7 @@
 import { OrganizationMemberDto } from './organization-member.dto';
 import { UserDto } from './user.dto';
+import { ShootingRangeAccountingUnitDto } from './shooting-range-accounting-unit.dto';
+import { EventShiftDto } from './event-shift.dto';
 
 export class OrganizationCreateDto {
   name: string;
@@ -12,8 +14,10 @@ export class OrganizationCreateDto {
   distance_50m: boolean;
   distance_25m: boolean;
 
+  managers: UserDto[];
+  accountingUnits: ShootingRangeAccountingUnitDto[];
+  shifts: EventShiftDto[];
   members: OrganizationMemberDto[];
-  manager: UserDto;
 
   constructor() {
     this.name = '';
@@ -26,7 +30,9 @@ export class OrganizationCreateDto {
     this.distance_50m = false;
     this.distance_25m = false;
 
+    this.managers = new Array<UserDto>();
+    this.accountingUnits = new Array<ShootingRangeAccountingUnitDto>();
+    this.shifts = new Array<EventShiftDto>();
     this.members = new Array<OrganizationMemberDto>();
-    this.manager = new UserDto();
   }
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ShootingRangeAccountingUnitEntity } from './shooting-range-accounting-unit.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { OrganizationDto } from '../../shared/dtos/organization.dto';
@@ -35,12 +35,8 @@ export class OrganizationEntity {
   @Column()
   distance_25m: boolean;
 
-  @ManyToOne((type) => UserEntity, (user) => user.organizations, { nullable: true })
-  @JoinColumn({ name: 'managerId' })
-  manager: UserEntity;
-
-  @Column({ nullable: true })
-  managerId: number;
+  @OneToMany((type) => UserEntity, (user) => user.assignedOrganization)
+  managers: UserEntity[];
 
   @OneToMany((type) => ShootingRangeAccountingUnitEntity, (accountingUnit) => accountingUnit.organization)
   accountingUnits: ShootingRangeAccountingUnitEntity[];

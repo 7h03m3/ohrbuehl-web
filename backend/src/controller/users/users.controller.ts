@@ -7,6 +7,7 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { Role } from '../../shared/enums/role.enum';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { AuthService } from '../../auth/auth.service';
+import { UserDto } from '../../shared/dtos/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,17 +31,17 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async createUser(@Body() createUserDto: UserCreateDto): Promise<UserEntity> {
-    const hashedPassword = await this.authService.hashPassword(createUserDto.password);
-    return this.userService.createUser(createUserDto, hashedPassword);
+    createUserDto.password = await this.authService.hashPassword(createUserDto.password);
+    return this.userService.createUser(createUserDto);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
-  async updateUser(@Body() userDto: UserEntity): Promise<any> {
+  async updateUser(@Body() userDto: UserDto): Promise<any> {
     if (userDto.password != '') {
-      const hashedPassword = await this.authService.hashPassword(userDto.password);
-      return this.userService.updateUserWithPassword(userDto, hashedPassword);
+      userDto.password = await this.authService.hashPassword(userDto.password);
+      return this.userService.updateUserWithPassword(userDto);
     } else {
       return this.userService.updateUser(userDto);
     }

@@ -8,7 +8,6 @@ import { AdminShootingRangePriceEditComponent } from './components/admin-shootin
 import { AdminShootingRangePriceCreateComponent } from './components/admin-shooting-range-price-create/admin-shooting-range-price-create.component';
 import { AdminOrganizationListComponent } from './components/admin-organization-list/admin-organization-list.component';
 import { AdminOrganizationEditComponent } from './components/admin-organization-edit/admin-organization-edit.component';
-import { AdminUserCreateComponent } from './components/admin-user-create/admin-user-create.component';
 import { MaterialModule } from '../shared/material.module';
 import { AdminComponent } from './admin.component';
 import { AdminUserDeleteDialogComponent } from './components/admin-user-delete-dialog/admin-user-delete-dialog.component';
@@ -23,7 +22,6 @@ import { AdminEventShiftCategoryEditComponent } from './components/admin-event-s
   declarations: [
     AdminComponent,
     AdminUserListComponent,
-    AdminUserCreateComponent,
     AdminUserDeleteDialogComponent,
     AdminUserEditComponent,
     AdminOrganizationListComponent,

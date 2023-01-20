@@ -30,7 +30,7 @@ export class OrganizationMemberEditComponent {
     this.memberApi = apiService.getOrganizationMember();
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.memberForm = this.formBuilder.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
@@ -41,7 +41,7 @@ export class OrganizationMemberEditComponent {
       rangeOfficer: [''],
     });
 
-    this.organizationId = await this.authService.getManagingOrganizationId();
+    this.organizationId = this.authService.getManagingOrganizationId();
 
     this.route.paramMap.subscribe((data) => {
       const idString = data.get('id');

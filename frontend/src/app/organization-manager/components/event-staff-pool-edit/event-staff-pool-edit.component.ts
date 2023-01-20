@@ -47,8 +47,8 @@ export class EventStaffPoolEditComponent {
     }
   }
 
-  public async ngOnInit(): Promise<void> {
-    this.organizationId = await this.authService.getManagingOrganizationId();
+  public ngOnInit(): void {
+    this.organizationId = this.authService.getManagingOrganizationId();
 
     this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
       this.eventList = response;

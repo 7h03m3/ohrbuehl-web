@@ -54,13 +54,6 @@ export class OrganizationsController {
     return this.organizationsService.findOne(id);
   }
 
-  @Roles(Role.Admin, Role.OrganizationManager)
-  @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('/byManager/:id')
-  getByManagerId(@Param('id') id: number): Promise<OrganizationEntity> {
-    return this.organizationsService.findOneByManager(id);
-  }
-
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('/detail/:id')

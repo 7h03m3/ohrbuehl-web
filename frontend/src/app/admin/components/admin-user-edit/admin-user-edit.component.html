@@ -1,7 +1,8 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
     <form #userCreateForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3>Benutzer editieren</h3>
+      <h3 *ngIf="user.id != 0">Benutzer editieren</h3>
+      <h3 *ngIf="user.id == 0">Benutzer erstellen</h3>
       <mat-error *ngIf="!formValid">
         Bitte alle Daten eingeben.
       </mat-error>
@@ -26,9 +27,18 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-select [(ngModel)]="user.roles" name="userRole">
+        <mat-select (valueChange)="onRoleChange($event)" [(ngModel)]="user.roles" name="userRole">
           <mat-option *ngFor="let userRole of userRoles" [value]="userRole">
             {{getRoleText(userRole)}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="user.assignedOrganizationId" [disabled]="disableOrganization"
+                    name="assignedOrganizationId">
+          <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
+            {{organization.abbreviation}}
           </mat-option>
         </mat-select>
       </mat-form-field>

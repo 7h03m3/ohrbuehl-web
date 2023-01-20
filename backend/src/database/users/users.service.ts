@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { DefaultValuesService } from '../default/default-values/default-values.service';
+import { OrganizationsService } from '../organizations/organizations.service';
+import { OrganizationEntity } from '../entities/organization.entity';
+import { UserDto } from '../../shared/dtos/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,16 +14,17 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private defaultValues: DefaultValuesService,
+    private organizationService: OrganizationsService,
   ) {}
 
-  async onApplicationBootstrap() {
+  public async onApplicationBootstrap() {
     const count = await this.usersRepository.count();
     if (count == 0) {
       await this.defaultValues.loadDefaultUsers(this.usersRepository);
     }
   }
 
-  findAll(): Promise<UserEntity[]> {
+  public findAll(): Promise<UserEntity[]> {
     return this.usersRepository.find({
       select: {
         id: true,
@@ -30,49 +34,53 @@ export class UsersService {
         roles: true,
         password: false,
       },
+      relations: {
+        assignedOrganization: true,
+      },
     });
   }
 
-  findOne(id: number): Promise<UserEntity> {
+  public findOne(id: number): Promise<UserEntity> {
     return this.usersRepository.findOneBy({ id });
   }
 
-  async findOneByName(name: string): Promise<UserEntity> | undefined {
+  public async findOneByName(name: string): Promise<UserEntity> | undefined {
     return this.usersRepository.findOneBy({ userName: name });
   }
 
-  async deleteUser(id: string): Promise<void> {
+  public async deleteUser(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
 
-  async createUser(userCreateDto: UserCreateDto, hashedPassword: string): Promise<UserEntity> {
+  public async createUser(dto: UserCreateDto): Promise<UserEntity> {
     const entity = new UserEntity();
-    entity.userName = userCreateDto.userName;
-    entity.firstName = userCreateDto.firstName;
-    entity.lastName = userCreateDto.lastName;
-    entity.password = hashedPassword;
-    entity.roles = userCreateDto.roles;
+    entity.loadFromDto(dto);
 
     await this.usersRepository.save(entity);
 
     return entity;
   }
 
-  async updateUser(user: UserEntity): Promise<any> {
+  public async updateUser(user: UserDto): Promise<any> {
+    const organization = await this.getOrganization(user.assignedOrganizationId);
+
     await this.usersRepository
       .createQueryBuilder()
       .update(UserEntity)
       .set({
+        userName: user.userName,
         firstName: user.firstName,
         lastName: user.lastName,
         roles: user.roles,
-        userName: user.userName,
+        assignedOrganization: organization,
       })
       .where('id = :id', { id: user.id })
       .execute();
   }
 
-  async updateUserWithPassword(user: UserEntity, hashedPassword: string): Promise<any> {
+  public async updateUserWithPassword(user: UserDto): Promise<any> {
+    const organization = await this.getOrganization(user.assignedOrganizationId);
+
     await this.usersRepository
       .createQueryBuilder()
       .update(UserEntity)
@@ -81,9 +89,18 @@ export class UsersService {
         lastName: user.lastName,
         roles: user.roles,
         userName: user.userName,
-        password: hashedPassword,
+        password: user.password,
+        assignedOrganization: organization,
       })
       .where('id = :id', { id: user.id })
       .execute();
+  }
+
+  private async getOrganization(organizationId: number): Promise<OrganizationEntity | undefined> {
+    if (organizationId != 0) {
+      return await this.organizationService.findOne(organizationId);
+    } else {
+      return null;
+    }
   }
 }

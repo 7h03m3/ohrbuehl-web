@@ -49,10 +49,6 @@ export class AdminOrganizationEditComponent implements OnInit {
         this.organization.id = Number(idString);
         this.organizationApi.getDetailById(this.organization.id).subscribe((data) => {
           this.organization = data;
-
-          if (this.organization.manager == null) {
-            this.organization.manager = new UserDto();
-          }
         });
       }
     });

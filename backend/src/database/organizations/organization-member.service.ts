@@ -68,10 +68,8 @@ export class OrganizationMemberService {
   }
 
   public async update(updateDto: OrganizationMemberDto): Promise<any> {
-    await this.memberRepository.update({ id: updateDto.id }, updateDto);
-  }
-
-  public async updateEntity(updateEntity: OrganizationMemberEntity): Promise<any> {
-    await this.memberRepository.update({ id: updateEntity.id }, updateEntity);
+    const entity = new OrganizationMemberEntity();
+    entity.loadFromDto(updateDto);
+    await this.memberRepository.update({ id: updateDto.id }, entity);
   }
 }

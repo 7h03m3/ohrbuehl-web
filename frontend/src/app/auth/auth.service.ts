@@ -140,6 +140,7 @@ export class AuthService {
   }
 
   private destroySession() {
+    this.managingOrganizationId = 0;
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.userIdKey);
     localStorage.removeItem(this.userRolesKey);

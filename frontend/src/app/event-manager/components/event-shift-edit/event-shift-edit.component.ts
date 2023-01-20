@@ -18,6 +18,7 @@ import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-
 import { catchError, EMPTY } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-sheet/member-info-bottom-sheet.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -26,7 +27,7 @@ import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-
 })
 export class EventShiftEditComponent {
   public eventData = new EventDto();
-  public shiftList = new Array<EventShiftEditListItemDto>();
+  public dataSource = new MatTableDataSource<EventShiftEditListItemDto>();
   public organizationList = new Array<OrganizationDto>();
   public staffMap = new Map<number, OrganizationMemberDto[]>();
   public displayedColumns: string[] = ['category', 'time', 'organization', 'staff', 'action'];
@@ -249,7 +250,7 @@ export class EventShiftEditComponent {
   }
 
   private eliminateDuplicateStaff(shiftId: number, staffId: number) {
-    this.shiftList.forEach((listItem) => {
+    this.dataSource.data.forEach((listItem) => {
       if (listItem.shift.id != shiftId && listItem.shift.assignedStaffId == staffId) {
         listItem.shift.assignedStaffId = 0;
         this.resetShiftStates(listItem);
@@ -296,7 +297,7 @@ export class EventShiftEditComponent {
     });
 
     this.shiftApi.getAll(this.eventId).subscribe((data) => {
-      this.shiftList = new Array<EventShiftEditListItemDto>();
+      const shiftList = new Array<EventShiftEditListItemDto>();
 
       data.forEach((shift) => {
         const item = new EventShiftEditListItemDto();
@@ -311,15 +312,16 @@ export class EventShiftEditComponent {
           item.shift.assignedStaffId = 0;
         }
 
-        this.shiftList.push(item);
+        shiftList.push(item);
       });
 
-      this.sortList();
+      this.sortList(shiftList);
+      this.dataSource.data = shiftList;
     });
   }
 
-  private sortList() {
-    this.shiftList.sort((a, b) => {
+  private sortList(shiftList: EventShiftEditListItemDto[]) {
+    shiftList.sort((a, b) => {
       if (a.shift.category.position > b.shift.category.position) {
         return 1;
       }

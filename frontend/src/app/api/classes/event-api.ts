@@ -46,4 +46,34 @@ export class EventApi extends BaseApi {
       responseType: 'blob',
     });
   }
+
+  public getOrganizationEventReport(organizationId: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/report/organization/' + organizationId, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
+
+  public getOrganizationEventReportByCategory(organizationId: number, categoryId: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/report/organization/' + organizationId + '/' + categoryId, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
+
+  public getOrganizationShiftReport(organizationId: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/report/organization-staff/' + organizationId, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
 }

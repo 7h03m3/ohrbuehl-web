@@ -75,16 +75,7 @@ export class EventShiftEditComponent {
   }
 
   public getTimeString(event: EventDto): string {
-    const startDate = this.stringHelper.getDateString(event.start);
-    const endDate = this.stringHelper.getDateString(event.end);
-    const startTime = this.stringHelper.getTimeString(event.start);
-    const endTime = this.stringHelper.getTimeString(event.end);
-
-    if (startDate == endDate) {
-      return startDate + ' ' + startTime + ' - ' + endTime;
-    } else {
-      return startDate + ' ' + startTime + ' - ' + ' ' + endDate + ' ' + endTime;
-    }
+    return this.stringHelper.getStartEndDateTimeString(event.start, event.end);
   }
 
   public onShiftNew() {
@@ -195,10 +186,7 @@ export class EventShiftEditComponent {
   }
 
   public getShiftTimeString(shift: EventShiftDto): string {
-    const startTime = this.stringHelper.getTimeString(shift.start);
-    const endTime = this.stringHelper.getTimeString(shift.end);
-
-    return startTime + ' - ' + endTime;
+    return this.stringHelper.getStartEndTimeString(shift.start, shift.end);
   }
 
   public onChangeOrganization(element: EventShiftEditListItemDto, selection: number) {

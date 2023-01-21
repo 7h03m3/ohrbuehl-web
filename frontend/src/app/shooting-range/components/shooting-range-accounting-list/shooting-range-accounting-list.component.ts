@@ -16,7 +16,7 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
   styleUrls: ['./shooting-range-accounting-list.component.css'],
 })
 export class ShootingRangeAccountingListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'date', 'time', 'type', 'total', 'action'];
+  displayedColumns: string[] = ['id', 'date', 'time', 'day', 'type', 'total', 'action'];
   dataSource = new MatTableDataSource();
   @ViewChild('table') table!: MatTable<any>;
   private accountingApi: AccountingApi;
@@ -65,11 +65,15 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public getDateString(dateNumber: string): string {
-    return this.stringHelper.getDateString(Number(dateNumber));
+    return this.stringHelper.getDateString(+dateNumber);
   }
 
   public getTypeString(typeString: string): string {
     return this.userData.convertAccountingTypeText(typeString);
+  }
+
+  public getDayString(dateNumber: string): string {
+    return this.stringHelper.getDayOfWeekShort(+dateNumber);
   }
 
   private fetch() {

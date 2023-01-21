@@ -16,6 +16,11 @@
         <td *matCellDef="let element" mat-cell> {{element.startTime}} - {{element.endTime}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="day">
+        <th *matHeaderCellDef mat-header-cell>Tag</th>
+        <td *matCellDef="let element" mat-cell> {{getDayString(element.date)}}</td>
+      </ng-container>
+
       <ng-container matColumnDef="type">
         <th *matHeaderCellDef mat-header-cell>Typ</th>
         <td *matCellDef="let element" mat-cell> {{getTypeString(element.type)}}</td>

@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -27,6 +28,11 @@ import { EventOrganizationReportPdfService } from '../../pdf/events/event-organi
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { OrganizationMemberEntity } from '../../database/entities/organization-member.entity';
 import { SortHelper } from '../../shared/classes/sort-helper';
+import { UsersService } from '../../database/users/users.service';
+import { AuthService } from '../../auth/auth.service';
+import { EventCategoryEntity } from '../../database/entities/event-category.entity';
+import { OrganizationMemberService } from '../../database/organizations/organization-member.service';
+import { EventOrganizationStaffReportPdfService } from '../../pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.service';
 
 @Controller('events/')
 export class EventsController {
@@ -35,8 +41,12 @@ export class EventsController {
     private readonly shiftService: EventsShiftService,
     private readonly eventStaffPoolService: EventsStaffPoolService,
     private readonly organizationService: OrganizationsService,
+    private readonly organizationMemberService: OrganizationMemberService,
     private readonly eventReportPdfService: EventReportPdfService,
     private readonly eventOrganizationReportPdfService: EventOrganizationReportPdfService,
+    private readonly eventOrganizationStaffReportPdfService: EventOrganizationStaffReportPdfService,
+    private readonly userService: UsersService,
+    private readonly authService: AuthService,
     private sortHelper: SortHelper,
   ) {}
 
@@ -60,7 +70,11 @@ export class EventsController {
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('withShiftsByOrganization/:organizationId')
-  async getAllWithShiftsByOrganizationId(@Param('organizationId') organizationId: number): Promise<EventEntity[]> {
+  async getAllWithShiftsByOrganizationId(
+    @Param('organizationId') organizationId: number,
+    @Request() req: any,
+  ): Promise<EventEntity[]> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
     const eventList = await this.eventService.findAllWithShifts();
 
     this.filterShiftsByOrganization(eventList, organizationId);
@@ -108,16 +122,15 @@ export class EventsController {
     await this.eventReportPdfService.generatePdf(eventData, response);
   }
 
-  @Roles(Role.Admin, Role.EventOrganizer)
+  @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('report/organization/:organizationId')
-  async downloadOrganizationReport(@Param('organizationId') organizationId: number, @Res() response): Promise<any> {
-    const organization = await this.organizationService.findOne(organizationId);
-
-    if (organization == undefined) {
-      const errorMessage = 'organization with id ' + organizationId + ' not found';
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
+  async downloadOrganizationReport(
+    @Param('organizationId') organizationId: number,
+    @Res() response,
+    @Request() req: any,
+  ): Promise<any> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
 
     const eventList = await this.eventService.findAll();
     if (eventList.length == 0) {
@@ -125,7 +138,68 @@ export class EventsController {
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
+    await this.generateOrganizationReport(organizationId, eventList, undefined, response);
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('report/organization/:organizationId/:categoryId')
+  async downloadOrganizationReportByCategory(
+    @Param('organizationId') organizationId: number,
+    @Param('categoryId') categoryId: number,
+    @Res() response,
+    @Request() req: any,
+  ): Promise<any> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
+
+    const eventList = await this.eventService.findAllByCategory(categoryId);
+    if (eventList.length == 0) {
+      const errorMessage = 'no events found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.generateOrganizationReport(organizationId, eventList, eventList[0].category, response);
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('report/organization-staff/:organizationId')
+  async downloadOrganizationStaffReport(
+    @Param('organizationId') organizationId: number,
+    @Res() response,
+    @Request() req: any,
+  ): Promise<any> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
+
+    const staffList = await this.organizationMemberService.findAllDetailedByOrganizationId(organizationId);
+    if (staffList.length == 0) {
+      const errorMessage = 'no staff list found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    for (const staff of staffList) {
+      if (staff.eventShifts.length != 0) {
+        staff.eventShifts = await this.shiftService.findByOrganizationMemberId(staff.id);
+        this.sortHelper.sortShiftByDate(staff.eventShifts);
+      }
+    }
+    await this.eventOrganizationStaffReportPdfService.generatePdf(staffList[0].organization, staffList, response);
+  }
+
+  private async generateOrganizationReport(
+    organizationId: number,
+    eventList: EventEntity[],
+    category: EventCategoryEntity | undefined,
+    @Res() response,
+  ) {
     this.sortHelper.sortEventsByDate(eventList);
+
+    const organization = await this.organizationService.findOne(organizationId);
+
+    if (organization == undefined) {
+      const errorMessage = 'organization with id ' + organizationId + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 
     const staffPool = await this.eventStaffPoolService.findAllByOrganization(organizationId);
     const shiftList = await this.shiftService.findByOrganizationId(organizationId);
@@ -151,6 +225,7 @@ export class EventsController {
       eventList,
       shiftList,
       staffPool,
+      category,
       response,
     );
   }

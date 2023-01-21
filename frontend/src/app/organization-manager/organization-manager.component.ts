@@ -7,20 +7,27 @@ import { Component } from '@angular/core';
 })
 export class OrganizationManagerComponent {
   public subMenuMember = false;
+  public subMenuShifts = false;
   public subMenuStatistic = false;
-
-  public onStatisticSubmenu() {
-    this.resetSubmenus();
-    this.subMenuStatistic = true;
-  }
 
   public onMemberSubmenu() {
     this.resetSubmenus();
     this.subMenuMember = true;
   }
 
+  public onShiftsSubmenu() {
+    this.resetSubmenus();
+    this.subMenuShifts = true;
+  }
+
+  public onStatisticSubmenu() {
+    this.resetSubmenus();
+    this.subMenuStatistic = true;
+  }
+
   public resetSubmenus() {
     this.subMenuStatistic = false;
+    this.subMenuShifts = false;
     this.subMenuMember = false;
   }
 }

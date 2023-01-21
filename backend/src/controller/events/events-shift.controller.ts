@@ -7,10 +7,11 @@ import { EventsShiftService } from '../../database/events/events-shift.service';
 import { EventShiftEntity } from '../../database/entities/event-shift.entity';
 import { EventShiftCreateDto } from '../../shared/dtos/event-shift-create.dto';
 import { EventShiftDto } from '../../shared/dtos/event-shift.dto';
+import { AuthService } from '../../auth/auth.service';
 
 @Controller('events/shift')
 export class EventsShiftController {
-  constructor(private shiftService: EventsShiftService) {}
+  constructor(private shiftService: EventsShiftService, private authService: AuthService) {}
 
   @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -22,10 +23,12 @@ export class EventsShiftController {
   @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':eventId/:organizationId')
-  getAllByEventAndOrganization(
+  async getAllByEventAndOrganization(
     @Param('eventId') eventId: number,
     @Param('organizationId') organizationId: number,
+    @Request() req: any,
   ): Promise<EventShiftEntity[]> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
     return this.shiftService.findByEventIdAndOrganizationId(eventId, organizationId);
   }
 
@@ -47,6 +50,7 @@ export class EventsShiftController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put('assignments')
   async updateAssignments(@Body() dto: EventShiftDto, @Request() req: any): Promise<any> {
+    await this.authService.checkOrganizationAccess(dto.organizationId, req);
     await this.shiftService.updateAssignedStaff(dto);
   }
 

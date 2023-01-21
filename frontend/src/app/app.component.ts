@@ -10,8 +10,6 @@ import { UserLocalData } from './shared/classes/user-local-data';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'frontend';
-
   constructor(public authService: AuthService, private router: Router, private userLocalData: UserLocalData) {}
 
   public getRoleText(): string {

@@ -16,7 +16,7 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
 })
 export class EventShiftListComponent {
   eventList = new Array<EventShiftListItemDto>();
-  displayedColumns: string[] = ['time', 'title', 'category', 'shift', 'action'];
+  displayedColumns: string[] = ['time', 'day', 'title', 'category', 'shift', 'action'];
   private eventApi: EventApi;
 
   constructor(
@@ -45,16 +45,11 @@ export class EventShiftListComponent {
   }
 
   public getTimeString(element: EventShiftListItemDto): string {
-    const startDate = this.stringHelper.getDateString(element.event.start);
-    const endDate = this.stringHelper.getDateString(element.event.end);
-    const startTime = this.stringHelper.getTimeString(element.event.start);
-    const endTime = this.stringHelper.getTimeString(element.event.end);
+    return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
+  }
 
-    if (startDate == endDate) {
-      return startDate + ' ' + startTime + ' - ' + endTime;
-    } else {
-      return startDate + ' ' + startTime + ' - ' + ' ' + endDate + ' ' + endTime;
-    }
+  public getDayString(element: EventShiftListItemDto): string {
+    return this.stringHelper.getDayOfWeekShort(element.event.start);
   }
 
   public isShiftAssignmentOkay(element: EventShiftListItemDto): boolean {

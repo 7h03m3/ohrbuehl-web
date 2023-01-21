@@ -24,6 +24,7 @@ import { OrganizationsMemberController } from './organizations/organizations-mem
 import { EventsStaffPoolController } from './events/events-staff-pool.controller';
 import { EventReportPdfModule } from '../pdf/events/event-report-pdf/event-report-pdf.module';
 import { EventOrganizationReportPdfModule } from '../pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
+import { EventOrganizationStaffReportPdfModule } from '../pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { EventOrganizationReportPdfModule } from '../pdf/events/event-organizati
     EventsModule,
     EventReportPdfModule,
     EventOrganizationReportPdfModule,
+    EventOrganizationStaffReportPdfModule,
     AuthModule,
     SharedModule,
   ],

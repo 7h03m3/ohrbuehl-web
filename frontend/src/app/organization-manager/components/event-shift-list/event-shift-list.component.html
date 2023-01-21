@@ -9,6 +9,11 @@
         <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="day">
+        <th *matHeaderCellDef mat-header-cell>Tag</th>
+        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
+      </ng-container>
+      
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell>Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
@@ -30,7 +35,7 @@
         <th *matHeaderCellDef mat-header-cell>Im Pool</th>
         <td *matCellDef="let element" class="total-pool" mat-cell> {{element.totalInPool}}</td>
       </ng-container>
-      
+
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell>
           Aktion

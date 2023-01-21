@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Downloads</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <br>
+    <table>
+      <tr>
+        <td>Schichtenplan</td>
+        <td class="td-select">
+          <mat-select [(ngModel)]="shiftReportSelect" name="category">
+            <mat-option *ngFor="let category of categoryList" [value]="category.id">
+              {{category.name}}
+            </mat-option>
+          </mat-select>
+        </td>
+        <td>
+          <button (click)="onShiftReportDownload()" color="primary" mat-mini-fab>
+            <mat-icon>download</mat-icon>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>Mitgliederschichtenliste</td>
+        <td class="td-select">
+        </td>
+        <td>
+          <button (click)="onShiftStaffReportDownload()" color="primary" mat-mini-fab>
+            <mat-icon>download</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>

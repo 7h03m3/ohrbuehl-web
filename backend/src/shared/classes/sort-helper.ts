@@ -50,6 +50,20 @@ export class SortHelper {
     });
   }
 
+  public sortShiftByDate(shiftList: EventShiftEntity[]) {
+    shiftList.sort((a, b) => {
+      if (a.start > b.start) {
+        return 1;
+      }
+
+      if (a.start < b.start) {
+        return -1;
+      }
+
+      return 0;
+    });
+  }
+
   public sortOrganizationMemberByName(memberList: OrganizationMemberEntity[]) {
     memberList.sort((a, b) => {
       if (a.firstName < b.firstName) {

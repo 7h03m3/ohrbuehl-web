@@ -23,10 +23,20 @@
         <mat-icon matListItemIcon>groups</mat-icon>
         Helfer-Pool
       </mat-list-option>
-      <mat-list-option (click)="resetSubmenus()" routerLink="./event-shift-list">
+      <mat-list-option (click)="onShiftsSubmenu()" routerLink="./event-shift-list">
         <mat-icon matListItemIcon>schedule</mat-icon>
         Schichtenplanung
       </mat-list-option>
+      <div *ngIf="subMenuShifts">
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-shift-list">
+          <mat-icon matListItemIcon>schedule</mat-icon>
+          Schichten
+        </mat-list-option>
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-shift-downloads">
+          <mat-icon matListItemIcon>download</mat-icon>
+          Downloads
+        </mat-list-option>
+      </div>
       <mat-list-option (click)="onStatisticSubmenu()" routerLink="./event-staff-statistic">
         <mat-icon matListItemIcon>bar_chart</mat-icon>
         Statistik

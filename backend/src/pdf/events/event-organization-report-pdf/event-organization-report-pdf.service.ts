@@ -5,11 +5,11 @@ import { EventEntity } from '../../../database/entities/event.entity';
 import { OrganizationEntity } from '../../../database/entities/organization.entity';
 import { EventShiftEntity } from '../../../database/entities/event-shift.entity';
 import { OrganizationMemberEntity } from '../../../database/entities/organization-member.entity';
-import { PdfTableRowItem } from './classes/pdf-table-row-item';
+import { PdfTableRowItem } from '../../base/classes/pdf-table-row-item';
 import { EventStaffPoolEntity } from '../../../database/entities/event-staff-pool.entity';
-import { PdfTableHeaderItem } from './classes/pdf-table-header-item';
 import { EventShiftCategoryEntity } from '../../../database/entities/event-shift-category.entity';
 import { SortHelper } from '../../../shared/classes/sort-helper';
+import { EventCategoryEntity } from '../../../database/entities/event-category.entity';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
@@ -32,29 +32,27 @@ export class EventOrganizationReportPdfService extends PdfBase {
     eventList: EventEntity[],
     shiftList: EventShiftEntity[],
     staffPool: EventStaffPoolEntity[],
+    category: EventCategoryEntity | undefined,
     @Res() response,
   ) {
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
-    const organizationName = organization.abbreviation;
     const fullYear = this.getFullYear(eventList);
-    const filename = this.getFilename(organizationName, fullYear);
+
+    let title = organization.abbreviation;
+    if (category != undefined) {
+      title = title + ' ' + category.name;
+    }
+
+    title = title + ' ' + fullYear;
+
+    const filename = this.getFilename(title);
 
     const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' });
     const fileStream = fs.createWriteStream(tempFilename);
     await doc.pipe(fileStream);
 
-    const table = {
-      title: {
-        label: organization.abbreviation + ' ' + fullYear,
-        fontSize: 18,
-      },
-      subtitle: '',
-      headers: [],
-      datas: [],
-    };
-
+    const table = this.createTable(title, 18);
     this.addTableHeader(table, eventList);
-
     this.addTableRows(table, memberList, eventList, shiftList, staffPool);
 
     await doc.table(table, {
@@ -86,22 +84,22 @@ export class EventOrganizationReportPdfService extends PdfBase {
     memberList.forEach((member) => {
       const row: Row = {};
 
-      row['staff'] = this.getRowItem(member.firstName + ' ' + member.lastName);
+      row['staff'] = this.getTableRowItem(member.firstName + ' ' + member.lastName);
 
       eventList.forEach((event) => {
-        const rowItem = this.getRowItem('');
+        const rowItem = this.getTableRowItem('');
         const memberShifts = this.getMemberShift(event.id, member.id, shiftList);
 
         if (memberShifts != undefined) {
-          this.setRowItemColor(this.colorShiftSet, 0.75, rowItem);
+          this.setTableRowItemColor(this.colorShiftSet, 0.75, rowItem);
           rowItem.label = memberShifts.category.abbreviation;
         } else {
           const pool = this.getStaffPoolEntry(event.id, member.id, staffPool);
 
           if (pool != undefined) {
-            this.setRowItemColor(this.colorAvailable, 0.5, rowItem);
+            this.setTableRowItemColor(this.colorAvailable, 0.5, rowItem);
           } else {
-            this.setRowItemColor(this.colorNotAvailable, 0.5, rowItem);
+            this.setTableRowItemColor(this.colorNotAvailable, 0.5, rowItem);
           }
         }
 
@@ -113,18 +111,10 @@ export class EventOrganizationReportPdfService extends PdfBase {
   }
 
   private async addLegendTable(shiftList: EventShiftEntity[], doc: any) {
-    const table = {
-      title: {
-        label: 'Legende',
-        fontSize: 14,
-      },
-      subtitle: '',
-      headers: [],
-      datas: [],
-    };
+    const table = this.createTable('Legende', 14);
 
-    table.headers.push(this.getHeaderItem('', 'item', 'center', 40));
-    table.headers.push(this.getHeaderItem(' Beschreibung', 'description', 'left', 120));
+    table.headers.push(this.getTableHeaderItem('', 'item', 'center', 40));
+    table.headers.push(this.getTableHeaderItem(' Beschreibung', 'description', 'left', 120));
 
     this.addLegendRow('', 'Nicht verfügbar', this.colorNotAvailable, 0.5, table);
     this.addLegendRow('', 'Verfügbar', this.colorAvailable, 0.5, table);
@@ -147,10 +137,10 @@ export class EventOrganizationReportPdfService extends PdfBase {
 
   private addLegendRow(itemText: string, description: string, color: string, opacity: number, table: any) {
     const row: Row = {};
-    const itemShiftSet = this.getRowItem(itemText);
-    this.setRowItemColor(color, opacity, itemShiftSet);
+    const itemShiftSet = this.getTableRowItem(itemText);
+    this.setTableRowItemColor(color, opacity, itemShiftSet);
     row['item'] = itemShiftSet;
-    row['description'] = this.getRowItem(description);
+    row['description'] = this.getTableRowItem(description);
     table.datas.push(row);
   }
 
@@ -174,30 +164,8 @@ export class EventOrganizationReportPdfService extends PdfBase {
     });
   }
 
-  private getRowItem(label: string): PdfTableRowItem {
-    const rowItem = new PdfTableRowItem();
-    rowItem.label = ' ' + label;
-    rowItem.options.fontSize = 10;
-
-    return rowItem;
-  }
-
-  private getHeaderItem(label: string, property: string, align: string, width: number) {
-    const item = new PdfTableHeaderItem();
-    item.label = label;
-    item.property = property;
-    item.align = align;
-    item.width = width;
-    return item;
-  }
-
-  private setRowItemColor(color: string, opacity: number, item: PdfTableRowItem) {
-    item.options.backgroundOpacity = opacity;
-    item.options.backgroundColor = color;
-  }
-
   private addTableHeader(table: any, eventList: EventEntity[]) {
-    table.headers.push(this.getHeaderItem('', 'staff', 'left', 150));
+    table.headers.push(this.getTableHeaderItem('', 'staff', 'left', 150));
 
     eventList.forEach((event) => {
       const headerString =
@@ -208,13 +176,13 @@ export class EventOrganizationReportPdfService extends PdfBase {
         event.category.abbreviation;
 
       const propertyString = 'event' + event.id;
-      table.headers.push(this.getHeaderItem(headerString, propertyString, 'center', 40));
+      table.headers.push(this.getTableHeaderItem(headerString, propertyString, 'center', 40));
     });
   }
 
-  private getFilename(title: string, year: string): string {
+  private getFilename(title: string): string {
     let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '_' + year + '_schichten.pdf';
+    filename += '_schichten.pdf';
     return filename;
   }
 

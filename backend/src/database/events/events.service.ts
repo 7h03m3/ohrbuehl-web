@@ -18,6 +18,14 @@ export class EventsService {
     return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true } });
   }
 
+  public findAllByCategory(categoryId: number): Promise<EventEntity[]> {
+    return this.eventRepository.find({
+      order: { start: 'DESC' },
+      where: { categoryId: categoryId },
+      relations: { category: true },
+    });
+  }
+
   public findAllWithShifts(): Promise<EventEntity[]> {
     return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true, shifts: true } });
   }

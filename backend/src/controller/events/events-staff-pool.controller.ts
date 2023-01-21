@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -17,14 +6,11 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { EventStaffPoolEntity } from '../../database/entities/event-staff-pool.entity';
 import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
-import { UsersService } from '../../database/users/users.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Controller('events/staff-pool')
 export class EventsStaffPoolController {
-  constructor(
-    private readonly eventStaffPoolService: EventsStaffPoolService,
-    private readonly userService: UsersService,
-  ) {}
+  constructor(private readonly eventStaffPoolService: EventsStaffPoolService, private authService: AuthService) {}
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -33,7 +19,7 @@ export class EventsStaffPoolController {
     @Param('organizationId') organizationId: number,
     @Request() req: any,
   ): Promise<EventStaffPoolEntity[]> {
-    await this.checkStaffPoolAccess(organizationId, req);
+    await this.authService.checkOrganizationAccess(organizationId, req);
     return this.eventStaffPoolService.findAllByOrganization(organizationId);
   }
 
@@ -45,7 +31,7 @@ export class EventsStaffPoolController {
     @Param('eventId') eventId: number,
     @Request() req: any,
   ): Promise<EventStaffPoolEntity[]> {
-    await this.checkStaffPoolAccess(organizationId, req);
+    await this.authService.checkOrganizationAccess(organizationId, req);
     return this.eventStaffPoolService.findAllByOrganizationAndEvent(organizationId, eventId);
   }
 
@@ -53,7 +39,7 @@ export class EventsStaffPoolController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async addToStaffPool(@Body() dto: EventStaffPoolDto, @Request() req: any): Promise<EventStaffPoolEntity> {
-    await this.checkStaffPoolAccess(dto.organizationId, req);
+    await this.authService.checkOrganizationAccess(dto.organizationId, req);
     return await this.eventStaffPoolService.addToPool(dto);
   }
 
@@ -66,20 +52,7 @@ export class EventsStaffPoolController {
     @Param('memberId') memberId: number,
     @Request() req: any,
   ): Promise<any> {
-    await this.checkStaffPoolAccess(organizationId, req);
+    await this.authService.checkOrganizationAccess(organizationId, req);
     return await this.eventStaffPoolService.removeFromPool(memberId, eventId);
-  }
-
-  private async checkStaffPoolAccess(organizationId: number, req: any) {
-    if (req.user.roles != Role.OrganizationManager) {
-      return;
-    }
-
-    const user = await this.userService.findOne(req.user.id);
-
-    if (user == null || user.assignedOrganizationId != organizationId) {
-      const errorMessage = 'not allowed to access organization with user id ' + req.user.id;
-      throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
-    }
   }
 }

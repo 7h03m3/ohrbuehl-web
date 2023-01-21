@@ -9,6 +9,7 @@ import { EventShiftEditComponent } from './components/event-shift-edit/event-shi
 import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
 import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
+import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'event-shift-edit',
         component: EventShiftEditComponent,
+      },
+      {
+        path: 'event-shift-downloads',
+        component: EventShiftDownloadsComponent,
       },
       {
         path: 'event-staff-pool-edit',

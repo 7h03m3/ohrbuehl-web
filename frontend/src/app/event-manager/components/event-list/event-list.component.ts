@@ -16,7 +16,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 })
 export class EventListComponent {
   eventList$ = new Observable<EventDto[]>();
-  displayedColumns: string[] = ['date', 'time', 'title', 'category', 'public', 'action'];
+  displayedColumns: string[] = ['date', 'time', 'day', 'title', 'category', 'public', 'action'];
   private eventApi: EventApi;
 
   constructor(
@@ -62,21 +62,15 @@ export class EventListComponent {
   }
 
   public getDateString(event: EventDto): string {
-    const startDate = this.stringHelper.getDateString(event.start);
-    const endDate = this.stringHelper.getDateString(event.end);
-
-    if (startDate == endDate) {
-      return startDate;
-    }
-
-    return startDate + ' - ' + endDate;
+    return this.stringHelper.getStartEndDateString(event.start, event.end);
   }
 
   public getTimeString(event: EventDto): string {
-    const startTime = this.stringHelper.getTimeString(event.start);
-    const endTime = this.stringHelper.getTimeString(event.end);
+    return this.stringHelper.getStartEndTimeString(event.start, event.end);
+  }
 
-    return startTime + ' - ' + endTime;
+  public getDayString(event: EventDto): string {
+    return this.stringHelper.getDayOfWeekShort(event.start);
   }
 
   private fetch() {

@@ -16,7 +16,7 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
 })
 export class EventShiftListComponent {
   eventList = new Array<EventShiftListItemDto>();
-  displayedColumns: string[] = ['time', 'day', 'title', 'category', 'shift', 'action'];
+  displayedColumns: string[] = ['time', 'title', 'category', 'organization', 'shift', 'action'];
   private eventApi: EventApi;
 
   constructor(
@@ -48,21 +48,20 @@ export class EventShiftListComponent {
     return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
   }
 
-  public getDayString(element: EventShiftListItemDto): string {
-    return this.stringHelper.getDayOfWeekShort(element.event.start);
-  }
-
   public isShiftAssignmentOkay(element: EventShiftListItemDto): boolean {
     return element.totalShifts == element.assignedShifts;
   }
 
+  public isOrganizationAssignmentOkay(element: EventShiftListItemDto): boolean {
+    return element.totalShifts == element.assignedOrganization;
+  }
+
+  private isOrganizationAssigned(shift: EventShiftDto): boolean {
+    return shift.organizationId != null && shift.organizationId != 0;
+  }
+
   private isAssigned(shift: EventShiftDto): boolean {
-    return (
-      shift.assignedStaffId != null &&
-      shift.assignedStaffId != 0 &&
-      shift.organizationId != null &&
-      shift.organizationId != 0
-    );
+    return shift.assignedStaffId != null && shift.assignedStaffId != 0 && this.isOrganizationAssigned(shift);
   }
 
   private fetch() {
@@ -77,7 +76,10 @@ export class EventShiftListComponent {
           element.totalShifts = event.shifts.length;
 
           event.shifts.forEach((shift) => {
-            if (this.isAssigned(shift) == true) {
+            if (this.isOrganizationAssigned(shift)) {
+              element.assignedOrganization = element.assignedOrganization + 1;
+            }
+            if (this.isAssigned(shift)) {
               element.assignedShifts = element.assignedShifts + 1;
             }
           });

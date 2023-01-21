@@ -18,6 +18,7 @@ export class AdminOrganizationListComponent implements OnInit {
     'id',
     'name',
     'abbreviation',
+    'vvaId',
     'native',
     'color',
     '300m',

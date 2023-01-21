@@ -16,6 +16,11 @@
         <td *matCellDef="let element" mat-cell> {{element.abbreviation}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="vvaId">
+        <th *matHeaderCellDef mat-header-cell> VVA-ID</th>
+        <td *matCellDef="let element" mat-cell> {{element.vvaId}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="color">
         <th *matHeaderCellDef mat-header-cell> Farbe</th>
         <td *matCellDef="let element" mat-cell>

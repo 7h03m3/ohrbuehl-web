@@ -22,7 +22,15 @@
           Bitte eine Abkürzung angeben.
         </mat-error>
       </mat-form-field>
-      
+
+      <mat-form-field appearance="outline">
+        <mat-label>VVA-ID</mat-label>
+        <input [(ngModel)]="organization.vvaId" matInput name="vvaId" required>
+        <mat-error>
+          Bitte eine VVA-ID angeben.
+        </mat-error>
+      </mat-form-field>
+
       <mat-form-field appearance="outline">
         <mat-label>Farbe</mat-label>
         <input [(ngModel)]="organization.color" matInput name="color" required>

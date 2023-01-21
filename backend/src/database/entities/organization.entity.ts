@@ -35,6 +35,9 @@ export class OrganizationEntity {
   @Column()
   distance_25m: boolean;
 
+  @Column()
+  vvaId: string;
+
   @OneToMany((type) => UserEntity, (user) => user.assignedOrganization)
   managers: UserEntity[];
 
@@ -56,6 +59,7 @@ export class OrganizationEntity {
     this.distance_100m = createDto.distance_100m;
     this.distance_50m = createDto.distance_50m;
     this.distance_25m = createDto.distance_25m;
+    this.vvaId = createDto.vvaId;
   }
 
   public loadFromDto(dto: OrganizationDto) {

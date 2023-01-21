@@ -1,4 +1,10 @@
 <h2>{{organizationData.name}} ({{organizationData.abbreviation}})</h2>
+<p *ngIf="organizationData.vvaId!=''">
+  VVA-ID:
+</p>
+<ul *ngIf="organizationData.vvaId!=''">
+  <li>{{organizationData.vvaId}}</li>
+</ul>
 
 Distanzen:
 <ul>

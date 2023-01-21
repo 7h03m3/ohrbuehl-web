@@ -5,6 +5,8 @@ import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { OrganizationApi } from '../../../api/classes/organization-api';
+import { UserDto } from '../../../shared/dtos/user.dto';
+import { UserApi } from '../../../api/classes/user-api';
 
 @Component({
   selector: 'app-admin-organization-edit',
@@ -14,8 +16,10 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 export class AdminOrganizationEditComponent implements OnInit {
   public formValid = true;
   public organization: OrganizationDto = new OrganizationDto();
+  public userList: UserDto[] = new Array<UserDto>();
   public userRoles = Object.values(Role);
   private organizationApi: OrganizationApi;
+  private userApi: UserApi;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,21 +28,52 @@ export class AdminOrganizationEditComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     this.organizationApi = this.apiService.getOrganization();
+    this.userApi = this.apiService.getUser();
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((data) => {
-      this.organization.id = Number(data.get('id'));
-      this.organizationApi.getById(this.organization.id).subscribe((data) => {
-        this.organization = data;
+    this.userApi.getAll().subscribe((response) => {
+      const noUser = new UserDto();
+      noUser.userName = '-';
+      this.userList = new Array<UserDto>();
+      this.userList.push(noUser);
+      response.forEach((element) => {
+        this.userList.push(element);
       });
+    });
+
+    this.route.paramMap.subscribe((data) => {
+      const idString = data.get('id');
+
+      if (idString != null) {
+        this.organization.id = Number(idString);
+        this.organizationApi.getDetailById(this.organization.id).subscribe((data) => {
+          this.organization = data;
+        });
+      }
     });
   }
 
   onSubmit(): void {
-    this.organizationApi.update(this.organization).subscribe((data) => {
-      this.openSnackBar(this.organization.name + ' gespeichert');
-    });
+    if (this.organization.id == 0) {
+      this.organizationApi.create(this.organization).subscribe(() => {
+        this.openSnackBar(this.organization.name + ' wurde erstellt');
+        this.organization = new OrganizationDto();
+      });
+    } else {
+      this.organizationApi.update(this.organization).subscribe((data) => {
+        this.openSnackBar(this.organization.name + ' gespeichert');
+        this.organization = new OrganizationDto();
+      });
+    }
+  }
+
+  public getUserName(user: UserDto) {
+    if (user.lastName != '' || user.firstName != '') {
+      return user.userName + ' (' + user.firstName + ' ' + user.lastName + ')';
+    }
+
+    return user.userName;
   }
 
   private openSnackBar(message: string) {

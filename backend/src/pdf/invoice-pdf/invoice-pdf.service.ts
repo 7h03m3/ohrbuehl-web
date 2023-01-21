@@ -6,10 +6,13 @@ import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceEntity } from '../../database/entities/invoice.entity';
 import { DateHelper } from '../../shared/classes/date-helper';
+import { PdfBase } from '../base/pdf-base.class';
 
 @Injectable()
-export class InvoicePdfService {
-  constructor(private dateHelper: DateHelper) {}
+export class InvoicePdfService extends PdfBase {
+  constructor(private dateHelper: DateHelper) {
+    super();
+  }
 
   async generatePdf(invoiceData: InvoiceEntity, @Res() response) {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
@@ -61,6 +64,7 @@ export class InvoicePdfService {
     this.addTable(invoiceData.items, totalAmount, pdf);
 
     pdf.addQRBill('A4');
+
     pdf.end();
     pdf.on('finish', () => {
       const fileStream = createReadStream(tempFilename);
@@ -285,14 +289,5 @@ export class InvoicePdfService {
       maximumFractionDigits: 2,
       useGrouping: true,
     });
-  }
-
-  private getRandomFilename(): string {
-    const crypto = require('crypto');
-    return crypto.randomBytes(20).toString('hex');
-  }
-
-  private mm2Pt(millimeters: number) {
-    return millimeters * 2.8346456692913;
   }
 }

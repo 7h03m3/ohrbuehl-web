@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>VVA Import</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      <button (click)="fileInput.click()" [disabled]="uploadButtonDisabled" class="full-width" color="primary"
+              mat-raised-button type="button">
+        Datei hochladen
+      </button>
+      <input #fileInput (change)="onFileSelected()" accept=".csv" hidden id="csv-file" type="file">
+    </p>
+  </mat-card-content>
+</mat-card>

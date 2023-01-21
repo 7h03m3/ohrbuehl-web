@@ -15,6 +15,16 @@ import { SharedModule } from '../shared/shared.module';
 import { ShootingRangeAccountingController } from './shooting-range-accounting/shooting-range-accounting.controller';
 import { ShootingRangeAccountingModule } from '../database/shooting-range-accounting/shooting-range-accounting.module';
 import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting-range-accounting-pdf.module';
+import { EventsController } from './events/events.controller';
+import { EventsModule } from '../database/events/events.module';
+import { EventsCategoryController } from './events/events-category.controller';
+import { EventsShiftCategoryController } from './events/events-shift-category.controller';
+import { EventsShiftController } from './events/events-shift.controller';
+import { OrganizationsMemberController } from './organizations/organizations-member.controller';
+import { EventsStaffPoolController } from './events/events-staff-pool.controller';
+import { EventReportPdfModule } from '../pdf/events/event-report-pdf/event-report-pdf.module';
+import { EventOrganizationReportPdfModule } from '../pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
+import { EventOrganizationStaffReportPdfModule } from '../pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.module';
 
 @Module({
   imports: [
@@ -26,6 +36,10 @@ import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting
     InvoicePdfModule,
     InvoiceModule,
     InvoiceItemModule,
+    EventsModule,
+    EventReportPdfModule,
+    EventOrganizationReportPdfModule,
+    EventOrganizationStaffReportPdfModule,
     AuthModule,
     SharedModule,
   ],
@@ -34,9 +48,15 @@ import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting
     UsersController,
     AuthController,
     OrganizationsController,
+    OrganizationsMemberController,
     ShootingRangePricesController,
     ShootingRangeAccountingController,
     InvoiceController,
+    EventsController,
+    EventsCategoryController,
+    EventsShiftCategoryController,
+    EventsShiftController,
+    EventsStaffPoolController,
   ],
   exports: [],
 })

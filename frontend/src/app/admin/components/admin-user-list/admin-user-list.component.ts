@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { UserApi } from '../../../api/classes/user-api';
+import { Observable } from 'rxjs';
+import { UserDto } from '../../../shared/dtos/user.dto';
 
 @Component({
   selector: 'app-admin-user-list',
@@ -12,8 +14,8 @@ import { UserApi } from '../../../api/classes/user-api';
   styleUrls: ['./admin-user-list.component.css'],
 })
 export class AdminUserListComponent implements OnInit {
-  userList$: any;
-  displayedColumns: string[] = ['id', 'username', 'firstname', 'lastname', 'role', 'action'];
+  userList$ = new Observable<UserDto[]>();
+  displayedColumns: string[] = ['id', 'username', 'firstname', 'lastname', 'role', 'assignedOrganization', 'action'];
   private userApi: UserApi;
 
   constructor(
@@ -25,15 +27,11 @@ export class AdminUserListComponent implements OnInit {
     this.userApi = this.apiService.getUser();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetch();
   }
 
-  fetch() {
-    this.userList$ = this.userApi.getAll();
-  }
-
-  deleteUser(id: string, firstName: string, lastName: string) {
+  public deleteUser(id: string, firstName: string, lastName: string) {
     const dialogRef = this.dialog.open(AdminUserDeleteDialogComponent, {
       data: {
         firstName: firstName,
@@ -48,11 +46,23 @@ export class AdminUserListComponent implements OnInit {
     });
   }
 
-  editUser(id: number) {
+  public editUser(id: number) {
     this.router.navigate(['/admin/user-edit', { id: id }]);
   }
 
   public getRoleText(role: string): string {
     return this.userLocalData.convertRoleText(role);
+  }
+
+  public getAssignedOrganizationText(user: UserDto): string {
+    if (user.assignedOrganization != null) {
+      return user.assignedOrganization.abbreviation;
+    }
+
+    return '';
+  }
+
+  private fetch() {
+    this.userList$ = this.userApi.getAll();
   }
 }

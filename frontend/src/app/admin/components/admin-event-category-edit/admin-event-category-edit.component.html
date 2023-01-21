@@ -1,0 +1,29 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-content>
+    <form #categoryForm="ngForm" (ngSubmit)="onSubmit()">
+      <h3 *ngIf="category.id == 0">Anlasskategorie erstellen</h3>
+      <h3 *ngIf="category.id != 0">Anlasskategorie editieren</h3>
+      <mat-error *ngIf="!formValid">
+        Bitte alle Daten eingeben.
+      </mat-error>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input [(ngModel)]="category.name" matInput name="name" required>
+        <mat-error>
+          Bitte einen Namen angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Abkürzung</mat-label>
+        <input [(ngModel)]="category.abbreviation" matInput name="abbreviation" required>
+        <mat-error>
+          Bitte eine Abkürzung angeben.
+        </mat-error>
+      </mat-form-field>
+      
+      <button [disabled]="!categoryForm.form.valid" color="primary" mat-raised-button>Speichern</button>
+    </form>
+  </mat-card-content>
+</mat-card>

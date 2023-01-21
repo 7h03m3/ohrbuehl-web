@@ -2,6 +2,9 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ShootingRangeAccountingUnitEntity } from './shooting-range-accounting-unit.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { OrganizationDto } from '../../shared/dtos/organization.dto';
+import { EventShiftEntity } from './event-shift.entity';
+import { OrganizationMemberEntity } from './organization-member.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('organizations')
 export class OrganizationEntity {
@@ -13,9 +16,6 @@ export class OrganizationEntity {
 
   @Column()
   abbreviation: string;
-
-  @Column({ default: 0 })
-  managerId: number;
 
   @Column({ default: false })
   native: boolean;
@@ -35,19 +35,31 @@ export class OrganizationEntity {
   @Column()
   distance_25m: boolean;
 
+  @Column()
+  vvaId: string;
+
+  @OneToMany((type) => UserEntity, (user) => user.assignedOrganization)
+  managers: UserEntity[];
+
   @OneToMany((type) => ShootingRangeAccountingUnitEntity, (accountingUnit) => accountingUnit.organization)
-  accountingUnits: ShootingRangeAccountingUnitEntity;
+  accountingUnits: ShootingRangeAccountingUnitEntity[];
+
+  @OneToMany((type) => EventShiftEntity, (shifts) => shifts.organization)
+  shifts: EventShiftEntity[];
+
+  @OneToMany((type) => OrganizationMemberEntity, (member) => member.organization)
+  members: OrganizationMemberEntity[];
 
   public loadFromCreateDto(createDto: OrganizationCreateDto) {
     this.name = createDto.name;
     this.abbreviation = createDto.abbreviation;
-    this.managerId = createDto.managerId;
     this.native = createDto.native;
     this.color = createDto.color;
     this.distance_300m = createDto.distance_300m;
     this.distance_100m = createDto.distance_100m;
     this.distance_50m = createDto.distance_50m;
     this.distance_25m = createDto.distance_25m;
+    this.vvaId = createDto.vvaId;
   }
 
   public loadFromDto(dto: OrganizationDto) {

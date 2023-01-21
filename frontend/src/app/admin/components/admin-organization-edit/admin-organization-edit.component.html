@@ -1,7 +1,8 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
     <form #userUpdateForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3>Organisation erstellen</h3>
+      <h3 *ngIf="organization.id == 0">Organisation erstellen</h3>
+      <h3 *ngIf="organization.id != 0">Organisation editieren</h3>
       <mat-error *ngIf="!formValid">
         Bitte alle Daten eingeben.
       </mat-error>
@@ -19,6 +20,14 @@
         <input [(ngModel)]="organization.abbreviation" matInput name="abbreviation" required>
         <mat-error>
           Bitte eine Abkürzung angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>VVA-ID</mat-label>
+        <input [(ngModel)]="organization.vvaId" matInput name="vvaId" required>
+        <mat-error>
+          Bitte eine VVA-ID angeben.
         </mat-error>
       </mat-form-field>
 

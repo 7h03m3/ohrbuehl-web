@@ -51,7 +51,7 @@ export class ShootingRangeAccountingService {
     const entity = new ShootingRangeAccountingEntity();
     entity.loadFromDto(dto);
     entity.total = this.getTotal(dto.items);
-    await this.accountingRepository.save(dto);
+    await this.accountingRepository.save(entity);
 
     dto.items.forEach((element) => {
       const unit = new ShootingRangeAccountingUnitEntity();

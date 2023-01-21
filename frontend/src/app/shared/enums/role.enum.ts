@@ -2,7 +2,7 @@ export enum Role {
   Anonymous = 'anonymous',
   User = 'user',
   ShootingRangeManager = 'shootingRangeManager',
-  ClubPresident = 'clubPresident',
+  OrganizationManager = 'organizationManager',
   EventOrganizer = 'eventOrganizer',
   Cashier = 'cashier',
   Admin = 'admin',

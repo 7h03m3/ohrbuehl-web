@@ -1,0 +1,24 @@
+mat-card {
+  min-width: 40em;
+}
+
+mat-table {
+  width: 100%;
+}
+
+.total-column {
+  border-width: 0px;
+  font-weight: bold;
+}
+
+.cell-content-number {
+  text-align: center;
+}
+
+th {
+  vertical-align: bottom;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}

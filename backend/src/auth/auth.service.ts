@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../database/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
+import { Role } from '../shared/enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +11,7 @@ export class AuthService {
 
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
+  public async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByName(username);
     if (!user) {
       return null;
@@ -24,23 +25,49 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { userName: user.userName, id: user.id, roles: user.roles };
+  public async login(user: any) {
+    const userEntity = await this.usersService.findOne(user.id);
+
+    let assignedOrganizationId = 0;
+    if (userEntity.assignedOrganizationId != null) {
+      assignedOrganizationId = userEntity.assignedOrganizationId;
+    }
+
+    const payload = {
+      userName: user.userName,
+      id: user.id,
+      roles: user.roles,
+      assignedOrganizationId: assignedOrganizationId,
+    };
 
     const loginInformation = new JwtLoginInformation();
     loginInformation.access_token = this.jwtService.sign(payload);
     loginInformation.userName = user.userName;
     loginInformation.id = user.id;
     loginInformation.roles = user.roles;
+    loginInformation.assignedOrganizationId = assignedOrganizationId;
 
     return loginInformation;
   }
 
-  async hashPassword(password: string) {
+  public async hashPassword(password: string) {
     return await bcrypt.hash(password, this.hashRounds);
   }
 
-  async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
+  public async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
     return await bcrypt.compare(password, hashedPassword);
+  }
+
+  public async checkOrganizationAccess(organizationId: number, req: any) {
+    if (req.user.roles != Role.OrganizationManager) {
+      return;
+    }
+
+    const user = await this.usersService.findOne(req.user.id);
+
+    if (user == null || user.assignedOrganizationId != organizationId) {
+      const errorMessage = 'not allowed to access organization with user id ' + req.user.id;
+      throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
+    }
   }
 }

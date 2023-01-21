@@ -26,6 +26,11 @@
         <td *matCellDef="let element" mat-cell> {{getRoleText(element.roles)}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="assignedOrganization">
+        <th *matHeaderCellDef mat-header-cell> Verein</th>
+        <td *matCellDef="let element" mat-cell> {{getAssignedOrganizationText(element)}}</td>
+      </ng-container>
+      
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell>
           <span>
@@ -33,7 +38,7 @@
           </span>
           <span class="header-span">
             <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
-              <mat-button-toggle matTooltip="Erstellen" routerLink="/admin/user-create">
+              <mat-button-toggle matTooltip="Erstellen" routerLink="/admin/user-edit">
                 <mat-icon color="accent" inline="true">add</mat-icon>
               </mat-button-toggle>
             </mat-button-toggle-group>

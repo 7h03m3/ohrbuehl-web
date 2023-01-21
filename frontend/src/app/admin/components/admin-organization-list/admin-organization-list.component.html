@@ -16,6 +16,11 @@
         <td *matCellDef="let element" mat-cell> {{element.abbreviation}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="vvaId">
+        <th *matHeaderCellDef mat-header-cell> VVA-ID</th>
+        <td *matCellDef="let element" mat-cell> {{element.vvaId}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="color">
         <th *matHeaderCellDef mat-header-cell> Farbe</th>
         <td *matCellDef="let element" mat-cell>
@@ -55,7 +60,7 @@
           </span>
           <span class="header-span">
             <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
-              <mat-button-toggle matTooltip="Erstellen" routerLink="/admin/organization-create">
+              <mat-button-toggle matTooltip="Erstellen" routerLink="/admin/organization-edit">
                 <mat-icon color="accent" inline="true">add</mat-icon>
               </mat-button-toggle>
             </mat-button-toggle-group>

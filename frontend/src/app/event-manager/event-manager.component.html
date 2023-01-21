@@ -1,0 +1,27 @@
+<mat-drawer-container class="sidenav-container">
+  <mat-drawer #drawer class="sidenav" id="side" mode="side" opened>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option (click)="resetSubmenus()" routerLink="./event-list">
+        <mat-icon matListItemIcon>event</mat-icon>
+        Anlässe
+      </mat-list-option>
+      <mat-list-option (click)="resetSubmenus()" routerLink="./event-shift-list">
+        <mat-icon matListItemIcon>schedule</mat-icon>
+        Schichtenplanung
+      </mat-list-option>
+      <mat-list-option (click)="onStatisticSubmenu()" routerLink="./statistic-event-shift">
+        <mat-icon matListItemIcon>bar_chart</mat-icon>
+        Statistik
+      </mat-list-option>
+      <mat-list-option *ngIf="subMenuStatistic" class="sidenav-sub-item" routerLink="./statistic-event-shift">
+        <mat-icon matListItemIcon>bar_chart</mat-icon>
+        Schichtenstatistik
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

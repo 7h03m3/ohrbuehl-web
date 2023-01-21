@@ -1,0 +1,79 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-header>
+      <mat-card-title>Mitgliederliste</mat-card-title>
+    </mat-card-header>
+    <br>
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input #input (keyup)="applyFilter($event)" matInput>
+    </mat-form-field>
+
+    <table [dataSource]="dataSource" mat-table matSort>
+      <ng-container matColumnDef="firstname">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="firstName">Vorname</th>
+        <td *matCellDef="let element" mat-cell> {{element.firstName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastname">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="lastName">Nachname</th>
+        <td *matCellDef="let element" mat-cell> {{element.lastName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="birthdate">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="birthdate">Geburtstag</th>
+        <td *matCellDef="let element" mat-cell>
+          {{stringHelper.getDateString(element.birthdate)}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phoneNumber">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="phoneNumber">Telefon</th>
+        <td *matCellDef="let element" mat-cell> {{element.phoneNumber}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vvaId">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="vvaId">VVA-ID</th>
+        <td *matCellDef="let element" mat-cell> {{element.vvaId}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rangeOfficer">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="rangeOfficer">SM</th>
+        <td *matCellDef="let element" mat-cell>
+          <mat-icon *ngIf="element.rangeOfficer" class="range-officer-icon">done</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef class="align-right" mat-header-cell>
+          <span class="header-span">
+            <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+              <mat-button-toggle (click)="onCreate()" matTooltip="Erstellen">
+                <mat-icon color="accent" inline="true">add</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </span>
+        </th>
+        <td *matCellDef="let element" class="align-right" mat-cell>
+          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="onShowAddress(element)" *ngIf="isAddressValid(element)" matTooltip="Adresse">
+              <mat-icon class="list-action-icon" color="primary" inline="true">home</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="onEdit(element)" matTooltip="Bearbeiten">
+              <mat-icon class="list-action-icon" color="primary" inline="true">edit</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="onDelete(element)" matTooltip="Löschen">
+              <mat-icon class="list-action-icon" color="primary" inline="true">delete</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                   aria-label="Select page of users"></mat-paginator>
+  </mat-card-content>
+</mat-card>
+

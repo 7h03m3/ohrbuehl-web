@@ -1,0 +1,63 @@
+<mat-card class="mat-elevation-z1">
+  <mat-card-content>
+    <form #eventForm="ngForm" (ngSubmit)="onSubmit()">
+      <h3 *ngIf="eventData.id == 0">Anlass erstellen</h3>
+      <h3 *ngIf="eventData.id != 0">Anlass editieren</h3>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Titel</mat-label>
+        <input [(ngModel)]="eventData.title" matInput name="titel" required>
+        <mat-error>
+          Bitte einen Titel angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Kategorie</mat-label>
+        <mat-select [(ngModel)]="eventData.categoryId" name="category">
+          <mat-option *ngFor="let category of categoryList" [value]="category.id">
+            {{category.name}} ({{category.abbreviation}})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Startdatum</mat-label>
+        <input [(ngModel)]="date" [matDatepicker]="picker" matInput name="start_date">
+        <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-hint>Startzeit</mat-hint>
+        <input [(ngModel)]="startTime" matInput name="start_time" required type="Time">
+        <mat-error>
+          Bitte eine Startzeit angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-hint>Endzeit</mat-hint>
+        <input [(ngModel)]="endTime" matInput name="end_time" required type="Time">
+        <mat-error>
+          Bitte eine Endzeit angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <section align="left">
+        <mat-checkbox [(ngModel)]="eventData.public" name="public">Öffentlich sichtbar</mat-checkbox>
+      </section>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Öffentliche Beschreibung</mat-label>
+        <textarea [(ngModel)]="eventData.publicInformation" matInput name="publicDescription" required
+                  rows="8"></textarea>
+        <mat-error>
+          Bitte eine Beschreibung angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <button [disabled]="!eventForm.form.valid" class="full-width" color="primary" mat-raised-button>Speichern</button>
+    </form>
+  </mat-card-content>
+</mat-card>

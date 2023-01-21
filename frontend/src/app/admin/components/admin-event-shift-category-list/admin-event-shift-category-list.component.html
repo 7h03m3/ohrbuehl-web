@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-content>
+    <table [dataSource]="categoryList$" mat-table>
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell>ID</th>
+        <td *matCellDef="let element" mat-cell>{{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell>Name</th>
+        <td *matCellDef="let element" mat-cell> {{element.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="abbreviation">
+        <th *matHeaderCellDef mat-header-cell>Abkürzung</th>
+        <td *matCellDef="let element" mat-cell> {{element.abbreviation}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="position">
+        <th *matHeaderCellDef mat-header-cell>Position</th>
+        <td *matCellDef="let element" mat-cell> {{element.position}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell>
+          <span>
+            Aktion
+          </span>
+          <span class="header-span">
+            <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+              <mat-button-toggle (click)="onCreate()" matTooltip="Erstellen">
+                <mat-icon color="accent" inline="true">add</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </span>
+        </th>
+        <td *matCellDef="let element" class="align-right" mat-cell>
+          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+            <mat-button-toggle (click)="onEdit(element)" matTooltip="Editieren">
+              <mat-icon class="list-action-icon" color="primary" inline="true">edit</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="onDelete(element)" matTooltip="Löschen">
+              <mat-icon class="list-action-icon" color="primary" inline="true">delete</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

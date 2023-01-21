@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { DefaultValuesService } from '../default/default-values/default-values.service';
+import { OrganizationDto } from '../../shared/dtos/organization.dto';
 
 @Injectable()
 export class OrganizationsService {
@@ -21,6 +22,10 @@ export class OrganizationsService {
 
   findAll(): Promise<OrganizationEntity[]> {
     return this.organizationsRepository.find({ order: { name: 'ASC' } });
+  }
+
+  findAllDetail(): Promise<OrganizationEntity[]> {
+    return this.organizationsRepository.find({ order: { name: 'ASC' }, relations: { managers: true } });
   }
 
   findAllNative(): Promise<OrganizationEntity[]> {
@@ -47,8 +52,8 @@ export class OrganizationsService {
     return this.organizationsRepository.findOneBy({ id });
   }
 
-  async findOneByName(name: string): Promise<OrganizationEntity> | undefined {
-    return this.organizationsRepository.findOneBy({ name: name });
+  findOneDetail(id: number): Promise<OrganizationEntity> {
+    return this.organizationsRepository.findOne({ where: { id: id }, relations: { managers: true } });
   }
 
   async delete(id: string): Promise<void> {
@@ -64,7 +69,10 @@ export class OrganizationsService {
     return entity;
   }
 
-  async update(updateDto: OrganizationEntity): Promise<any> {
-    await this.organizationsRepository.update({ id: updateDto.id }, updateDto);
+  async update(updateDto: OrganizationDto): Promise<any> {
+    const entity = new OrganizationEntity();
+    entity.loadFromDto(updateDto);
+
+    await this.organizationsRepository.update({ id: entity.id }, entity);
   }
 }

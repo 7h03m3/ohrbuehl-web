@@ -47,7 +47,6 @@ export class InvoiceStepAccountingMilitaryComponent {
     invoiceItem.position = this.invoiceData.items.length + 1;
     this.invoiceData.items.push(invoiceItem);
 
-    console.log(this.invoiceData);
     this.invoiceDataChange.emit(this.invoiceData);
   }
 }

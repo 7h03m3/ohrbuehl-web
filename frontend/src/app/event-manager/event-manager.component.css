@@ -1,0 +1,25 @@
+.sidenav-container {
+  width: auto;
+  height: 93%;
+  background: white;
+}
+
+.sidenav {
+  height: auto;
+  width: 15rem;
+  background: white;
+}
+
+.sidenav-sub-item {
+  padding-left: 0.5em !important;
+}
+
+.sidenav-content {
+  flex: auto;
+  height: auto;
+  width: auto;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+

@@ -1,0 +1,26 @@
+<h2>{{organizationData.name}} ({{organizationData.abbreviation}})</h2>
+<p *ngIf="organizationData.vvaId!=''">
+  VVA-ID:
+</p>
+<ul *ngIf="organizationData.vvaId!=''">
+  <li>{{organizationData.vvaId}}</li>
+</ul>
+
+Distanzen:
+<ul>
+  <li *ngIf="organizationData.distance_300m">300m</li>
+  <li *ngIf="organizationData.distance_100m">100m</li>
+  <li *ngIf="organizationData.distance_50m">50m</li>
+  <li *ngIf="organizationData.distance_25m">25m</li>
+</ul>
+<br>
+<p *ngIf="authService.isAdmin()">
+  <mat-form-field appearance="outline">
+    <mat-label>Verein</mat-label>
+    <mat-select (valueChange)="onOrganizationChange($event)" [(ngModel)]="organizationId" name="manager">
+      <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
+        {{organization.abbreviation}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>

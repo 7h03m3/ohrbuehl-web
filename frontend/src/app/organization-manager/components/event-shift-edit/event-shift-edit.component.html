@@ -1,0 +1,45 @@
+<h2>{{eventData.title}} ({{getTimeString(eventData)}})</h2>
+
+<table [dataSource]="shiftList" mat-table>
+  <ng-container matColumnDef="time">
+    <th *matHeaderCellDef mat-header-cell>Zeit</th>
+    <td *matCellDef="let element" mat-cell> {{getShiftTimeString(element)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+    <td *matCellDef="let element" mat-cell> {{element.category.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="staff">
+    <th *matHeaderCellDef mat-header-cell>Funktionär</th>
+    <td *matCellDef="let element" class="staff-select" mat-cell>
+      <mat-select (valueChange)="onChangeStaff(element, $event)" *ngIf="isShiftEditable(element)"
+                  [(ngModel)]="element.assignedStaffId">
+        <mat-option *ngFor="let item of staffList" [value]="item.id">
+          {{stringHelper.getMemberNameWithSkills(item)}}
+        </mat-option>
+      </mat-select>
+      <div *ngIf="!isShiftEditable(element)">
+        {{stringHelper.getMemberNameWithSkills(element.assignedStaff)}}
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell>
+    </th>
+    <td *matCellDef="let element" class="align-right" mat-cell>
+      <mat-icon *ngIf="isShiftLocked(element)" matTooltip="Gesperrt">lock</mat-icon>
+      <mat-icon *ngIf="isShiftDone(element) && isShiftPresent(element)" class="green-icon" matTooltip="Anwesend">
+        check_circle
+      </mat-icon>
+      <mat-icon *ngIf="isShiftDone(element) && !isShiftPresent(element)" class="red-icon" matTooltip="Nicht erschienen">
+        cancel
+      </mat-icon>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>

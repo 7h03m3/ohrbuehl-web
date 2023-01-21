@@ -1,0 +1,57 @@
+<mat-drawer-container class="sidenav-container">
+  <mat-drawer #drawer class="sidenav" id="side" mode="side" opened>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option (click)="resetSubmenus()" routerLink="./info">
+        <mat-icon matListItemIcon>info</mat-icon>
+        Informationen
+      </mat-list-option>
+      <mat-list-option (click)="onMemberSubmenu()" routerLink="./member-list">
+        <mat-icon matListItemIcon>person</mat-icon>
+        Mitglieder
+      </mat-list-option>
+      <div *ngIf="subMenuMember">
+        <mat-list-option class="sidenav-sub-item" routerLink="./member-list">
+          <mat-icon matListItemIcon>list</mat-icon>
+          Mitgliederliste
+        </mat-list-option>
+        <mat-list-option class="sidenav-sub-item" routerLink="./member-import">
+          <mat-icon matListItemIcon>publish</mat-icon>
+          VVA-Import
+        </mat-list-option>
+      </div>
+      <mat-list-option (click)="resetSubmenus()" routerLink="./event-staff-pool-edit">
+        <mat-icon matListItemIcon>groups</mat-icon>
+        Helfer-Pool
+      </mat-list-option>
+      <mat-list-option (click)="onShiftsSubmenu()" routerLink="./event-shift-list">
+        <mat-icon matListItemIcon>schedule</mat-icon>
+        Schichtenplanung
+      </mat-list-option>
+      <div *ngIf="subMenuShifts">
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-shift-list">
+          <mat-icon matListItemIcon>schedule</mat-icon>
+          Schichten
+        </mat-list-option>
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-shift-downloads">
+          <mat-icon matListItemIcon>download</mat-icon>
+          Downloads
+        </mat-list-option>
+      </div>
+      <mat-list-option (click)="onStatisticSubmenu()" routerLink="./event-staff-statistic">
+        <mat-icon matListItemIcon>bar_chart</mat-icon>
+        Statistik
+      </mat-list-option>
+      <div *ngIf="subMenuStatistic">
+        <mat-list-option class="sidenav-sub-item" routerLink="./event-staff-statistic">
+          <mat-icon matListItemIcon>bar_chart</mat-icon>
+          Helferstatistik
+        </mat-list-option>
+      </div>
+    </mat-selection-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

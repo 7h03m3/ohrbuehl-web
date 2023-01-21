@@ -16,7 +16,6 @@ import { InvoicePdfService } from '../../pdf/invoice-pdf/invoice-pdf.service';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
 import { InvoiceService } from '../../database/invoice/invoice.service';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
-import { UsersService } from '../../database/users/users.service';
 import { InvoiceEntity } from '../../database/entities/invoice.entity';
 import { InvoiceItemService } from '../../database/invoice-item/invoice-item.service';
 import { InvoiceItemCreateDto } from '../../shared/dtos/invoice-item-create.dto';
@@ -25,10 +24,10 @@ import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { DateHelper } from '../../shared/classes/date-helper';
-import { UserDto } from '../../shared/dtos/user.dto';
-import { UserEntity } from '../../database/entities/user.entity';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceItemUpdateDto } from '../../shared/dtos/invoice-item-update.dto';
+import { UsersService } from '../../database/users/users.service';
+import { UserEntity } from '../../database/entities/user.entity';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -84,9 +83,9 @@ export class InvoiceController {
   @Put()
   async update(@Body() updateDto: InvoiceDto, @Request() req: any): Promise<any> {
     const creatorId = req.user.id;
-    updateDto.creator = await this.getUserAsDto(creatorId);
+    const creator = await this.getUser(creatorId);
     updateDto.filename = this.getInvoiceFilename(updateDto.title, updateDto.date);
-    return this.invoiceService.update(updateDto);
+    return this.invoiceService.update(updateDto, creator);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
@@ -159,12 +158,5 @@ export class InvoiceController {
     }
 
     return user;
-  }
-
-  private async getUserAsDto(userId: number): Promise<UserDto> {
-    const userEntity = await this.getUser(userId);
-    const userDto = new UserDto();
-    userDto.fillFromEntity(userEntity);
-    return userDto;
   }
 }

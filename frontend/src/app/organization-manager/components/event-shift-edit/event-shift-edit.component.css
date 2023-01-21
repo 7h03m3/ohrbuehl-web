@@ -1,0 +1,32 @@
+mat-form-field {
+  display: block;
+}
+
+.organization-select {
+  min-width: 13em;
+}
+
+.staff-select {
+  min-width: 20em;
+}
+
+.add-button-mat-icon {
+  font-size: 2em;
+}
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 2rem;
+}
+
+.green-icon {
+  color: green;
+}
+
+.red-icon {
+  color: red;
+}

@@ -15,6 +15,13 @@ import { ShootingRangeAccountingModule } from './shooting-range-accounting/shoot
 import { ShootingRangeAccountingEntity } from './entities/shooting-range-accounting.entity';
 import { ShootingRangeAccountingUnitEntity } from './entities/shooting-range-accounting-unit.entity';
 import { DefaultValuesService } from './default/default-values/default-values.service';
+import { EventsModule } from './events/events.module';
+import { EventCategoryEntity } from './entities/event-category.entity';
+import { EventEntity } from './entities/event.entity';
+import { EventShiftEntity } from './entities/event-shift.entity';
+import { EventShiftCategoryEntity } from './entities/event-shift-category.entity';
+import { OrganizationMemberEntity } from './entities/organization-member.entity';
+import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
 
 @Module({
   imports: [
@@ -31,11 +38,17 @@ import { DefaultValuesService } from './default/default-values/default-values.se
         entities: [
           UserEntity,
           OrganizationEntity,
+          OrganizationMemberEntity,
           ShootingRangePriceEntity,
           InvoiceEntity,
           InvoiceItemEntity,
           ShootingRangeAccountingEntity,
           ShootingRangeAccountingUnitEntity,
+          EventCategoryEntity,
+          EventEntity,
+          EventShiftEntity,
+          EventShiftCategoryEntity,
+          EventStaffPoolEntity,
         ],
         synchronize: true,
       }),
@@ -48,6 +61,7 @@ import { DefaultValuesService } from './default/default-values/default-values.se
     InvoiceModule,
     InvoiceItemModule,
     ShootingRangeAccountingModule,
+    EventsModule,
   ],
   providers: [DefaultValuesService],
 })

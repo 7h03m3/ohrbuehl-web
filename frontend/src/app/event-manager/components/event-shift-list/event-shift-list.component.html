@@ -8,12 +8,7 @@
         <th *matHeaderCellDef mat-header-cell>Zeit</th>
         <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
-
-      <ng-container matColumnDef="day">
-        <th *matHeaderCellDef mat-header-cell>Tag</th>
-        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
-      </ng-container>
-
+      
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell>Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
@@ -24,12 +19,18 @@
         <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="organization">
+        <th *matHeaderCellDef mat-header-cell>Vereinszuteilung</th>
+        <td *matCellDef="let element"
+            [ngClass]="isOrganizationAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+            mat-cell> {{element.assignedOrganization}} / {{element.totalShifts}}</td>
+      </ng-container>
+
       <ng-container matColumnDef="shift">
         <th *matHeaderCellDef mat-header-cell>Schichten</th>
         <td *matCellDef="let element"
             [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedShifts}}
-          / {{element.totalShifts}}</td>
+            mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">

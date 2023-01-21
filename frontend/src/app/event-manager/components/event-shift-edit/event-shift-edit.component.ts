@@ -160,6 +160,10 @@ export class EventShiftEditComponent {
     }
   }
 
+  public getShiftCategory(element: EventShiftEditListItemDto) {
+    return element.shift.category.name + ' ' + element.number;
+  }
+
   public isShiftEditable(element: EventShiftEditListItemDto): boolean {
     return this.isShiftDone(element) == false && this.isShiftLocked(element) == false;
   }
@@ -303,12 +307,13 @@ export class EventShiftEditComponent {
         shiftList.push(item);
       });
 
-      this.sortList(shiftList);
+      this.sortShiftList(shiftList);
+      this.renumberShiftList(shiftList);
       this.dataSource.data = shiftList;
     });
   }
 
-  private sortList(shiftList: EventShiftEditListItemDto[]) {
+  private sortShiftList(shiftList: EventShiftEditListItemDto[]) {
     shiftList.sort((a, b) => {
       if (a.shift.category.position > b.shift.category.position) {
         return 1;
@@ -335,6 +340,21 @@ export class EventShiftEditComponent {
       }
 
       return 0;
+    });
+  }
+
+  private renumberShiftList(shiftList: EventShiftEditListItemDto[]) {
+    let currentCategory = 0;
+    let currentCount = 1;
+    shiftList.forEach((entry) => {
+      if (entry.shift.categoryId != currentCategory) {
+        currentCategory = entry.shift.categoryId;
+        currentCount = 1;
+      } else {
+        currentCount = currentCount + 1;
+      }
+
+      entry.number = currentCount;
     });
   }
 }

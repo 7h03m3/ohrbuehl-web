@@ -33,10 +33,10 @@
     </mat-form-field>
 
     <mat-form-field *ngIf="data.create" appearance="outline">
-      <mat-hint>Anzahl (1-10)</mat-hint>
-      <input formControlName="amount" matInput max="10" min="1" required type="number">
+      <mat-hint>Anzahl (1-20)</mat-hint>
+      <input formControlName="amount" matInput max="20" min="1" required type="number">
       <mat-error>
-        Bitte eine Anzahl (1-10) angeben.
+        Bitte eine Anzahl (1-20) angeben.
       </mat-error>
     </mat-form-field>
   </form>

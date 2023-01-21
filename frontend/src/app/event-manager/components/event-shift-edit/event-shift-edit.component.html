@@ -10,7 +10,7 @@
   <ng-container matColumnDef="category">
     <th *matHeaderCellDef mat-header-cell>Kategorie</th>
     <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}"
-        mat-cell> {{element.shift.category.name}} </td>
+        mat-cell> {{getShiftCategory(element)}} </td>
   </ng-container>
 
   <ng-container matColumnDef="organization">

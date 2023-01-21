@@ -29,6 +29,9 @@ export class EventEntity {
   @Column({ default: false })
   public: boolean;
 
+  @Column()
+  publicInformation: string;
+
   @OneToMany((type) => EventShiftEntity, (shift) => shift.event)
   shifts: EventShiftEntity[];
 
@@ -45,5 +48,6 @@ export class EventEntity {
     this.end = dto.end;
     this.title = dto.title;
     this.public = dto.public;
+    this.publicInformation = dto.publicInformation;
   }
 }

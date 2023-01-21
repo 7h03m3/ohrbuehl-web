@@ -48,6 +48,15 @@
         <mat-checkbox [(ngModel)]="eventData.public" name="public">Öffentlich sichtbar</mat-checkbox>
       </section>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Öffentliche Beschreibung</mat-label>
+        <textarea [(ngModel)]="eventData.publicInformation" matInput name="publicDescription" required
+                  rows="8"></textarea>
+        <mat-error>
+          Bitte eine Beschreibung angeben.
+        </mat-error>
+      </mat-form-field>
+
       <button [disabled]="!eventForm.form.valid" class="full-width" color="primary" mat-raised-button>Speichern</button>
     </form>
   </mat-card-content>

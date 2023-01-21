@@ -8,6 +8,7 @@ import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventApi } from '../../../api/classes/event-api';
 import { StringHelper } from '../../../shared/classes/string-helper';
+import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-event-list',
@@ -31,6 +32,14 @@ export class EventListComponent {
 
   public ngOnInit(): void {
     this.fetch();
+  }
+
+  public onInfo(element: EventDto) {
+    this.dialog.open(InfoDialogComponent, {
+      data: {
+        text: element.publicInformation,
+      },
+    });
   }
 
   public onDelete(element: EventDto) {

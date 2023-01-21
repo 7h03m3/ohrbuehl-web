@@ -2,25 +2,23 @@
   <ng-container matColumnDef="date">
     <th *matHeaderCellDef mat-header-cell>Zeit</th>
     <td *matCellDef="let element" class="no-wrap" mat-cell> {{getTimeString(element)}}</td>
-    <td *matFooterCellDef mat-footer-cell></td>
   </ng-container>
 
   <ng-container *ngFor="let column of columns" [matColumnDef]="column.def">
     <th *matHeaderCellDef mat-header-cell>
       <div><span>{{column.header}}</span></div>
     </th>
-    <td *matCellDef="let element" class="cell-content-number" mat-cell> {{column.dataMap.get(element.event.id)}}</td>
-    <td *matFooterCellDef mat-footer-cell>{{column.total}}</td>
+    <td *matCellDef="let element" [ngClass]="isTotalRow(element) ? 'total-column' : ''"
+        class="cell-content-number"
+        mat-cell> {{column.dataMap.get(element.event.id)}}</td>
   </ng-container>
 
   <ng-container matColumnDef="total">
     <th *matHeaderCellDef class="total-column" mat-header-cell></th>
-    <td *matCellDef="let element" class="total-column" mat-cell>{{element.totalShifts}}</td>
-    <td *matFooterCellDef mat-footer-cell></td>
+    <td *matCellDef="let element" class="total-column" mat-cell>{{getTotalString(element)}}</td>
   </ng-container>
 
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
 </table>
 

@@ -84,6 +84,16 @@ export class EventsController {
 
   @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('withShiftsByCategoryId/:categoryId')
+  async getAllWithShiftsByCategoryId(
+    @Param('categoryId') categoryId: number,
+    @Request() req: any,
+  ): Promise<EventEntity[]> {
+    return await this.eventService.findAllWithShiftsByCategoryId(categoryId);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   async create(@Body() dto: EventCreateDto): Promise<EventEntity> {
     return await this.eventService.create(dto);

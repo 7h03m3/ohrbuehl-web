@@ -32,27 +32,38 @@ export class StatisticEventShiftsTableComponent {
   public fetch(events: EventDto[], organizations: OrganizationDto[]) {
     this.eventList = events;
     this.organizationList = organizations;
+    this.displayedColumns = ['date'];
     this.fetchEventData();
     this.fetchOrganizationData();
     this.fetchTotalShiftCount();
+
+    const dataEntry = new StatisticEventShiftTableData();
+    dataEntry.event = new EventDto();
+    this.dataSource.push(dataEntry);
 
     this.displayedColumns.push('total');
   }
 
   public getTimeString(element: StatisticEventShiftTableData): string {
-    const startDate = this.stringHelper.getDateString(element.event.start);
-    const endDate = this.stringHelper.getDateString(element.event.end);
-    const startTime = this.stringHelper.getTimeString(element.event.start);
-    const endTime = this.stringHelper.getTimeString(element.event.end);
-
-    if (startDate == endDate) {
-      return startDate + ' ' + startTime + ' - ' + endTime;
-    } else {
-      return startDate + ' ' + startTime + ' - ' + ' ' + endDate + ' ' + endTime;
+    if (this.isTotalRow(element)) {
+      return '';
     }
+    return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
+  }
+
+  public getTotalString(element: StatisticEventShiftTableData): string {
+    if (this.isTotalRow(element)) {
+      return '';
+    }
+    return element.totalShifts.toString();
+  }
+
+  public isTotalRow(element: StatisticEventShiftTableData): boolean {
+    return element.event.id == 0;
   }
 
   private fetchEventData() {
+    this.dataSource = new Array<StatisticEventShiftTableData>();
     this.eventList.forEach((event) => {
       const dataEntry = new StatisticEventShiftTableData();
       dataEntry.event = event;
@@ -61,6 +72,7 @@ export class StatisticEventShiftsTableComponent {
   }
 
   private fetchOrganizationData() {
+    this.columns = new Array<StatisticEventShiftTableColumn>();
     this.organizationList.forEach((organization) => {
       const column = this.addOrganisationColumn(organization.abbreviation, organization.id);
 
@@ -68,6 +80,7 @@ export class StatisticEventShiftsTableComponent {
         const shiftCount = this.getShiftCount(data.event, column.organizationId);
         column.total = column.total + shiftCount;
         column.dataMap.set(data.event.id, shiftCount);
+        column.dataMap.set(0, column.total);
       });
     });
   }

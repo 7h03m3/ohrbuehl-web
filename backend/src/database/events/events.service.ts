@@ -30,6 +30,14 @@ export class EventsService {
     return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true, shifts: true } });
   }
 
+  public findAllWithShiftsByCategoryId(categoryId: number): Promise<EventEntity[]> {
+    return this.eventRepository.find({
+      where: { categoryId: categoryId },
+      order: { start: 'DESC' },
+      relations: { category: true, shifts: true },
+    });
+  }
+
   public getById(id: number): Promise<EventEntity> {
     return this.eventRepository.findOne({ where: { id: id } });
   }

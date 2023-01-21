@@ -1,11 +1,13 @@
 import { Injectable, Res } from '@nestjs/common';
 import { EventEntity } from '../../../database/entities/event.entity';
 import { DateHelper } from '../../../shared/classes/date-helper';
-import { EventReportPdfItem } from './classes/event-report-pdf-item';
 import { PdfBase } from '../../base/pdf-base.class';
+import { PdfTableRowItem } from '../../base/classes/pdf-table-row-item';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
+
+type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
 export class EventReportPdfService extends PdfBase {
@@ -23,35 +25,49 @@ export class EventReportPdfService extends PdfBase {
 
     const title =
       eventData.title +
-      ' (' +
-      eventData.category.abbreviation +
-      ') ' +
+      ' ' +
       this.dateHelper.getDateString(eventData.start) +
       ' ' +
       this.dateHelper.getTimeString(eventData.start) +
-      ' ' +
+      ' - ' +
       this.dateHelper.getTimeString(eventData.end);
 
-    const table = {
-      title: {
-        label: title,
-        fontSize: 18,
-      },
-      subtitle: '',
-      headers: [
-        { label: ' Schicht', property: 'category', width: 200, fontSize: 16 },
-        { label: ' Zeit', property: 'time', width: 100 },
-        { label: ' Verein', property: 'organization', width: 100 },
-        { label: ' Person', property: 'staff', width: 150 },
-      ],
-      datas: [],
-    };
+    const table = this.createTable(title, 18);
+    table.headers.push(this.getTableHeaderItem(' Schicht', 'category', 'left', 200));
+    table.headers.push(this.getTableHeaderItem(' Zeit', 'time', 'left', 100));
+    table.headers.push(this.getTableHeaderItem(' Verein', 'organization', 'left', 100));
+    table.headers.push(this.getTableHeaderItem(' Person', 'staff', 'left', 150));
 
+    let currentCategory = 0;
+    let currentCount = 1;
     eventData.shifts.forEach((shift) => {
-      const entry = new EventReportPdfItem();
-      entry.loadFromEntity(shift, this.dateHelper);
+      const row: Row = {};
 
-      table.datas.push(entry);
+      if (shift.assignedStaff != undefined) {
+        row['staff'] = this.getTableRowItem(shift.assignedStaff.firstName + ' ' + shift.assignedStaff.lastName, 12);
+      } else {
+        row['staff'] = this.getTableRowItem('');
+      }
+
+      if (shift.organization != undefined) {
+        row['organization'] = this.getTableRowItem(shift.organization.abbreviation, 12);
+        this.setTableRowItemColor(shift.organization.color, 1, row['organization']);
+      } else {
+        row['organization'] = this.getTableRowItem('');
+      }
+
+      row['time'] = this.getTableRowItem(this.dateHelper.getStartEndTimeString(shift.start, shift.end), 12);
+
+      if (currentCategory != shift.categoryId) {
+        currentCategory = shift.categoryId;
+        currentCount = 1;
+      } else {
+        currentCount = currentCount + 1;
+      }
+
+      row['category'] = this.getTableRowItem(shift.category.name + ' ' + currentCount, 12);
+
+      table.datas.push(row);
     });
 
     await doc.table(table, {

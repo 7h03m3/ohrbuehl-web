@@ -36,6 +36,13 @@ export class DateHelper {
     return date.toLocaleString(this.localeString, { weekday: 'short' });
   }
 
+  public getStartEndTimeString(start: number, end: number): string {
+    const startTime = this.getTimeString(start);
+    const endTime = this.getTimeString(end);
+
+    return startTime + ' - ' + endTime;
+  }
+
   public getStartEndDateString(start: number, end: number): string {
     const startDate = this.getDateString(start);
     const startTime = this.getTimeString(start);

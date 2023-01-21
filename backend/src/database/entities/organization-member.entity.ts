@@ -23,6 +23,15 @@ export class OrganizationMemberEntity {
   vvaId: string;
 
   @Column()
+  street: string;
+
+  @Column()
+  location: string;
+
+  @Column()
+  zip: number;
+
+  @Column()
   phoneNumber: string;
 
   @Column()
@@ -56,6 +65,9 @@ export class OrganizationMemberEntity {
     this.phoneNumber = dto.phoneNumber;
     this.emailAddress = dto.emailAddress;
     this.vvaId = dto.vvaId;
+    this.street = dto.street;
+    this.location = dto.location;
+    this.zip = dto.zip;
     this.rangeOfficer = dto.rangeOfficer;
     this.organizationId = dto.organizationId;
   }

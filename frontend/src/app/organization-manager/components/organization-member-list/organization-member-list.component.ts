@@ -11,6 +11,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-organization-member-list',
@@ -62,6 +63,27 @@ export class OrganizationMemberListComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  public isAddressValid(element: OrganizationMemberDto) {
+    return element.zip != 0;
+  }
+
+  public onShowAddress(element: OrganizationMemberDto) {
+    const dialogRef = this.dialog.open(InfoDialogComponent, {
+      data: {
+        text:
+          element.firstName +
+          ' ' +
+          element.lastName +
+          '\n' +
+          element.street +
+          '\n' +
+          element.zip +
+          ' ' +
+          element.location,
+      },
+    });
   }
 
   public onDelete(element: OrganizationMemberDto) {

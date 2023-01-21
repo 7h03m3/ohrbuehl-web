@@ -45,6 +45,30 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Strasse</mat-label>
+        <input formControlName="street" matInput>
+        <mat-error>
+          Bitte eine Strasse angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>PLZ</mat-label>
+        <input formControlName="zip" matInput type="number">
+        <mat-error>
+          Bitte eine PLZ angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ort</mat-label>
+        <input formControlName="location" matInput>
+        <mat-error>
+          Bitte einen Ort angeben.
+        </mat-error>
+      </mat-form-field>
+
       <section align="left">
         <mat-checkbox formControlName="rangeOfficer">Schützenmeister</mat-checkbox>
       </section>

@@ -38,6 +38,9 @@ export class OrganizationMemberEditComponent {
       phoneNumber: [''],
       emailAddress: ['', [Validators.email]],
       vvaid: [''],
+      street: [''],
+      location: [''],
+      zip: ['0'],
       rangeOfficer: [''],
     });
 
@@ -54,6 +57,9 @@ export class OrganizationMemberEditComponent {
           this.memberForm.controls['firstname'].setValue(this.memberData.firstName);
           this.memberForm.controls['lastname'].setValue(this.memberData.lastName);
           this.memberForm.controls['vvaid'].setValue(this.memberData.vvaId);
+          this.memberForm.controls['street'].setValue(this.memberData.street);
+          this.memberForm.controls['location'].setValue(this.memberData.location);
+          this.memberForm.controls['zip'].setValue(this.memberData.zip);
           this.memberForm.controls['rangeOfficer'].setValue(this.memberData.rangeOfficer);
           this.memberForm.controls['phoneNumber'].setValue(this.memberData.phoneNumber);
           this.memberForm.controls['emailAddress'].setValue(this.memberData.emailAddress);
@@ -72,6 +78,9 @@ export class OrganizationMemberEditComponent {
     this.memberData.firstName = this.memberForm.controls['firstname'].value;
     this.memberData.lastName = this.memberForm.controls['lastname'].value;
     this.memberData.vvaId = this.memberForm.controls['vvaid'].value;
+    this.memberData.street = this.memberForm.controls['street'].value;
+    this.memberData.location = this.memberForm.controls['location'].value;
+    this.memberData.zip = this.memberForm.controls['zip'].value;
     this.memberData.birthdate = Date.parse(this.memberForm.controls['birthday'].value);
     this.memberData.phoneNumber = this.memberForm.controls['phoneNumber'].value;
     this.memberData.emailAddress = this.memberForm.controls['emailAddress'].value;

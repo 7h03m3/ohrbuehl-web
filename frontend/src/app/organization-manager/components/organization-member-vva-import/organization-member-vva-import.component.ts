@@ -101,47 +101,29 @@ export class OrganizationMemberVvaImportComponent {
         const csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
 
         const tempMap = new Map<string, OrganizationMemberDto>();
-        const kskMap = new Map<string, number>();
-
         csvRecordsArray.forEach((entry, index) => {
           if (index != 0) {
             const splittedEntry = entry.split(';');
 
             if (splittedEntry[1] != undefined) {
-              const member = new OrganizationMemberDto();
-              member.organizationId = this.organizationId;
-              member.vvaId = splittedEntry[0];
-              member.firstName = splittedEntry[4];
-              member.lastName = splittedEntry[5];
-              const company = splittedEntry[6];
-              member.street = splittedEntry[9];
-              member.zip = Number.parseInt(splittedEntry[10]);
-              member.location = splittedEntry[11];
-              member.phoneNumber = splittedEntry[15];
-              member.emailAddress = splittedEntry[18];
-              member.birthdate = this.stringHelper.getDateByDateString(splittedEntry[27]);
+              const category = splittedEntry[30];
+              if (!category.includes('Behörden')) {
+                const member = new OrganizationMemberDto();
+                member.organizationId = this.organizationId;
+                member.vvaId = splittedEntry[0];
+                member.firstName = splittedEntry[4];
+                member.lastName = splittedEntry[5];
+                const company = splittedEntry[6];
+                member.street = splittedEntry[9];
+                member.zip = Number.parseInt(splittedEntry[10]);
+                member.location = splittedEntry[11];
+                member.phoneNumber = splittedEntry[15];
+                member.emailAddress = splittedEntry[18];
+                member.birthdate = this.stringHelper.getDateByDateString(splittedEntry[27]);
 
-              tempMap.set(member.vvaId, member);
-
-              if (company.includes('Mitglied SK') || company.includes('Präsident KSK')) {
-                let kskCount = kskMap.get(member.vvaId);
-
-                if (kskCount != undefined) {
-                  kskCount = kskCount + 1;
-                } else {
-                  kskCount = 1;
-                }
-
-                kskMap.set(member.vvaId, kskCount);
+                tempMap.set(member.vvaId, member);
               }
             }
-          }
-        });
-
-        // remove SK members with only one entry from import list
-        kskMap.forEach((kskMember, vvaId) => {
-          if (kskMember == 1) {
-            tempMap.delete(vvaId);
           }
         });
 

@@ -37,6 +37,7 @@ export class StatisticEventShiftsTableComponent {
     this.fetchOrganizationData();
     this.fetchTotalShiftCount();
 
+    // Add last line for total count as event with ID 0
     const dataEntry = new StatisticEventShiftTableData();
     dataEntry.event = new EventDto();
     this.dataSource.push(dataEntry);
@@ -80,6 +81,8 @@ export class StatisticEventShiftsTableComponent {
         const shiftCount = this.getShiftCount(data.event, column.organizationId);
         column.total = column.total + shiftCount;
         column.dataMap.set(data.event.id, shiftCount);
+
+        // Save total count as event with ID 0
         column.dataMap.set(0, column.total);
       });
     });

@@ -48,10 +48,10 @@ export class PdfBase {
     return table;
   }
 
-  protected getTableRowItem(label: string): PdfTableRowItem {
+  protected getTableRowItem(label: string, fontSize = 10): PdfTableRowItem {
     const rowItem = new PdfTableRowItem();
     rowItem.label = ' ' + label;
-    rowItem.options.fontSize = 10;
+    rowItem.options.fontSize = fontSize;
 
     return rowItem;
   }

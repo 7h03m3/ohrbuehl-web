@@ -6,6 +6,7 @@ import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 @Component({
   selector: 'app-shooting-range-track-assignment',
@@ -37,6 +38,8 @@ export class TrackAssignmentComponent implements OnInit {
   ngOnInit(): void {
     this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {
       this.organizations = response;
+
+      SortHelper.sortOrganizationByPosition(this.organizations);
 
       if (this.organizations.length != 0) {
         this.assignmentOrganization = response[0].id.toString();

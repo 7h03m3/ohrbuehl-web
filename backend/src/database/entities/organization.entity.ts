@@ -38,6 +38,9 @@ export class OrganizationEntity {
   @Column()
   vvaId: string;
 
+  @Column()
+  position: number;
+
   @OneToMany((type) => UserEntity, (user) => user.assignedOrganization)
   managers: UserEntity[];
 
@@ -60,6 +63,7 @@ export class OrganizationEntity {
     this.distance_50m = createDto.distance_50m;
     this.distance_25m = createDto.distance_25m;
     this.vvaId = createDto.vvaId;
+    this.position = createDto.position;
   }
 
   public loadFromDto(dto: OrganizationDto) {

@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { Observable } from 'rxjs';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-admin-organization-list',
@@ -13,21 +15,22 @@ import { OrganizationDto } from '../../../shared/dtos/organization.dto';
   styleUrls: ['./admin-organization-list.component.css'],
 })
 export class AdminOrganizationListComponent implements OnInit {
-  organizationList$ = new Observable<OrganizationDto[]>();
+  dataSource = new MatTableDataSource<OrganizationDto>();
   displayedColumns: string[] = [
-    'id',
     'name',
     'abbreviation',
     'vvaId',
-    'native',
+    'position',
     'color',
+    'native',
     '300m',
     '100m',
     '50m',
     '25m',
     'action',
   ];
-
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+  @ViewChild(MatSort) sort: any = MatSort;
   private organizationApi: OrganizationApi;
 
   constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router) {
@@ -39,7 +42,11 @@ export class AdminOrganizationListComponent implements OnInit {
   }
 
   fetch() {
-    this.organizationList$ = this.organizationApi.getAll();
+    this.organizationApi.getAll().subscribe((response) => {
+      this.dataSource = new MatTableDataSource<OrganizationDto>(response);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
 
   deleteOrganization(id: string, name: string) {
@@ -49,7 +56,7 @@ export class AdminOrganizationListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.organizationApi.delete(id).subscribe((data) => this.fetch());
+        this.organizationApi.delete(id).subscribe(() => this.fetch());
       }
     });
   }

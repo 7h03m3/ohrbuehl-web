@@ -7,28 +7,29 @@
 
     <ng-container matColumnDef="shots">
       <th *matHeaderCellDef mat-header-cell> Schüsse</th>
-      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+      <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" mat-cell>
         {{element.amount}}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="shotPrice">
       <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
-      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+      <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" mat-cell>
         {{element.price.name}} ({{element.price.price}} SFr.)
       </td>
     </ng-container>
 
     <ng-container matColumnDef="organization">
       <th *matHeaderCellDef mat-header-cell> Zuordnung</th>
-      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+      <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" mat-cell>
         {{getOrganizationText(element)}}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="comment">
       <th *matHeaderCellDef mat-header-cell>Kommentar</th>
-      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" class="parent" mat-cell>
+      <td *matCellDef="let element" [ngStyle]="{'background-color': getOrganizationColor(element)}" class="parent"
+          mat-cell>
         {{element.comment}}
       </td>
     </ng-container>

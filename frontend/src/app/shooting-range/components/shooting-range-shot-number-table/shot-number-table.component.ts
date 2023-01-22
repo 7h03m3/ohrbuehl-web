@@ -57,6 +57,16 @@ export class ShotNumberTableComponent implements OnInit {
     return 'red';
   }
 
+  public getOrganizationColor(element: ShootingRangeAccountingUnitDto) {
+    let color = 'white';
+
+    if (element.organization.id != 0) {
+      color = element.organization.color;
+    }
+
+    return color;
+  }
+
   public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {
     if (this.editShots == true) {
       return true;

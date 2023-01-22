@@ -27,6 +27,7 @@ export class TrackAssignmentComponent implements OnInit {
   public assignmentTrackEnd = '';
   public assignmentShotPrice = '';
   public assignmentOrganization = '';
+  public assignmentComment = '';
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
 
@@ -66,6 +67,7 @@ export class TrackAssignmentComponent implements OnInit {
     const endTrack = Number(this.assignmentTrackEnd);
     const organizationId = Number(this.assignmentOrganization);
     const priceId = Number(this.assignmentShotPrice);
+    const comment = this.assignmentComment;
 
     const organization = this.organizations.filter((x) => x.id == organizationId)[0];
     const price = this.prices.filter((x) => x.id == priceId)[0];
@@ -74,6 +76,7 @@ export class TrackAssignmentComponent implements OnInit {
       if (element.track >= startTrack && element.track <= endTrack) {
         element.organization = organization;
         element.price = price;
+        element.comment = comment;
       }
     });
 

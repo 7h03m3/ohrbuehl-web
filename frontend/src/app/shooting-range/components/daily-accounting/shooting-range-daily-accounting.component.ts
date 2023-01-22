@@ -3,6 +3,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { ShootingRangeAccountingTypeEnum } from '../../../shared/enums/shooting-range-accounting-type.enum';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
+import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
   selector: 'app-shot-numbers',
@@ -11,6 +12,7 @@ import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-ra
 })
 export class ShootingRangeDailyAccountingComponent implements OnInit {
   public accountingData = new ShootingRangeAccountingDto();
+  public summarizedAccountingData = new ShootingRangeAccountingDto();
   public minTrack = '0';
   public maxTrack = '0';
 
@@ -70,6 +72,7 @@ export class ShootingRangeDailyAccountingComponent implements OnInit {
   }
 
   public onTrackAssigned(stepper: MatStepper) {
+    this.summarizedAccountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(this.accountingData.items);
     this.updateShotCount();
     stepper.next();
   }

@@ -4,6 +4,7 @@ import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-
 import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { AccountingApi } from '../../../api/classes/accounting-api';
+import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
   selector: 'app-shooting-range-accounting-view',
@@ -12,7 +13,7 @@ import { AccountingApi } from '../../../api/classes/accounting-api';
 })
 export class ShootingRangeAccountingViewComponent implements OnInit {
   @Input() accountingData = new ShootingRangeAccountingDto();
-
+  @Input() summarizedAccountingData = new ShootingRangeAccountingDto();
   private accountingApi: AccountingApi;
 
   constructor(private stringHelper: StringHelper, private route: ActivatedRoute, private apiService: ApiService) {
@@ -26,6 +27,9 @@ export class ShootingRangeAccountingViewComponent implements OnInit {
         const id = Number(idString);
         this.accountingApi.getById(id).subscribe((response) => {
           this.accountingData = response;
+          this.summarizedAccountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(
+            this.accountingData.items,
+          );
         });
       }
     });

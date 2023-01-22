@@ -1,60 +1,114 @@
-<table [dataSource]="this.accountingData.items" class="mat-elevation-z8" mat-table>
+<mat-expansion-panel *ngIf="isSummary()" [expanded]="isSummary()">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Schusszahlen</mat-panel-title>
+  </mat-expansion-panel-header>
 
-  <ng-container matColumnDef="tracks">
-    <th *matHeaderCellDef mat-header-cell> Scheibe</th>
-    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)"
-        mat-cell>{{element.track}} </td>
-  </ng-container>
+  <table [dataSource]="this.summarizedAccountingData.items" mat-table>
 
-  <ng-container matColumnDef="shots">
-    <th *matHeaderCellDef mat-header-cell> Schüsse</th>
-    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
-      <div *ngIf="editShots == false">
+    <ng-container matColumnDef="shots">
+      <th *matHeaderCellDef mat-header-cell> Schüsse</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
         {{element.amount}}
-      </div>
-      <div *ngIf="editShots == true">
-        <mat-form-field appearance="outline" class="number-input" style="flex-direction: row">
-          <input [(ngModel)]="element.amount" matInput max="10000" min="0" type="number">
-        </mat-form-field>
-      </div>
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="shotPrice">
-    <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
-    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
-      <div *ngIf="editDisabled == false">
-        <mat-select (valueChange)="onPriceChange(element, $event)" [(value)]="element.price.id"
-                    placeholder="Bitte auswählen">
+    <ng-container matColumnDef="shotPrice">
+      <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+        {{element.price.name}} ({{element.price.price}} SFr.)
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="organization">
+      <th *matHeaderCellDef mat-header-cell> Zuordnung</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+        {{getOrganizationText(element)}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="comment">
+      <th *matHeaderCellDef mat-header-cell>Kommentar</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" class="parent" mat-cell>
+        {{element.comment}}
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="summaryDisplayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: summaryDisplayedColumns;" mat-row></tr>
+  </table>
+
+</mat-expansion-panel>
+<mat-expansion-panel [expanded]="!isSummary()">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Scheibeninformationen</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <table [dataSource]="this.accountingData.items" mat-table>
+
+    <ng-container matColumnDef="tracks">
+      <th *matHeaderCellDef mat-header-cell> Scheibe</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)"
+          mat-cell>{{element.track}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="shots">
+      <th *matHeaderCellDef mat-header-cell> Schüsse</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+        <div *ngIf="editShots == false">
+          {{element.amount}}
+        </div>
+        <div *ngIf="editShots == true">
+          <mat-form-field appearance="outline" class="number-input">
+            <input [(ngModel)]="element.amount" matInput max="10000" min="0" type="number">
+          </mat-form-field>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="shotPrice">
+      <th *matHeaderCellDef mat-header-cell> Schussgeld</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+        <mat-select (valueChange)="onPriceChange(element, $event)" *ngIf="editDisabled == false"
+                    [(value)]="element.price.id" class="price-selection" placeholder="Bitte auswählen">
           <mat-option *ngFor="let price of prices" [value]="price.id">
             {{price.name}} ({{price.price}} SFr.)
           </mat-option>
         </mat-select>
-      </div>
-      <div *ngIf="editDisabled == true">
-        {{element.price.name}} ({{element.price.price}} SFr.)
-      </div>
-    </td>
-  </ng-container>
+        <div *ngIf="editDisabled == true">
+          {{element.price.name}} ({{element.price.price}} SFr.)
+        </div>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="organization">
-    <th *matHeaderCellDef mat-header-cell> Zuordnung</th>
-    <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
-      <div *ngIf="editDisabled == false">
-        <mat-select (valueChange)="onOrganizationChange(element, $event)" [(value)]="element.organization.id"
-                    [disabled]="editDisabled" placeholder="Bitte auswählen">
+    <ng-container matColumnDef="organization">
+      <th *matHeaderCellDef mat-header-cell> Zuordnung</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" mat-cell>
+        <mat-select (valueChange)="onOrganizationChange(element, $event)" *ngIf="editDisabled == false"
+                    [(value)]="element.organization.id" [disabled]="editDisabled" class="organization-selection"
+                    placeholder="Bitte auswählen">
           <mat-option *ngFor="let organization of organizations" [value]="organization.id">
-            {{organization.name}} ({{organization.abbreviation}})
+            {{organization.abbreviation}}
           </mat-option>
         </mat-select>
-      </div>
+        <div *ngIf="editDisabled == true">
+          {{getOrganizationText(element)}}
+        </div>
+      </td>
+    </ng-container>
 
-      <div *ngIf="editDisabled == true">
-        {{getOrganizationText(element)}}
-      </div>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="comment">
+      <th *matHeaderCellDef mat-header-cell>Kommentar</th>
+      <td *matCellDef="let element" [class.not-filled-in]="!isFilledIn(element)" class="parent" mat-cell>
+        <mat-form-field *ngIf="editDisabled == false" appearance="outline" class="comment-input">
+          <input [(ngModel)]="element.comment" matInput>
+        </mat-form-field>
+        <div *ngIf="editDisabled == true">
+          {{element.comment}}
+        </div>
+      </td>
+    </ng-container>
 
-  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-</table>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</mat-expansion-panel>

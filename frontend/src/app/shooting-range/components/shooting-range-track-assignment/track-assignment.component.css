@@ -7,11 +7,15 @@ mat-form-field {
 }
 
 .price-input {
-  width: 15em;
+  width: 25em;
 }
 
 .organization-input {
-  width: 30em;
+  width: 25em;
+}
+
+.comment-input {
+  width: 20em;
 }
 
 .full-width {

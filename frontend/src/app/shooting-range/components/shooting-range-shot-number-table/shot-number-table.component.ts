@@ -11,13 +11,15 @@ import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price
 })
 export class ShotNumberTableComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
+  @Input() summarizedAccountingData!: ShootingRangeAccountingDto;
   @Input() organizations!: OrganizationDto[];
   @Input() prices!: ShootingRangePriceDto[];
   @Input() editDisabled = true;
   @Input() editShots = false;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
 
-  public displayedColumns: string[] = ['tracks', 'shots', 'shotPrice', 'organization'];
+  public summaryDisplayedColumns: string[] = ['shots', 'shotPrice', 'organization', 'comment'];
+  public displayedColumns: string[] = ['tracks', 'shots', 'shotPrice', 'organization', 'comment'];
 
   public constructor() {}
 
@@ -45,6 +47,10 @@ export class ShotNumberTableComponent implements OnInit {
     const organization = this.organizations.filter((x) => x.id == organizationId)[0];
     element.organization = organization;
     this.accountingDataChange.emit(this.accountingData);
+  }
+
+  public isSummary(): boolean {
+    return !this.editShots && this.editDisabled;
   }
 
   public getBackgroundColor(): string {

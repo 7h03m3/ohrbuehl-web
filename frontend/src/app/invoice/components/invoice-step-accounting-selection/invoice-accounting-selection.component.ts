@@ -7,6 +7,7 @@ import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
+import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
   selector: 'app-invoice-step-accounting-selection',
@@ -79,10 +80,16 @@ export class InvoiceAccountingSelectionComponent {
       this.accountingData.endTime;
     this.invoiceData.items = new Array<InvoiceItemDto>();
 
-    this.accountingData.items.forEach((item) => {
+    const summarizedItems = SummarizeHelper.summarizeShootingRangeAccounting(this.accountingData.items);
+
+    summarizedItems.forEach((item) => {
       if (item.organization.id == organization.id) {
         const invoiceItem = new InvoiceItemDto();
-        invoiceItem.description = 'Scheibe ' + item.track + ' (Preiskategorie: ' + item.price.name + ')';
+        let description = 'Schussgeld (Preiskategorie: ' + item.price.name + ')';
+        if (item.comment != '') {
+          description += ': ' + item.comment;
+        }
+        invoiceItem.description = description;
         invoiceItem.price = item.price.price;
         invoiceItem.amount = item.amount;
         invoiceItem.position = this.invoiceData.items.length + 1;

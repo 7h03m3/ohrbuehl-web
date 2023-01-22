@@ -28,6 +28,9 @@ export class ShootingRangeAccountingUnitEntity {
   @Column()
   amount: number;
 
+  @Column()
+  comment: string;
+
   public loadFromDto(accountingId: number, dto: ShootingRangeAccountingUnitDto) {
     this.id = dto.id;
     this.loadFromCreateDto(accountingId, dto);
@@ -39,5 +42,6 @@ export class ShootingRangeAccountingUnitEntity {
     this.accountingEntry = <any>{ id: accountingId };
     this.organization = <any>{ id: dto.organization.id };
     this.price = <any>{ id: dto.price.id };
+    this.comment = dto.comment;
   }
 }

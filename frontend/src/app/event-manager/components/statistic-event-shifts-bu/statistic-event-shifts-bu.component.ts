@@ -7,6 +7,7 @@ import { ApiService } from '../../../api/api.service';
 import { StatisticEventShiftsTableComponent } from '../statistic-event-shifts/statistic-event-shifts-table.component';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
 import { EventCategoryApi } from '../../../api/classes/event-category-api';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 @Component({
   selector: 'app-statistic-event-shifts-bu',
@@ -58,6 +59,7 @@ export class StatisticEventShiftsBuComponent {
   }
 
   private fetch() {
+    SortHelper.sortEventsByDate(this.eventList, true);
     this.organizationApi.getAllNative().subscribe((response) => {
       this.organizationList = response;
       this.tableComponent.fetch(this.eventList, this.organizationList);

@@ -19,6 +19,7 @@ import { catchError, EMPTY } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-sheet/member-info-bottom-sheet.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -307,39 +308,9 @@ export class EventShiftEditComponent {
         shiftList.push(item);
       });
 
-      this.sortShiftList(shiftList);
+      SortHelper.sortShiftList(shiftList);
       this.renumberShiftList(shiftList);
       this.dataSource.data = shiftList;
-    });
-  }
-
-  private sortShiftList(shiftList: EventShiftEditListItemDto[]) {
-    shiftList.sort((a, b) => {
-      if (a.shift.category.position > b.shift.category.position) {
-        return 1;
-      }
-
-      if (a.shift.category.position < b.shift.category.position) {
-        return -1;
-      }
-
-      if (a.shift.start > b.shift.start) {
-        return 1;
-      }
-
-      if (a.shift.start < b.shift.start) {
-        return -1;
-      }
-
-      if (a.shift.organizationId > b.shift.organizationId) {
-        return 1;
-      }
-
-      if (a.shift.organizationId < b.shift.organizationId) {
-        return -1;
-      }
-
-      return 0;
     });
   }
 

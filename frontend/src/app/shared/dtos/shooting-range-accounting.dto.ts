@@ -4,18 +4,16 @@ import { ShootingRangeAccountingUnitDto } from './shooting-range-accounting-unit
 export class ShootingRangeAccountingDto {
   id: number;
   type: ShootingRangeAccountingTypeEnum;
-  date: number;
-  startTime: string;
-  endTime: string;
+  start: number;
+  end: number;
   items: ShootingRangeAccountingUnitDto[];
   total: number;
 
   constructor() {
     this.id = 0;
     this.type = ShootingRangeAccountingTypeEnum.Section_300m;
-    this.date = 0;
-    this.startTime = '';
-    this.endTime = '';
+    this.start = 0;
+    this.end = 0;
     this.items = Array<ShootingRangeAccountingUnitDto>();
     this.total = 0;
   }

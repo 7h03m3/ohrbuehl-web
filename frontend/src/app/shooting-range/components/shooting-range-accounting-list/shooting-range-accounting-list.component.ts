@@ -51,29 +51,32 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public onDelete(element: ShootingRangeAccountingDto) {
-    const dateString =
-      this.stringHelper.getDateString(+element.date) + ' ' + element.startTime + ' - ' + element.endTime;
+    const dateString = this.stringHelper.getStartEndDateTimeString(element.start, element.end);
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       data: { itemName: 'Schusszahlen vom ' + dateString },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.accountingApi.delete(element.id).subscribe((data) => this.fetch());
+        this.accountingApi.delete(element.id).subscribe(() => this.fetch());
       }
     });
   }
 
-  public getDateString(dateNumber: string): string {
-    return this.stringHelper.getDateString(+dateNumber);
+  public getDateString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getStartEndDateString(element.start, element.end);
+  }
+
+  public getTimeString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getStartEndTimeString(element.start, element.end);
   }
 
   public getTypeString(typeString: string): string {
     return this.userData.convertAccountingTypeText(typeString);
   }
 
-  public getDayString(dateNumber: string): string {
-    return this.stringHelper.getDayOfWeekShort(+dateNumber);
+  public getDayString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getDayOfWeekShort(element.start);
   }
 
   private fetch() {

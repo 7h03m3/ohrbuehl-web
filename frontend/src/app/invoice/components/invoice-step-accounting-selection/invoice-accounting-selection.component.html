@@ -2,8 +2,7 @@
   <mat-hint>Tag</mat-hint>
   <mat-select (selectionChange)="onAccountingChange()" [(ngModel)]="selectedAccounting" name="accounting">
     <mat-option *ngFor="let accountingData of accountingList" [value]="accountingData.id">
-      {{getDateString(accountingData.date)}} {{accountingData.startTime}} - {{accountingData.endTime}}
-      ({{getTypeString(accountingData.type)}})
+      {{getDateTimeString(accountingData)}} ({{getTypeString(accountingData.type)}})
     </mat-option>
   </mat-select>
 </mat-form-field>

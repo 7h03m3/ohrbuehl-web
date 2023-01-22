@@ -68,16 +68,11 @@ export class InvoiceAccountingSelectionComponent {
       return;
     }
 
-    const accountingDateString = this.stringHelper.getDateString(+this.accountingData.date);
     this.invoiceData.title =
       'Schussgeld ' +
       organization.name +
       ' ' +
-      accountingDateString +
-      ' ' +
-      this.accountingData.startTime +
-      ' - ' +
-      this.accountingData.endTime;
+      this.stringHelper.getStartEndDateTimeString(this.accountingData.start, this.accountingData.end);
     this.invoiceData.items = new Array<InvoiceItemDto>();
 
     const summarizedItems = SummarizeHelper.summarizeShootingRangeAccounting(this.accountingData.items);
@@ -100,8 +95,8 @@ export class InvoiceAccountingSelectionComponent {
     this.invoiceDataChange.emit(this.invoiceData);
   }
 
-  public getDateString(dateNumber: number): string {
-    return this.stringHelper.getDateString(Number(dateNumber));
+  public getDateTimeString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 
   public getTypeString(typeString: string): string {

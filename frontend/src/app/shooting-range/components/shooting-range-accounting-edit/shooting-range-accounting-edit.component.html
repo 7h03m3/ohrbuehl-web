@@ -1,10 +1,18 @@
 <mat-card>
   <mat-card-content>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Datum</mat-panel-title>
+        <mat-panel-description class="expansion-panel-date-header">
+          {{getDateTimeString(this.accountingData)}}
+          <mat-icon>schedule</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-shooting-range-accounting-step-enter-date-and-time (accountingDataChange)="onDateChanged()"
+                                                              [(accountingData)]="accountingData"
+                                                              buttonText="Speichern"></app-shooting-range-accounting-step-enter-date-and-time>
+    </mat-expansion-panel>
     <mat-list>
-      <mat-list-item>
-        <mat-icon matListItemIcon>schedule</mat-icon>
-        {{getDateString(this.accountingData.date)}} {{this.accountingData.startTime}} - {{this.accountingData.endTime}}
-      </mat-list-item>
       <mat-list-item>
         <mat-icon matListItemIcon>play_for_work</mat-icon>
         {{this.accountingData.total}} Schüsse

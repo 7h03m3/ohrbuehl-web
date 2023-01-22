@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../api/api.service';
@@ -7,9 +7,9 @@ import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { EnterDateAndTimeComponent } from '../daily-accounting/components/shooting-range-accounting-step-enter-date-and-time/enter-date-and-time.component';
 
 @Component({
   selector: 'app-shooting-range-accounting-edit',
@@ -22,6 +22,7 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
   public prices = new Array<ShootingRangePriceDto>();
   public minTrack = '0';
   public maxTrack = '0';
+  private dateFormComponent: any;
   private accountingApi: AccountingApi;
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
@@ -38,6 +39,11 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     this.priceApi = this.apiService.getShootingRangePrice();
   }
 
+  @ViewChild(EnterDateAndTimeComponent)
+  set appShark(child: EnterDateAndTimeComponent) {
+    this.dateFormComponent = child;
+  }
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {
       const idString = data.get('id');
@@ -46,6 +52,7 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
         this.accountingApi.getById(id).subscribe((response) => {
           this.accountingData = response;
           this.updateTrackCount();
+          this.dateFormComponent.fetch(this.accountingData);
 
           this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {
             this.organizations = response;
@@ -65,27 +72,33 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     });
   }
 
-  public getDateString(date: number): string {
-    return this.stringHelper.getDateString(+date);
+  public onDateChanged() {
+    this.accountingApi.update(this.accountingData).subscribe((response) => {
+      this.openSnackBar('Datum gespeichert', false);
+    });
   }
 
-  private openSnackBar(message: string) {
+  public getDateTimeString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
+  }
+
+  private openSnackBar(message: string, redirect = true) {
     const ref = this.snackBar.open(message, 'Verbergen', {
       duration: 3000,
       verticalPosition: 'bottom',
     });
 
-    ref.afterDismissed().subscribe((data) => {
-      this.router.navigate(['/shooting-range/accounting-list']);
-    });
+    if (redirect) {
+      ref.afterDismissed().subscribe((data) => {
+        this.router.navigate(['/shooting-range/accounting-list']);
+      });
+    }
   }
 
   private updateTrackCount() {
     let maxTrack = 0;
     let minTrack = 0;
     this.accountingData.items.forEach((element) => {
-      const accountingUnit = new ShootingRangeAccountingUnitDto();
-
       if (maxTrack == 0 && minTrack == 0) {
         maxTrack = element.track;
         minTrack = element.track;

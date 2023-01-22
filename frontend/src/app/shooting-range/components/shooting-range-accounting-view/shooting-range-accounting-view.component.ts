@@ -35,7 +35,7 @@ export class ShootingRangeAccountingViewComponent implements OnInit {
     });
   }
 
-  public getDateString(date: number): string {
-    return this.stringHelper.getDateString(+date);
+  public getDateTimeString(element: ShootingRangeAccountingDto): string {
+    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 }

@@ -61,6 +61,13 @@ export class DateHelper {
     return date.getFullYear() + '_' + (date.getMonth() + 1) + '_' + date.getDate();
   }
 
+  public getTimeFileName(dateNumber: number): string {
+    const date = new Date(+dateNumber);
+    const hours = this.addLeadingZero(date.getHours());
+    const minutes = this.addLeadingZero(date.getMinutes());
+    return hours + '_' + minutes;
+  }
+
   public getFullYear(dateNumber: number): string {
     const date = this.getDate(dateNumber);
     return date.getFullYear().toString();

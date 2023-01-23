@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -56,6 +56,8 @@ export class UsersService {
     const entity = new UserEntity();
     entity.loadFromDto(dto);
 
+    entity.assignedOrganization = await this.getOrganization(dto.assignedOrganizationId);
+
     await this.usersRepository.save(entity);
 
     return entity;
@@ -96,9 +98,15 @@ export class UsersService {
       .execute();
   }
 
-  private async getOrganization(organizationId: number): Promise<OrganizationEntity | undefined> {
+  private async getOrganization(organizationId: number): Promise<OrganizationEntity | null> {
     if (organizationId != 0) {
-      return await this.organizationService.findOne(organizationId);
+      const organization = await this.organizationService.findOne(organizationId);
+      if (organization == undefined) {
+        const errorMessage = 'organization with id ' + organizationId.toString() + ' not found';
+        throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+      }
+
+      return organization;
     } else {
       return null;
     }

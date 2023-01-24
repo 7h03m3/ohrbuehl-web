@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { ApiService } from '../../../api/api.service';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
@@ -27,11 +27,6 @@ export class TrackAssignmentComponent implements OnInit {
   public nextButtonDisabled = true;
   public organizations = new Array<OrganizationDto>();
   public prices = new Array<ShootingRangePriceDto>();
-  public assignmentTrackStart = '';
-  public assignmentTrackEnd = '';
-  public assignmentShotPrice = '';
-  public assignmentOrganization = '';
-  public assignmentComment = '';
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
 
@@ -45,32 +40,23 @@ export class TrackAssignmentComponent implements OnInit {
       this.organizations = response;
 
       SortHelper.sortOrganizationByPosition(this.organizations);
-
-      if (this.organizations.length != 0) {
-        this.assignmentOrganization = response[0].id.toString();
-      }
     });
 
     this.priceApi.getAll().subscribe((response) => {
       this.prices = response;
-
-      if (this.prices.length != 0) {
-        this.assignmentShotPrice = response[0].id.toString();
-      }
     });
     this.checkIfAllFilledIn();
   }
 
-  ngOnChanges(): void {
-    this.assignmentTrackStart = this.minTrack;
-    this.assignmentTrackEnd = this.maxTrack;
+  ngOnChanges(changes: SimpleChanges): void {
     this.update();
-    console.log(this.accountingData);
   }
 
   public doAssignmentDialog() {
     const dialogRef = this.dialog.open(ShootingRangeTrackAssignmentDialogComponent, {
       data: {
+        editShots: this.manualEdit,
+        amount: '',
         maxTrack: this.maxTrack,
         minTrack: this.minTrack,
         trackStart: this.minTrack,
@@ -93,6 +79,10 @@ export class TrackAssignmentComponent implements OnInit {
             element.organization = organization;
             element.price = price;
             element.comment = data.comment;
+
+            if (this.manualEdit) {
+              element.amount = data.amount;
+            }
           }
         });
 

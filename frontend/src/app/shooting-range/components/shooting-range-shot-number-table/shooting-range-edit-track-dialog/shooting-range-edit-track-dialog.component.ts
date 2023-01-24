@@ -4,7 +4,9 @@ import { ShootingRangePriceDto } from '../../../../shared/dtos/shooting-range-pr
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface ShootingRangeEditTrackDialogData {
+  editShots: boolean;
   track: number;
+  amount: number;
   priceId: number;
   organizationId: number;
   comment: string;

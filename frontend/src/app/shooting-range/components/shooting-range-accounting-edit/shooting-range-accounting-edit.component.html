@@ -19,7 +19,7 @@
       </mat-list-item>
     </mat-list>
     <app-shooting-range-track-assignment (accountingDataChange)="onSave()" [(accountingData)]="accountingData"
-                                         [maxTrack]="maxTrack" [minTrack]="minTrack"
+                                         [manualEdit]="false" [maxTrack]="maxTrack" [minTrack]="minTrack"
                                          buttonText="Speichern"></app-shooting-range-track-assignment>
   </mat-card-content>
 </mat-card>

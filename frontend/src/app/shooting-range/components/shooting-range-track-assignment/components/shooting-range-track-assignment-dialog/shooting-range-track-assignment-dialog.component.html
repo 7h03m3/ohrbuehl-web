@@ -2,21 +2,26 @@
 <div mat-dialog-content>
   <br>
   <form #assignForm="ngForm">
-    <mat-form-field appearance="outline" class="number-input" required>
+    <mat-form-field *ngIf="data.editShots" appearance="outline" required>
+      <mat-label>Anzahl Schüss</mat-label>
+      <input [(ngModel)]="data.amount" matInput min="1" name="amount" required type="number">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="track-field" required>
       <mat-label>Scheibe</mat-label>
-      <input [(ngModel)]="data.trackStart" [max]="data.maxTrack" [min]="data.minTrack" matInput maxlength="2"
-             name="trackSTart" type="number">
+      <input [(ngModel)]="data.trackStart" [max]="data.maxTrack" [min]="data.minTrack" matInput
+             maxlength="2" name="trackSTart" type="number">
       <mat-hint>Zahl von {{data.minTrack}} - {{data.maxTrack}}</mat-hint>
     </mat-form-field>
     bis
-    <mat-form-field appearance="outline" class="number-input" required>
+    <mat-form-field appearance="outline" class="track-field" required>
       <mat-label>Scheibe</mat-label>
       <input [(ngModel)]="data.trackEnd" [max]="data.maxTrack" [min]="data.minTrack" matInput maxlength="2"
              name="trackEnd" type="number">
       <mat-hint>Zahl von {{data.minTrack}} - {{data.maxTrack}}</mat-hint>
     </mat-form-field>
     <br>
-    <mat-form-field appearance="outline" class="price-input" required>
+    <mat-form-field appearance="outline" required>
       <mat-label>Schussgeld</mat-label>
       <mat-select [(ngModel)]="data.priceId" name="price" placeholder="Bitte auswählen" required>
         <mat-option *ngFor="let price of data.priceList" [value]="price.id">
@@ -25,7 +30,7 @@
       </mat-select>
     </mat-form-field>
     <br>
-    <mat-form-field appearance="outline" class="organization-input">
+    <mat-form-field appearance="outline">
       <mat-label>Organisation</mat-label>
       <mat-select [(ngModel)]="data.organizationId" name="organization" placeholder="Bitte auswählen" required>
         <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
@@ -34,7 +39,7 @@
       </mat-select>
     </mat-form-field>
     <br>
-    <mat-form-field appearance="outline" class="comment-input">
+    <mat-form-field appearance="outline">
       <mat-label>Kommentar</mat-label>
       <input [(ngModel)]="data.comment" matInput name="comment" placeholder="Bitte auswählen">
     </mat-form-field>

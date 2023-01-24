@@ -28,11 +28,15 @@ export class ShotNumberTableComponent implements OnInit {
   public ngOnInit(): void {}
 
   public onTrackEdit(element: ShootingRangeAccountingUnitDto) {
+    const priceId = element.price.id == 0 ? '' : element.price.id;
+    const organization = element.organization.id == 0 ? '' : element.organization.id;
     const dialogRef = this.dialog.open(ShootingRangeEditTrackDialogComponent, {
       data: {
+        editShots: this.editShots,
         track: element.track,
-        priceId: element.price.id,
-        organizationId: element.organization.id,
+        amount: element.amount,
+        priceId: priceId,
+        organizationId: organization,
         comment: element.comment,
         organizationList: this.organizations,
         priceList: this.prices,
@@ -41,15 +45,15 @@ export class ShotNumberTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data != undefined && data.track != undefined) {
-        element.organization.id = data.organizationId;
-        element.price.id = data.priceId;
-        element.comment = data.comment;
+        const organization = this.organizations.filter((x) => x.id == data.organizationId)[0];
+        const price = this.prices.filter((x) => x.id == data.priceId)[0];
 
-        console.log(element);
-        console.log(this.accountingData);
+        element.organization = organization;
+        element.price = price;
+        element.comment = data.comment;
+        element.amount = data.amount;
+
         this.accountingDataChange.emit(this.accountingData);
-      } else {
-        console.log('no data');
       }
     });
   }
@@ -64,26 +68,6 @@ export class ShotNumberTableComponent implements OnInit {
     }
 
     return accountingUnit.organization.name + ' (' + accountingUnit.organization.abbreviation + ')';
-  }
-
-  public onPriceChange(element: ShootingRangeAccountingUnitDto, priceId: any) {
-    const price = this.prices.filter((x) => x.id == priceId)[0];
-    element.price = price;
-    this.accountingDataChange.emit(this.accountingData);
-  }
-
-  public onOrganizationChange(element: ShootingRangeAccountingUnitDto, organizationId: any) {
-    const organization = this.organizations.filter((x) => x.id == organizationId)[0];
-    element.organization = organization;
-    this.accountingDataChange.emit(this.accountingData);
-  }
-
-  public isSummary(): boolean {
-    return !this.editShots && this.editDisabled;
-  }
-
-  public getBackgroundColor(): string {
-    return 'red';
   }
 
   public getTrackColor(element: ShootingRangeAccountingUnitDto): string {
@@ -120,12 +104,6 @@ export class ShotNumberTableComponent implements OnInit {
     }
 
     return color;
-  }
-
-  public getItemToolTip(element: ShootingRangeAccountingUnitDto): string {
-    return `Name: &#13;
-    Test: &#13;
-    Test2: `;
   }
 
   public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {

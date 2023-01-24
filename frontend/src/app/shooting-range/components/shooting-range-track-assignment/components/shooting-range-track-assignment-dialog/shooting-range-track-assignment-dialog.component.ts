@@ -4,6 +4,8 @@ import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../../../shared/dtos/shooting-range-price.dto';
 
 export interface ShootingRangeTrackAssignmentDialogData {
+  editShots: boolean;
+  amount: number;
   maxTrack: number;
   minTrack: number;
   trackStart: number;

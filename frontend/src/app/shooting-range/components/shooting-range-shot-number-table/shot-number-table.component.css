@@ -39,3 +39,23 @@ table {
 .comment-input {
   flex-direction: row;
 }
+
+.wrapper {
+  display: flex;
+  /*: baseline;*/
+  justify-content: left;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.fields-wrapper {
+  /*flex: 1 1 5%;
+
+   display: inline-flex;
+    flex-wrap: wrap;
+   */
+
+  margin-top: 1em;
+  margin-right: 1em;
+}

@@ -67,6 +67,12 @@ export class ShotNumberTableComponent implements OnInit {
     return color;
   }
 
+  public getItemToolTip(element: ShootingRangeAccountingUnitDto): string {
+    return `Name: &#13;
+    Test: &#13;
+    Test2: `;
+  }
+
   public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {
     if (this.editShots == true) {
       return true;

@@ -3,6 +3,8 @@ import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
+import { MatDialog } from '@angular/material/dialog';
+import { ShootingRangeEditTrackDialogComponent } from './shooting-range-edit-track-dialog/shooting-range-edit-track-dialog.component';
 
 @Component({
   selector: 'app-shooting-range-shot-number-table',
@@ -21,11 +23,38 @@ export class ShotNumberTableComponent implements OnInit {
   public summaryDisplayedColumns: string[] = ['shots', 'shotPrice', 'organization', 'comment'];
   public displayedColumns: string[] = ['tracks', 'shots', 'shotPrice', 'organization', 'comment'];
 
-  public constructor() {}
+  public constructor(private dialog: MatDialog) {}
 
   public ngOnInit(): void {}
 
-  public getOrganizationText(accountingUnit: any): string {
+  public onTrackEdit(element: ShootingRangeAccountingUnitDto) {
+    const dialogRef = this.dialog.open(ShootingRangeEditTrackDialogComponent, {
+      data: {
+        track: element.track,
+        priceId: element.price.id,
+        organizationId: element.organization.id,
+        comment: element.comment,
+        organizationList: this.organizations,
+        priceList: this.prices,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data != undefined && data.track != undefined) {
+        element.organization.id = data.organizationId;
+        element.price.id = data.priceId;
+        element.comment = data.comment;
+
+        console.log(element);
+        console.log(this.accountingData);
+        this.accountingDataChange.emit(this.accountingData);
+      } else {
+        console.log('no data');
+      }
+    });
+  }
+
+  public getOrganizationText(accountingUnit: ShootingRangeAccountingUnitDto): string {
     if (accountingUnit == null) {
       return '';
     }
@@ -57,7 +86,33 @@ export class ShotNumberTableComponent implements OnInit {
     return 'red';
   }
 
-  public getOrganizationColor(element: ShootingRangeAccountingUnitDto) {
+  public getTrackColor(element: ShootingRangeAccountingUnitDto): string {
+    if (this.accountingData.id == 0) {
+      return this.isFilledIn(element) ? 'green' : 'red';
+    } else {
+      return this.isFilledIn(element) ? this.getOrganizationColor(element) : '';
+    }
+  }
+
+  public getTrackTooltip(element: ShootingRangeAccountingUnitDto): string {
+    if (this.isFilledIn(element)) {
+      return (
+        'Scheibe ' +
+        element.track +
+        ' - ' +
+        element.organization.abbreviation +
+        ' - Preis ' +
+        element.price.name +
+        ' - ' +
+        element.amount +
+        ' Schuss'
+      );
+    } else {
+      return 'Scheibe ' + element.track + ' - ' + element.amount + ' Schuss';
+    }
+  }
+
+  public getOrganizationColor(element: ShootingRangeAccountingUnitDto): string {
     let color = 'white';
 
     if (element.organization.id != 0) {
@@ -74,10 +129,6 @@ export class ShotNumberTableComponent implements OnInit {
   }
 
   public isFilledIn(element: ShootingRangeAccountingUnitDto): boolean {
-    if (this.editShots == true) {
-      return true;
-    }
-
     if (element.organization.id == 0) {
       return false;
     }

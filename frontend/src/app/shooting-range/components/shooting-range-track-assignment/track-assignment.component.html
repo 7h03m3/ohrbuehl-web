@@ -8,7 +8,7 @@
   </button>
 </p>
 
-<app-shooting-range-shot-number-table (accountingDataChange)="checkIfAllFilledIn()" [(accountingData)]="accountingData"
+<app-shooting-range-shot-number-table (accountingDataChange)="update()" [(accountingData)]="accountingData"
                                       [editDisabled]="false" [editShots]="manualEdit"
                                       [organizations]="organizations" [prices]="prices"
-                                      [summarizedAccountingData]="accountingData"></app-shooting-range-shot-number-table>
+                                      [summarizedAccountingData]="summarizedAccountingData"></app-shooting-range-shot-number-table>

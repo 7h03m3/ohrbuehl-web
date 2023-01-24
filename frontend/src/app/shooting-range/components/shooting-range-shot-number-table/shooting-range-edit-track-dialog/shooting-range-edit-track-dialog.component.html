@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Scheibe {{data.track}} bearbeiten</h2>
+<div mat-dialog-content>
+  <br>
+  <form #assignForm="ngForm">
+    <mat-form-field appearance="outline" class="price-input" required>
+      <mat-label>Schussgeld</mat-label>
+      <mat-select [(ngModel)]="data.priceId" name="price" placeholder="Bitte auswählen" required>
+        <mat-option *ngFor="let price of data.priceList" [value]="price.id">
+          {{price.name}} ({{price.price}} SFr.)
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="organization-input">
+      <mat-label>Organisation</mat-label>
+      <mat-select [(ngModel)]="data.organizationId" name="organization" placeholder="Bitte auswählen" required>
+        <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
+          {{organization.abbreviation}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="comment-input">
+      <mat-label>Kommentar</mat-label>
+      <input [(ngModel)]="data.comment" matInput name="comment" placeholder="Bitte auswählen">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button cdkFocusInitial mat-button mat-dialog-close>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="doAssignment()" [disabled]="assignForm.form.invalid" color="primary" mat-raised-button>Speichern
+  </button>
+</div>

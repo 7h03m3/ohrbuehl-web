@@ -23,6 +23,7 @@ import { InvoiceTypeSelectionComponent } from '../invoice/components/invoice-ste
 import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoice-step-accounting-selection/invoice-accounting-selection.component';
 import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/invoice-step-accounting-military/invoice-step-accounting-military.component';
 import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment/components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
+import { ShootingRangeEditTrackDialogComponent } from './components/shooting-range-shot-number-table/shooting-range-edit-track-dialog/shooting-range-edit-track-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooti
     ShootingRangeAccountingViewComponent,
     ShootingRangeAccountingEditComponent,
     ShootingRangeTrackAssignmentDialogComponent,
+    ShootingRangeEditTrackDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, ShootingRangeRoutingModule],
 })

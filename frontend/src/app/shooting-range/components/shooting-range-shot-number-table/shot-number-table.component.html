@@ -1,32 +1,32 @@
 <mat-expansion-panel expanded="true">
   <mat-expansion-panel-header>
-    <mat-panel-title>Test</mat-panel-title>
+    <mat-panel-title>Scheibenzuteilung</mat-panel-title>
   </mat-expansion-panel-header>
   <div class="wrapper">
     <div *ngFor="let item of accountingData.items;" class="fields-wrapper">
-      <div *ngIf="isFilledIn(item)">
-        <button [ngStyle]="{'background-color': getOrganizationColor(item)}"
-                color="primary"
-                mat-fab
-                matTooltip="Scheibe {{item.track}} ({{item.amount}} Schuss) - {{item.organization.abbreviation}}"
-                matTooltipClass="multiline-tooltip">
-          {{item.track}}
-        </button>
+      <!--<div *ngIf="isFilledIn(item)">-->
+      <button (click)="onTrackEdit(item)" [matTooltip]="getTrackTooltip(item)"
+              [ngStyle]="{'background-color': getTrackColor(item)}" color="primary"
+              mat-fab>
+        {{item.track}}
+      </button>
+      <!--
       </div>
 
       <div *ngIf="!isFilledIn(item)">
-        <button class="not-filled-in" color="primary" mat-fab>
+        <button class="not-filled-in" color="primary" mat-fab
+                matTooltip="Scheibe {{item.track}} - {{item.amount}} Schuss">
           {{item.track}}
         </button>
       </div>
-
+-->
     </div>
 
   </div>
 </mat-expansion-panel>
 
-<!--
-<mat-expansion-panel *ngIf="isSummary()" [expanded]="isSummary()">
+
+<mat-expansion-panel expanded="true"><!-- *ngIf="isSummary()" [expanded]="isSummary()">-->
   <mat-expansion-panel-header>
     <mat-panel-title>Schusszahlen</mat-panel-title>
   </mat-expansion-panel-header>
@@ -67,6 +67,8 @@
   </table>
 
 </mat-expansion-panel>
+
+<!--
 <mat-expansion-panel [expanded]="!isSummary()">
   <mat-expansion-panel-header>
     <mat-panel-title>Scheibeninformationen</mat-panel-title>

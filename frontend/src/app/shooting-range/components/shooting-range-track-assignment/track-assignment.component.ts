@@ -9,6 +9,7 @@ import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-ra
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { MatDialog } from '@angular/material/dialog';
 import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
+import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
   selector: 'app-shooting-range-track-assignment',
@@ -22,6 +23,7 @@ export class TrackAssignmentComponent implements OnInit {
   @Input() buttonText = 'Weiter';
   @Input() manualEdit = false;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
+  public summarizedAccountingData = new ShootingRangeAccountingDto();
   public nextButtonDisabled = true;
   public organizations = new Array<OrganizationDto>();
   public prices = new Array<ShootingRangePriceDto>();
@@ -62,6 +64,8 @@ export class TrackAssignmentComponent implements OnInit {
   ngOnChanges(): void {
     this.assignmentTrackStart = this.minTrack;
     this.assignmentTrackEnd = this.maxTrack;
+    this.update();
+    console.log(this.accountingData);
   }
 
   public doAssignmentDialog() {
@@ -92,7 +96,7 @@ export class TrackAssignmentComponent implements OnInit {
           }
         });
 
-        this.checkIfAllFilledIn();
+        this.update();
       }
     });
   }
@@ -132,5 +136,10 @@ export class TrackAssignmentComponent implements OnInit {
       this.accountingData.items = clearedItems;
     }
     this.accountingDataChange.emit(this.accountingData);
+  }
+
+  public update() {
+    this.checkIfAllFilledIn();
+    this.summarizedAccountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(this.accountingData.items);
   }
 }

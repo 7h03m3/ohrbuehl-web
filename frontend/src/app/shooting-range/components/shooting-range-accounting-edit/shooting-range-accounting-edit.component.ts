@@ -52,6 +52,7 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
         this.accountingApi.getById(id).subscribe((response) => {
           this.accountingData = response;
           this.updateTrackCount();
+
           this.dateFormComponent.fetch(this.accountingData);
 
           this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {

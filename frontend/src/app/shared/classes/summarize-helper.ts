@@ -8,20 +8,22 @@ export class SummarizeHelper {
     const resultArray = new Array<ShootingRangeAccountingUnitDto>();
 
     source.forEach((item) => {
-      const existingItem = resultArray.find((searchItem: ShootingRangeAccountingUnitDto) => {
-        return (
-          searchItem.organization.id == item.organization.id &&
-          searchItem.price.id == item.price.id &&
-          searchItem.comment == item.comment
-        );
-      });
+      if (item.organization.id != 0 && item.price.id != 0) {
+        const existingItem = resultArray.find((searchItem: ShootingRangeAccountingUnitDto) => {
+          return (
+            searchItem.organization.id == item.organization.id &&
+            searchItem.price.id == item.price.id &&
+            searchItem.comment == item.comment
+          );
+        });
 
-      if (existingItem != undefined) {
-        existingItem.amount = existingItem.amount + item.amount;
-      } else {
-        const newItem = structuredClone(item);
-        newItem.track = 0;
-        resultArray.push(newItem);
+        if (existingItem != undefined) {
+          existingItem.amount = existingItem.amount + item.amount;
+        } else {
+          const newItem = structuredClone(item);
+          newItem.track = 0;
+          resultArray.push(newItem);
+        }
       }
     });
 

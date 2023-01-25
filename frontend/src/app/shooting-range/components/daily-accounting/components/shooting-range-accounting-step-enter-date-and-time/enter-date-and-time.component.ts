@@ -37,7 +37,11 @@ export class EnterDateAndTimeComponent implements OnInit {
       this.dateForm.controls['startTime'].setValue(this.stringHelper.getTimeString(this.accountingData.start));
       this.dateForm.controls['endTime'].setValue(this.stringHelper.getTimeString(this.accountingData.end));
     } else {
-      this.dateForm.controls['date'].setValue('');
+      const dateNow = Date.now();
+      const date = new Date(dateNow);
+      date.setUTCHours(0, 0, 0, 0);
+
+      this.dateForm.controls['date'].setValue(date.toISOString());
       this.dateForm.controls['startTime'].setValue('');
       this.dateForm.controls['endTime'].setValue('');
     }

@@ -2,17 +2,16 @@
   <mat-expansion-panel-header>
     <mat-panel-title>Scheibenzuteilung</mat-panel-title>
   </mat-expansion-panel-header>
-  <div class="wrapper">
-    <div *ngFor="let item of accountingData.items;" class="fields-wrapper">
+  <div class="flex-container">
+    <div *ngFor="let item of accountingData.items; index as i; first as isFirst;" class="flex-item">
       <button (click)="onTrackEdit(item)" [disabled]="editDisabled" [matTooltip]="getTrackTooltip(item)"
-              [ngStyle]="{'background-color': getTrackColor(item)}" color="primary" mat-fab>
+              [ngClass]="!isTrackGap(isFirst,  i) ? 'track-button' : 'track-button-left-space'"
+              [ngStyle]="{'background-color': getTrackColor(item)}" mat-fab>
         {{item.track}}
       </button>
     </div>
-
   </div>
 </mat-expansion-panel>
-
 
 <mat-expansion-panel expanded="true">
   <mat-expansion-panel-header>

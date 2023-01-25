@@ -58,6 +58,17 @@ export class ShotNumberTableComponent implements OnInit {
     });
   }
 
+  public isTrackGap(isFirst: boolean, index: number) {
+    if (isFirst) {
+      return false;
+    }
+
+    const currentItem = this.accountingData.items[index];
+    const lastItem = this.accountingData.items[index - 1];
+
+    return currentItem.track != lastItem.track + 1;
+  }
+
   public getOrganizationText(accountingUnit: ShootingRangeAccountingUnitDto): string {
     if (accountingUnit == null) {
       return '';
@@ -71,7 +82,7 @@ export class ShotNumberTableComponent implements OnInit {
   }
 
   public getTrackColor(element: ShootingRangeAccountingUnitDto): string {
-    if (this.accountingData.id == 0) {
+    if (!this.editDisabled && this.accountingData.id == 0) {
       return this.isFilledIn(element) ? 'green' : 'red';
     } else {
       return this.isFilledIn(element) ? this.getOrganizationColor(element) : '';

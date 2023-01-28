@@ -28,6 +28,10 @@ export class ShotNumberTableComponent implements OnInit {
   public ngOnInit(): void {}
 
   public onTrackEdit(element: ShootingRangeAccountingUnitDto) {
+    if (this.editDisabled) {
+      return;
+    }
+
     const priceId = element.price.id == 0 ? '' : element.price.id;
     const organization = element.organization.id == 0 ? '' : element.organization.id;
     const dialogRef = this.dialog.open(ShootingRangeEditTrackDialogComponent, {

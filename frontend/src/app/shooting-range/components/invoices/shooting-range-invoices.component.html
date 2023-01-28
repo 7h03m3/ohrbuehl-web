@@ -18,6 +18,12 @@
                                                [(invoiceData)]="invoiceData"></app-invoice-step-accounting-selection>
       </mat-step>
 
+      <mat-step *ngIf="stepEnableAccountingTimeRangeSelection" [editable]="true">
+        <ng-template matStepLabel>Schussgelddaten</ng-template>
+        <app-invoice-step-accounting-select-time-range (invoiceDataChange)="onStepSubmit(stepper)"
+                                                       [(invoiceData)]="invoiceData"></app-invoice-step-accounting-select-time-range>
+      </mat-step>
+
       <mat-step *ngIf="stepEnableAccountingMilitary" [editable]="true">
         <ng-template matStepLabel>Schussgelddaten (Militär)</ng-template>
         <app-invoice-step-accounting-military (invoiceDataChange)="onStepSubmit(stepper)"

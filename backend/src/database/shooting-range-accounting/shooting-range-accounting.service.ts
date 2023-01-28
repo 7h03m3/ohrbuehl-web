@@ -20,6 +20,18 @@ export class ShootingRangeAccountingService {
     return this.accountingRepository.find({ order: { start: 'DESC' } });
   }
 
+  findAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
+    return this.accountingRepository.find({
+      order: { start: 'DESC' },
+      relations: {
+        items: {
+          organization: true,
+          price: true,
+        },
+      },
+    });
+  }
+
   async findOne(id: number): Promise<ShootingRangeAccountingEntity> {
     return await this.accountingRepository.findOne({
       where: { id },

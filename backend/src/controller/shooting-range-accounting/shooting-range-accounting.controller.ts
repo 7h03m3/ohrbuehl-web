@@ -38,6 +38,13 @@ export class ShootingRangeAccountingController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/detail')
+  getAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
+    return this.accountingService.findAllDetailed();
+  }
+
+  @Roles(Role.Admin, Role.ShootingRangeManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')
   async getById(@Param('id') id: number): Promise<ShootingRangeAccountingEntity> {
     const returnValue = await this.accountingService.findOne(id);

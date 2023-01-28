@@ -20,6 +20,10 @@ export class AccountingApi extends BaseApi {
     return this.http.get<ShootingRangeAccountingDto[]>(this.url);
   }
 
+  public getListDetailed(): Observable<ShootingRangeAccountingDto[]> {
+    return this.http.get<ShootingRangeAccountingDto[]>(this.url + '/detail');
+  }
+
   public getById(id: number): Observable<ShootingRangeAccountingDto> {
     return this.http.get<ShootingRangeAccountingDto>(this.url + '/' + id);
   }

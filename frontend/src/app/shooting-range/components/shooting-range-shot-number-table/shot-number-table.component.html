@@ -4,7 +4,7 @@
   </mat-expansion-panel-header>
   <div class="flex-container">
     <div *ngFor="let item of accountingData.items; index as i; first as isFirst;" class="flex-item">
-      <button (click)="onTrackEdit(item)" [disabled]="editDisabled" [matTooltip]="getTrackTooltip(item)"
+      <button (click)="onTrackEdit(item)" [matTooltip]="getTrackTooltip(item)"
               [ngClass]="!isTrackGap(isFirst,  i) ? 'track-button' : 'track-button-left-space'"
               [ngStyle]="{'background-color': getTrackColor(item)}" mat-fab>
         {{item.track}}

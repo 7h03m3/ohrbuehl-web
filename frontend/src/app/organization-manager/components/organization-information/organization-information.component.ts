@@ -21,9 +21,11 @@ export class OrganizationInformationComponent {
 
   ngOnInit(): void {
     this.loadOrganizationData();
-    this.organizationApi.getAllNative().subscribe((response) => {
-      this.organizationList = response;
-    });
+    if (this.authService.isAdmin()) {
+      this.organizationApi.getAllNative().subscribe((response) => {
+        this.organizationList = response;
+      });
+    }
   }
 
   public onOrganizationChange(organizationId: number) {

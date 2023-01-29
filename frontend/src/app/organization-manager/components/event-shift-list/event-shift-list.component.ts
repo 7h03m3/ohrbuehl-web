@@ -17,7 +17,7 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class EventShiftListComponent {
   eventList = new Array<EventShiftListItemDto>();
-  displayedColumns: string[] = ['time', 'day', 'title', 'category', 'shift', 'pool', 'action'];
+  displayedColumns: string[] = ['time', 'day', 'title', 'category', 'shift', 'rangeOfficer', 'pool', 'action'];
   private organizationId = 0;
   private eventApi: EventApi;
   private poolApi: EventStaffPoolApi;
@@ -63,6 +63,10 @@ export class EventShiftListComponent {
     return element.totalShifts == element.assignedShifts;
   }
 
+  public isRangeOfficerAssignmentOkay(element: EventShiftListItemDto): boolean {
+    return element.totalRangeOfficer == element.assignedRangeOfficer;
+  }
+
   public isShiftPlanningPossible(element: EventShiftListItemDto): boolean {
     return element.totalShifts != 0;
   }
@@ -76,6 +80,14 @@ export class EventShiftListComponent {
 
         if (event.shifts != undefined) {
           element.totalShifts = event.shifts.length;
+          const rangeOfficerShiftList = event.shifts.filter((value) => {
+            return value.category.requiresRangeOfficer;
+          });
+          const assignedRangeOfficerShiftList = event.shifts.filter((value) => {
+            return value.category.requiresRangeOfficer && value.assignedStaffId != null;
+          });
+          element.totalRangeOfficer = rangeOfficerShiftList.length;
+          element.assignedRangeOfficer = assignedRangeOfficerShiftList.length;
 
           event.shifts.forEach((shift) => {
             if (EventShiftListComponent.isAssigned(shift)) {

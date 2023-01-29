@@ -5,11 +5,15 @@ export class EventShiftListItemDto {
   totalShifts: number;
   assignedShifts: number;
   totalInPool: number;
+  totalRangeOfficer: number;
+  assignedRangeOfficer: number;
 
   constructor() {
     this.event = new EventDto();
     this.totalShifts = 0;
     this.assignedShifts = 0;
     this.totalInPool = 0;
+    this.totalRangeOfficer = 0;
+    this.assignedRangeOfficer = 0;
   }
 }

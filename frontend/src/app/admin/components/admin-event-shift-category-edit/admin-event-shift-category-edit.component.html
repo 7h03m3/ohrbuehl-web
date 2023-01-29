@@ -31,6 +31,11 @@
         </mat-error>
       </mat-form-field>
 
+      <section align="left">
+        <mat-checkbox [(ngModel)]="category.requiresRangeOfficer" name="requiresRangeOfficer">Schützenmeister benötigt
+        </mat-checkbox>
+      </section>
+
       <button [disabled]="!categoryForm.form.valid" color="primary" mat-raised-button>Speichern</button>
     </form>
   </mat-card-content>

@@ -8,7 +8,7 @@
 
   <ng-container matColumnDef="category">
     <th *matHeaderCellDef mat-header-cell>Kategorie</th>
-    <td *matCellDef="let element" mat-cell> {{element.category.name}} </td>
+    <td *matCellDef="let element" mat-cell> {{getCategoryString(element)}} </td>
   </ng-container>
 
   <ng-container matColumnDef="staff">

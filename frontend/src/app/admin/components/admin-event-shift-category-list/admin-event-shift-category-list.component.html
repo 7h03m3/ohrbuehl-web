@@ -21,6 +21,13 @@
         <td *matCellDef="let element" mat-cell> {{element.position}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="rangeOfficer">
+        <th *matHeaderCellDef mat-header-cell>SM</th>
+        <td *matCellDef="let element" mat-cell>
+          <mat-icon *ngIf="element.requiresRangeOfficer">check</mat-icon>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell>
           <span>

@@ -8,7 +8,7 @@ import { SortHelper } from '../../../shared/classes/sort-helper';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
-import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
+import { InvoiceItemHelper } from '../../classes/invoice-item-helper';
 
 @Component({
   selector: 'app-invoice-step-accounting-select-time-range',
@@ -115,22 +115,7 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
       unitList = unitList.concat(itemList);
     });
 
-    const summarizedUnitList = SummarizeHelper.summarizeShootingRangeAccounting(unitList);
-
-    summarizedUnitList.forEach((item) => {
-      if (item.organization.id == organization.id) {
-        const invoiceItem = new InvoiceItemDto();
-        let description = 'Schussgeld (Preiskategorie: ' + item.price.name + ')';
-        if (item.comment != '') {
-          description += ': ' + item.comment;
-        }
-        invoiceItem.description = description;
-        invoiceItem.price = item.price.price;
-        invoiceItem.amount = item.amount;
-        invoiceItem.position = this.invoiceData.items.length + 1;
-        this.invoiceData.items.push(invoiceItem);
-      }
-    });
+    InvoiceItemHelper.addAccountingUnitsByOrganization(organization.id, unitList, this.invoiceData.items);
 
     this.invoiceDataChange.emit(this.invoiceData);
   }

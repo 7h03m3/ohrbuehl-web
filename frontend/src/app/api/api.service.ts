@@ -14,7 +14,8 @@ import { EventCategoryApi } from './classes/event-category-api';
 import { EventShiftCategoryApi } from './classes/event-shift-category-api';
 import { EventApi } from './classes/event-api';
 import { EventShiftApi } from './classes/event-shift-api';
-import {EventStaffPoolApi} from "./classes/event-staff-pool-api";
+import { EventStaffPoolApi } from './classes/event-staff-pool-api';
+import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +33,7 @@ export class ApiService {
   private readonly eventShiftApi: EventShiftApi;
   private readonly eventCategoryApi: EventCategoryApi;
   private readonly eventShiftCategoryApi: EventShiftCategoryApi;
-  private readonly  eventStaffPoolApi: EventStaffPoolApi;
+  private readonly eventStaffPoolApi: EventStaffPoolApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -54,6 +55,10 @@ export class ApiService {
       username,
       password,
     });
+  }
+
+  public changePassword(dto: UserPasswordChangeDto): Observable<any> {
+    return this.http.put<UserPasswordChangeDto>(this.baseUrl + 'auth/password', dto);
   }
 
   getUser(): UserApi {

@@ -1,26 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../auth/auth.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   public loginValid = true;
   public username = '';
   public password = '';
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
-  public ngOnDestroy(): void {
-  }
+  public ngOnDestroy(): void {}
 
   public async onSubmit() {
     this.loginValid = true;
@@ -31,7 +27,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/');
         }
-      }
+      },
     });
   }
 }

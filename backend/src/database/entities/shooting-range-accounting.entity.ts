@@ -17,13 +17,10 @@ export class ShootingRangeAccountingEntity {
   type: ShootingRangeAccountingTypeEnum;
 
   @Column({ type: 'bigint' })
-  date: number;
+  start: number;
 
-  @Column()
-  startTime: string;
-
-  @Column()
-  endTime: string;
+  @Column({ type: 'bigint' })
+  end: number;
 
   @OneToMany((type) => ShootingRangeAccountingUnitEntity, (item) => item.accountingEntry)
   items: ShootingRangeAccountingUnitEntity[];
@@ -33,16 +30,12 @@ export class ShootingRangeAccountingEntity {
 
   public loadFromDto(dto: ShootingRangeAccountingDto) {
     this.id = dto.id;
-    this.type = dto.type;
-    this.date = dto.date;
-    this.startTime = dto.startTime;
-    this.endTime = dto.endTime;
+    this.loadFromCreateDto(dto);
   }
 
   public loadFromCreateDto(dto: ShootingRangeAccountingCreateDto) {
     this.type = dto.type;
-    this.date = dto.date;
-    this.startTime = dto.startTime;
-    this.endTime = dto.endTime;
+    this.start = dto.start;
+    this.end = dto.end;
   }
 }

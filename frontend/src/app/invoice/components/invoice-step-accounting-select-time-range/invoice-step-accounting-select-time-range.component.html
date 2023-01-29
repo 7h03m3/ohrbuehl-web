@@ -1,0 +1,32 @@
+<br>
+<mat-form-field appearance="outline">
+  <mat-label>Start</mat-label>
+  <mat-select (selectionChange)="onStartAccountingChange()" [(ngModel)]="selectedStartAccounting">
+    <mat-option *ngFor="let accountingData of accountingList" [value]="accountingData.id">
+      {{getStartEndDateTimeString(accountingData)}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Ende</mat-label>
+  <mat-select (selectionChange)="onEndAccountingChange()" [(ngModel)]="selectedEndAccounting"
+              [disabled]="disableStartAccounting">
+    <mat-option *ngFor="let accountingData of endAccountingList" [value]="accountingData.id">
+      {{getStartEndDateTimeString(accountingData)}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Verein</mat-label>
+  <mat-select (selectionChange)="onOrganizationChange()" [(ngModel)]="selectedOrganization"
+              [disabled]="disableOrganization" name="organization">
+    <mat-option *ngFor="let organizationData of organizationMap | keyvalue" [value]="organizationData.value.id">
+      {{organizationData.value.name}} ({{organizationData.value.abbreviation}})
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<p>
+  <button (click)="onSubmit()" [disabled]="disableSubmitButton" class="full-width" color="primary" mat-raised-button>
+    Weiter
+  </button>
+</p>

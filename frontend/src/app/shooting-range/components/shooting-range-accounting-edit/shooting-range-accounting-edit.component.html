@@ -3,16 +3,16 @@
     <mat-list>
       <mat-list-item>
         <mat-icon matListItemIcon>schedule</mat-icon>
-        {{getDateString(this.accountingData.date)}} {{this.accountingData.startTime}} - {{this.accountingData.endTime}}
+        {{getDateTimeString(this.accountingData)}}
+        <button (click)="onDateEdit()" class="button-spacer" color="primary" mat-raised-button>Bearbeiten</button>
       </mat-list-item>
       <mat-list-item>
         <mat-icon matListItemIcon>play_for_work</mat-icon>
         {{this.accountingData.total}} Schüsse
       </mat-list-item>
     </mat-list>
-    <app-shooting-range-track-assignment (accountingDataChange)="onSave()"
-                                         [(accountingData)]="accountingData"
-                                         [maxTrack]="maxTrack" [minTrack]="minTrack"
+    <app-shooting-range-track-assignment (accountingDataChange)="onSave()" [(accountingData)]="accountingData"
+                                         [manualEdit]="false" [maxTrack]="maxTrack" [minTrack]="minTrack"
                                          buttonText="Speichern"></app-shooting-range-track-assignment>
   </mat-card-content>
 </mat-card>

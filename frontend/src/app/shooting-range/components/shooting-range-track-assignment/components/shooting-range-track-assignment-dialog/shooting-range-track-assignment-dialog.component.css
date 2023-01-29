@@ -1,0 +1,13 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-form-field {
+  display: flow;
+  margin-left: 8px;
+  width: 25em;
+}
+
+.track-field {
+  width: 11em;
+}

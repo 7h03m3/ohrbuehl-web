@@ -20,7 +20,6 @@ export class InvoiceListComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private stringHelper: StringHelper,
     public dialog: MatDialog,
     private router: Router,
     private downloadHelper: DownloadHelper,
@@ -48,7 +47,7 @@ export class InvoiceListComponent implements OnInit {
 
   public onDelete(element: InvoiceListItemDto) {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: { itemName: 'Rechnung ' + element.title + ' (' + this.stringHelper.getDateString(+element.date) + ')' },
+      data: { itemName: 'Rechnung ' + element.title + ' (' + StringHelper.getDateString(+element.date) + ')' },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -61,7 +60,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   public getDateString(dateNumber: string): string {
-    return this.stringHelper.getDateString(Number(dateNumber));
+    return StringHelper.getDateString(Number(dateNumber));
   }
 
   public getPayedString(payedString: string): string {

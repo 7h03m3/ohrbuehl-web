@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ViewDetailComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
-
+  @Input() summarizedAccountingData!: ShootingRangeAccountingDto;
   private accountingApi: AccountingApi;
 
   constructor(private router: Router, private apiService: ApiService, private snackBar: MatSnackBar) {

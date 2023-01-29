@@ -72,6 +72,8 @@ export class UserLocalData {
         return 'Benutzerdefiniert';
       case 'Invoice_Shooting_Range_Accounting_Daily':
         return 'Schussgeldrechnung (Tag)';
+      case 'Invoice_Shooting_Range_Accounting_Time_Range':
+        return 'Schussgeldrechnung (Zeitraum)';
       case 'Invoice_Shooting_Range_Accounting_Military_25_50_100m':
         return 'Schussgeldrechnung Militär (25m/50m/100m)';
       default:

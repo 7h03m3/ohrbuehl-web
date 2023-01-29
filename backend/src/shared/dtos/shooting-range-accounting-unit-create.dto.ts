@@ -6,11 +6,13 @@ export class ShootingRangeAccountingUnitCreateDto {
   organization: OrganizationDto;
   price: ShootingRangePriceDto;
   amount: number;
+  comment: string;
 
   constructor() {
     this.track = 0;
     this.organization = new OrganizationDto();
     this.price = null;
     this.amount = 0;
+    this.comment = '';
   }
 }

@@ -33,7 +33,7 @@
       <mat-select (valueChange)="onChangeStaff(element, $event)" [(ngModel)]="element.shift.assignedStaffId"
                   [disabled]="!isShiftEditable(element)">
         <mat-option *ngFor="let item of element.staffList" [value]="item.id">
-          {{stringHelper.getMemberNameWithSkills(item)}}
+          {{getMemberNameWithSkills(item)}}
         </mat-option>
       </mat-select>
     </td>

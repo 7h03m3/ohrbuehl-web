@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Datum / Zeit bearbeiten</h2>
+<div mat-dialog-content>
+  <br>
+  <form #dateForm="ngForm">
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Datum</mat-label>
+        <input [(ngModel)]="selectedDate" [matDatepicker]="picker" matInput name="date" required>
+        <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-hint>Startzeit</mat-hint>
+        <input [(ngModel)]="selectedStartTime" matInput name="startTime" required type="Time">
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-hint>Endzeit</mat-hint>
+        <input [(ngModel)]="selectedEndTime" matInput name="endTime" required type="Time">
+      </mat-form-field>
+    </p>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button cdkFocusInitial mat-button mat-dialog-close>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="doAssignment()" [disabled]="dateForm.form.invalid" color="primary" mat-raised-button>Speichern
+  </button>
+</div>

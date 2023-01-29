@@ -27,7 +27,6 @@ export class EventEditComponent {
     private router: Router,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.categoryApi = this.apiService.getEventCategory();
@@ -46,8 +45,8 @@ export class EventEditComponent {
         this.eventApi.getById(this.eventData.id).subscribe((data) => {
           this.eventData = data;
 
-          this.startTime = this.stringHelper.getTimeString(this.eventData.start);
-          this.endTime = this.stringHelper.getTimeString(this.eventData.end);
+          this.startTime = StringHelper.getTimeString(this.eventData.start);
+          this.endTime = StringHelper.getTimeString(this.eventData.end);
 
           const date = new Date(+this.eventData.start);
           date.setUTCHours(0, 0, 0, 0);
@@ -58,8 +57,8 @@ export class EventEditComponent {
   }
 
   onSubmit(): void {
-    this.eventData.start = this.stringHelper.getDate(this.date, this.startTime);
-    this.eventData.end = this.stringHelper.getDate(this.date, this.endTime);
+    this.eventData.start = StringHelper.getDate(this.date, this.startTime);
+    this.eventData.end = StringHelper.getDate(this.date, this.endTime);
 
     if (this.eventData.id == 0) {
       this.eventApi.create(this.eventData).subscribe(() => {

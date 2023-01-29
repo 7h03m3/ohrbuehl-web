@@ -22,6 +22,10 @@ import { ShootingRangeRoutingModule } from './shooting-range-routing.module';
 import { InvoiceTypeSelectionComponent } from '../invoice/components/invoice-step-type-selection/invoice-type-selection.component';
 import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoice-step-accounting-selection/invoice-accounting-selection.component';
 import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/invoice-step-accounting-military/invoice-step-accounting-military.component';
+import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment/components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
+import { ShootingRangeEditTrackDialogComponent } from './components/shooting-range-shot-number-table/shooting-range-edit-track-dialog/shooting-range-edit-track-dialog.component';
+import { InvoiceStepAccountingSelectTimeRangeComponent } from '../invoice/components/invoice-step-accounting-select-time-range/invoice-step-accounting-select-time-range.component';
+import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit/components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,7 @@ import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/in
     ShootingRangeComponent,
     ShootingRangeInvoicesComponent,
     InvoiceTypeSelectionComponent,
+    InvoiceStepAccountingSelectTimeRangeComponent,
     InvoiceInformationComponent,
     InvoiceItemEditComponent,
     InvoiceDetailViewComponent,
@@ -45,6 +50,9 @@ import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/in
     ShootingRangeAccountingListComponent,
     ShootingRangeAccountingViewComponent,
     ShootingRangeAccountingEditComponent,
+    ShootingRangeTrackAssignmentDialogComponent,
+    ShootingRangeEditTrackDialogComponent,
+    ShootingRangeAccountingEditTimeDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, ShootingRangeRoutingModule],
 })

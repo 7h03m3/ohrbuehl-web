@@ -1,56 +1,56 @@
 <mat-card>
   <mat-card-content>
-    <table [dataSource]="organizationList$" mat-table>
-      <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell> ID</th>
-        <td *matCellDef="let element" mat-cell> {{element.id}} </td>
-      </ng-container>
-
+    <table [dataSource]="dataSource" mat-table matSort>
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell> Name</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="name"> Name</th>
         <td *matCellDef="let element" mat-cell> {{element.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="abbreviation">
-        <th *matHeaderCellDef mat-header-cell> Abkürzung</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="abbreviation"> Abkürzung</th>
         <td *matCellDef="let element" mat-cell> {{element.abbreviation}} </td>
       </ng-container>
 
       <ng-container matColumnDef="vvaId">
-        <th *matHeaderCellDef mat-header-cell> VVA-ID</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="vvaId"> VVA-ID</th>
         <td *matCellDef="let element" mat-cell> {{element.vvaId}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="position">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="position"> Pos.</th>
+        <td *matCellDef="let element" mat-cell> {{element.position}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="color">
-        <th *matHeaderCellDef mat-header-cell> Farbe</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="color"> Farbe</th>
         <td *matCellDef="let element" mat-cell>
           <mat-chip disableRipple style="background-color: {{element.color}};"></mat-chip>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="native">
-        <th *matHeaderCellDef mat-header-cell> Lokal</th>
-        <td *matCellDef="let element" mat-cell> {{element.native}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="native"> Lokal</th>
+        <td *matCellDef="let element" mat-cell><mat-icon *ngIf="element.native">check</mat-icon></td>
       </ng-container>
 
       <ng-container matColumnDef="300m">
-        <th *matHeaderCellDef mat-header-cell>300m</th>
-        <td *matCellDef="let element" mat-cell> {{element.distance_300m}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="distance_300m">300m</th>
+        <td *matCellDef="let element" mat-cell><mat-icon *ngIf="element.distance_300m">check</mat-icon></td>
       </ng-container>
 
       <ng-container matColumnDef="100m">
-        <th *matHeaderCellDef mat-header-cell>100m</th>
-        <td *matCellDef="let element" mat-cell> {{element.distance_100m}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="distance_100m">100m</th>
+        <td *matCellDef="let element" mat-cell><mat-icon *ngIf="element.distance_100m">check</mat-icon></td>
       </ng-container>
 
       <ng-container matColumnDef="50m">
-        <th *matHeaderCellDef mat-header-cell>50m</th>
-        <td *matCellDef="let element" mat-cell> {{element.distance_50m}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="distance_50m">50m</th>
+        <td *matCellDef="let element" mat-cell><mat-icon *ngIf="element.distance_50m">check</mat-icon></td>
       </ng-container>
 
       <ng-container matColumnDef="25m">
-        <th *matHeaderCellDef mat-header-cell>25m</th>
-        <td *matCellDef="let element" mat-cell> {{element.distance_25m}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="distance_25m">25m</th>
+        <td *matCellDef="let element" mat-cell><mat-icon *ngIf="element.distance_25m">check</mat-icon></td>
       </ng-container>
 
       <ng-container matColumnDef="action">
@@ -82,6 +82,7 @@
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" aria-label="Select page of users"></mat-paginator>
   </mat-card-content>
 </mat-card>
 

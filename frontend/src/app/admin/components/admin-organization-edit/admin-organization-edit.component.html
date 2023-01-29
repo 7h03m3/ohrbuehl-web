@@ -25,9 +25,17 @@
 
       <mat-form-field appearance="outline">
         <mat-label>VVA-ID</mat-label>
-        <input [(ngModel)]="organization.vvaId" matInput name="vvaId" required>
+        <input [(ngModel)]="organization.vvaId" matInput name="vvaId">
         <mat-error>
           Bitte eine VVA-ID angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Position</mat-label>
+        <input [(ngModel)]="organization.position" matInput name="position" required type="number">
+        <mat-error>
+          Bitte eine Position angeben.
         </mat-error>
       </mat-form-field>
 

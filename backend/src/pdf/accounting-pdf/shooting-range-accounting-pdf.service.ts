@@ -16,17 +16,32 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
     super();
   }
 
+  private static getTypeString(type: ShootingRangeAccountingTypeEnum): string {
+    switch (type) {
+      case ShootingRangeAccountingTypeEnum.Section_300m:
+        return '300m';
+      case ShootingRangeAccountingTypeEnum.Section_100m:
+        return '100m';
+      case ShootingRangeAccountingTypeEnum.Section_50m:
+        return '50m';
+      case ShootingRangeAccountingTypeEnum.Section_25m:
+        return '25m';
+      default:
+        return '';
+    }
+  }
+
   async generatePdf(accountingData: ShootingRangeAccountingEntity, @Res() response) {
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const filename =
       'Schusszahlen_' +
-      this.dateHelper.getDateFileName(accountingData.date) +
+      this.dateHelper.getDateFileName(accountingData.start) +
       '_' +
-      this.getTypeString(accountingData.type) +
+      ShootingRangeAccountingPdfService.getTypeString(accountingData.type) +
       '_' +
-      this.getTimeFileString(accountingData.startTime) +
+      this.dateHelper.getTimeFileName(accountingData.start) +
       '_' +
-      this.getTimeFileString(accountingData.endTime) +
+      this.dateHelper.getTimeFileName(accountingData.end) +
       '_id_' +
       accountingData.id +
       '.pdf';
@@ -55,13 +70,13 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
 
     this.addTitle(
       'Schusszahlen ' +
-        this.getTypeString(accountingData.type) +
+        ShootingRangeAccountingPdfService.getTypeString(accountingData.type) +
         ' ' +
-        this.dateHelper.getDateString(accountingData.date) +
+        this.dateHelper.getDateString(accountingData.start) +
         ' ' +
-        accountingData.startTime +
+        this.dateHelper.getTimeString(accountingData.start) +
         ' - ' +
-        accountingData.endTime,
+        this.dateHelper.getTimeString(accountingData.end),
       pdf,
     );
     this.addTable(accountingData.items, accountingData.total, pdf);
@@ -80,25 +95,6 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
         unlink(tempFilename, () => {});
       });
     });
-  }
-
-  private getTimeFileString(time: string): string {
-    return time.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  }
-
-  private getTypeString(type: ShootingRangeAccountingTypeEnum): string {
-    switch (type) {
-      case ShootingRangeAccountingTypeEnum.Section_300m:
-        return '300m';
-      case ShootingRangeAccountingTypeEnum.Section_100m:
-        return '100m';
-      case ShootingRangeAccountingTypeEnum.Section_50m:
-        return '50m';
-      case ShootingRangeAccountingTypeEnum.Section_25m:
-        return '25m';
-      default:
-        return '';
-    }
   }
 
   private addTitle(title: string, pdf: PDF) {

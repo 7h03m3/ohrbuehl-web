@@ -45,7 +45,8 @@
       <mat-step *ngIf="stepEnableCheck" editable="false">
         <ng-template matStepLabel>Kontrolle</ng-template>
         <app-shooting-range-accounting-step-view-detail
-          [accountingData]="accountingData"></app-shooting-range-accounting-step-view-detail>
+          [accountingData]="accountingData"
+          [summarizedAccountingData]="summarizedAccountingData"></app-shooting-range-accounting-step-view-detail>
       </mat-step>
     </mat-stepper>
   </mat-card-content>

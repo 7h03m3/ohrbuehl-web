@@ -7,6 +7,7 @@ import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
+import { InvoiceItemHelper } from '../../classes/invoice-item-helper';
 
 @Component({
   selector: 'app-invoice-step-accounting-selection',
@@ -26,7 +27,7 @@ export class InvoiceAccountingSelectionComponent {
   public disableSubmitButton = true;
   private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData, private stringHelper: StringHelper) {
+  constructor(private apiService: ApiService, private userData: UserLocalData) {
     this.accountingApi = this.apiService.getAccounting();
   }
 
@@ -67,34 +68,24 @@ export class InvoiceAccountingSelectionComponent {
       return;
     }
 
-    const accountingDateString = this.stringHelper.getDateString(+this.accountingData.date);
     this.invoiceData.title =
       'Schussgeld ' +
       organization.name +
       ' ' +
-      accountingDateString +
-      ' ' +
-      this.accountingData.startTime +
-      ' - ' +
-      this.accountingData.endTime;
+      StringHelper.getStartEndDateTimeString(this.accountingData.start, this.accountingData.end);
     this.invoiceData.items = new Array<InvoiceItemDto>();
 
-    this.accountingData.items.forEach((item) => {
-      if (item.organization.id == organization.id) {
-        const invoiceItem = new InvoiceItemDto();
-        invoiceItem.description = 'Scheibe ' + item.track + ' (Preiskategorie: ' + item.price.name + ')';
-        invoiceItem.price = item.price.price;
-        invoiceItem.amount = item.amount;
-        invoiceItem.position = this.invoiceData.items.length + 1;
-        this.invoiceData.items.push(invoiceItem);
-      }
-    });
+    InvoiceItemHelper.addAccountingUnitsByOrganization(
+      organization.id,
+      this.accountingData.items,
+      this.invoiceData.items,
+    );
 
     this.invoiceDataChange.emit(this.invoiceData);
   }
 
-  public getDateString(dateNumber: number): string {
-    return this.stringHelper.getDateString(Number(dateNumber));
+  public getDateTimeString(element: ShootingRangeAccountingDto): string {
+    return StringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 
   public getTypeString(typeString: string): string {

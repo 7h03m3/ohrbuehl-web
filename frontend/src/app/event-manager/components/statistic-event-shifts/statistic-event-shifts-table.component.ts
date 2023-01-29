@@ -22,7 +22,7 @@ export class StatisticEventShiftsTableComponent {
   private eventApi: EventApi;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private stringHelper: StringHelper) {
+  constructor(private apiService: ApiService) {
     this.eventApi = this.apiService.getEvent();
     this.organizationApi = this.apiService.getOrganization();
   }
@@ -49,7 +49,7 @@ export class StatisticEventShiftsTableComponent {
     if (this.isTotalRow(element)) {
       return '';
     }
-    return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
+    return StringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
   }
 
   public getTotalString(element: StatisticEventShiftTableData): string {

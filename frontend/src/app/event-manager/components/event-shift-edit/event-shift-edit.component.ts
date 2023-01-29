@@ -19,6 +19,7 @@ import { catchError, EMPTY } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-sheet/member-info-bottom-sheet.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -41,7 +42,6 @@ export class EventShiftEditComponent {
     private route: ActivatedRoute,
     private apiService: ApiService,
     public dialog: MatDialog,
-    public stringHelper: StringHelper,
     private bottomSheet: MatBottomSheet,
   ) {
     this.eventApi = this.apiService.getEvent();
@@ -75,7 +75,7 @@ export class EventShiftEditComponent {
   }
 
   public getTimeString(event: EventDto): string {
-    return this.stringHelper.getStartEndDateTimeString(event.start, event.end);
+    return StringHelper.getStartEndDateTimeString(event.start, event.end);
   }
 
   public onShiftNew() {
@@ -190,7 +190,7 @@ export class EventShiftEditComponent {
   }
 
   public getShiftTimeString(shift: EventShiftDto): string {
-    return this.stringHelper.getStartEndTimeString(shift.start, shift.end);
+    return StringHelper.getStartEndTimeString(shift.start, shift.end);
   }
 
   public onChangeOrganization(element: EventShiftEditListItemDto, selection: number) {
@@ -231,6 +231,10 @@ export class EventShiftEditComponent {
     }
 
     return color;
+  }
+
+  public getMemberNameWithSkills(member: OrganizationMemberDto): string {
+    return StringHelper.getMemberNameWithSkills(member);
   }
 
   private openMemberBottomSheet(member: OrganizationMemberDto) {
@@ -307,39 +311,9 @@ export class EventShiftEditComponent {
         shiftList.push(item);
       });
 
-      this.sortShiftList(shiftList);
+      SortHelper.sortShiftList(shiftList);
       this.renumberShiftList(shiftList);
       this.dataSource.data = shiftList;
-    });
-  }
-
-  private sortShiftList(shiftList: EventShiftEditListItemDto[]) {
-    shiftList.sort((a, b) => {
-      if (a.shift.category.position > b.shift.category.position) {
-        return 1;
-      }
-
-      if (a.shift.category.position < b.shift.category.position) {
-        return -1;
-      }
-
-      if (a.shift.start > b.shift.start) {
-        return 1;
-      }
-
-      if (a.shift.start < b.shift.start) {
-        return -1;
-      }
-
-      if (a.shift.organizationId > b.shift.organizationId) {
-        return 1;
-      }
-
-      if (a.shift.organizationId < b.shift.organizationId) {
-        return -1;
-      }
-
-      return 0;
     });
   }
 

@@ -7,9 +7,10 @@ import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { MatDialog } from '@angular/material/dialog';
+import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
 
 @Component({
   selector: 'app-shooting-range-accounting-edit',
@@ -31,7 +32,7 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private stringHelper: StringHelper,
+    private dialog: MatDialog,
   ) {
     this.accountingApi = this.apiService.getAccounting();
     this.organizationApi = this.apiService.getOrganization();
@@ -65,27 +66,46 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     });
   }
 
-  public getDateString(date: number): string {
-    return this.stringHelper.getDateString(+date);
+  public onDateEdit() {
+    const dialogRef = this.dialog.open(ShootingRangeAccountingEditTimeDialogComponent, {
+      data: {
+        startTime: this.accountingData.start,
+        endTime: this.accountingData.end,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data != undefined && data.startTime != undefined) {
+        this.accountingData.start = data.startTime;
+        this.accountingData.end = data.endTime;
+        this.accountingApi.update(this.accountingData).subscribe((response) => {
+          this.openSnackBar('Datum gespeichert', false);
+        });
+      }
+    });
   }
 
-  private openSnackBar(message: string) {
+  public getDateTimeString(element: ShootingRangeAccountingDto): string {
+    return StringHelper.getStartEndDateTimeString(element.start, element.end);
+  }
+
+  private openSnackBar(message: string, redirect = true) {
     const ref = this.snackBar.open(message, 'Verbergen', {
       duration: 3000,
       verticalPosition: 'bottom',
     });
 
-    ref.afterDismissed().subscribe((data) => {
-      this.router.navigate(['/shooting-range/accounting-list']);
-    });
+    if (redirect) {
+      ref.afterDismissed().subscribe((data) => {
+        this.router.navigate(['/shooting-range/accounting-list']);
+      });
+    }
   }
 
   private updateTrackCount() {
     let maxTrack = 0;
     let minTrack = 0;
     this.accountingData.items.forEach((element) => {
-      const accountingUnit = new ShootingRangeAccountingUnitDto();
-
       if (maxTrack == 0 && minTrack == 0) {
         maxTrack = element.track;
         minTrack = element.track;

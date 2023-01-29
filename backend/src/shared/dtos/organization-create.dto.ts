@@ -14,6 +14,7 @@ export class OrganizationCreateDto {
   distance_50m: boolean;
   distance_25m: boolean;
   vvaId: string;
+  position: number;
 
   managers: UserDto[];
   accountingUnits: ShootingRangeAccountingUnitDto[];
@@ -31,6 +32,7 @@ export class OrganizationCreateDto {
     this.distance_50m = false;
     this.distance_25m = false;
     this.vvaId = '';
+    this.position = 0;
 
     this.managers = new Array<UserDto>();
     this.accountingUnits = new Array<ShootingRangeAccountingUnitDto>();

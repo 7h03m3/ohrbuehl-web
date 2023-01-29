@@ -23,6 +23,7 @@ export class ShootingRangeInvoicesComponent implements OnInit {
   public stepEnableTypeSelection = false;
   public stepEnableInformation = false;
   public stepEnableAccountingSelection = false;
+  public stepEnableAccountingTimeRangeSelection = false;
   public stepEnableAccountingMilitary = false;
   public stepEnableItemEdit = false;
   public stepEnableCheck = false;
@@ -86,6 +87,13 @@ export class ShootingRangeInvoicesComponent implements OnInit {
         this.stepEnableCheck = true;
         break;
 
+      case InvoiceTypeEnum.Invoice_Shooting_Range_Accounting_Time_Range:
+        this.stepEnableAccountingTimeRangeSelection = true;
+        this.stepEnableInformation = true;
+        this.stepEnableItemEdit = true;
+        this.stepEnableCheck = true;
+        break;
+
       case InvoiceTypeEnum.Invoice_Shooting_Range_Accounting_Military_25_50_100m:
         this.stepEnableAccountingMilitary = true;
         this.stepEnableInformation = true;
@@ -132,6 +140,7 @@ export class ShootingRangeInvoicesComponent implements OnInit {
     this.stepEnableCheck = false;
     this.stepEnableAccountingMilitary = false;
     this.stepEnableAccountingSelection = false;
+    this.stepEnableAccountingTimeRangeSelection = false;
   }
 
   private showSnackBar(title: string) {

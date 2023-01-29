@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { ApiService } from '../../../api/api.service';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
@@ -6,6 +6,10 @@ import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
+import { SortHelper } from '../../../shared/classes/sort-helper';
+import { MatDialog } from '@angular/material/dialog';
+import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
+import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
   selector: 'app-shooting-range-track-assignment',
@@ -19,17 +23,14 @@ export class TrackAssignmentComponent implements OnInit {
   @Input() buttonText = 'Weiter';
   @Input() manualEdit = false;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
+  public summarizedAccountingData = new ShootingRangeAccountingDto();
   public nextButtonDisabled = true;
   public organizations = new Array<OrganizationDto>();
   public prices = new Array<ShootingRangePriceDto>();
-  public assignmentTrackStart = '';
-  public assignmentTrackEnd = '';
-  public assignmentShotPrice = '';
-  public assignmentOrganization = '';
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private dialog: MatDialog) {
     this.organizationApi = this.apiService.getOrganization();
     this.priceApi = this.apiService.getShootingRangePrice();
   }
@@ -38,43 +39,56 @@ export class TrackAssignmentComponent implements OnInit {
     this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {
       this.organizations = response;
 
-      if (this.organizations.length != 0) {
-        this.assignmentOrganization = response[0].id.toString();
-      }
+      SortHelper.sortOrganizationByPosition(this.organizations);
     });
 
     this.priceApi.getAll().subscribe((response) => {
       this.prices = response;
-
-      if (this.prices.length != 0) {
-        this.assignmentShotPrice = response[0].id.toString();
-      }
     });
     this.checkIfAllFilledIn();
   }
 
-  ngOnChanges(): void {
-    this.assignmentTrackStart = this.minTrack;
-    this.assignmentTrackEnd = this.maxTrack;
+  ngOnChanges(changes: SimpleChanges): void {
+    this.update();
   }
 
-  doAssignment() {
-    const startTrack = Number(this.assignmentTrackStart);
-    const endTrack = Number(this.assignmentTrackEnd);
-    const organizationId = Number(this.assignmentOrganization);
-    const priceId = Number(this.assignmentShotPrice);
-
-    const organization = this.organizations.filter((x) => x.id == organizationId)[0];
-    const price = this.prices.filter((x) => x.id == priceId)[0];
-
-    this.accountingData.items.forEach((element) => {
-      if (element.track >= startTrack && element.track <= endTrack) {
-        element.organization = organization;
-        element.price = price;
-      }
+  public doAssignmentDialog() {
+    const dialogRef = this.dialog.open(ShootingRangeTrackAssignmentDialogComponent, {
+      data: {
+        editShots: this.manualEdit,
+        amount: '',
+        maxTrack: this.maxTrack,
+        minTrack: this.minTrack,
+        trackStart: this.minTrack,
+        trackEnd: this.maxTrack,
+        priceId: '',
+        organizationId: '',
+        comment: '',
+        organizationList: this.organizations,
+        priceList: this.prices,
+      },
     });
 
-    this.checkIfAllFilledIn();
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data != undefined && data.trackStart != undefined) {
+        const organization = this.organizations.filter((x) => x.id == data.organizationId)[0];
+        const price = this.prices.filter((x) => x.id == data.priceId)[0];
+
+        this.accountingData.items.forEach((element) => {
+          if (element.track >= data.trackStart && element.track <= data.trackEnd) {
+            element.organization = organization;
+            element.price = price;
+            element.comment = data.comment;
+
+            if (this.manualEdit) {
+              element.amount = data.amount;
+            }
+          }
+        });
+
+        this.update();
+      }
+    });
   }
 
   public checkIfAllFilledIn() {
@@ -112,5 +126,10 @@ export class TrackAssignmentComponent implements OnInit {
       this.accountingData.items = clearedItems;
     }
     this.accountingDataChange.emit(this.accountingData);
+  }
+
+  public update() {
+    this.checkIfAllFilledIn();
+    this.summarizedAccountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(this.accountingData.items);
   }
 }

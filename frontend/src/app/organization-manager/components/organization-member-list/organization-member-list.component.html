@@ -23,7 +23,7 @@
       <ng-container matColumnDef="birthdate">
         <th *matHeaderCellDef mat-header-cell mat-sort-header="birthdate">Geburtstag</th>
         <td *matCellDef="let element" mat-cell>
-          {{stringHelper.getDateString(element.birthdate)}}
+          {{getDateString(element)}}
         </td>
       </ng-container>
 

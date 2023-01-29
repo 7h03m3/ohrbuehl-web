@@ -24,7 +24,6 @@ export class EventShiftListComponent {
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
-    private stringHelper: StringHelper,
     private downloadHelper: DownloadHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
@@ -45,7 +44,7 @@ export class EventShiftListComponent {
   }
 
   public getTimeString(element: EventShiftListItemDto): string {
-    return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
+    return StringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
   }
 
   public isShiftAssignmentOkay(element: EventShiftListItemDto): boolean {

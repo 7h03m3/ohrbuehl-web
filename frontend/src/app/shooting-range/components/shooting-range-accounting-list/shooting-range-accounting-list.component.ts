@@ -25,7 +25,6 @@ export class ShootingRangeAccountingListComponent implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public dialog: MatDialog,
-    private stringHelper: StringHelper,
     private userData: UserLocalData,
     private downloadHelper: DownloadHelper,
   ) {
@@ -51,7 +50,7 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public onDelete(element: ShootingRangeAccountingDto) {
-    const dateString = this.stringHelper.getStartEndDateTimeString(element.start, element.end);
+    const dateString = StringHelper.getStartEndDateTimeString(element.start, element.end);
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       data: { itemName: 'Schusszahlen vom ' + dateString },
     });
@@ -64,11 +63,11 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public getDateString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getStartEndDateString(element.start, element.end);
+    return StringHelper.getStartEndDateString(element.start, element.end);
   }
 
   public getTimeString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getStartEndTimeString(element.start, element.end);
+    return StringHelper.getStartEndTimeString(element.start, element.end);
   }
 
   public getTypeString(typeString: string): string {
@@ -76,7 +75,7 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public getDayString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getDayOfWeekShort(element.start);
+    return StringHelper.getDayOfWeekShort(element.start);
   }
 
   private fetch() {

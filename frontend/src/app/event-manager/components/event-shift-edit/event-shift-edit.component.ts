@@ -42,7 +42,6 @@ export class EventShiftEditComponent {
     private route: ActivatedRoute,
     private apiService: ApiService,
     public dialog: MatDialog,
-    public stringHelper: StringHelper,
     private bottomSheet: MatBottomSheet,
   ) {
     this.eventApi = this.apiService.getEvent();
@@ -76,7 +75,7 @@ export class EventShiftEditComponent {
   }
 
   public getTimeString(event: EventDto): string {
-    return this.stringHelper.getStartEndDateTimeString(event.start, event.end);
+    return StringHelper.getStartEndDateTimeString(event.start, event.end);
   }
 
   public onShiftNew() {
@@ -191,7 +190,7 @@ export class EventShiftEditComponent {
   }
 
   public getShiftTimeString(shift: EventShiftDto): string {
-    return this.stringHelper.getStartEndTimeString(shift.start, shift.end);
+    return StringHelper.getStartEndTimeString(shift.start, shift.end);
   }
 
   public onChangeOrganization(element: EventShiftEditListItemDto, selection: number) {
@@ -232,6 +231,10 @@ export class EventShiftEditComponent {
     }
 
     return color;
+  }
+
+  public getMemberNameWithSkills(member: OrganizationMemberDto): string {
+    return StringHelper.getMemberNameWithSkills(member);
   }
 
   private openMemberBottomSheet(member: OrganizationMemberDto) {

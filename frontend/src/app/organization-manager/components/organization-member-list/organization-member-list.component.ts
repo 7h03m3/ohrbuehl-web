@@ -6,12 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { StringHelper } from '../../../shared/classes/string-helper';
 import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
+import { StringHelper } from '../../../shared/classes/string-helper';
 
 @Component({
   selector: 'app-organization-member-list',
@@ -40,7 +40,6 @@ export class OrganizationMemberListComponent {
     public dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
-    public stringHelper: StringHelper,
   ) {
     this.organizationApi = this.apiService.getOrganization();
     this.memberApi = this.apiService.getOrganizationMember();
@@ -109,6 +108,10 @@ export class OrganizationMemberListComponent {
         id: element.id,
       },
     ]);
+  }
+
+  public getDateString(element: OrganizationMemberDto): string {
+    return StringHelper.getDateString(element.birthdate);
   }
 
   private fetch() {

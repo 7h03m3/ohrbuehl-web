@@ -37,7 +37,6 @@ export class EventShiftEditComponent {
     private userLocalData: UserLocalData,
     private route: ActivatedRoute,
     private authService: AuthService,
-    public stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.shiftApi = this.apiService.getEventShift();
@@ -79,11 +78,11 @@ export class EventShiftEditComponent {
   }
 
   public getTimeString(event: EventDto): string {
-    return this.stringHelper.getStartEndDateTimeString(event.start, event.end);
+    return StringHelper.getStartEndDateTimeString(event.start, event.end);
   }
 
   public getShiftTimeString(shift: EventShiftDto): string {
-    return this.stringHelper.getStartEndTimeString(shift.start, shift.end);
+    return StringHelper.getStartEndTimeString(shift.start, shift.end);
   }
 
   public isShiftEditable(element: EventShiftDto): boolean {
@@ -117,6 +116,10 @@ export class EventShiftEditComponent {
       .subscribe(() => {
         this.eliminateDuplicateStaff(element.id, element.assignedStaffId);
       });
+  }
+
+  public getMemberNameWithSkills(staff: OrganizationMemberDto): string {
+    return StringHelper.getMemberNameWithSkills(staff);
   }
 
   private eliminateDuplicateStaff(shiftId: number, staffId: number) {

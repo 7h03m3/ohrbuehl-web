@@ -16,7 +16,7 @@ export class ShootingRangeAccountingViewComponent implements OnInit {
   @Input() summarizedAccountingData = new ShootingRangeAccountingDto();
   private accountingApi: AccountingApi;
 
-  constructor(private stringHelper: StringHelper, private route: ActivatedRoute, private apiService: ApiService) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.accountingApi = this.apiService.getAccounting();
   }
 
@@ -36,6 +36,6 @@ export class ShootingRangeAccountingViewComponent implements OnInit {
   }
 
   public getDateTimeString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
+    return StringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 }

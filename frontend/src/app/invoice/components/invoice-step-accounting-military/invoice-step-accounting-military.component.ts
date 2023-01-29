@@ -15,7 +15,7 @@ export class InvoiceStepAccountingMilitaryComponent {
   @Input() invoiceData!: InvoiceDto;
   @Output() invoiceDataChange = new EventEmitter<InvoiceDto>();
 
-  constructor(private formBuilder: UntypedFormBuilder, private stringHelper: StringHelper) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.militaryForm = this.formBuilder.group({
@@ -28,7 +28,7 @@ export class InvoiceStepAccountingMilitaryComponent {
 
   public onSubmit() {
     const date = Date.parse(this.militaryForm.controls['date'].value);
-    const dateString = this.stringHelper.getDateString(+date);
+    const dateString = StringHelper.getDateString(+date);
     this.invoiceData.title =
       'Schussgeld Militär 25m/50m/100m' +
       ' ' +

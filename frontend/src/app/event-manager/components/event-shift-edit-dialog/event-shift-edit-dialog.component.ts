@@ -22,7 +22,6 @@ export class EventShiftEditDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: EventShiftEditDialogData,
     private apiService: ApiService,
     private formBuilder: UntypedFormBuilder,
-    private stringHelper: StringHelper,
   ) {
     this.categoryApi = this.apiService.getEventShiftCategory();
   }
@@ -34,8 +33,8 @@ export class EventShiftEditDialogComponent {
 
     this.newShiftForm = this.formBuilder.group({
       date: [eventDate.toISOString(), [Validators.required]],
-      startTime: [this.stringHelper.getTimeString(this.data.shiftData.start), [Validators.required]],
-      endTime: [this.stringHelper.getTimeString(this.data.shiftData.end), [Validators.required]],
+      startTime: [StringHelper.getTimeString(this.data.shiftData.start), [Validators.required]],
+      endTime: [StringHelper.getTimeString(this.data.shiftData.end), [Validators.required]],
       categoryId: [''],
       amount: ['1'],
     });
@@ -67,8 +66,8 @@ export class EventShiftEditDialogComponent {
     const categoryId = this.newShiftForm.controls['categoryId'].value;
     const amount = this.newShiftForm.controls['amount'].value;
 
-    this.data.shiftData.start = this.stringHelper.getDate(date, startTime);
-    this.data.shiftData.end = this.stringHelper.getDate(date, endTime);
+    this.data.shiftData.start = StringHelper.getDate(date, startTime);
+    this.data.shiftData.end = StringHelper.getDate(date, endTime);
     this.data.shiftData.categoryId = categoryId;
 
     this.data.amount = amount;

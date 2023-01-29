@@ -28,7 +28,6 @@ export class EventShiftListComponent {
     private userLocalData: UserLocalData,
     private router: Router,
     private authService: AuthService,
-    private stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.poolApi = this.apiService.getStaffPool();
@@ -53,11 +52,11 @@ export class EventShiftListComponent {
   }
 
   public getTimeString(element: EventShiftListItemDto): string {
-    return this.stringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
+    return StringHelper.getStartEndDateTimeString(element.event.start, element.event.end);
   }
 
   public getDayString(element: EventShiftListItemDto): string {
-    return this.stringHelper.getDayOfWeekShort(element.event.start);
+    return StringHelper.getDayOfWeekShort(element.event.start);
   }
 
   public isShiftAssignmentOkay(element: EventShiftListItemDto): boolean {

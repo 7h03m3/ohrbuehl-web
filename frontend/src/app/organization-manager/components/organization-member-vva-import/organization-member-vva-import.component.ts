@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
-import { StringHelper } from '../../../shared/classes/string-helper';
 import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
 import { ApiService } from '../../../api/api.service';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
+import { StringHelper } from '../../../shared/classes/string-helper';
 
 @Component({
   selector: 'app-organization-member-vva-import',
@@ -25,7 +25,6 @@ export class OrganizationMemberVvaImportComponent {
     private snackBar: MatSnackBar,
     private router: Router,
     private authService: AuthService,
-    public stringHelper: StringHelper,
   ) {
     this.organizationApi = this.apiService.getOrganization();
     this.memberApi = apiService.getOrganizationMember();
@@ -119,7 +118,7 @@ export class OrganizationMemberVvaImportComponent {
                 member.location = splittedEntry[11];
                 member.phoneNumber = splittedEntry[15];
                 member.emailAddress = splittedEntry[18];
-                member.birthdate = this.stringHelper.getDateByDateString(splittedEntry[27]);
+                member.birthdate = StringHelper.getDateByDateString(splittedEntry[27]);
 
                 tempMap.set(member.vvaId, member);
               }

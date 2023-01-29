@@ -3,7 +3,7 @@
   <mat-label>Start</mat-label>
   <mat-select (selectionChange)="onStartAccountingChange()" [(ngModel)]="selectedStartAccounting">
     <mat-option *ngFor="let accountingData of accountingList" [value]="accountingData.id">
-      {{stringHelper.getStartEndDateTimeString(accountingData.start, accountingData.end)}}
+      {{getStartEndDateTimeString(accountingData)}}
     </mat-option>
   </mat-select>
 </mat-form-field>
@@ -12,7 +12,7 @@
   <mat-select (selectionChange)="onEndAccountingChange()" [(ngModel)]="selectedEndAccounting"
               [disabled]="disableStartAccounting">
     <mat-option *ngFor="let accountingData of endAccountingList" [value]="accountingData.id">
-      {{stringHelper.getStartEndDateTimeString(accountingData.start, accountingData.end)}}
+      {{getStartEndDateTimeString(accountingData)}}
     </mat-option>
   </mat-select>
 </mat-form-field>

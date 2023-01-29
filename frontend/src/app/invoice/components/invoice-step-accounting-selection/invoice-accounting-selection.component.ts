@@ -27,7 +27,7 @@ export class InvoiceAccountingSelectionComponent {
   public disableSubmitButton = true;
   private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData, private stringHelper: StringHelper) {
+  constructor(private apiService: ApiService, private userData: UserLocalData) {
     this.accountingApi = this.apiService.getAccounting();
   }
 
@@ -72,7 +72,7 @@ export class InvoiceAccountingSelectionComponent {
       'Schussgeld ' +
       organization.name +
       ' ' +
-      this.stringHelper.getStartEndDateTimeString(this.accountingData.start, this.accountingData.end);
+      StringHelper.getStartEndDateTimeString(this.accountingData.start, this.accountingData.end);
     this.invoiceData.items = new Array<InvoiceItemDto>();
 
     InvoiceItemHelper.addAccountingUnitsByOrganization(
@@ -85,7 +85,7 @@ export class InvoiceAccountingSelectionComponent {
   }
 
   public getDateTimeString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
+    return StringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 
   public getTypeString(typeString: string): string {

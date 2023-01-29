@@ -25,7 +25,6 @@ export class EventListComponent {
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
-    private stringHelper: StringHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
   }
@@ -48,9 +47,9 @@ export class EventListComponent {
         itemName:
           element.title +
           ' (' +
-          this.stringHelper.getDateString(element.start) +
+          StringHelper.getDateString(element.start) +
           ' ' +
-          this.stringHelper.getTimeString(element.start) +
+          StringHelper.getTimeString(element.start) +
           ')',
       },
     });
@@ -71,15 +70,15 @@ export class EventListComponent {
   }
 
   public getDateString(event: EventDto): string {
-    return this.stringHelper.getStartEndDateString(event.start, event.end);
+    return StringHelper.getStartEndDateString(event.start, event.end);
   }
 
   public getTimeString(event: EventDto): string {
-    return this.stringHelper.getStartEndTimeString(event.start, event.end);
+    return StringHelper.getStartEndTimeString(event.start, event.end);
   }
 
   public getDayString(event: EventDto): string {
-    return this.stringHelper.getDayOfWeekShort(event.start);
+    return StringHelper.getDayOfWeekShort(event.start);
   }
 
   private fetch() {

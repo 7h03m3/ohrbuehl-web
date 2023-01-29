@@ -3,9 +3,9 @@ import { OrganizationMemberDto } from '../dtos/organization-member.dto';
 
 @Injectable({ providedIn: 'root' })
 export class StringHelper {
-  private localeString = 'de-CH';
+  private static localeString = 'de-CH';
 
-  public getDateString(dateNumber: number): string {
+  public static getDateString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const days = this.addLeadingZero(date.getDate());
     const month = this.addLeadingZero(date.getMonth() + 1);
@@ -13,7 +13,7 @@ export class StringHelper {
     return days + '.' + month + '.' + year;
   }
 
-  public getStartEndDateString(start: number, end: number): string {
+  public static getStartEndDateString(start: number, end: number): string {
     const startDate = this.getDateString(start);
     const endDate = this.getDateString(end);
 
@@ -24,14 +24,14 @@ export class StringHelper {
     return startDate + ' - ' + endDate;
   }
 
-  public getTimeString(dateNumber: number): string {
+  public static getTimeString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const hours = this.addLeadingZero(date.getHours());
     const minutes = this.addLeadingZero(date.getMinutes());
     return hours + ':' + minutes;
   }
 
-  public getStartEndDateTimeString(start: number, end: number): string {
+  public static getStartEndDateTimeString(start: number, end: number): string {
     const startDate = this.getDateString(start);
     const endDate = this.getDateString(end);
     const startTime = this.getTimeString(start);
@@ -44,24 +44,24 @@ export class StringHelper {
     }
   }
 
-  public getStartEndTimeString(start: number, end: number): string {
+  public static getStartEndTimeString(start: number, end: number): string {
     const startTime = this.getTimeString(start);
     const endTime = this.getTimeString(end);
 
     return startTime + ' - ' + endTime;
   }
 
-  public getDayOfWeekLong(dateNumber: number): string {
+  public static getDayOfWeekLong(dateNumber: number): string {
     const date = new Date(+dateNumber);
     return date.toLocaleString(this.localeString, { weekday: 'long' });
   }
 
-  public getDayOfWeekShort(dateNumber: number): string {
+  public static getDayOfWeekShort(dateNumber: number): string {
     const date = new Date(+dateNumber);
     return date.toLocaleString(this.localeString, { weekday: 'short' });
   }
 
-  public getDate(dateString: string, timeString: string): number {
+  public static getDate(dateString: string, timeString: string): number {
     const temp = timeString.split(':');
     const date = new Date(Date.parse(dateString));
 
@@ -74,7 +74,7 @@ export class StringHelper {
     return date.getTime();
   }
 
-  public getDateByDateString(dateString: string): number {
+  public static getDateByDateString(dateString: string): number {
     const dateStringArray = dateString.split('.');
 
     const date = new Date();
@@ -84,7 +84,7 @@ export class StringHelper {
     return date.getTime();
   }
 
-  public getMemberNameWithSkills(member: OrganizationMemberDto): string {
+  public static getMemberNameWithSkills(member: OrganizationMemberDto): string {
     if (member == undefined) {
       return '';
     }
@@ -98,7 +98,7 @@ export class StringHelper {
     return name;
   }
 
-  private addLeadingZero(inputNumber: number): string {
+  private static addLeadingZero(inputNumber: number): string {
     let input = inputNumber.toString();
     if (input.length < 2) {
       input = '0' + input;

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { ApiService } from '../../../api/api.service';
-import { StringHelper } from '../../../shared/classes/string-helper';
 import { AccountingApi } from '../../../api/classes/accounting-api';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
@@ -9,6 +8,7 @@ import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { InvoiceItemHelper } from '../../classes/invoice-item-helper';
+import { StringHelper } from '../../../shared/classes/string-helper';
 
 @Component({
   selector: 'app-invoice-step-accounting-select-time-range',
@@ -31,7 +31,7 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
   public disableSubmitButton = true;
   private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService, public stringHelper: StringHelper) {
+  constructor(private apiService: ApiService) {
     this.accountingApi = this.apiService.getAccounting();
   }
 
@@ -102,7 +102,7 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
       'Schussgeld ' +
       organization.name +
       ' ' +
-      this.stringHelper.getStartEndDateString(startAccounting.start, endAccounting.end);
+      StringHelper.getStartEndDateString(startAccounting.start, endAccounting.end);
     this.invoiceData.items = new Array<InvoiceItemDto>();
 
     let unitList = new Array<ShootingRangeAccountingUnitDto>();
@@ -118,6 +118,10 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
     InvoiceItemHelper.addAccountingUnitsByOrganization(organization.id, unitList, this.invoiceData.items);
 
     this.invoiceDataChange.emit(this.invoiceData);
+  }
+
+  public getStartEndDateTimeString(accountingData: ShootingRangeAccountingDto): string {
+    return StringHelper.getStartEndDateTimeString(accountingData.start, accountingData.end);
   }
 
   private getAccountingById(id: number): ShootingRangeAccountingDto | undefined {

@@ -33,7 +33,7 @@ export class EventStaffPoolEditComponent {
   private staffPoolApi: EventStaffPoolApi;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService, private stringHelper: StringHelper) {
+  constructor(private apiService: ApiService, private authService: AuthService) {
     this.organizationApi = this.apiService.getOrganization();
     this.eventApi = apiService.getEvent();
     this.memberApi = apiService.getOrganizationMember();
@@ -139,10 +139,10 @@ export class EventStaffPoolEditComponent {
   }
 
   private getTimeString(event: EventDto): string {
-    const startDate = this.stringHelper.getDateString(event.start);
-    const endDate = this.stringHelper.getDateString(event.end);
-    const startTime = this.stringHelper.getTimeString(event.start);
-    const endTime = this.stringHelper.getTimeString(event.end);
+    const startDate = StringHelper.getDateString(event.start);
+    const endDate = StringHelper.getDateString(event.end);
+    const startTime = StringHelper.getTimeString(event.start);
+    const endTime = StringHelper.getTimeString(event.end);
 
     if (startDate == endDate) {
       return startDate + ' ' + startTime + ' - ' + endTime;

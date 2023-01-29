@@ -15,7 +15,7 @@ export class EnterDateAndTimeComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Output() accountingDataChange = new EventEmitter<ShootingRangeAccountingDto>();
 
-  constructor(private formBuilder: UntypedFormBuilder, private stringHelper: StringHelper) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.dateForm = this.formBuilder.group({
@@ -34,8 +34,8 @@ export class EnterDateAndTimeComponent implements OnInit {
       date.setUTCHours(0, 0, 0, 0);
 
       this.dateForm.controls['date'].setValue(date.toISOString());
-      this.dateForm.controls['startTime'].setValue(this.stringHelper.getTimeString(this.accountingData.start));
-      this.dateForm.controls['endTime'].setValue(this.stringHelper.getTimeString(this.accountingData.end));
+      this.dateForm.controls['startTime'].setValue(StringHelper.getTimeString(this.accountingData.start));
+      this.dateForm.controls['endTime'].setValue(StringHelper.getTimeString(this.accountingData.end));
     } else {
       const dateNow = Date.now();
       const date = new Date(dateNow);
@@ -51,8 +51,8 @@ export class EnterDateAndTimeComponent implements OnInit {
     const date = this.dateForm.controls['date'].value;
     const startTime = this.dateForm.controls['startTime'].value;
     const endTime = this.dateForm.controls['endTime'].value;
-    this.accountingData.start = this.stringHelper.getDate(date, startTime);
-    this.accountingData.end = this.stringHelper.getDate(date, endTime);
+    this.accountingData.start = StringHelper.getDate(date, startTime);
+    this.accountingData.end = StringHelper.getDate(date, endTime);
     this.accountingDataChange.emit(this.accountingData);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../api/api.service';
@@ -9,7 +9,8 @@ import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
-import { EnterDateAndTimeComponent } from '../daily-accounting/components/shooting-range-accounting-step-enter-date-and-time/enter-date-and-time.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
 
 @Component({
   selector: 'app-shooting-range-accounting-edit',
@@ -22,7 +23,6 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
   public prices = new Array<ShootingRangePriceDto>();
   public minTrack = '0';
   public maxTrack = '0';
-  private dateFormComponent: any;
   private accountingApi: AccountingApi;
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
@@ -32,16 +32,11 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private stringHelper: StringHelper,
+    private dialog: MatDialog,
   ) {
     this.accountingApi = this.apiService.getAccounting();
     this.organizationApi = this.apiService.getOrganization();
     this.priceApi = this.apiService.getShootingRangePrice();
-  }
-
-  @ViewChild(EnterDateAndTimeComponent)
-  set appShark(child: EnterDateAndTimeComponent) {
-    this.dateFormComponent = child;
   }
 
   ngOnInit(): void {
@@ -52,8 +47,6 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
         this.accountingApi.getById(id).subscribe((response) => {
           this.accountingData = response;
           this.updateTrackCount();
-
-          this.dateFormComponent.fetch(this.accountingData);
 
           this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {
             this.organizations = response;
@@ -73,14 +66,27 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
     });
   }
 
-  public onDateChanged() {
-    this.accountingApi.update(this.accountingData).subscribe((response) => {
-      this.openSnackBar('Datum gespeichert', false);
+  public onDateEdit() {
+    const dialogRef = this.dialog.open(ShootingRangeAccountingEditTimeDialogComponent, {
+      data: {
+        startTime: this.accountingData.start,
+        endTime: this.accountingData.end,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data != undefined && data.startTime != undefined) {
+        this.accountingData.start = data.startTime;
+        this.accountingData.end = data.endTime;
+        this.accountingApi.update(this.accountingData).subscribe((response) => {
+          this.openSnackBar('Datum gespeichert', false);
+        });
+      }
     });
   }
 
   public getDateTimeString(element: ShootingRangeAccountingDto): string {
-    return this.stringHelper.getStartEndDateTimeString(element.start, element.end);
+    return StringHelper.getStartEndDateTimeString(element.start, element.end);
   }
 
   private openSnackBar(message: string, redirect = true) {

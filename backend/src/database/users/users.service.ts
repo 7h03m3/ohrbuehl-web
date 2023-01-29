@@ -98,6 +98,19 @@ export class UsersService {
       .execute();
   }
 
+  public async updatePassword(userId: number, newHashedPassword: string): Promise<any> {
+    console.log(userId);
+    console.log(newHashedPassword);
+    return await this.usersRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({
+        password: newHashedPassword,
+      })
+      .where('id = :id', { id: userId })
+      .execute();
+  }
+
   private async getOrganization(organizationId: number): Promise<OrganizationEntity | null> {
     if (organizationId != 0) {
       const organization = await this.organizationService.findOne(organizationId);

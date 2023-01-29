@@ -27,7 +27,15 @@ export class EventsService {
   }
 
   public findAllWithShifts(): Promise<EventEntity[]> {
-    return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true, shifts: true } });
+    return this.eventRepository.find({
+      order: { start: 'DESC' },
+      relations: {
+        category: true,
+        shifts: {
+          category: true,
+        },
+      },
+    });
   }
 
   public findAllWithShiftsByCategoryId(categoryId: number): Promise<EventEntity[]> {

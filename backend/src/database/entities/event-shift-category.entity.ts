@@ -17,6 +17,9 @@ export class EventShiftCategoryEntity {
   @Column()
   position: number;
 
+  @Column({ default: false })
+  requiresRangeOfficer: boolean;
+
   @OneToMany((type) => EventShiftEntity, (shift) => shift.category)
   shifts: EventShiftEntity[];
 
@@ -24,6 +27,7 @@ export class EventShiftCategoryEntity {
     this.name = dto.name;
     this.abbreviation = dto.abbreviation;
     this.position = dto.position;
+    this.requiresRangeOfficer = dto.requiresRangeOfficer;
   }
 
   public loadFromDto(dto: EventShiftCategoryDto) {

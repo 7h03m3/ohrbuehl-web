@@ -15,7 +15,7 @@ import { EventShiftCategoryApi } from '../../../api/classes/event-shift-category
 })
 export class AdminEventShiftCategoryListComponent {
   categoryList$ = new Observable<EventShiftCategoryDto[]>();
-  displayedColumns: string[] = ['id', 'name', 'abbreviation', 'position', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'abbreviation', 'position', 'rangeOfficer', 'action'];
   private categoryApi: EventShiftCategoryApi;
 
   constructor(

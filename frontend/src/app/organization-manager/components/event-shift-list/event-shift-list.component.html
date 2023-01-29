@@ -13,7 +13,7 @@
         <th *matHeaderCellDef mat-header-cell>Tag</th>
         <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
       </ng-container>
-      
+
       <ng-container matColumnDef="title">
         <th *matHeaderCellDef mat-header-cell>Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
@@ -29,6 +29,13 @@
         <td *matCellDef="let element"
             [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
             mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rangeOfficer">
+        <th *matHeaderCellDef mat-header-cell>SM</th>
+        <td *matCellDef="let element"
+            [ngClass]="isRangeOfficerAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+            mat-cell> {{element.assignedRangeOfficer}} / {{element.totalRangeOfficer}}</td>
       </ng-container>
 
       <ng-container matColumnDef="pool">

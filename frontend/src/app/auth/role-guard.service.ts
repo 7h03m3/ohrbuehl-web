@@ -13,8 +13,20 @@ export class RoleGuardService implements CanActivate, CanActivateChild {
     const expectedRole = route.data['expectedRole'];
     const userRole = this.authService.getRole();
 
-    if (this.authService.isLoggedIn() && (userRole == expectedRole || userRole == Role.Admin)) {
-      return true;
+    if (expectedRole && this.authService.isLoggedIn()) {
+      if (userRole == Role.Admin) {
+        return true;
+      }
+
+      const multipleRoles = expectedRole instanceof Array;
+      if (multipleRoles) {
+        const result = expectedRole.find((role) => role == userRole);
+        if (result != undefined) {
+          return true;
+        }
+      } else if (userRole == expectedRole) {
+        return true;
+      }
     }
 
     this.router.navigate(['login']);

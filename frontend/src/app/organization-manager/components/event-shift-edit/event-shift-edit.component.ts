@@ -118,6 +118,16 @@ export class EventShiftEditComponent {
       });
   }
 
+  public getCategoryString(element: EventShiftDto): string {
+    let returnString = element.category.name;
+
+    if (element.category.requiresRangeOfficer) {
+      returnString += ' (SM benötigt)';
+    }
+
+    return returnString;
+  }
+
   public getMemberNameWithSkills(staff: OrganizationMemberDto): string {
     return StringHelper.getMemberNameWithSkills(staff);
   }

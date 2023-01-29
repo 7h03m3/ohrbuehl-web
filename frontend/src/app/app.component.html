@@ -36,8 +36,12 @@
         <mat-icon>person</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button disabled mat-menu-item>
           <span>Rolle: {{getRoleText()}}</span>
+        </button>
+        <button mat-menu-item routerLink="user/password-change">
+          <mat-icon>password</mat-icon>
+          <span>Passwort ändern</span>
         </button>
       </mat-menu>
 

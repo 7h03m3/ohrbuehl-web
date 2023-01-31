@@ -6,4 +6,11 @@
   margin-right: 0.5em;
 }
 
+.toolbar-bg {
+  background: url('../assets/images/title.png') left center no-repeat;
+  background-size: 265px 65px;
+}
 
+.toolbar-bg-spacer {
+  width: 265px;
+}

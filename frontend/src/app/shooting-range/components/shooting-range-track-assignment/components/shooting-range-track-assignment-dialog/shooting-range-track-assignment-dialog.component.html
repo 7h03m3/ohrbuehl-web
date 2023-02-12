@@ -34,7 +34,7 @@
       <mat-label>Organisation</mat-label>
       <mat-select [(ngModel)]="data.organizationId" name="organization" placeholder="Bitte auswählen" required>
         <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
-          {{organization.abbreviation}}
+          {{organization.name}} ({{organization.abbreviation}})
         </mat-option>
       </mat-select>
     </mat-form-field>

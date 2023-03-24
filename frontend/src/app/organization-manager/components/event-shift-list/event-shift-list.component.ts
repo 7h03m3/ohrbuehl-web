@@ -52,18 +52,6 @@ export class EventShiftListComponent {
     this.selectedCategory = this.userLocalData.getEventCategory();
     this.organizationId = this.authService.getManagingOrganizationId();
 
-    this.categoryApi.getAll().subscribe((response) => {
-      this.categoryList = new Array<EventCategoryDto>();
-
-      const allCategory = new EventCategoryDto();
-      allCategory.name = 'Alle';
-      this.categoryList.push(allCategory);
-
-      response.forEach((category) => {
-        this.categoryList.push(category);
-      });
-    });
-
     this.fetch();
   }
 
@@ -98,6 +86,12 @@ export class EventShiftListComponent {
   }
 
   private fetch() {
+    this.categoryList = new Array<EventCategoryDto>();
+
+    const allCategory = new EventCategoryDto();
+    allCategory.name = 'Alle';
+    this.categoryList.push(allCategory);
+
     this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
       this.eventList = new Array<EventShiftListItemDto>();
       response.forEach((event) => {
@@ -128,6 +122,11 @@ export class EventShiftListComponent {
           });
 
           this.eventList.push(element);
+        }
+
+        const existingCategory = this.categoryList.find((value) => value.id == event.categoryId);
+        if (!existingCategory) {
+          this.categoryList.push(event.category);
         }
       });
     });

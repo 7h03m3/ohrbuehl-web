@@ -6,7 +6,10 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
-import { StringHelper } from '../../../shared/classes/string-helper';
+import { CsvParser } from './classes/csv-parser';
+import { Observable } from 'rxjs';
+
+const jschardet = require('jschardet');
 
 @Component({
   selector: 'app-organization-member-vva-import',
@@ -92,43 +95,40 @@ export class OrganizationMemberVvaImportComponent {
     const input: any = document.querySelector('#csv-file');
 
     if (typeof FileReader !== 'undefined') {
-      const reader = new FileReader();
-      reader.readAsText(input.files[0], 'ISO-8859-1');
+      this.getEncoding(input.files[0]).subscribe((encoding) => {
+        const reader = new FileReader();
 
-      reader.onload = () => {
-        const csvData = reader.result;
-        const csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+        reader.readAsText(input.files[0], encoding);
 
-        const tempMap = new Map<string, OrganizationMemberDto>();
-        csvRecordsArray.forEach((entry, index) => {
-          if (index != 0) {
-            const splittedEntry = entry.split(';');
+        reader.onload = (e) => {
+          const csvData = reader.result;
+          const csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
 
-            if (splittedEntry[1] != undefined) {
-              const category = splittedEntry[30];
-              if (!category.includes('Behörden')) {
-                const member = new OrganizationMemberDto();
-                member.organizationId = this.organizationId;
-                member.vvaId = splittedEntry[0];
-                member.firstName = splittedEntry[4];
-                member.lastName = splittedEntry[5];
-                const company = splittedEntry[6];
-                member.street = splittedEntry[9];
-                member.zip = Number.parseInt(splittedEntry[10]);
-                member.location = splittedEntry[11];
-                member.phoneNumber = splittedEntry[15];
-                member.emailAddress = splittedEntry[18];
-                member.birthdate = StringHelper.getDateByDateString(splittedEntry[27]);
+          const parser = new CsvParser();
 
-                tempMap.set(member.vvaId, member);
-              }
-            }
+          parser.parse(csvRecordsArray, this.organizationId);
+
+          const memberList = parser.getMemberList();
+          if (memberList.length != 0) {
+            this.saveCsvData(memberList);
+          } else {
+            this.openSnackBar('Diese Datei hat ein ungültiges Format');
           }
-        });
-
-        this.saveCsvData(Array.from(tempMap.values()));
-      };
+        };
+      });
     }
+  }
+
+  private getEncoding(file: Blob): Observable<string> {
+    return new Observable((obs) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const fileContent = e.target.result.split(/\r|\n|\r\n/);
+        obs.next(jschardet.detect(fileContent.toString()).encoding);
+        obs.complete();
+      };
+      reader.readAsBinaryString(file);
+    });
   }
 
   private openSnackBar(message: string) {

@@ -1,0 +1,16 @@
+mat-card {
+  min-width: 40em;
+}
+
+.mat-icon {
+  font-size: 2em;
+}
+
+.mat-button-toggle-group {
+  height: 2rem;
+  align-items: center;
+}
+
+.mat-button-toggle-button {
+  height: 2rem;
+}

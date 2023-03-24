@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './user/components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
-import { PublicWelcomeComponent } from './public/public-welcome/public-welcome.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,7 +15,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, PublicWelcomeComponent, UserPasswordChangeComponent],
+  declarations: [AppComponent, LoginComponent, UserPasswordChangeComponent],
   imports: [BrowserModule, BrowserAnimationsModule, CdkTreeModule, HttpClientModule, MaterialModule, AppRoutingModule],
   providers: [
     DatePipe,

@@ -1,0 +1,44 @@
+body {
+  background-color: lightblue;
+}
+
+mat-card {
+  width: 30em;
+}
+
+.mat-card-avatar-icon {
+  width: 2em;
+  height: 2em;
+  font-size: 2em;
+  color: #FF4081;
+}
+
+.title-center {
+  align-items: center;
+}
+
+.welcome-content {
+  flex: auto;
+  height: auto;
+  width: auto;
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container {
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flex-container > mat-card {
+  width: 20em;
+  margin: 1em 2em 0em 0em;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+

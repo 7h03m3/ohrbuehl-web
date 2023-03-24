@@ -17,6 +17,10 @@ export class EventCategoryApi extends BaseApi {
     return this.http.get<EventCategoryDto>(this.url + '/' + id);
   }
 
+  public getByAbbreviation(abbreviation: string): Observable<EventCategoryDto> {
+    return this.http.get<EventCategoryDto>(this.url + '/byAbbreviation/' + abbreviation);
+  }
+
   public create(createDto: EventCategoryCreateDto): Observable<EventCategoryDto> {
     return this.http.post<EventCategoryDto>(this.url, createDto);
   }

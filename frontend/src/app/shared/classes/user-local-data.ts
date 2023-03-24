@@ -4,7 +4,23 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class UserLocalData {
+  private eventCategoryKey = 'eventCategoryId';
+
   constructor() {}
+
+  public getEventCategory(): number {
+    const eventCategoryId = localStorage.getItem(this.eventCategoryKey);
+
+    if (eventCategoryId != null) {
+      return parseInt(eventCategoryId);
+    }
+
+    return 0;
+  }
+
+  public setEventCategory(eventCategoryId: number) {
+    localStorage.setItem(this.eventCategoryKey, eventCategoryId.toString());
+  }
 
   public convertRoleText(role: string) {
     switch (role) {

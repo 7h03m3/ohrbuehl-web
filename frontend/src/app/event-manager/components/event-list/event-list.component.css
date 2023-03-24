@@ -2,6 +2,11 @@ table {
   width: 100%;
 }
 
+.cell-center {
+  text-align: center;
+  justify-content: center;
+}
+
 .mat-icon {
   font-size: 2em;
 }

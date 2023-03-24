@@ -13,6 +13,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { EventStaffPoolEditTableMember } from './classes/event-staff-pool-edit-table-member';
 
 @Component({
   selector: 'app-event-staff-pool-edit',
@@ -22,7 +23,7 @@ import { MatSort } from '@angular/material/sort';
 export class EventStaffPoolEditComponent {
   public displayedColumns = ['member'];
   public columns = new Array<EventStaffPoolEditTableColumn>();
-  public dataSource = new MatTableDataSource<OrganizationMemberDto>();
+  public dataSource = new MatTableDataSource<EventStaffPoolEditTableMember>();
   @ViewChild(MatSort) sort: any = MatSort;
   private organizationId = 0;
   private eventList = new Array<EventDto>();
@@ -116,8 +117,14 @@ export class EventStaffPoolEditComponent {
   }
 
   private fetch() {
-    this.dataSource.data = this.memberList;
+    this.dataSource.data = new Array<EventStaffPoolEditTableMember>();
+    this.memberList.forEach((member) => {
+      const memberEntry = new EventStaffPoolEditTableMember();
+      memberEntry.name = member.firstName + ' ' + member.lastName;
+      this.dataSource.data.push(memberEntry);
+    });
 
+    this.columns = new Array<EventStaffPoolEditTableColumn>();
     this.eventList.forEach((event) => {
       const column = new EventStaffPoolEditTableColumn();
       column.eventId = event.id;

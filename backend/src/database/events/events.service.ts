@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import { EventEntity } from '../entities/event.entity';
 import { EventCreateDto } from '../../shared/dtos/event-create.dto';
 import { EventDto } from '../../shared/dtos/event.dto';
@@ -18,6 +18,22 @@ export class EventsService {
     return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true } });
   }
 
+  public findAllPublic(currentDate: number): Promise<EventEntity[]> {
+    return this.eventRepository.find({
+      order: { start: 'ASC' },
+      where: { public: true, start: MoreThanOrEqual(currentDate) },
+      relations: { category: true },
+    });
+  }
+
+  public findAllPublicByCategory(currentDate: number, categoryId: number): Promise<EventEntity[]> {
+    return this.eventRepository.find({
+      order: { start: 'ASC' },
+      where: { public: true, start: MoreThanOrEqual(currentDate), categoryId: categoryId },
+      relations: { category: true },
+    });
+  }
+
   public findAllByCategory(categoryId: number): Promise<EventEntity[]> {
     return this.eventRepository.find({
       order: { start: 'DESC' },
@@ -29,6 +45,7 @@ export class EventsService {
   public findAllWithShifts(): Promise<EventEntity[]> {
     return this.eventRepository.find({
       order: { start: 'DESC' },
+      where: { shiftPlanning: true },
       relations: {
         category: true,
         shifts: {

@@ -3,31 +3,40 @@
     <mat-card-title>Schichtenplanung</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <table [dataSource]="eventList" mat-table>
+    <br>
+    <mat-form-field appearance="outline">
+      <mat-label>Kategorie</mat-label>
+      <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
+        <mat-option *ngFor="let category of categoryList" [value]="category.id">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <table [dataSource]="dataSource" mat-table matSort>
       <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell>Zeit</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Zeit</th>
         <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
       </ng-container>
-      
+
       <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell>Titel</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="title">Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
       </ng-container>
 
       <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="categoryId">Kategorie</th>
         <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="organization">
-        <th *matHeaderCellDef mat-header-cell>Vereinszuteilung</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedOrganization">Vereinszuteilung</th>
         <td *matCellDef="let element"
             [ngClass]="isOrganizationAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
             mat-cell> {{element.assignedOrganization}} / {{element.totalShifts}}</td>
       </ng-container>
 
       <ng-container matColumnDef="shift">
-        <th *matHeaderCellDef mat-header-cell>Schichten</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedShifts">Schichten</th>
         <td *matCellDef="let element"
             [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
             mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
@@ -52,5 +61,7 @@
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25"
+                   aria-label="Select page of events"></mat-paginator>
   </mat-card-content>
 </mat-card>

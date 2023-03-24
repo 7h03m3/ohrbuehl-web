@@ -3,35 +3,34 @@
     <mat-card-title>Anlässe</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <table [dataSource]="eventList$" mat-table>
+    <table [dataSource]="dataSource" mat-table matSort>
       <ng-container matColumnDef="date">
-        <th *matHeaderCellDef mat-header-cell>Datum</th>
-        <td *matCellDef="let element" mat-cell> {{getDateString(element)}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell>Zeit</th>
-        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="day">
-        <th *matHeaderCellDef mat-header-cell>Tag</th>
-        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Datum</th>
+        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}, {{getDateString(element)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell>Titel</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="title">Titel</th>
         <td *matCellDef="let element" mat-cell> {{element.title}}</td>
       </ng-container>
 
       <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="categoryId">Kategorie</th>
         <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="public">
-        <th *matHeaderCellDef mat-header-cell>Öffentlich</th>
-        <td *matCellDef="let element" mat-cell> {{element.public ? 'Ja' : 'Nein'}}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="public">Öffentlich</th>
+        <td *matCellDef="let element" class="cell-center" mat-cell>
+          <mat-icon *ngIf="element.public">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shifts">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="shiftPlanning">Schichten</th>
+        <td *matCellDef="let element" class="cell-center" mat-cell>
+          <mat-icon *ngIf="element.shiftPlanning">check</mat-icon>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="action">
@@ -66,5 +65,7 @@
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                   aria-label="Select page of events"></mat-paginator>
   </mat-card-content>
 </mat-card>

@@ -22,6 +22,11 @@ export class EventsCategoryController {
     return this.categoryService.getById(id);
   }
 
+  @Get('/byAbbreviation/:abbreviation')
+  getByAbbreviation(@Param('abbreviation') abbreviation: string): Promise<EventCategoryEntity> {
+    return this.categoryService.getByAbbreviation(abbreviation);
+  }
+
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()

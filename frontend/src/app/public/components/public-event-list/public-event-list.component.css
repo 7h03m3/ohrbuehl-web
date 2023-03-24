@@ -1,3 +1,11 @@
+table {
+  min-width: 40em;
+}
+
+.min-width {
+  width: 1%;
+}
+
 mat-card {
   min-width: 40em;
 }

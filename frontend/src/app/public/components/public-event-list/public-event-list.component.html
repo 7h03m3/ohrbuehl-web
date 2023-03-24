@@ -17,7 +17,7 @@
   </ng-container>
 
   <ng-container matColumnDef="action">
-    <th *matHeaderCellDef mat-header-cell>
+    <th *matHeaderCellDef class="min-width" mat-header-cell>
     </th>
     <td *matCellDef="let element" class="align-right" mat-cell>
       <mat-button-toggle-group #elementGroup="matButtonToggleGroup" *ngIf="element.publicInformation != ''">
@@ -37,5 +37,6 @@
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 </table>
-<mat-paginator *ngIf="dataSource.data.length != 0" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
-               aria-label="Select page of events" class=" mat-elevation-z1 "></mat-paginator>
+<mat-paginator [ngStyle]="{display: displayPaginator ? 'block' : 'none'}" [pageSizeOptions]="[5, 10, 25, 100]"
+               [pageSize]="10" aria-label="Select page of events"
+               class=" mat-elevation-z1 "></mat-paginator>

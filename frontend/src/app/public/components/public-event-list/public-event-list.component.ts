@@ -20,6 +20,7 @@ export class PublicEventListComponent {
   public dataSource = new MatTableDataSource<EventDto>();
   public displayedColumns: string[] = ['date', 'day', 'title', 'category', 'action'];
   public title = 'Anlässe';
+  public displayPaginator = false;
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
   private eventApi: EventApi;
@@ -43,6 +44,7 @@ export class PublicEventListComponent {
           this.displayedColumns = ['date', 'title', 'action'];
           this.eventApi.getAllPublicByCategory(date.getTime(), category.id).subscribe((response) => {
             this.dataSource.data = response;
+            this.updateDisplayPaginator();
           });
         });
       } else {
@@ -50,6 +52,7 @@ export class PublicEventListComponent {
         this.displayedColumns = ['date', 'title', 'category', 'action'];
         this.eventApi.getAllPublic(date.getTime()).subscribe((response) => {
           this.dataSource.data = response;
+          this.updateDisplayPaginator();
         });
       }
     });
@@ -78,5 +81,9 @@ export class PublicEventListComponent {
 
   public getDayString(event: EventDto): string {
     return StringHelper.getDayOfWeekShort(event.start);
+  }
+
+  private updateDisplayPaginator() {
+    this.displayPaginator = this.dataSource.data.length > 10;
   }
 }

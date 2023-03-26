@@ -1,25 +1,26 @@
 <br>
 <mat-form-field appearance="outline">
-  <mat-label>Start</mat-label>
-  <mat-select (selectionChange)="onStartAccountingChange()" [(ngModel)]="selectedStartAccounting">
+  <mat-hint>Start</mat-hint>
+  <mat-select (selectionChange)="onStartAccountingChange()" [(ngModel)]="selectedStartAccounting"
+              placeholder="Bitte Start-Datum auswählen">
     <mat-option *ngFor="let accountingData of accountingList" [value]="accountingData.id">
       {{getStartEndDateTimeString(accountingData)}}
     </mat-option>
   </mat-select>
 </mat-form-field>
 <mat-form-field appearance="outline">
-  <mat-label>Ende</mat-label>
+  <mat-hint>Ende</mat-hint>
   <mat-select (selectionChange)="onEndAccountingChange()" [(ngModel)]="selectedEndAccounting"
-              [disabled]="disableStartAccounting">
+              [disabled]="disableStartAccounting" placeholder="Bitte End-Datum auswählen">
     <mat-option *ngFor="let accountingData of endAccountingList" [value]="accountingData.id">
       {{getStartEndDateTimeString(accountingData)}}
     </mat-option>
   </mat-select>
 </mat-form-field>
 <mat-form-field appearance="outline">
-  <mat-label>Verein</mat-label>
+  <mat-hint>Verein</mat-hint>
   <mat-select (selectionChange)="onOrganizationChange()" [(ngModel)]="selectedOrganization"
-              [disabled]="disableOrganization" name="organization">
+              [disabled]="disableOrganization" name="organization" placeholder="Bitte Verein auswählen">
     <mat-option *ngFor="let organizationData of organizationMap | keyvalue" [value]="organizationData.value.id">
       {{organizationData.value.name}} ({{organizationData.value.abbreviation}})
     </mat-option>

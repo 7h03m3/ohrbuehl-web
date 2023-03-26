@@ -1,6 +1,7 @@
 <mat-form-field appearance="outline">
   <mat-hint>Tag</mat-hint>
-  <mat-select (selectionChange)="onAccountingChange()" [(ngModel)]="selectedAccounting" name="accounting">
+  <mat-select (selectionChange)="onAccountingChange()" [(ngModel)]="selectedAccounting" name="accounting"
+              placeholder="Bitte Datum auswählen">
     <mat-option *ngFor="let accountingData of accountingList" [value]="accountingData.id">
       {{getDateTimeString(accountingData)}} ({{getTypeString(accountingData.type)}})
     </mat-option>
@@ -11,7 +12,7 @@
   <mat-hint>Verein</mat-hint>
   <mat-select (selectionChange)="onOrganizationChange()" [(ngModel)]="selectedOrganization"
               [disabled]="disableOrganization"
-              name="organization">
+              name="organization" placeholder="Bitte Verein auswählen">
     <mat-option *ngFor="let organizationData of organizationMap | keyvalue" [value]="organizationData.value.id">
       {{organizationData.value.name}} ({{organizationData.value.abbreviation}})
     </mat-option>

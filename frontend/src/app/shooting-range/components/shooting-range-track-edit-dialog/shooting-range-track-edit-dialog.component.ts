@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { OrganizationDto } from '../../../../shared/dtos/organization.dto';
-import { ShootingRangePriceDto } from '../../../../shared/dtos/shooting-range-price.dto';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface ShootingRangeEditTrackDialogData {
@@ -15,14 +15,14 @@ export interface ShootingRangeEditTrackDialogData {
 }
 
 @Component({
-  selector: 'app-shooting-range-edit-track-dialog',
-  templateUrl: './shooting-range-edit-track-dialog.component.html',
-  styleUrls: ['./shooting-range-edit-track-dialog.component.css'],
+  selector: 'app-shooting-range-track-edit-dialog',
+  templateUrl: './shooting-range-track-edit-dialog.component.html',
+  styleUrls: ['./shooting-range-track-edit-dialog.component.css'],
 })
-export class ShootingRangeEditTrackDialogComponent {
+export class ShootingRangeTrackEditDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ShootingRangeEditTrackDialogData,
-    public dialogRef: MatDialogRef<ShootingRangeEditTrackDialogComponent>,
+    public dialogRef: MatDialogRef<ShootingRangeTrackEditDialogComponent>,
   ) {}
 
   public doAssignment() {

@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-intl';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, UserPasswordChangeComponent],
@@ -30,6 +32,10 @@ import { UserPasswordChangeComponent } from './user/components/user-password-cha
     },
     JwtHelperService,
     { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
+    {
+      provide: MatPaginatorIntl,
+      useClass: GermanMatPaginatorIntl,
+    },
   ],
   bootstrap: [AppComponent],
 })

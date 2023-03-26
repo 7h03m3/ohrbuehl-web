@@ -1,26 +1,7 @@
-<h2 mat-dialog-title>Scheiben zuweisen</h2>
+<h2 mat-dialog-title>Scheiben {{data.trackStart}} - {{data.trackEnd}} zuweisen</h2>
 <div mat-dialog-content>
   <br>
   <form #assignForm="ngForm">
-    <mat-form-field *ngIf="data.editShots" appearance="outline" required>
-      <mat-label>Anzahl Schüss</mat-label>
-      <input [(ngModel)]="data.amount" matInput min="1" name="amount" required type="number">
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="outline" class="track-field" required>
-      <mat-label>Scheibe</mat-label>
-      <input [(ngModel)]="data.trackStart" [max]="data.maxTrack" [min]="data.minTrack" matInput
-             maxlength="2" name="trackSTart" type="number">
-      <mat-hint>Zahl von {{data.minTrack}} - {{data.maxTrack}}</mat-hint>
-    </mat-form-field>
-    bis
-    <mat-form-field appearance="outline" class="track-field" required>
-      <mat-label>Scheibe</mat-label>
-      <input [(ngModel)]="data.trackEnd" [max]="data.maxTrack" [min]="data.minTrack" matInput maxlength="2"
-             name="trackEnd" type="number">
-      <mat-hint>Zahl von {{data.minTrack}} - {{data.maxTrack}}</mat-hint>
-    </mat-form-field>
-    <br>
     <mat-form-field appearance="outline" required>
       <mat-label>Schussgeld</mat-label>
       <mat-select [(ngModel)]="data.priceId" name="price" placeholder="Bitte auswählen" required>

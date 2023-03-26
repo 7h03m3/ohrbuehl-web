@@ -3,8 +3,7 @@ import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-export interface ShootingRangeEditTrackDialogData {
-  editShots: boolean;
+export interface ShootingRangeTrackEditDialogData {
   track: number;
   amount: number;
   priceId: number;
@@ -21,7 +20,7 @@ export interface ShootingRangeEditTrackDialogData {
 })
 export class ShootingRangeTrackEditDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: ShootingRangeEditTrackDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: ShootingRangeTrackEditDialogData,
     public dialogRef: MatDialogRef<ShootingRangeTrackEditDialogComponent>,
   ) {}
 

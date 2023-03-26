@@ -1,13 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
-import { ShootingRangePriceDto } from '../../../../../shared/dtos/shooting-range-price.dto';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 
 export interface ShootingRangeTrackAssignmentDialogData {
-  editShots: boolean;
   amount: number;
-  maxTrack: number;
-  minTrack: number;
   trackStart: number;
   trackEnd: number;
   priceId: number;

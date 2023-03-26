@@ -9,6 +9,7 @@ import { Data } from 'swissqrbill/lib/node/cjs/shared/types';
 import { DateHelper } from '../../shared/classes/date-helper';
 import { ShootingRangeAccountingTypeEnum } from '../../shared/enums/shooting-range-accounting-type.enum';
 import { PdfBase } from '../base/pdf-base.class';
+import { SummarizeHelper } from '../../shared/classes/summarize-helper';
 
 @Injectable()
 export class ShootingRangeAccountingPdfService extends PdfBase {
@@ -32,6 +33,8 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
   }
 
   async generatePdf(accountingData: ShootingRangeAccountingEntity, @Res() response) {
+    accountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(accountingData.items);
+
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const filename =
       'Schusszahlen_' +
@@ -107,7 +110,7 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
   }
 
   private addTable(items: ShootingRangeAccountingUnitEntity[], total: number, pdf: PDF) {
-    const trackWidth = this.mm2Pt(17);
+    const commentWidth = this.mm2Pt(25);
     const amountWidth = this.mm2Pt(20);
     const priceWidth = this.mm2Pt(45);
 
@@ -123,11 +126,11 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
           fillColor: '#ECF0F1',
           columns: [
             {
-              text: 'Scheibe',
-              width: trackWidth,
+              text: 'Verein',
             },
             {
-              text: 'Verein',
+              text: 'Kommentar',
+              width: commentWidth,
             },
             {
               text: 'Preis',
@@ -151,10 +154,10 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
       columns: [
         {
           text: '',
-          width: trackWidth,
         },
         {
           text: '',
+          width: commentWidth,
         },
         {
           text: 'Total',
@@ -175,19 +178,20 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
   }
 
   private addTableItem(item: ShootingRangeAccountingUnitEntity, table: PDFTable) {
-    const trackWidth = this.mm2Pt(17);
+    const commentWidth = this.mm2Pt(25);
     const amountWidth = this.mm2Pt(20);
     const priceWidth = this.mm2Pt(45);
 
     const rowItem: PDFRow = {
       columns: [
         {
-          text: item.track,
-          width: trackWidth,
-        },
-        {
           text: item.organization.name + ' (' + item.organization.abbreviation + ')',
           font: 'Helvetica',
+        },
+        {
+          text: item.comment,
+          font: 'Helvetica',
+          width: commentWidth,
         },
         {
           text: item.price.name + ' (' + item.price.price + ' SFr.)',

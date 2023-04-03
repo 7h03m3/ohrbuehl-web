@@ -58,6 +58,7 @@ export class ShootingRangeInvoicesComponent implements OnInit {
         this.stepEnableInformation = true;
         this.stepEnableItemEdit = true;
         this.stepEnableCheck = true;
+        this.formTitle = 'Rechnung bearbeiten';
         this.invoiceApi.getById(invoiceId).subscribe((response) => {
           this.invoiceData = response;
           this.invoiceData.date = new Date().getTime();

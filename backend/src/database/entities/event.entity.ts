@@ -29,6 +29,9 @@ export class EventEntity {
   @Column({ default: false })
   public: boolean;
 
+  @Column({ default: false })
+  shiftPlanning: boolean;
+
   @Column()
   publicInformation: string;
 
@@ -48,6 +51,7 @@ export class EventEntity {
     this.end = dto.end;
     this.title = dto.title;
     this.public = dto.public;
+    this.shiftPlanning = dto.shiftPlanning;
     this.publicInformation = dto.publicInformation;
   }
 }

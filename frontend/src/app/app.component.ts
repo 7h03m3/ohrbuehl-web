@@ -20,4 +20,12 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
+
+  public onEventSelect(category: string | undefined) {
+    if (category) {
+      this.router.navigate(['/public/event-list', { category: category }]);
+    } else {
+      this.router.navigate(['/public/event-list']);
+    }
+  }
 }

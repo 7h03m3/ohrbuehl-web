@@ -99,8 +99,6 @@ export class UsersService {
   }
 
   public async updatePassword(userId: number, newHashedPassword: string): Promise<any> {
-    console.log(userId);
-    console.log(newHashedPassword);
     return await this.usersRepository
       .createQueryBuilder()
       .update(UserEntity)

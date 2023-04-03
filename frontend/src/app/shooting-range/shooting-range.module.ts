@@ -22,10 +22,11 @@ import { ShootingRangeRoutingModule } from './shooting-range-routing.module';
 import { InvoiceTypeSelectionComponent } from '../invoice/components/invoice-step-type-selection/invoice-type-selection.component';
 import { InvoiceAccountingSelectionComponent } from '../invoice/components/invoice-step-accounting-selection/invoice-accounting-selection.component';
 import { InvoiceStepAccountingMilitaryComponent } from '../invoice/components/invoice-step-accounting-military/invoice-step-accounting-military.component';
-import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment/components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
-import { ShootingRangeEditTrackDialogComponent } from './components/shooting-range-shot-number-table/shooting-range-edit-track-dialog/shooting-range-edit-track-dialog.component';
+import { ShootingRangeTrackAssignmentDialogComponent } from './components/shooting-range-track-assignment-dialog/shooting-range-track-assignment-dialog.component';
+import { ShootingRangeTrackEditDialogComponent } from './components/shooting-range-track-edit-dialog/shooting-range-track-edit-dialog.component';
 import { InvoiceStepAccountingSelectTimeRangeComponent } from '../invoice/components/invoice-step-accounting-select-time-range/invoice-step-accounting-select-time-range.component';
 import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit/components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
+import { ShootingRangeTrackEditButtonsComponent } from './components/shooting-range-track-edit-buttons/shooting-range-track-edit-buttons.component';
 
 @NgModule({
   declarations: [
@@ -51,8 +52,9 @@ import { ShootingRangeAccountingEditTimeDialogComponent } from './components/sho
     ShootingRangeAccountingViewComponent,
     ShootingRangeAccountingEditComponent,
     ShootingRangeTrackAssignmentDialogComponent,
-    ShootingRangeEditTrackDialogComponent,
+    ShootingRangeTrackEditDialogComponent,
     ShootingRangeAccountingEditTimeDialogComponent,
+    ShootingRangeTrackEditButtonsComponent,
   ],
   imports: [CommonModule, MaterialModule, ShootingRangeRoutingModule],
 })

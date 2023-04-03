@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
 import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
@@ -9,6 +8,9 @@ import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventApi } from '../../../api/classes/event-api';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-event-list',
@@ -16,8 +18,10 @@ import { InfoDialogComponent } from '../../../shared/components/info-dialog/info
   styleUrls: ['./event-list.component.css'],
 })
 export class EventListComponent {
-  eventList$ = new Observable<EventDto[]>();
-  displayedColumns: string[] = ['date', 'time', 'day', 'title', 'category', 'public', 'action'];
+  public dataSource = new MatTableDataSource<EventDto>();
+  public displayedColumns: string[] = ['date', 'title', 'category', 'public', 'shifts', 'action'];
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+  @ViewChild(MatSort) sort: any = MatSort;
   private eventApi: EventApi;
 
   constructor(
@@ -31,6 +35,11 @@ export class EventListComponent {
 
   public ngOnInit(): void {
     this.fetch();
+  }
+
+  public ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   public onInfo(element: EventDto) {
@@ -70,11 +79,7 @@ export class EventListComponent {
   }
 
   public getDateString(event: EventDto): string {
-    return StringHelper.getStartEndDateString(event.start, event.end);
-  }
-
-  public getTimeString(event: EventDto): string {
-    return StringHelper.getStartEndTimeString(event.start, event.end);
+    return StringHelper.getStartEndDateTimeString(event.start, event.end);
   }
 
   public getDayString(event: EventDto): string {
@@ -82,6 +87,8 @@ export class EventListComponent {
   }
 
   private fetch() {
-    this.eventList$ = this.eventApi.getAll();
+    this.eventApi.getAll().subscribe((data) => {
+      this.dataSource.data = data;
+    });
   }
 }

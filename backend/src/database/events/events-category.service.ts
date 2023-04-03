@@ -28,6 +28,14 @@ export class EventsCategoryService {
     return this.categoryRepository.findOneBy({ id });
   }
 
+  public getByAbbreviation(abbreviation: string): Promise<EventCategoryEntity> {
+    return this.categoryRepository.findOne({
+      where: {
+        abbreviation: abbreviation,
+      },
+    });
+  }
+
   public async create(createDto: EventCategoryCreateDto): Promise<EventCategoryEntity> {
     const entity = new EventCategoryEntity();
     entity.loadFromCreateDto(createDto);

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
@@ -9,6 +9,8 @@ import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { AccountingApi } from '../../../api/classes/accounting-api';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-shooting-range-accounting-list',
@@ -16,9 +18,10 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
   styleUrls: ['./shooting-range-accounting-list.component.css'],
 })
 export class ShootingRangeAccountingListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'date', 'time', 'day', 'type', 'total', 'action'];
-  dataSource = new MatTableDataSource();
-  @ViewChild('table') table!: MatTable<any>;
+  displayedColumns: string[] = ['id', 'date', 'type', 'total', 'action'];
+  dataSource = new MatTableDataSource<ShootingRangeAccountingDto>();
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+  @ViewChild(MatSort) sort: any = MatSort;
   private accountingApi: AccountingApi;
 
   constructor(
@@ -31,8 +34,13 @@ export class ShootingRangeAccountingListComponent implements OnInit {
     this.accountingApi = this.apiService.getAccounting();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetch();
+  }
+
+  public ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   public onView(id: number) {
@@ -63,25 +71,20 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   public getDateString(element: ShootingRangeAccountingDto): string {
-    return StringHelper.getStartEndDateString(element.start, element.end);
-  }
-
-  public getTimeString(element: ShootingRangeAccountingDto): string {
-    return StringHelper.getStartEndTimeString(element.start, element.end);
+    return (
+      StringHelper.getDayOfWeekShort(element.start) +
+      ', ' +
+      StringHelper.getStartEndDateTimeString(element.start, element.end)
+    );
   }
 
   public getTypeString(typeString: string): string {
     return this.userData.convertAccountingTypeText(typeString);
   }
 
-  public getDayString(element: ShootingRangeAccountingDto): string {
-    return StringHelper.getDayOfWeekShort(element.start);
-  }
-
   private fetch() {
     this.accountingApi.getList().subscribe((result) => {
-      this.table.renderRows();
-      this.table.dataSource = result;
+      this.dataSource.data = result;
     });
   }
 }

@@ -1,0 +1,8 @@
+.public-content {
+  flex: auto;
+  height: auto;
+  width: auto;
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+}

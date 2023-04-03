@@ -1,0 +1,23 @@
+<br>
+<p class="align-center">Um eine Scheibe zu bearbeiten oder einen Scheibenbereich auszuwählen, bitte auf die Scheibe
+  klicken.</p>
+<div class="flex-container">
+  <div *ngFor="let item of accountingData.items; index as i; first as isFirst;" class="flex-item">
+    <button [matMenuTriggerFor]="menu" [matTooltip]="getTrackTooltip(item)"
+            [ngClass]="!isTrackGap(isFirst,  i) ? 'track-button' : 'track-button-left-space'"
+            [ngStyle]="{'background-color': getTrackColor(item)}" mat-fab>
+      {{item.track}}
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="onTrackSelect(item)" mat-menu-item>
+        <mat-icon>swap_horiz</mat-icon>
+        <span>Auswählen</span>
+      </button>
+      <button (click)="onTrackEdit(item)" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Bearbeiten</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
+

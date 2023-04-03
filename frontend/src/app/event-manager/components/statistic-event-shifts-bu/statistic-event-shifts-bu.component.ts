@@ -8,6 +8,7 @@ import { StatisticEventShiftsTableComponent } from '../statistic-event-shifts/st
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
 import { EventCategoryApi } from '../../../api/classes/event-category-api';
 import { SortHelper } from '../../../shared/classes/sort-helper';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-statistic-event-shifts-bu',
@@ -24,7 +25,7 @@ export class StatisticEventShiftsBuComponent {
   private eventCategoryApi: EventCategoryApi;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private userLocalData: UserLocalData) {
     this.eventApi = this.apiService.getEvent();
     this.organizationApi = this.apiService.getOrganization();
     this.eventCategoryApi = this.apiService.getEventCategory();
@@ -36,11 +37,13 @@ export class StatisticEventShiftsBuComponent {
   }
 
   public ngOnInit(): void {
+    this.selectedCategory = this.userLocalData.getEventCategory();
     this.loadCategories();
     this.loadShifts(this.selectedCategory);
   }
 
   public onCategoryChange(newValue: number) {
+    this.userLocalData.setEventCategory(newValue);
     this.loadShifts(newValue);
   }
 

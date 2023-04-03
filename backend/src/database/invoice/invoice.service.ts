@@ -30,6 +30,9 @@ export class InvoiceService {
           lastName: true,
         },
       },
+      order: {
+        date: 'DESC',
+      },
     });
   }
 

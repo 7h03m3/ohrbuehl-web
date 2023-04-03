@@ -9,6 +9,14 @@ export class EventApi extends BaseApi {
     super(baseUrl + 'events');
   }
 
+  public getAllPublic(startDate: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/public/' + startDate);
+  }
+
+  public getAllPublicByCategory(startDate: number, categoryId: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/public/' + startDate + '/' + categoryId);
+  }
+
   public getAll(): Observable<EventDto[]> {
     return this.http.get<EventDto[]>(this.url);
   }

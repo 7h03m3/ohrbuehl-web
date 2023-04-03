@@ -46,8 +46,12 @@
 
       <section align="left">
         <mat-checkbox [(ngModel)]="eventData.public" name="public">Öffentlich sichtbar</mat-checkbox>
-      </section>
+        <br>
+        <mat-checkbox [(ngModel)]="eventData.shiftPlanning" name="shiftPlanning">Schichtenplanung aktivieren
+        </mat-checkbox>
 
+      </section>
+      <br>
       <mat-form-field appearance="outline">
         <mat-label>Öffentliche Beschreibung</mat-label>
         <textarea [(ngModel)]="eventData.publicInformation" matInput name="publicDescription" rows="8"></textarea>

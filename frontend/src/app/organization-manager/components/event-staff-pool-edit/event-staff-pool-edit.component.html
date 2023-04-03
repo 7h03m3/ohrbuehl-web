@@ -6,7 +6,7 @@
         <input #input (keyup)="applyFilter($event)" matInput>
       </mat-form-field>
     </th>
-    <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.firstName}} {{element.lastName}}</td>
+    <td *matCellDef="let element" class="no-wrap" mat-cell> {{element.name}}</td>
     <td *matFooterCellDef mat-footer-cell></td>
   </ng-container>
 
@@ -23,3 +23,4 @@
   <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
 </table>
+

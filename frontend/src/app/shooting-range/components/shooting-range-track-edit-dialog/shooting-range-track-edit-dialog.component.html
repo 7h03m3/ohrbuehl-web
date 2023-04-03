@@ -2,8 +2,8 @@
 <div mat-dialog-content>
   <br>
   <form #assignForm="ngForm">
-    <mat-form-field *ngIf="data.editShots" appearance="outline" required>
-      <mat-label>Anzahl Schüss</mat-label>
+    <mat-form-field appearance="outline" required>
+      <mat-label>Anzahl Schüsse</mat-label>
       <input [(ngModel)]="data.amount" matInput min="1" name="amount" required type="number">
     </mat-form-field>
     <br>
@@ -20,7 +20,7 @@
       <mat-label>Organisation</mat-label>
       <mat-select [(ngModel)]="data.organizationId" name="organization" placeholder="Bitte auswählen" required>
         <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
-          {{organization.abbreviation}}
+          {{organization.name}} ({{organization.abbreviation}})
         </mat-option>
       </mat-select>
     </mat-form-field>

@@ -1,0 +1,42 @@
+<h2>{{title}}</h2>
+
+<table [dataSource]="dataSource" class="mat-elevation-z1" mat-table matSort>
+  <ng-container matColumnDef="date">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Datum</th>
+    <td *matCellDef="let element" mat-cell> {{getDayString(element)}}, {{getDateString(element)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="title">Titel</th>
+    <td *matCellDef="let element" mat-cell> {{element.title}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="categoryId">Kategorie</th>
+    <td *matCellDef="let element" mat-cell> {{element.category.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef class="min-width" mat-header-cell>
+    </th>
+    <td *matCellDef="let element" class="align-right" mat-cell>
+      <mat-button-toggle-group #elementGroup="matButtonToggleGroup" *ngIf="element.publicInformation != ''">
+        <mat-button-toggle (click)="onInfo(element)" matTooltip="Informationen">
+          <mat-icon class="list-action-icon" color="primary" inline="true">info_outline</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </td>
+  </ng-container>
+
+  <tr *matNoDataRow class="mat-row">
+    <td [attr.colspan]="displayedColumns.length" class="mat-cell">
+      Keine Veranstaltungen verfügbar.
+    </td>
+  </tr>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>
+<mat-paginator [ngStyle]="{display: displayPaginator ? 'block' : 'none'}" [pageSizeOptions]="[5, 10, 25, 100]"
+               [pageSize]="10" aria-label="Select page of events"
+               class=" mat-elevation-z1 "></mat-paginator>

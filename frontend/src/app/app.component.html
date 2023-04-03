@@ -1,56 +1,76 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
+<div class="content mat-app-background">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row class="toolbar-bg">
 
-    <button mat-button routerLink="/">
-      Schiessanlage Ohrbühl
-    </button>
+      <button class="toolbar-home-button" mat-button routerLink="/"></button>
+      <span class="toolbar-bg-spacer"></span>
 
-    <button *ngIf="authService.isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
-            routerLink="/shooting-range">
-      Standwart
-    </button>
-
-    <button *ngIf="authService.isOrganizationManager()" class="toolbar-buttons" color="accent" mat-flat-button
-            routerLink="/organization-manager">
-      Vereinsmanager
-    </button>
-
-    <button *ngIf="authService.isEventOrganizer()" class="toolbar-buttons" color="accent" mat-flat-button
-            routerLink="/event-manager">
-      Anlassorganisator
-    </button>
-
-    <span class="toolbar-spacer"></span>
-
-    <button *ngIf="authService.isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
-      <mat-icon color="accent">admin_panel_settings</mat-icon>
-    </button>
-
-    <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
-      <mat-icon>login</mat-icon>
-    </button>
-
-
-    <p *ngIf="authService.isLoggedIn() == true">
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
-        <mat-icon>person</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button disabled mat-menu-item>
-          <span>Rolle: {{getRoleText()}}</span>
+      <button [matMenuTriggerFor]="eventMenu" color="primary" mat-flat-button>Anlässe</button>
+      <mat-menu #eventMenu="matMenu">
+        <button (click)="onEventSelect('')" mat-menu-item>
+          <span>Alle</span>
         </button>
-        <button mat-menu-item routerLink="user/password-change">
-          <mat-icon>password</mat-icon>
-          <span>Passwort ändern</span>
+        <button (click)="onEventSelect('BU')" mat-menu-item>
+          <span>Bundesübung (Obli) - Gewehr</span>
+        </button>
+        <button (click)="onEventSelect('BUP')" mat-menu-item>
+          <span>Bundesübung (Obli) - Pistole</span>
+        </button>
+        <button (click)="onEventSelect('FS')" mat-menu-item>
+          <span>Feldschiessen</span>
+        </button>
+        <button (click)="onEventSelect('NSK')" mat-menu-item>
+          <span>Nachschiesskurs</span>
         </button>
       </mat-menu>
+      <button color="primary" mat-flat-button routerLink="/public/shooting-range">Schiessanlage</button>
+      <span class="toolbar-spacer"></span>
 
-      <button (click)="logout()" mat-icon-button matTooltip="Logout">
-        <mat-icon>logout</mat-icon>
+      <button *ngIf="authService.isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
+              routerLink="/shooting-range">
+        Standwart
       </button>
-    </p>
-  </mat-toolbar-row>
-</mat-toolbar>
 
-<router-outlet></router-outlet>
+      <button *ngIf="authService.isOrganizationManager()" class="toolbar-buttons" color="accent" mat-flat-button
+              routerLink="/organization-manager">
+        Vereinsmanager
+      </button>
 
+      <button *ngIf="authService.isEventOrganizer()" class="toolbar-buttons" color="accent" mat-flat-button
+              routerLink="/event-manager">
+        Anlassorganisator
+      </button>
+
+
+      <button *ngIf="authService.isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
+        <mat-icon color="accent">admin_panel_settings</mat-icon>
+      </button>
+
+      <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
+        <mat-icon>login</mat-icon>
+      </button>
+
+
+      <p *ngIf="authService.isLoggedIn() == true">
+        <button [matMenuTriggerFor]="menu" mat-icon-button>
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button disabled mat-menu-item>
+            <span>Rolle: {{getRoleText()}}</span>
+          </button>
+          <button mat-menu-item routerLink="user/password-change">
+            <mat-icon>password</mat-icon>
+            <span>Passwort ändern</span>
+          </button>
+        </mat-menu>
+
+        <button (click)="logout()" mat-icon-button matTooltip="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </p>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <router-outlet></router-outlet>
+</div>

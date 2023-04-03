@@ -50,11 +50,28 @@ export class EventsController {
     private sortHelper: SortHelper,
   ) {}
 
+  @Get('public/:startDate')
+  async getAllPublic(@Param('startDate') startDate: number): Promise<EventEntity[]> {
+    return await this.eventService.findAllPublic(startDate);
+  }
+
+  @Get('public/:startDate/:categoryId')
+  async getAllPublicByCategory(
+    @Param('startDate') startDate: number,
+    @Param('categoryId') categoryId: number,
+  ): Promise<EventEntity[]> {
+    return await this.eventService.findAllPublicByCategory(startDate, categoryId);
+  }
+
+  @Roles(Role.Admin, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get()
   async getAll(): Promise<EventEntity[]> {
     return await this.eventService.findAll();
   }
 
+  @Roles(Role.Admin, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('byId/:id')
   getById(@Param('id') id: number): Promise<EventEntity> {
     return this.eventService.getById(id);

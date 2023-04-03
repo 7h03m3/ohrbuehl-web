@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class ViewDetailComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Input() summarizedAccountingData!: ShootingRangeAccountingDto;
+  public buttonDisabled = false;
   private accountingApi: AccountingApi;
 
   constructor(private router: Router, private apiService: ApiService, private snackBar: MatSnackBar) {
@@ -22,6 +23,7 @@ export class ViewDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   public onSave() {
+    this.buttonDisabled = true;
     this.accountingApi.create(this.accountingData).subscribe((response) => {
       this.openSnackBar('Schusszahlen gespeichert');
     });

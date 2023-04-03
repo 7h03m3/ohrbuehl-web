@@ -7,16 +7,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './user/components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
-import { MainWelcomeComponent } from './main/main-welcome/main-welcome.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-intl';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MainWelcomeComponent, UserPasswordChangeComponent],
+  declarations: [AppComponent, LoginComponent, UserPasswordChangeComponent],
   imports: [BrowserModule, BrowserAnimationsModule, CdkTreeModule, HttpClientModule, MaterialModule, AppRoutingModule],
   providers: [
     DatePipe,
@@ -31,6 +32,10 @@ import { UserPasswordChangeComponent } from './user/components/user-password-cha
     },
     JwtHelperService,
     { provide: MAT_DATE_LOCALE, useValue: 'de-CH' },
+    {
+      provide: MatPaginatorIntl,
+      useClass: GermanMatPaginatorIntl,
+    },
   ],
   bootstrap: [AppComponent],
 })

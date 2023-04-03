@@ -3,12 +3,10 @@
     {{buttonText}}
   </button>
 </p>
-<p>
-  <button (click)="doAssignmentDialog()" class="full-width" color="primary" mat-raised-button>Mehrere Scheiben zuordnen
-  </button>
-</p>
 
-<app-shooting-range-shot-number-table (accountingDataChange)="update()" [(accountingData)]="accountingData"
-                                      [editDisabled]="false" [editShots]="manualEdit"
-                                      [organizations]="organizations" [prices]="prices"
-                                      [summarizedAccountingData]="summarizedAccountingData"></app-shooting-range-shot-number-table>
+<app-shooting-range-track-edit-buttons (accountingDataChange)="update()" [(accountingData)]="accountingData"
+                                       [organizations]="organizations"
+                                       [prices]="prices"></app-shooting-range-track-edit-buttons>
+<br>
+<app-shooting-range-shot-number-table
+  [accountingData]="summarizedAccountingData"></app-shooting-range-shot-number-table>

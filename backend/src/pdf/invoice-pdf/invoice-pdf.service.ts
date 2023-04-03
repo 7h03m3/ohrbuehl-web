@@ -58,7 +58,7 @@ export class InvoicePdfService extends PdfBase {
     }
     this.addCreditorAddresses(data.creditor, pdf);
     this.addTitle(invoiceData.title, pdf);
-    this.addPaymentTerm('Zahlungsbedingungen 60 Tage netto', pdf);
+    this.addPaymentTerm('Zahlungsbedingungen 30 Tage netto', pdf);
     this.addDate(invoiceData.date, pdf);
     this.addInvoiceId(invoiceData.id, pdf);
     this.addTable(invoiceData.items, totalAmount, pdf);

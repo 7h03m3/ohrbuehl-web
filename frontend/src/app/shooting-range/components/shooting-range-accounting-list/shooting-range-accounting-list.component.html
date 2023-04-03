@@ -1,33 +1,23 @@
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
-    <table #table [dataSource]="dataSource" id="table" mat-table>
+    <table #table [dataSource]="dataSource" id="table" mat-table matSort>
       <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell>ID</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="id">ID</th>
         <td *matCellDef="let element" mat-cell> {{element.id}} </td>
       </ng-container>
 
       <ng-container matColumnDef="date">
-        <th *matHeaderCellDef mat-header-cell>Datum</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Datum</th>
         <td *matCellDef="let element" mat-cell> {{getDateString(element)}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell>Zeit</th>
-        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="day">
-        <th *matHeaderCellDef mat-header-cell>Tag</th>
-        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
-      </ng-container>
-
       <ng-container matColumnDef="type">
-        <th *matHeaderCellDef mat-header-cell>Typ</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="type">Typ</th>
         <td *matCellDef="let element" mat-cell> {{getTypeString(element.type)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="total">
-        <th *matHeaderCellDef mat-header-cell>Anzahl</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header="total">Anzahl</th>
         <td *matCellDef="let element" mat-cell> {{element.total}}</td>
       </ng-container>
 
@@ -41,7 +31,7 @@
             <mat-button-toggle (click)="onDownload(element.id)" matTooltip="Download PDF">
               <mat-icon color="primary" inline="true">file_download</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle (click)="onEdit(element.id)" matTooltip="Editieren">
+            <mat-button-toggle (click)="onEdit(element.id)" matTooltip="Bearbeiten">
               <mat-icon color="primary" inline="true">edit</mat-icon>
             </mat-button-toggle>
             <mat-button-toggle (click)="onDelete(element)" matTooltip="Löschen">
@@ -55,4 +45,5 @@
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
   </mat-card-content>
+  <mat-paginator [pageSizeOptions]="[15, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </mat-card>

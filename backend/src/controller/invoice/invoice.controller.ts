@@ -28,6 +28,7 @@ import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceItemUpdateDto } from '../../shared/dtos/invoice-item-update.dto';
 import { UsersService } from '../../database/users/users.service';
 import { UserEntity } from '../../database/entities/user.entity';
+import { MailService } from '../../mail/mail.service';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -37,7 +38,28 @@ export class InvoiceController {
     private invoicePdfService: InvoicePdfService,
     private userService: UsersService,
     private dateHelper: DateHelper,
+    private mailService: MailService,
   ) {}
+
+  @Get('test')
+  async testMail(@Res() response) {
+    console.log('test');
+    const id = 16;
+    const invoiceData: InvoiceEntity = await this.invoiceService.findOne(id);
+    if (!invoiceData) {
+      const errorMessage = 'invoice with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log(typeof response);
+
+    //console.log(response);
+    await this.invoicePdfService.generatePdf(invoiceData, response);
+
+    //console.log(response);
+
+    //this.mailService.test();
+  }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)

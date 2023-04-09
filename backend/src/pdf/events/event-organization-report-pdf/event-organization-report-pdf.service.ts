@@ -1,6 +1,5 @@
 import { Injectable, Res } from '@nestjs/common';
 import { PdfBase } from '../../base/pdf-base.class';
-import { DateHelper } from '../../../shared/classes/date-helper';
 import { EventEntity } from '../../../database/entities/event.entity';
 import { OrganizationEntity } from '../../../database/entities/organization.entity';
 import { EventShiftEntity } from '../../../database/entities/event-shift.entity';
@@ -10,6 +9,7 @@ import { EventStaffPoolEntity } from '../../../database/entities/event-staff-poo
 import { EventShiftCategoryEntity } from '../../../database/entities/event-shift-category.entity';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { EventCategoryEntity } from '../../../database/entities/event-category.entity';
+import { DateHelper } from '../../../shared/classes/date-helper';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
@@ -22,7 +22,7 @@ export class EventOrganizationReportPdfService extends PdfBase {
   private colorAvailable = '#4DFF00';
   private colorShiftSet = '#FFA200';
 
-  constructor(private dateHelper: DateHelper, private sortHelper: SortHelper) {
+  constructor(private sortHelper: SortHelper) {
     super();
   }
 
@@ -169,9 +169,9 @@ export class EventOrganizationReportPdfService extends PdfBase {
 
     eventList.forEach((event) => {
       const headerString =
-        this.dateHelper.getDayMonthString(event.start) +
+        DateHelper.getDayMonthString(event.start) +
         '\n' +
-        this.dateHelper.getTimeString(event.start) +
+        DateHelper.getTimeString(event.start) +
         '\n' +
         event.category.abbreviation;
 
@@ -193,6 +193,6 @@ export class EventOrganizationReportPdfService extends PdfBase {
       date = eventList[0].start;
     }
 
-    return this.dateHelper.getFullYear(date);
+    return DateHelper.getFullYear(date);
   }
 }

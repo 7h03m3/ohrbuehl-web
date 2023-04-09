@@ -3,6 +3,7 @@ import { Res } from '@nestjs/common';
 import { FileHelper } from '../../shared/classes/file-helper';
 import { PdfTableRowItem } from './classes/pdf-table-row-item';
 import { PdfTableHeaderItem } from './classes/pdf-table-header-item';
+import { PdfFile } from './classes/pdf-file.class';
 
 export class PdfBase {
   private fileHelper = new FileHelper();
@@ -22,6 +23,20 @@ export class PdfBase {
 
       fileStream.pipe(response).on('close', () => {
         unlink(tempFilename, () => {});
+      });
+    });
+  }
+
+  protected async returnFile(doc: any, filename: string, tempFilename: string): Promise<PdfFile> {
+    doc.end();
+    return new Promise<PdfFile>((resolve) => {
+      doc.on('finish', () => {
+        const fileInfo = new PdfFile();
+        fileInfo.contentType = 'application/pdf';
+        fileInfo.filename = filename;
+        fileInfo.tempFilename = tempFilename;
+
+        resolve(fileInfo);
       });
     });
   }

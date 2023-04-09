@@ -31,7 +31,6 @@ export class ShootingRangeAccountingController {
     private readonly accountingService: ShootingRangeAccountingService,
     private accountingPdfService: ShootingRangeAccountingPdfService,
     private notificationManager: NotificationManagerService,
-    private dateHelper: DateHelper,
   ) {}
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
@@ -89,7 +88,7 @@ export class ShootingRangeAccountingController {
 
     const returnValue = this.accountingService.delete(id);
 
-    const deleteComment = this.dateHelper.getStartEndDateString(deletedEntity.start, deletedEntity.end);
+    const deleteComment = DateHelper.getStartEndDateString(deletedEntity.start, deletedEntity.end);
     await this.notificationManager.deleteEvent(NotificationSource.ShootingRangeAccounting, id, deleteComment);
 
     return returnValue;
@@ -105,7 +104,8 @@ export class ShootingRangeAccountingController {
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    await this.accountingPdfService.generatePdf(accountingData, response);
+    const pdfFile = await this.accountingPdfService.generatePdf(accountingData);
+    await pdfFile.addDataToResponse(response);
   }
 
   private sortItemsByTrack(items: ShootingRangeAccountingUnitEntity[]) {

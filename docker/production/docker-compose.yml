@@ -19,6 +19,12 @@ services:
       DATABASE_USER: admin
       DATABASE_PASSWORD: 12345
       DATABASE_NAME: ohrbuehl-web
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 465
+      MAIL_IGNORE_TLS: "true"
+      MAIL_SECURE: "true"
+      MAIL_USER: ohrbuehl@gmail.com
+      MAIL_PASSWORD: XXX
     links: 
       - ohrbuehl-web-mysql-db
     depends_on:

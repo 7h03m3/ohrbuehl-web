@@ -5,6 +5,7 @@ import { NotificationAction } from '../shared/enums/notification-action.enum';
 import { NotificationEntity } from '../database/entities/notification.entity';
 import { NotificationReceiverEntity } from '../database/entities/notification-receiver.entity';
 import { MailService } from '../mail/mail.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class NotificationManagerService {
@@ -25,6 +26,7 @@ export class NotificationManagerService {
     await this.notifications.create(source, NotificationAction.Delete, targetId, comment);
   }
 
+  @Cron('*/10 * * * * *')
   public async poll() {
     const pollDate = Date.now() - NotificationManagerService.AgeTime;
     const notificationList = await this.notifications.getAllOlderThan(pollDate);
@@ -90,6 +92,9 @@ export class NotificationManagerService {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceAdd(event, receiverList);
         break;
+      case NotificationSource.ShootingRangeAccounting:
+        this.mailService.senAccountingAdd(event, receiverList);
+        break;
     }
   }
 
@@ -100,6 +105,9 @@ export class NotificationManagerService {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceUpdate(event, receiverList);
         break;
+      case NotificationSource.ShootingRangeAccounting:
+        this.mailService.sendAccountingUpdate(event, receiverList);
+        break;
     }
   }
 
@@ -109,6 +117,9 @@ export class NotificationManagerService {
     switch (event.source) {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceDelete(event, receiverList);
+        break;
+      case NotificationSource.ShootingRangeAccounting:
+        this.mailService.sendAccountingDelete(event, receiverList);
         break;
     }
   }

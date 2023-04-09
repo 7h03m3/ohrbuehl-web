@@ -1,10 +1,10 @@
 import { Injectable, Res } from '@nestjs/common';
 import { OrganizationMemberEntity } from '../../../database/entities/organization-member.entity';
 import { PdfBase } from '../../base/pdf-base.class';
-import { DateHelper } from '../../../shared/classes/date-helper';
 import { PdfTableRowItem } from '../../base/classes/pdf-table-row-item';
 import { OrganizationEntity } from '../../../database/entities/organization.entity';
 import { EventShiftEntity } from '../../../database/entities/event-shift.entity';
+import { DateHelper } from '../../../shared/classes/date-helper';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
@@ -13,7 +13,7 @@ type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
 export class EventOrganizationStaffReportPdfService extends PdfBase {
-  constructor(private dateHelper: DateHelper) {
+  constructor() {
     super();
   }
 
@@ -43,8 +43,8 @@ export class EventOrganizationStaffReportPdfService extends PdfBase {
 
         for (const shift of staff.eventShifts) {
           const row: Row = {};
-          row['date'] = this.getTableRowItem(this.dateHelper.getStartEndDateString(shift.start, shift.end));
-          row['day'] = this.getTableRowItem(this.dateHelper.getDayOfWeekLong(shift.start));
+          row['date'] = this.getTableRowItem(DateHelper.getStartEndDateString(shift.start, shift.end));
+          row['day'] = this.getTableRowItem(DateHelper.getDayOfWeekLong(shift.start));
           row['category'] = this.getTableRowItem(shift.category.name + ' (' + shift.category.abbreviation + ')');
           table.datas.push(row);
         }
@@ -65,7 +65,7 @@ export class EventOrganizationStaffReportPdfService extends PdfBase {
     const firstShift = this.getFirstShift(staffList);
     const date = firstShift != undefined ? firstShift.start : new Date().getTime();
 
-    return this.dateHelper.getFullYear(date);
+    return DateHelper.getFullYear(date);
   }
 
   private getFirstShift(staffList: OrganizationMemberEntity[]): EventShiftEntity | undefined {

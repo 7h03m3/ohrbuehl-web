@@ -14,11 +14,14 @@ import { EventOrganizationStaffReportPdfModule } from './pdf/events/event-organi
 import { MailModule } from './mail/mail.module';
 import { NotificationManagerModule } from './notification-manager/notification-manager.module';
 import configuration from './config/configuration';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
+    MailModule,
     ControllerModule,
     AuthModule,
     InvoicePdfModule,
@@ -27,7 +30,6 @@ import configuration from './config/configuration';
     EventReportPdfModule,
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
-    MailModule,
     NotificationManagerModule,
   ],
   controllers: [AppController],

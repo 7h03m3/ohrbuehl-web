@@ -9,7 +9,6 @@ import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { AuthService } from '../../auth/auth.service';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
-import { NotificationSource } from '../../shared/enums/notification-source.enum';
 
 @Controller('users')
 export class UsersController {
@@ -38,11 +37,7 @@ export class UsersController {
   @Post()
   public async createUser(@Body() createUserDto: UserCreateDto): Promise<UserEntity> {
     createUserDto.password = await this.authService.hashPassword(createUserDto.password);
-    const newUser = await this.userService.createUser(createUserDto);
-
-    await this.notificationManager.addEvent(NotificationSource.User, newUser.id);
-
-    return newUser;
+    return this.userService.createUser(createUserDto);
   }
 
   @Roles(Role.Admin)
@@ -61,12 +56,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   public async deleteUser(@Param('id') id: number): Promise<any> {
-    const user = await this.userService.findOne(id);
-
-    const returnValue = await this.userService.deleteUser(id);
-
-    await this.notificationManager.deleteEvent(NotificationSource.User, id, user.userName);
-
-    return returnValue;
+    return await this.userService.deleteUser(id);
   }
 }

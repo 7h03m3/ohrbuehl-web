@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Benachrichtigung {{data.notifier.id == 0 ? 'erstellen' : 'bearbeiten'}}</h1>
+<mat-dialog-content class="mat-typography">
+  <form #notifierForm="ngForm" (ngSubmit)="onSubmit()">
+    <mat-error *ngIf="!formValid">
+      Bitte alle Daten eingeben.
+    </mat-error>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <input [(ngModel)]="data.notifier.name" matInput name="name" placeholder="Name" required>
+      <mat-error>
+        Bitte einen Namen angeben.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <input [(ngModel)]="data.notifier.email" matInput name="email" placeholder="E-Mail" required type="email">
+      <mat-error>
+        Bitte eine E-Mail Adresse angeben.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-selection-list (selectionChange)="onTriggerChange($event)" name="triggers">
+      <mat-list-option *ngFor="let source of triggerSources"
+                       [selected]="isTriggerSelected(source)" [value]="source">
+        {{getNotificationTriggerText(source)}}
+      </mat-list-option>
+    </mat-selection-list>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-flat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" color="primary" mat-flat-button>Speichern</button>
+</mat-dialog-actions>

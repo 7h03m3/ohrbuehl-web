@@ -23,13 +23,13 @@ import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
-import { DateHelper } from '../../shared/classes/date-helper';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceItemUpdateDto } from '../../shared/dtos/invoice-item-update.dto';
 import { UsersService } from '../../database/users/users.service';
 import { UserEntity } from '../../database/entities/user.entity';
 import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
 import { NotificationSource } from '../../shared/enums/notification-source.enum';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -38,7 +38,6 @@ export class InvoiceController {
     private invoiceItemService: InvoiceItemService,
     private invoicePdfService: InvoicePdfService,
     private userService: UsersService,
-    private dateHelper: DateHelper,
     private notificationManager: NotificationManagerService,
   ) {}
 
@@ -163,7 +162,7 @@ export class InvoiceController {
 
   private getInvoiceFilename(title: string, date: number): string {
     let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '_' + this.dateHelper.getDateFileName(date) + '.pdf';
+    filename += '_' + DateHelper.getDateFileName(date) + '.pdf';
     return filename;
   }
 

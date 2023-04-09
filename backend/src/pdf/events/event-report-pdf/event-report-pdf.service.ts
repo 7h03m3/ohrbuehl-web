@@ -1,8 +1,8 @@
 import { Injectable, Res } from '@nestjs/common';
 import { EventEntity } from '../../../database/entities/event.entity';
-import { DateHelper } from '../../../shared/classes/date-helper';
 import { PdfBase } from '../../base/pdf-base.class';
 import { PdfTableRowItem } from '../../base/classes/pdf-table-row-item';
+import { DateHelper } from '../../../shared/classes/date-helper';
 
 const PDFDocument = require('pdfkit-table');
 const fs = require('fs');
@@ -11,7 +11,7 @@ type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
 export class EventReportPdfService extends PdfBase {
-  constructor(private dateHelper: DateHelper) {
+  constructor() {
     super();
   }
 
@@ -26,11 +26,11 @@ export class EventReportPdfService extends PdfBase {
     const title =
       eventData.title +
       ' ' +
-      this.dateHelper.getDateString(eventData.start) +
+      DateHelper.getDateString(eventData.start) +
       ' ' +
-      this.dateHelper.getTimeString(eventData.start) +
+      DateHelper.getTimeString(eventData.start) +
       ' - ' +
-      this.dateHelper.getTimeString(eventData.end);
+      DateHelper.getTimeString(eventData.end);
 
     const table = this.createTable(title, 18);
     table.headers.push(this.getTableHeaderItem(' Schicht', 'category', 'left', 200));
@@ -56,7 +56,7 @@ export class EventReportPdfService extends PdfBase {
         row['organization'] = this.getTableRowItem('');
       }
 
-      row['time'] = this.getTableRowItem(this.dateHelper.getStartEndTimeString(shift.start, shift.end), 12);
+      row['time'] = this.getTableRowItem(DateHelper.getStartEndTimeString(shift.start, shift.end), 12);
 
       if (currentCategory != shift.categoryId) {
         currentCategory = shift.categoryId;
@@ -79,7 +79,7 @@ export class EventReportPdfService extends PdfBase {
 
   private getFilename(title: string, date: number): string {
     let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '_' + this.dateHelper.getDateFileName(date) + '_schichten.pdf';
+    filename += '_' + DateHelper.getDateFileName(date) + '_schichten.pdf';
     return filename;
   }
 }

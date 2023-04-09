@@ -81,7 +81,7 @@ export class EventStaffPoolEditComponent {
   }
 
   public onCheckboxChange(
-    member: OrganizationMemberDto,
+    member: EventStaffPoolEditTableMember,
     column: EventStaffPoolEditTableColumn,
     event: MatCheckboxChange,
   ) {
@@ -99,7 +99,7 @@ export class EventStaffPoolEditComponent {
     }
   }
 
-  public isInPool(member: OrganizationMemberDto, column: EventStaffPoolEditTableColumn): boolean {
+  public isInPool(member: EventStaffPoolEditTableMember, column: EventStaffPoolEditTableColumn): boolean {
     const poolCount = this.staffPool.filter((value) => {
       return value.eventId == column.eventId && value.memberId == member.id;
     }).length;
@@ -121,6 +121,7 @@ export class EventStaffPoolEditComponent {
     this.memberList.forEach((member) => {
       const memberEntry = new EventStaffPoolEditTableMember();
       memberEntry.name = member.firstName + ' ' + member.lastName;
+      memberEntry.id = member.id;
       this.dataSource.data.push(memberEntry);
     });
 

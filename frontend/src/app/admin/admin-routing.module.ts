@@ -12,6 +12,7 @@ import { AdminEventCategoryListComponent } from './components/admin-event-catego
 import { AdminEventCategoryEditComponent } from './components/admin-event-category-edit/admin-event-category-edit.component';
 import { AdminEventShiftCategoryListComponent } from './components/admin-event-shift-category-list/admin-event-shift-category-list.component';
 import { AdminEventShiftCategoryEditComponent } from './components/admin-event-shift-category-edit/admin-event-shift-category-edit.component';
+import { AdminNotifierListComponent } from './components/admin-notifier-list/admin-notifier-list.component';
 
 const routes: Routes = [
   {
@@ -66,6 +67,10 @@ const routes: Routes = [
       {
         path: 'event-shift-category-edit',
         component: AdminEventShiftCategoryEditComponent,
+      },
+      {
+        path: 'notifier-list',
+        component: AdminNotifierListComponent,
       },
     ],
   },

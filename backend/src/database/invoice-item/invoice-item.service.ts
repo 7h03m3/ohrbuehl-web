@@ -25,7 +25,7 @@ export class InvoiceItemService {
     await this.invoiceItemRepository.delete(id);
   }
 
-  async deleteByInvoiceId(invoiceId: string): Promise<void> {
+  async deleteByInvoiceId(invoiceId: number): Promise<void> {
     await this.invoiceItemRepository
       .createQueryBuilder('item')
       .delete()

@@ -1,20 +1,20 @@
-import { Injectable, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PDF } from 'swissqrbill';
 import { Creditor, Data, Debtor } from 'swissqrbill/lib/node/cjs/shared/types';
-import { createReadStream, unlink } from 'fs';
 import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceEntity } from '../../database/entities/invoice.entity';
-import { DateHelper } from '../../shared/classes/date-helper';
 import { PdfBase } from '../base/pdf-base.class';
+import { PdfFile } from '../base/classes/pdf-file.class';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class InvoicePdfService extends PdfBase {
-  constructor(private dateHelper: DateHelper) {
+  constructor() {
     super();
   }
 
-  async generatePdf(invoiceData: InvoiceEntity, @Res() response) {
+  async generatePdf(invoiceData: InvoiceEntity): Promise<PdfFile> {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
     const invoiceMessage: string =
       invoiceData.title +
@@ -22,7 +22,7 @@ export class InvoicePdfService extends PdfBase {
       invoiceData.id +
       ' / ' +
       'Datum: ' +
-      this.dateHelper.getDateString(invoiceData.date);
+      DateHelper.getDateString(invoiceData.date);
 
     const data: Data = {
       currency: 'CHF',
@@ -65,19 +65,7 @@ export class InvoicePdfService extends PdfBase {
 
     pdf.addQRBill('A4');
 
-    pdf.end();
-    pdf.on('finish', () => {
-      const fileStream = createReadStream(tempFilename);
-      response.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=' + invoiceData.filename,
-        'Access-Control-Expose-Headers': 'Content-Disposition',
-      });
-
-      fileStream.pipe(response).on('close', () => {
-        unlink(tempFilename, () => {});
-      });
-    });
+    return this.returnFile(pdf, invoiceData.filename, tempFilename);
   }
 
   private addDebtorAddresses(debtor: Debtor, pdf: PDF) {
@@ -134,7 +122,7 @@ export class InvoicePdfService extends PdfBase {
   }
 
   private addDate(dateNumber: number, pdf: PDF) {
-    const dateString = 'Datum: ' + this.dateHelper.getDateString(dateNumber);
+    const dateString = 'Datum: ' + DateHelper.getDateString(dateNumber);
 
     pdf.fontSize(8);
     pdf.font('Helvetica');

@@ -16,6 +16,7 @@ import { EventApi } from './classes/event-api';
 import { EventShiftApi } from './classes/event-shift-api';
 import { EventStaffPoolApi } from './classes/event-staff-pool-api';
 import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
+import { NotificationApi } from './classes/notification-api';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,7 @@ export class ApiService {
   private readonly eventCategoryApi: EventCategoryApi;
   private readonly eventShiftCategoryApi: EventShiftCategoryApi;
   private readonly eventStaffPoolApi: EventStaffPoolApi;
+  private readonly notificationApi: NotificationApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -48,6 +50,7 @@ export class ApiService {
     this.eventCategoryApi = new EventCategoryApi(this.baseUrl, this.http);
     this.eventShiftCategoryApi = new EventShiftCategoryApi(this.baseUrl, this.http);
     this.eventStaffPoolApi = new EventStaffPoolApi(this.baseUrl, this.http);
+    this.notificationApi = new NotificationApi(this.baseUrl, this.http);
   }
 
   login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -107,5 +110,9 @@ export class ApiService {
 
   getStaffPool(): EventStaffPoolApi {
     return this.eventStaffPoolApi;
+  }
+
+  getNotification(): NotificationApi {
+    return this.notificationApi;
   }
 }

@@ -2,52 +2,57 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DateHelper {
-  private localeString = 'de-CH';
+  private static localeString = 'de-CH';
 
-  public getDateString(dateNumber: number): string {
+  public static getFullYear(dateNumber: number): string {
+    const date = DateHelper.getDate(dateNumber);
+    return date.getFullYear().toString();
+  }
+
+  public static getDateString(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    const days = this.addLeadingZero(date.getDate());
-    const month = this.addLeadingZero(date.getMonth() + 1);
+    const days = DateHelper.addLeadingZero(date.getDate());
+    const month = DateHelper.addLeadingZero(date.getMonth() + 1);
     const year = date.getFullYear();
     return days + '.' + month + '.' + year;
   }
 
-  public getDayMonthString(dateNumber: number): string {
+  public static getDayMonthString(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    const days = this.addLeadingZero(date.getDate());
-    const month = this.addLeadingZero(date.getMonth() + 1);
+    const days = DateHelper.addLeadingZero(date.getDate());
+    const month = DateHelper.addLeadingZero(date.getMonth() + 1);
     return days + '.' + month;
   }
 
-  public getTimeString(dateNumber: number): string {
+  public static getTimeString(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    const hours = this.addLeadingZero(date.getHours());
-    const minutes = this.addLeadingZero(date.getMinutes());
+    const hours = DateHelper.addLeadingZero(date.getHours());
+    const minutes = DateHelper.addLeadingZero(date.getMinutes());
     return hours + ':' + minutes;
   }
 
-  public getDayOfWeekLong(dateNumber: number): string {
+  public static getDayOfWeekLong(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    return date.toLocaleString(this.localeString, { weekday: 'long' });
+    return date.toLocaleString(DateHelper.localeString, { weekday: 'long' });
   }
 
-  public getDayOfWeekShort(dateNumber: number): string {
+  public static getDayOfWeekShort(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    return date.toLocaleString(this.localeString, { weekday: 'short' });
+    return date.toLocaleString(DateHelper.localeString, { weekday: 'short' });
   }
 
-  public getStartEndTimeString(start: number, end: number): string {
-    const startTime = this.getTimeString(start);
-    const endTime = this.getTimeString(end);
+  public static getStartEndTimeString(start: number, end: number): string {
+    const startTime = DateHelper.getTimeString(start);
+    const endTime = DateHelper.getTimeString(end);
 
     return startTime + ' - ' + endTime;
   }
 
-  public getStartEndDateString(start: number, end: number): string {
-    const startDate = this.getDateString(start);
-    const startTime = this.getTimeString(start);
-    const endDate = this.getDateString(end);
-    const endTime = this.getTimeString(end);
+  public static getStartEndDateString(start: number, end: number): string {
+    const startDate = DateHelper.getDateString(start);
+    const startTime = DateHelper.getTimeString(start);
+    const endDate = DateHelper.getDateString(end);
+    const endTime = DateHelper.getTimeString(end);
 
     if (startDate == endDate) {
       return startDate + ' ' + startTime + ' - ' + endTime;
@@ -56,33 +61,28 @@ export class DateHelper {
     }
   }
 
-  public getDateFileName(dateNumber: number): string {
-    const date = this.getDate(dateNumber);
+  public static getDateFileName(dateNumber: number): string {
+    const date = DateHelper.getDate(dateNumber);
     return date.getFullYear() + '_' + (date.getMonth() + 1) + '_' + date.getDate();
   }
 
-  public getTimeFileName(dateNumber: number): string {
+  public static getTimeFileName(dateNumber: number): string {
     const date = new Date(+dateNumber);
-    const hours = this.addLeadingZero(date.getHours());
-    const minutes = this.addLeadingZero(date.getMinutes());
+    const hours = DateHelper.addLeadingZero(date.getHours());
+    const minutes = DateHelper.addLeadingZero(date.getMinutes());
     return hours + '_' + minutes;
   }
 
-  public getFullYear(dateNumber: number): string {
-    const date = this.getDate(dateNumber);
-    return date.getFullYear().toString();
-  }
-
-  private getDate(dateNumber: number): Date {
-    return new Date(parseInt(dateNumber.toString(), 10));
-  }
-
-  private addLeadingZero(inputNumber: number): string {
+  private static addLeadingZero(inputNumber: number): string {
     let input = inputNumber.toString();
     if (input.length < 2) {
       input = '0' + input;
     }
 
     return input;
+  }
+
+  private static getDate(dateNumber: number): Date {
+    return new Date(parseInt(dateNumber.toString(), 10));
   }
 }

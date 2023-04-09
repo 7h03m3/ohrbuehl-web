@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationSource } from '../enums/notification-source.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -7,6 +8,17 @@ export class UserLocalData {
   private eventCategoryKey = 'eventCategoryId';
 
   constructor() {}
+
+  public static convertNotificationSourceText(source: NotificationSource) {
+    switch (source) {
+      case NotificationSource.Invoice:
+        return 'Rechnung';
+      case NotificationSource.ShootingRangeAccounting:
+        return 'Schussgeld';
+      default:
+        return '';
+    }
+  }
 
   public getEventCategory(): number {
     const eventCategoryId = localStorage.getItem(this.eventCategoryKey);

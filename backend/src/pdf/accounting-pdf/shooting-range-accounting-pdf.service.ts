@@ -1,19 +1,19 @@
-import { Injectable, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ShootingRangeAccountingEntity } from '../../database/entities/shooting-range-accounting.entity';
 import * as fs from 'fs';
-import { createReadStream, unlink } from 'fs';
 import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
 import { ShootingRangeAccountingUnitEntity } from '../../database/entities/shooting-range-accounting-unit.entity';
 import { PDF } from 'swissqrbill';
 import { Data } from 'swissqrbill/lib/node/cjs/shared/types';
-import { DateHelper } from '../../shared/classes/date-helper';
 import { ShootingRangeAccountingTypeEnum } from '../../shared/enums/shooting-range-accounting-type.enum';
 import { PdfBase } from '../base/pdf-base.class';
 import { SummarizeHelper } from '../../shared/classes/summarize-helper';
+import { DateHelper } from '../../shared/classes/date-helper';
+import { PdfFile } from '../base/classes/pdf-file.class';
 
 @Injectable()
 export class ShootingRangeAccountingPdfService extends PdfBase {
-  constructor(private dateHelper: DateHelper) {
+  constructor() {
     super();
   }
 
@@ -32,19 +32,19 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
     }
   }
 
-  async generatePdf(accountingData: ShootingRangeAccountingEntity, @Res() response) {
+  async generatePdf(accountingData: ShootingRangeAccountingEntity): Promise<PdfFile> {
     accountingData.items = SummarizeHelper.summarizeShootingRangeAccounting(accountingData.items);
 
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const filename =
       'Schusszahlen_' +
-      this.dateHelper.getDateFileName(accountingData.start) +
+      DateHelper.getDateFileName(accountingData.start) +
       '_' +
       ShootingRangeAccountingPdfService.getTypeString(accountingData.type) +
       '_' +
-      this.dateHelper.getTimeFileName(accountingData.start) +
+      DateHelper.getTimeFileName(accountingData.start) +
       '_' +
-      this.dateHelper.getTimeFileName(accountingData.end) +
+      DateHelper.getTimeFileName(accountingData.end) +
       '_id_' +
       accountingData.id +
       '.pdf';
@@ -75,29 +75,16 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
       'Schusszahlen ' +
         ShootingRangeAccountingPdfService.getTypeString(accountingData.type) +
         ' ' +
-        this.dateHelper.getDateString(accountingData.start) +
+        DateHelper.getDateString(accountingData.start) +
         ' ' +
-        this.dateHelper.getTimeString(accountingData.start) +
+        DateHelper.getTimeString(accountingData.start) +
         ' - ' +
-        this.dateHelper.getTimeString(accountingData.end),
+        DateHelper.getTimeString(accountingData.end),
       pdf,
     );
     this.addTable(accountingData.items, accountingData.total, pdf);
 
-    pdf.end();
-
-    pdf.on('finish', () => {
-      const fileStream = createReadStream(tempFilename);
-      response.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=' + filename,
-        'Access-Control-Expose-Headers': 'Content-Disposition',
-      });
-
-      fileStream.pipe(response).on('close', () => {
-        unlink(tempFilename, () => {});
-      });
-    });
+    return this.returnFile(pdf, filename, tempFilename);
   }
 
   private addTitle(title: string, pdf: PDF) {

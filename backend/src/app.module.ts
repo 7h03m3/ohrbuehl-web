@@ -11,12 +11,17 @@ import { ShootingRangeAccountingPdfModule } from './pdf/accounting-pdf/shooting-
 import { EventReportPdfModule } from './pdf/events/event-report-pdf/event-report-pdf.module';
 import { EventOrganizationReportPdfModule } from './pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
 import { EventOrganizationStaffReportPdfModule } from './pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.module';
+import { MailModule } from './mail/mail.module';
+import { NotificationManagerModule } from './notification-manager/notification-manager.module';
 import configuration from './config/configuration';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
+    MailModule,
     ControllerModule,
     AuthModule,
     InvoicePdfModule,
@@ -25,6 +30,7 @@ import configuration from './config/configuration';
     EventReportPdfModule,
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
+    NotificationManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

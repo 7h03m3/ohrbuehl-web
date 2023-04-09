@@ -21,32 +21,36 @@ import { ShootingRangeAccountingEntity } from '../../database/entities/shooting-
 import { ShootingRangeAccountingUnitEntity } from '../../database/entities/shooting-range-accounting-unit.entity';
 import { ShootingRangeAccountingDto } from '../../shared/dtos/shooting-range-accounting.dto';
 import { ShootingRangeAccountingPdfService } from '../../pdf/accounting-pdf/shooting-range-accounting-pdf.service';
+import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
+import { NotificationSource } from '../../shared/enums/notification-source.enum';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Controller('shooting-range-accounting')
 export class ShootingRangeAccountingController {
   constructor(
     private readonly accountingService: ShootingRangeAccountingService,
     private accountingPdfService: ShootingRangeAccountingPdfService,
+    private notificationManager: NotificationManagerService,
   ) {}
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get()
-  getAll(): Promise<ShootingRangeAccountingEntity[]> {
+  public getAll(): Promise<ShootingRangeAccountingEntity[]> {
     return this.accountingService.findAll();
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('/detail')
-  getAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
+  public getAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
     return this.accountingService.findAllDetailed();
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')
-  async getById(@Param('id') id: number): Promise<ShootingRangeAccountingEntity> {
+  public async getById(@Param('id') id: number): Promise<ShootingRangeAccountingEntity> {
     const returnValue = await this.accountingService.findOne(id);
 
     this.sortItemsByTrack(returnValue.items);
@@ -57,35 +61,51 @@ export class ShootingRangeAccountingController {
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
-  async create(@Body() createDto: ShootingRangeAccountingCreateDto): Promise<ShootingRangeAccountingEntity> {
-    return this.accountingService.create(createDto);
+  public async create(@Body() createDto: ShootingRangeAccountingCreateDto): Promise<ShootingRangeAccountingEntity> {
+    const newEntity = await this.accountingService.create(createDto);
+
+    await this.notificationManager.addEvent(NotificationSource.ShootingRangeAccounting, newEntity.id);
+
+    return newEntity;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put()
-  async update(@Body() dto: ShootingRangeAccountingDto): Promise<ShootingRangeAccountingEntity> {
-    return this.accountingService.update(dto);
+  public async update(@Body() dto: ShootingRangeAccountingDto): Promise<ShootingRangeAccountingEntity> {
+    const updateEntity = await this.accountingService.update(dto);
+
+    await this.notificationManager.updateEvent(NotificationSource.ShootingRangeAccounting, updateEntity.id);
+
+    return updateEntity;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<any> {
-    return this.accountingService.delete(id);
+  public async delete(@Param('id') id: number): Promise<any> {
+    const deletedEntity = await this.accountingService.findOne(id);
+
+    const returnValue = this.accountingService.delete(id);
+
+    const deleteComment = DateHelper.getStartEndDateString(deletedEntity.start, deletedEntity.end);
+    await this.notificationManager.deleteEvent(NotificationSource.ShootingRangeAccounting, id, deleteComment);
+
+    return returnValue;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('pdf/:id')
-  async downloadReport(@Param('id') id: number, @Res() response): Promise<any> {
+  public async downloadReport(@Param('id') id: number, @Res() response): Promise<any> {
     const accountingData: ShootingRangeAccountingEntity = await this.getById(id);
     if (!accountingData) {
       const errorMessage = 'accounting data with id ' + id.toString() + ' not found';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    await this.accountingPdfService.generatePdf(accountingData, response);
+    const pdfFile = await this.accountingPdfService.generatePdf(accountingData);
+    await pdfFile.addDataToResponse(response);
   }
 
   private sortItemsByTrack(items: ShootingRangeAccountingUnitEntity[]) {

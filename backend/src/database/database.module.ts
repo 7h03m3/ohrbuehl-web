@@ -22,6 +22,9 @@ import { EventShiftEntity } from './entities/event-shift.entity';
 import { EventShiftCategoryEntity } from './entities/event-shift-category.entity';
 import { OrganizationMemberEntity } from './entities/organization-member.entity';
 import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
+import { NotificationModule } from './notification/notification.module';
+import { NotificationEntity } from './entities/notification.entity';
+import { NotificationReceiverEntity } from './entities/notification-receiver.entity';
 
 @Module({
   imports: [
@@ -49,6 +52,8 @@ import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
           EventShiftEntity,
           EventShiftCategoryEntity,
           EventStaffPoolEntity,
+          NotificationEntity,
+          NotificationReceiverEntity,
         ],
         synchronize: true,
       }),
@@ -62,6 +67,7 @@ import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
     InvoiceItemModule,
     ShootingRangeAccountingModule,
     EventsModule,
+    NotificationModule,
   ],
   providers: [DefaultValuesService],
 })

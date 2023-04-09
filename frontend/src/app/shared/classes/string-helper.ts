@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OrganizationMemberDto } from '../dtos/organization-member.dto';
+import { UserLocalData } from './user-local-data';
+import { NotificationSource } from '../enums/notification-source.enum';
 
 @Injectable({ providedIn: 'root' })
 export class StringHelper {
@@ -96,6 +98,20 @@ export class StringHelper {
     }
 
     return name;
+  }
+
+  public static getNotificationTriggerText(sourceList: NotificationSource[]): string {
+    let returnString = '';
+
+    sourceList.forEach((trigger) => {
+      if (returnString.length != 0) {
+        returnString += ', ';
+      }
+
+      returnString += UserLocalData.convertNotificationSourceText(trigger);
+    });
+
+    return returnString;
   }
 
   private static addLeadingZero(inputNumber: number): string {

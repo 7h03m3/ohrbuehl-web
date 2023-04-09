@@ -17,6 +17,8 @@ import { AdminEventCategoryListComponent } from './components/admin-event-catego
 import { AdminEventCategoryEditComponent } from './components/admin-event-category-edit/admin-event-category-edit.component';
 import { AdminEventShiftCategoryListComponent } from './components/admin-event-shift-category-list/admin-event-shift-category-list.component';
 import { AdminEventShiftCategoryEditComponent } from './components/admin-event-shift-category-edit/admin-event-shift-category-edit.component';
+import { AdminNotifierListComponent } from './components/admin-notifier-list/admin-notifier-list.component';
+import { AdminNotifierEditDialogComponent } from './components/admin-notifier-edit-dialog/admin-notifier-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { AdminEventShiftCategoryEditComponent } from './components/admin-event-s
     AdminEventCategoryEditComponent,
     AdminEventShiftCategoryListComponent,
     AdminEventShiftCategoryEditComponent,
+    AdminNotifierListComponent,
+    AdminNotifierEditDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, AdminRoutingModule],
 })

@@ -66,14 +66,14 @@ export class InvoiceService {
     return await this.invoiceRepository.save(entity);
   }
 
-  async delete(id: string): Promise<void> {
-    await this.invoiceRepository.delete(id);
+  async delete(id: number): Promise<any> {
+    return this.invoiceRepository.delete(id);
   }
 
   async update(invoiceDto: InvoiceDto, creator: UserEntity): Promise<any> {
     const entity = new InvoiceEntity();
     entity.fillFromDto(invoiceDto);
     entity.creator = creator;
-    await this.invoiceRepository.update({ id: entity.id }, entity);
+    return this.invoiceRepository.update({ id: entity.id }, entity);
   }
 }

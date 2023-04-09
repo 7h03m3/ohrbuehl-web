@@ -9,7 +9,7 @@ import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class NotificationManagerService {
-  private static AgeTime = 10 * 1000; // 10 sec
+  private static AgeTime = 15 * 60 * 1000; // 15min
   private doneList = new Array<string>();
 
   constructor(private notifications: NotificationService, private mailService: MailService) {}
@@ -26,7 +26,7 @@ export class NotificationManagerService {
     await this.notifications.create(source, NotificationAction.Delete, targetId, comment);
   }
 
-  @Cron('*/10 * * * * *')
+  @Cron('0 */15 * * * *')
   public async poll() {
     const pollDate = Date.now() - NotificationManagerService.AgeTime;
     const notificationList = await this.notifications.getAllOlderThan(pollDate);

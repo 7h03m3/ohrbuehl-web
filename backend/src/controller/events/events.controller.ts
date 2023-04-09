@@ -70,7 +70,7 @@ export class EventsController {
     return await this.eventService.findAll();
   }
 
-  @Roles(Role.Admin, Role.EventOrganizer)
+  @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('byId/:id')
   getById(@Param('id') id: number): Promise<EventEntity> {

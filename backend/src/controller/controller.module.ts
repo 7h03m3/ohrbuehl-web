@@ -25,7 +25,9 @@ import { EventsStaffPoolController } from './events/events-staff-pool.controller
 import { EventReportPdfModule } from '../pdf/events/event-report-pdf/event-report-pdf.module';
 import { EventOrganizationReportPdfModule } from '../pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
 import { EventOrganizationStaffReportPdfModule } from '../pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.module';
-import { MailModule } from '../mail/mail.module';
+import { NotificationManagerModule } from '../notification-manager/notification-manager.module';
+import { NotificationsController } from './notifications/notifications.controller';
+import { NotificationModule } from '../database/notification/notification.module';
 
 @Module({
   imports: [
@@ -42,7 +44,8 @@ import { MailModule } from '../mail/mail.module';
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
     AuthModule,
-    MailModule,
+    NotificationModule,
+    NotificationManagerModule,
     SharedModule,
   ],
   providers: [],
@@ -59,6 +62,7 @@ import { MailModule } from '../mail/mail.module';
     EventsShiftCategoryController,
     EventsShiftController,
     EventsStaffPoolController,
+    NotificationsController,
   ],
   exports: [],
 })

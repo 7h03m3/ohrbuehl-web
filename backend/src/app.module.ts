@@ -12,6 +12,7 @@ import { EventReportPdfModule } from './pdf/events/event-report-pdf/event-report
 import { EventOrganizationReportPdfModule } from './pdf/events/event-organization-report-pdf/event-organization-report-pdf.module';
 import { EventOrganizationStaffReportPdfModule } from './pdf/events/event-organization-staff-report-pdf/event-organization-staff-report-pdf.module';
 import { MailModule } from './mail/mail.module';
+import { NotificationManagerModule } from './notification-manager/notification-manager.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -27,6 +28,7 @@ import configuration from './config/configuration';
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
     MailModule,
+    NotificationManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

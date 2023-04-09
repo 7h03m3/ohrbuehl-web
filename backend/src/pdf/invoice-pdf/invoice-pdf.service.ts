@@ -1,12 +1,12 @@
-import { Injectable, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PDF } from 'swissqrbill';
 import { Creditor, Data, Debtor } from 'swissqrbill/lib/node/cjs/shared/types';
-import { createReadStream, unlink } from 'fs';
 import { PDFRow, PDFTable } from 'swissqrbill/lib/node/cjs/pdf/extended-pdf';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceEntity } from '../../database/entities/invoice.entity';
 import { DateHelper } from '../../shared/classes/date-helper';
 import { PdfBase } from '../base/pdf-base.class';
+import { PdfFile } from '../base/classes/pdf-file.class';
 
 @Injectable()
 export class InvoicePdfService extends PdfBase {
@@ -14,7 +14,7 @@ export class InvoicePdfService extends PdfBase {
     super();
   }
 
-  async generatePdf(invoiceData: InvoiceEntity, @Res() response) {
+  async generatePdf(invoiceData: InvoiceEntity): Promise<PdfFile> {
     const totalAmount: number = this.getTotalAmount(invoiceData.items);
     const invoiceMessage: string =
       invoiceData.title +
@@ -66,18 +66,19 @@ export class InvoicePdfService extends PdfBase {
     pdf.addQRBill('A4');
 
     pdf.end();
-    pdf.on('finish', () => {
-      const fileStream = createReadStream(tempFilename);
-      response.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=' + invoiceData.filename,
-        'Access-Control-Expose-Headers': 'Content-Disposition',
-      });
 
-      fileStream.pipe(response).on('close', () => {
-        unlink(tempFilename, () => {});
+    const promise = new Promise<PdfFile>((resolve) => {
+      pdf.on('finish', () => {
+        const fileInfo = new PdfFile();
+        fileInfo.contentType = 'application/pdf';
+        fileInfo.filename = invoiceData.filename;
+        fileInfo.tempFilename = tempFilename;
+
+        resolve(fileInfo);
       });
     });
+
+    return promise;
   }
 
   private addDebtorAddresses(debtor: Debtor, pdf: PDF) {

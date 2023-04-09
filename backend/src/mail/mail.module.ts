@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './mail.service';
+import { InvoiceModule } from '../database/invoice/invoice.module';
+import { InvoicePdfModule } from '../pdf/invoice-pdf/invoicePdfModule';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { MailService } from './mail.service';
         },
       },
     }),
+    InvoiceModule,
+    InvoicePdfModule,
   ],
   providers: [MailService],
   exports: [MailService],

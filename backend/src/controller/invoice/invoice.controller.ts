@@ -28,7 +28,8 @@ import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { InvoiceItemUpdateDto } from '../../shared/dtos/invoice-item-update.dto';
 import { UsersService } from '../../database/users/users.service';
 import { UserEntity } from '../../database/entities/user.entity';
-import { MailService } from '../../mail/mail.service';
+import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
+import { NotificationSource } from '../../shared/enums/notification-source.enum';
 
 @Controller('invoice')
 export class InvoiceController {
@@ -38,28 +39,8 @@ export class InvoiceController {
     private invoicePdfService: InvoicePdfService,
     private userService: UsersService,
     private dateHelper: DateHelper,
-    private mailService: MailService,
+    private notificationManager: NotificationManagerService,
   ) {}
-
-  @Get('test')
-  async testMail(@Res() response) {
-    console.log('test');
-    const id = 16;
-    const invoiceData: InvoiceEntity = await this.invoiceService.findOne(id);
-    if (!invoiceData) {
-      const errorMessage = 'invoice with id ' + id.toString() + ' not found';
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    console.log(typeof response);
-
-    //console.log(response);
-    await this.invoicePdfService.generatePdf(invoiceData, response);
-
-    //console.log(response);
-
-    //this.mailService.test();
-  }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -97,6 +78,8 @@ export class InvoiceController {
       await this.invoiceItemService.create(createItemDto, newInvoice);
     }
 
+    await this.notificationManager.addEvent(NotificationSource.Invoice, newInvoice.id);
+
     return newInvoice.id;
   }
 
@@ -107,15 +90,26 @@ export class InvoiceController {
     const creatorId = req.user.id;
     const creator = await this.getUser(creatorId);
     updateDto.filename = this.getInvoiceFilename(updateDto.title, updateDto.date);
-    return this.invoiceService.update(updateDto, creator);
+    const returnValue = await this.invoiceService.update(updateDto, creator);
+
+    await this.notificationManager.updateEvent(NotificationSource.Invoice, updateDto.id);
+
+    return returnValue;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<any> {
+  async delete(@Param('id') id: number): Promise<any> {
+    const invoice = await this.invoiceService.findOne(id);
+
     await this.invoiceItemService.deleteByInvoiceId(id);
-    return this.invoiceService.delete(id);
+
+    const [returnValue] = await Promise.all([this.invoiceService.delete(id)]);
+
+    await this.notificationManager.deleteEvent(NotificationSource.Invoice, id, invoice.title);
+
+    return returnValue;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
@@ -163,7 +157,8 @@ export class InvoiceController {
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    await this.invoicePdfService.generatePdf(invoiceData, response);
+    const pdfFile = await this.invoicePdfService.generatePdf(invoiceData);
+    await pdfFile.addDataToResponse(response);
   }
 
   private getInvoiceFilename(title: string, date: number): string {

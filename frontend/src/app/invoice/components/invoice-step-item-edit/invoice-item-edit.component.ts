@@ -42,7 +42,7 @@ export class InvoiceItemEditComponent implements OnInit, OnChanges {
     if (form.valid) {
       this.invoiceItem.position = this.invoiceData.items.length + 1;
 
-      if (this.isExistingInvoice() == true) {
+      if (this.isExistingInvoice()) {
         this.invoiceItem.invoiceId = this.invoiceData.id;
         this.invoiceItemApi.create(this.invoiceItem).subscribe((result) => {
           this.invoiceItem.id = result;
@@ -62,9 +62,9 @@ export class InvoiceItemEditComponent implements OnInit, OnChanges {
   public onRemoveItem(index: number) {
     index -= 1;
     if (index > -1) {
-      if (this.isExistingInvoice() == true) {
+      if (this.isExistingInvoice()) {
         const itemToDelete = this.invoiceData.items[index];
-        this.invoiceItemApi.delete(itemToDelete.id).subscribe((result) => {
+        this.invoiceItemApi.delete(itemToDelete.id).subscribe(() => {
           this.invoiceData.items.splice(index, 1);
 
           this.updateItemPositions();
@@ -104,7 +104,7 @@ export class InvoiceItemEditComponent implements OnInit, OnChanges {
     this.invoiceData.items.forEach((value, index) => {
       value.position = index + 1;
 
-      if (this.isExistingInvoice() == true) {
+      if (this.isExistingInvoice()) {
         this.invoiceItemApi.update(value).subscribe();
       }
     });

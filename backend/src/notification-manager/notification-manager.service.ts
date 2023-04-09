@@ -86,8 +86,6 @@ export class NotificationManagerService {
   }
 
   private sendAddEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
-    console.log(event.source + '[' + event.targetId + '] send add mail');
-
     switch (event.source) {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceAdd(event, receiverList);
@@ -99,8 +97,6 @@ export class NotificationManagerService {
   }
 
   private sendUpdateEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
-    console.log(event.source + '[' + event.targetId + '] send update mail');
-
     switch (event.source) {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceUpdate(event, receiverList);
@@ -112,8 +108,6 @@ export class NotificationManagerService {
   }
 
   private sendDeleteEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
-    console.log(event.source + '[' + event.targetId + '] send delete mail');
-
     switch (event.source) {
       case NotificationSource.Invoice:
         this.mailService.sendInvoiceDelete(event, receiverList);

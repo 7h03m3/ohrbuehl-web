@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AdminNotifierEditDialogComponent } from '../admin-notifier-edit-dialog/admin-notifier-edit-dialog.component';
 import { StringHelper } from '../../../shared/classes/string-helper';
+import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Component({
   selector: 'app-admin-notifier-list',
@@ -37,6 +38,20 @@ export class AdminNotifierListComponent {
 
   public onEdit(element: NotificationReceiverDto) {
     this.openEditDialog(element);
+  }
+
+  public onDelete(element: NotificationReceiverDto) {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      data: {
+        itemName: element.name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.notificationApi.deleteNotifier(element.id).subscribe(() => this.fetch());
+      }
+    });
   }
 
   public getNotificationTriggerText(element: NotificationReceiverDto): string {

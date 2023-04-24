@@ -20,6 +20,7 @@ async function bootstrap() {
   app.enableCors();
 
   const configService: ConfigService = app.get(ConfigService);
+  process.env.TZ = configService.get('timeZone');
   await app.listen(configService.get('port'));
 }
 

@@ -11,6 +11,7 @@ import { EventShiftEditDialogComponent } from './components/event-shift-edit-dia
 import { StatisticEventShiftsTableComponent } from './components/statistic-event-shifts/statistic-event-shifts-table.component';
 import { StatisticEventShiftsBuComponent } from './components/statistic-event-shifts-bu/statistic-event-shifts-bu.component';
 import { MemberInfoBottomSheetComponent } from './components/event-shift-edit/components/member-info-bottom-sheet/member-info-bottom-sheet.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,6 @@ import { MemberInfoBottomSheetComponent } from './components/event-shift-edit/co
     StatisticEventShiftsBuComponent,
     MemberInfoBottomSheetComponent,
   ],
-  imports: [CommonModule, MaterialModule, EventManagerRoutingModule],
+  imports: [CommonModule, MaterialModule, SharedModule, EventManagerRoutingModule],
 })
 export class EventManagerModule {}

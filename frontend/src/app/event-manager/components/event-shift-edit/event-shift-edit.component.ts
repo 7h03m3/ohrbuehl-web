@@ -20,6 +20,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MemberInfoBottomSheetComponent } from './components/member-info-bottom-sheet/member-info-bottom-sheet.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { SortHelper } from '../../../shared/classes/sort-helper';
+import { SidenavService } from '../../../shared/services/sidenav.service';
 
 @Component({
   selector: 'app-event-shift-edit',
@@ -43,6 +44,7 @@ export class EventShiftEditComponent {
     private apiService: ApiService,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private sidenavService: SidenavService,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.shiftApi = this.apiService.getEventShift();
@@ -72,6 +74,10 @@ export class EventShiftEditComponent {
         this.fetch();
       }
     });
+  }
+
+  public ngOnDestroy() {
+    this.sidenavService.setSmallView(false);
   }
 
   public getTimeString(event: EventDto): string {

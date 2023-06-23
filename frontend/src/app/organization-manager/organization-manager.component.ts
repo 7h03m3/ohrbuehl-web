@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SidenavService } from '../shared/services/sidenav.service';
 
 @Component({
   selector: 'app-organization-manager',
@@ -6,28 +7,29 @@ import { Component } from '@angular/core';
   styleUrls: ['./organization-manager.component.css'],
 })
 export class OrganizationManagerComponent {
-  public subMenuMember = false;
-  public subMenuShifts = false;
-  public subMenuStatistic = false;
+  public constructor(private sidenavService: SidenavService) {}
 
-  public onMemberSubmenu() {
-    this.resetSubmenus();
-    this.subMenuMember = true;
+  public ngOnInit() {
+    this.setupSidenav();
   }
 
-  public onShiftsSubmenu() {
-    this.resetSubmenus();
-    this.subMenuShifts = true;
+  public ngOnDestroy() {
+    this.sidenavService.reset();
   }
 
-  public onStatisticSubmenu() {
-    this.resetSubmenus();
-    this.subMenuStatistic = true;
-  }
+  private setupSidenav() {
+    this.sidenavService.addElement('Informationen', 'info', './info');
+    const memberMenu = this.sidenavService.addElement('Mitglieder', 'person', './member-list');
+    this.sidenavService.addSubElement(memberMenu, 'Mitgliederliste', 'list', './member-list');
+    this.sidenavService.addSubElement(memberMenu, 'VVA-Import', 'publish', './member-import');
 
-  public resetSubmenus() {
-    this.subMenuStatistic = false;
-    this.subMenuShifts = false;
-    this.subMenuMember = false;
+    this.sidenavService.addElement('Helfer-Pool', 'groups', './event-staff-pool-edit');
+
+    const shiftMenu = this.sidenavService.addElement('Schichtenplanung', 'schedule', './event-shift-list');
+    this.sidenavService.addSubElement(shiftMenu, 'Schichten', 'schedule', './event-shift-list');
+    this.sidenavService.addSubElement(shiftMenu, 'Downloads', 'download', './event-shift-downloads');
+
+    const statisticMenu = this.sidenavService.addElement('Statistik', 'bar_chart', './event-staff-statistic');
+    this.sidenavService.addSubElement(statisticMenu, 'Helferstatistik', 'bar_chart', './event-staff-statistic');
   }
 }

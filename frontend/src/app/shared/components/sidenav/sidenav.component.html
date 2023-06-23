@@ -1,0 +1,41 @@
+<mat-drawer-container autosize="true" class="sidenav-container">
+  <mat-drawer #drawer class="sidenav" id="side" mode="side" opened>
+    <mat-list>
+      <div *ngFor="let element of elements">
+        <mat-list-item (click)="onElementClick(element)"
+                       [class]="isSmallView() ? 'sidenav-link-small': 'sidenav-link'" [matTooltip]="getTooltip(element)"
+                       [routerLink]="element.routerLink">
+          <mat-icon matListItemIcon>{{element.icon}}</mat-icon>
+          <div *ngIf="!isSmallView()" matListItemTitle>{{element.label}}</div>
+        </mat-list-item>
+
+        <div *ngIf="element.selected">
+          <mat-list-item *ngFor="let subitem of element.subItems"
+                         [class]="isSmallView() ? 'sidenav-link-small': 'sidenav-link'"
+                         [matTooltip]="getTooltip(subitem)"
+                         [routerLink]="subitem.routerLink" class="sidenav-sub-item">
+            <mat-icon matListItemIcon>{{subitem.icon}}</mat-icon>
+            <div *ngIf="!isSmallView()" matListItemTitle>{{subitem.label}}</div>
+          </mat-list-item>
+        </div>
+      </div>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item (click)="toggleView()" [class]="isSmallView() ? 'sidenav-link-small': 'sidenav-link'"
+                     [matTooltip]="isSmallView() ? 'Ausfahren' : ''">
+        <mat-icon
+          matListItemIcon>{{isSmallView() ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left' }}</mat-icon>
+        <div *ngIf="!isSmallView()" matListItemTitle>Einfahren</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content class="mat-app-background">
+    <div class="sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+

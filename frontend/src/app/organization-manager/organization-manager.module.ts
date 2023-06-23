@@ -12,6 +12,7 @@ import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
 import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,6 @@ import { EventShiftDownloadsComponent } from './components/event-shift-downloads
     OrganizationMemberVvaImportComponent,
     EventShiftDownloadsComponent,
   ],
-  imports: [CommonModule, MaterialModule, OrganizationManagerRoutingModule],
+  imports: [CommonModule, MaterialModule, SharedModule, OrganizationManagerRoutingModule],
 })
 export class OrganizationManagerModule {}

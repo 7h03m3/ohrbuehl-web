@@ -11,10 +11,6 @@ table {
   font-size: 2em;
 }
 
-.mat-card {
-  width: 40em;
-}
-
 .outline {
   border-style: solid;
   border-width: thin;

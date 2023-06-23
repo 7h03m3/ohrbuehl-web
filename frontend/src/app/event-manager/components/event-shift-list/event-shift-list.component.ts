@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EventCategoryApi } from '../../../api/classes/event-category-api';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
+import { SidenavService } from '../../../shared/services/sidenav.service';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -35,6 +36,7 @@ export class EventShiftListComponent {
     private userLocalData: UserLocalData,
     private router: Router,
     private downloadHelper: DownloadHelper,
+    private sidenavService: SidenavService,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.categoryApi = this.apiService.getEventCategory();
@@ -57,6 +59,7 @@ export class EventShiftListComponent {
   }
 
   public onShiftPlaning(element: EventShiftListItemDto) {
+    this.sidenavService.setSmallView(true);
     this.router.navigate(['/event-manager/event-shift-edit', { eventId: element.event.id }]);
   }
 

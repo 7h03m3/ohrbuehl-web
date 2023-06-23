@@ -27,6 +27,7 @@ import { ShootingRangeTrackEditDialogComponent } from './components/shooting-ran
 import { InvoiceStepAccountingSelectTimeRangeComponent } from '../invoice/components/invoice-step-accounting-select-time-range/invoice-step-accounting-select-time-range.component';
 import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit/components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
 import { ShootingRangeTrackEditButtonsComponent } from './components/shooting-range-track-edit-buttons/shooting-range-track-edit-buttons.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ShootingRangeTrackEditButtonsComponent } from './components/shooting-ra
     ShootingRangeAccountingEditTimeDialogComponent,
     ShootingRangeTrackEditButtonsComponent,
   ],
-  imports: [CommonModule, MaterialModule, ShootingRangeRoutingModule],
+  imports: [CommonModule, MaterialModule, SharedModule, ShootingRangeRoutingModule],
+  exports: [ShootingRangeTrackEditButtonsComponent],
 })
 export class ShootingRangeModule {}

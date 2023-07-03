@@ -17,4 +17,12 @@ export default () => ({
     password: process.env.MAIL_PASSWORD || '',
     from: process.env.MAIL_FROM || '"Schiessanlage Ohrbühl" <ohrbuehl@gmail.com>',
   },
+  shootingRange: {
+    distance25mBlockManualCount: 2,
+    distance25mBlockElectronicCount: 2,
+    distance50mManuelCount: 8,
+    distance50mElectronicCount: 12,
+    distance100m: 6,
+    distance300m: 64,
+  },
 });

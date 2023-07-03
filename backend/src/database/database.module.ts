@@ -25,6 +25,9 @@ import { EventStaffPoolEntity } from './entities/event-staff-pool.entity';
 import { NotificationModule } from './notification/notification.module';
 import { NotificationEntity } from './entities/notification.entity';
 import { NotificationReceiverEntity } from './entities/notification-receiver.entity';
+import { BusinessHoursModule } from './business-hours/business-hours.module';
+import { BusinessHourEntity } from './entities/business-hour.entity';
+import { BusinessHourReservationEntity } from './entities/business-hour-reservation.entity';
 
 @Module({
   imports: [
@@ -54,6 +57,8 @@ import { NotificationReceiverEntity } from './entities/notification-receiver.ent
           EventStaffPoolEntity,
           NotificationEntity,
           NotificationReceiverEntity,
+          BusinessHourEntity,
+          BusinessHourReservationEntity,
         ],
         synchronize: true,
       }),
@@ -68,6 +73,7 @@ import { NotificationReceiverEntity } from './entities/notification-receiver.ent
     ShootingRangeAccountingModule,
     EventsModule,
     NotificationModule,
+    BusinessHoursModule,
   ],
   providers: [DefaultValuesService],
 })

@@ -28,6 +28,13 @@ import { EventOrganizationStaffReportPdfModule } from '../pdf/events/event-organ
 import { NotificationManagerModule } from '../notification-manager/notification-manager.module';
 import { NotificationsController } from './notifications/notifications.controller';
 import { NotificationModule } from '../database/notification/notification.module';
+import { BusinessHoursController } from './business-hours/business-hours.controller';
+import { BusinessHoursOrganizationController } from './business-hours/business-hours-organization.controller';
+import { BusinessHoursSingleController } from './business-hours/business-hours-single.controller';
+import { BusinessHoursAdminController } from './business-hours/business-hours-admin.controller';
+import { BusinessHoursModule } from '../database/business-hours/business-hours.module';
+import { ConfigModule } from '@nestjs/config';
+import { BusinessHoursConfigService } from './business-hours/helpers/business-hours-config.service';
 
 @Module({
   imports: [
@@ -47,8 +54,10 @@ import { NotificationModule } from '../database/notification/notification.module
     NotificationModule,
     NotificationManagerModule,
     SharedModule,
+    BusinessHoursModule,
+    ConfigModule,
   ],
-  providers: [],
+  providers: [BusinessHoursConfigService],
   controllers: [
     UsersController,
     AuthController,
@@ -63,6 +72,10 @@ import { NotificationModule } from '../database/notification/notification.module
     EventsShiftController,
     EventsStaffPoolController,
     NotificationsController,
+    BusinessHoursController,
+    BusinessHoursOrganizationController,
+    BusinessHoursSingleController,
+    BusinessHoursAdminController,
   ],
   exports: [],
 })

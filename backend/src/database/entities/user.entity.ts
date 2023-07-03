@@ -4,6 +4,7 @@ import { OrganizationEntity } from './organization.entity';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { Role } from '../../shared/enums/role.enum';
+import { BusinessHourReservationEntity } from './business-hour-reservation.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -34,6 +35,9 @@ export class UserEntity {
 
   @Column({ nullable: true })
   assignedOrganizationId: number;
+
+  @OneToMany((type) => BusinessHourReservationEntity, (reservation) => reservation.owner)
+  reservations: BusinessHourReservationEntity[];
 
   public loadFromDto(dto: UserCreateDto) {
     this.userName = dto.userName;

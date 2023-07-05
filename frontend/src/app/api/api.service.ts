@@ -17,6 +17,7 @@ import { EventShiftApi } from './classes/event-shift-api';
 import { EventStaffPoolApi } from './classes/event-staff-pool-api';
 import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
 import { NotificationApi } from './classes/notification-api';
+import { BusinessHourAdminApi } from './classes/business-hour-admin-api';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,7 @@ export class ApiService {
   private readonly eventShiftCategoryApi: EventShiftCategoryApi;
   private readonly eventStaffPoolApi: EventStaffPoolApi;
   private readonly notificationApi: NotificationApi;
+  private readonly businessHoursAdminApi: BusinessHourAdminApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -51,9 +53,10 @@ export class ApiService {
     this.eventShiftCategoryApi = new EventShiftCategoryApi(this.baseUrl, this.http);
     this.eventStaffPoolApi = new EventStaffPoolApi(this.baseUrl, this.http);
     this.notificationApi = new NotificationApi(this.baseUrl, this.http);
+    this.businessHoursAdminApi = new BusinessHourAdminApi(this.baseUrl, this.http);
   }
 
-  login(username: string, password: string): Observable<JwtLoginInformation> {
+  public login(username: string, password: string): Observable<JwtLoginInformation> {
     return this.http.post<JwtLoginInformation>(this.baseUrl + 'auth/login', {
       username,
       password,
@@ -64,55 +67,59 @@ export class ApiService {
     return this.http.put<UserPasswordChangeDto>(this.baseUrl + 'auth/password', dto);
   }
 
-  getUser(): UserApi {
+  public getUser(): UserApi {
     return this.userApi;
   }
 
-  getInvoice(): InvoiceApi {
+  public getInvoice(): InvoiceApi {
     return this.invoiceApi;
   }
 
-  getInvoiceItem(): InvoiceItemApi {
+  public getInvoiceItem(): InvoiceItemApi {
     return this.invoiceItemApi;
   }
 
-  getAccounting(): AccountingApi {
+  public getAccounting(): AccountingApi {
     return this.accountingApi;
   }
 
-  getOrganization(): OrganizationApi {
+  public getOrganization(): OrganizationApi {
     return this.organizationApi;
   }
 
-  getOrganizationMember(): OrganizationMemberApi {
+  public getOrganizationMember(): OrganizationMemberApi {
     return this.organizationMemberApi;
   }
 
-  getShootingRangePrice(): ShootingRangePriceApi {
+  public getShootingRangePrice(): ShootingRangePriceApi {
     return this.shootingRangePriceApi;
   }
 
-  getEvent(): EventApi {
+  public getEvent(): EventApi {
     return this.eventApi;
   }
 
-  getEventShift(): EventShiftApi {
+  public getEventShift(): EventShiftApi {
     return this.eventShiftApi;
   }
 
-  getEventCategory(): EventCategoryApi {
+  public getEventCategory(): EventCategoryApi {
     return this.eventCategoryApi;
   }
 
-  getEventShiftCategory(): EventShiftCategoryApi {
+  public getEventShiftCategory(): EventShiftCategoryApi {
     return this.eventShiftCategoryApi;
   }
 
-  getStaffPool(): EventStaffPoolApi {
+  public getStaffPool(): EventStaffPoolApi {
     return this.eventStaffPoolApi;
   }
 
-  getNotification(): NotificationApi {
+  public getNotification(): NotificationApi {
     return this.notificationApi;
+  }
+
+  public getBusinessHoursAdmin(): BusinessHourAdminApi {
+    return this.businessHoursAdminApi;
   }
 }

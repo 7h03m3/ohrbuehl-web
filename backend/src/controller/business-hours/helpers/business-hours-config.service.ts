@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { BusinessHourEntity } from '../../../database/entities/business-hour.entity';
 
 @Injectable()
 export class BusinessHoursConfigService {
@@ -22,10 +23,19 @@ export class BusinessHoursConfigService {
   }
 
   public get100mCount(): number {
-    return this.configService.get<number>('shootingRange.distance100m');
+    return this.configService.get<number>('shootingRange.distance100mCount');
   }
 
   public get300mCount(): number {
-    return this.configService.get<number>('shootingRange.distance300m');
+    return this.configService.get<number>('shootingRange.distance300mCount');
+  }
+
+  public fillInMaxOccupancy(entity: BusinessHourEntity) {
+    entity.distance25mBlockManualOccupancy.max = this.get25mBlockManualCount();
+    entity.distance25mBlockElectronicOccupancy.max = this.get25mBlockElectronicCount();
+    entity.distance50mManualOccupancy.max = this.get50mManualCount();
+    entity.distance50mElectronicOccupancy.max = this.get50mElectronicCount();
+    entity.distance100mOccupancy.max = this.get100mCount();
+    entity.distance300mOccupancy.max = this.get300mCount();
   }
 }

@@ -4,6 +4,7 @@ import { ReservationFacilityType } from '../../shared/enums/reservation-facility
 import { ReservationEventType } from '../../shared/enums/reservation-event-type.enum';
 import { UserEntity } from './user.entity';
 import { OrganizationEntity } from './organization.entity';
+import { BusinessHourReservationDto } from '../../shared/dtos/business-hour-reservation.dto';
 
 @Entity('business-hours-reservations')
 export class BusinessHourReservationEntity {
@@ -38,8 +39,23 @@ export class BusinessHourReservationEntity {
   eventType: ReservationEventType;
 
   @Column()
+  count: number;
+
+  @Column()
   comment: string;
 
   @Column({ default: false })
   locked: boolean;
+
+  public fillFromDto(dto: BusinessHourReservationDto) {
+    this.id = dto.id;
+    this.ownerId = dto.ownerId;
+    this.organizationId = dto.organizationId;
+    this.businessHourId = dto.businessHourId;
+    this.facilityType = dto.facilityType;
+    this.eventType = dto.eventType;
+    this.count = dto.count;
+    this.comment = dto.comment;
+    this.locked = dto.locked;
+  }
 }

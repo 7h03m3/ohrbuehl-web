@@ -8,4 +8,13 @@ export class BusinessHoursReservationService {
   constructor(
     @InjectRepository(BusinessHourReservationEntity) private repository: Repository<BusinessHourReservationEntity>,
   ) {}
+
+  public async add(entity: BusinessHourReservationEntity): Promise<BusinessHourReservationEntity> {
+    await this.repository.save(entity);
+    return entity;
+  }
+
+  public async deleteById(id: number): Promise<any> {
+    return await this.repository.delete(id);
+  }
 }

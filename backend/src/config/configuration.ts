@@ -22,7 +22,7 @@ export default () => ({
     distance25mBlockElectronicCount: 2,
     distance50mManuelCount: 8,
     distance50mElectronicCount: 12,
-    distance100m: 6,
-    distance300m: 64,
+    distance100mCount: 6,
+    distance300mCount: 64,
   },
 });

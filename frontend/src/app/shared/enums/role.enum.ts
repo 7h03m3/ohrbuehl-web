@@ -6,4 +6,5 @@ export enum Role {
   EventOrganizer = 'eventOrganizer',
   Cashier = 'cashier',
   Admin = 'admin',
+  SingleShooter = 'singleShooter',
 }

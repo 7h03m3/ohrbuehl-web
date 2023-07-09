@@ -1,21 +1,2 @@
-.admin-sidenav-container {
-  width: auto;
-  height: 93%;
-  background: white;
-}
 
-.admin-sidenav {
-  height: auto;
-  width: 15rem;
-  background: white;
-}
-
-.admin-content {
-  flex: auto;
-  height: auto;
-  width: auto;
-  margin: 10px;
-  display: flex;
-  justify-content: center;
-}
 

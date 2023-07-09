@@ -44,6 +44,15 @@ export class BusinessHourEntity {
   @OneToMany((type) => BusinessHourReservationEntity, (reservation) => reservation.businessHour)
   reservations: BusinessHourReservationEntity[];
 
+  constructor() {
+    this.distance25mBlockManualOccupancy = new BusinessHourOccupancyEntity();
+    this.distance25mBlockElectronicOccupancy = new BusinessHourOccupancyEntity();
+    this.distance50mManualOccupancy = new BusinessHourOccupancyEntity();
+    this.distance50mElectronicOccupancy = new BusinessHourOccupancyEntity();
+    this.distance100mOccupancy = new BusinessHourOccupancyEntity();
+    this.distance300mOccupancy = new BusinessHourOccupancyEntity();
+  }
+
   public fillFromDto(dto: BusinessHoursCreateDto) {
     this.id = dto.id;
     this.start = dto.start;

@@ -1,0 +1,87 @@
+<table [dataSource]="dataSource" mat-table matSort>
+  <ng-container matColumnDef="date">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Datum</th>
+    <td *matCellDef="let element" mat-cell>{{getDateString(element)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="25m_m">
+    <th *matHeaderCellDef mat-header-cell>25m (m)</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance25mBlockManualOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="25m_e">
+    <th *matHeaderCellDef mat-header-cell>25m (e)</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance25mBlockElectronicOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="50m_m">
+    <th *matHeaderCellDef mat-header-cell>50m (m)</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance50mManualOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="50m_e">
+    <th *matHeaderCellDef mat-header-cell>50m (e)</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance50mElectronicOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="100m">
+    <th *matHeaderCellDef mat-header-cell>100m</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance100mOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="300m">
+    <th *matHeaderCellDef mat-header-cell>300m</th>
+    <td *matCellDef="let element" class="cell-center"
+        mat-cell>{{getOccupancyString(element.distance300mOccupancy)}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="public">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="public">Öffentlich</th>
+    <td *matCellDef="let element" class="cell-center" mat-cell>{{element.public}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="reservation">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header="enableReservation">Reservation</th>
+    <td *matCellDef="let element" class="cell-center" mat-cell>{{element.enableReservation}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="comment">
+    <th *matHeaderCellDef mat-header-cell>Kommentar</th>
+    <td *matCellDef="let element" mat-cell>{{element.comment}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell>
+      <span>
+        Aktion
+      </span>
+      <span class="header-span">
+        <mat-button-toggle-group #generalGroup="matButtonToggleGroup">
+          <mat-button-toggle (click)="onAdd()" matTooltip="Erstellen">
+            <mat-icon color="accent" inline="true">add</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </span>
+    </th>
+    <td *matCellDef="let element" class="align-right" mat-cell>
+      <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+        <mat-button-toggle (click)="onEdit(element)" matTooltip="Editieren">
+          <mat-icon class="list-action-icon" color="primary" inline="true">edit</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle (click)="onDelete(element)" matTooltip="Löschen">
+          <mat-icon class="list-action-icon" color="primary" inline="true">delete</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+               aria-label="Select page of events"></mat-paginator>

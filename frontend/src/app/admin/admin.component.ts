@@ -1,16 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SidenavService } from '../shared/services/sidenav.service';
 
 @Component({
   selector: 'app-components',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
+  constructor(private sidenavService: SidenavService) {}
 
-  constructor() {
+  public ngOnInit() {
+    this.setupSidenav();
   }
 
-  ngOnInit(): void {
+  public ngOnDestroy() {
+    this.sidenavService.reset();
   }
 
+  private setupSidenav() {
+    this.sidenavService.addElement('Benutzer', 'person', './user-list');
+    this.sidenavService.addElement('Benachrichtigungen', 'notifications', './notifier-list');
+    this.sidenavService.addElement('Organisationen', 'corporate_fare', './organization-list');
+    this.sidenavService.addElement('Preise', 'money', './price-list');
+    this.sidenavService.addElement('Anlasskategorie', 'festival', './event-category-list');
+    this.sidenavService.addElement('Schichtenkategorie', 'category', './event-shift-category-list');
+    this.sidenavService.addElement('Öffnungszeiten', 'av_timer', './business-hour-list');
+  }
 }

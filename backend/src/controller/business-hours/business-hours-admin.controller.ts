@@ -37,6 +37,13 @@ export class BusinessHoursAdminController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get(':id')
+  public async getById(@Param('id') id: number): Promise<BusinessHourEntity> {
+    return this.businessHoursService.getById(id);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   public async create(@Body() dto: BusinessHoursCreateDto): Promise<BusinessHourEntity> {
     const entity = new BusinessHourEntity();
@@ -59,6 +66,7 @@ export class BusinessHoursAdminController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   public async delete(@Param('id') id: number): Promise<any> {
+    await this.reservationService.deleteByBusinessHours(id);
     return this.businessHoursService.deleteById(id);
   }
 
@@ -66,7 +74,7 @@ export class BusinessHoursAdminController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post('reservation/')
   public async addReservation(@Body() dto: BusinessHourReservationDto): Promise<BusinessHourReservationEntity> {
-    const businessHourEntity = await this.getById(dto.businessHourId);
+    const businessHourEntity = await this.getBusinessHourById(dto.businessHourId);
     const userEntity = await this.getUserById(dto.ownerId);
     const organizationEntity = dto.organizationId != 0 ? await this.getOrganizationById(dto.organizationId) : null;
 
@@ -86,7 +94,7 @@ export class BusinessHoursAdminController {
     return this.reservationService.deleteById(id);
   }
 
-  private async getById(id: number): Promise<BusinessHourEntity> {
+  private async getBusinessHourById(id: number): Promise<BusinessHourEntity> {
     const entity = await this.businessHoursService.getById(id);
     if (!entity) {
       const errorMessage = 'business hours with id ' + id.toString() + ' not found';

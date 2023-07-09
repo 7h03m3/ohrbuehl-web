@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { OrganizationMemberDto } from '../dtos/organization-member.dto';
 import { UserLocalData } from './user-local-data';
 import { NotificationSource } from '../enums/notification-source.enum';
+import { BusinessHourOccupancyDto } from '../dtos/business-hour-occupancy.dto';
+import { ReservationFacilityType } from '../enums/reservation-facility-type.enum';
+import { ReservationEventType } from '../enums/reservation-event-type.enum';
 
 @Injectable({ providedIn: 'root' })
 export class StringHelper {
@@ -112,6 +115,53 @@ export class StringHelper {
     });
 
     return returnString;
+  }
+
+  public static getOccupancyString(occupancy: BusinessHourOccupancyDto): string {
+    return occupancy.current + ' / ' + occupancy.max;
+  }
+
+  public static getOccupanciesString(
+    occupancy1: BusinessHourOccupancyDto,
+    occupancy2: BusinessHourOccupancyDto,
+  ): string {
+    const current = occupancy1.current + occupancy2.current;
+    const max = occupancy1.max + occupancy2.max;
+    return current + ' / ' + max;
+  }
+
+  public static getReservationFacilityTypeString(type: ReservationFacilityType): string {
+    switch (type) {
+      case ReservationFacilityType.Distance300m:
+        return '300m';
+      case ReservationFacilityType.Distance100m:
+        return '100m';
+      case ReservationFacilityType.Distance50mElectronic:
+        return '50m (elektronisch)';
+      case ReservationFacilityType.Distance50mManuel:
+        return '50m (manuell)';
+      case ReservationFacilityType.Distance25mBlockManuel:
+        return '25m-Block (manuell)';
+      case ReservationFacilityType.Distance25mBlockElectronic:
+        return '25m-Block (elektronisch)';
+    }
+  }
+
+  public static getEventFacilityTypeString(type: ReservationEventType): string {
+    switch (type) {
+      case ReservationEventType.BU:
+        return 'Bundesübung';
+      case ReservationEventType.FS:
+        return 'Feldschiessen';
+      case ReservationEventType.JS:
+        return 'Jungschützenkurs';
+      case ReservationEventType.FU:
+        return 'Freie Übung';
+      case ReservationEventType.Event:
+        return 'Anlass';
+      case ReservationEventType.Other:
+        return 'Anderes';
+    }
   }
 
   private static addLeadingZero(inputNumber: number): string {

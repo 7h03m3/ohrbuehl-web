@@ -2,12 +2,16 @@ table {
   width: 100%;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
 .cell-center {
   text-align: center;
   justify-content: center;
 }
 
-.mat-icon {
+.icon-action-bar {
   font-size: 2em;
 }
 

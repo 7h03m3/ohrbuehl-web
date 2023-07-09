@@ -14,6 +14,10 @@ export class BusinessHourAdminApi extends BaseApi {
     return this.http.get<BusinessHoursDto[]>(this.url);
   }
 
+  public getById(id: number): Observable<BusinessHoursDto> {
+    return this.http.get<BusinessHoursDto>(this.url + '/' + id);
+  }
+
   public create(createDto: BusinessHoursCreateDto): Observable<BusinessHoursDto> {
     return this.http.post<BusinessHoursDto>(this.url, createDto);
   }

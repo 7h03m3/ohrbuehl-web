@@ -1,0 +1,21 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.action-buttons {
+  margin-left: 0.5em;
+}
+
+.main-cards {
+  margin-top: 1em;
+}
+
+.text-inside-grid {
+  justify-content: flex-start !important;
+}
+
+.top-left {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}

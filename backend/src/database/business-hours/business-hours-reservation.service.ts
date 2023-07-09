@@ -17,4 +17,8 @@ export class BusinessHoursReservationService {
   public async deleteById(id: number): Promise<any> {
     return await this.repository.delete(id);
   }
+
+  public async deleteByBusinessHours(businessHourId: number): Promise<any> {
+    return await this.repository.delete({ businessHourId: businessHourId });
+  }
 }

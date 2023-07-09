@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Reservation {{data.reservation.id == 0 ? 'erstellen' : 'bearbeiten'}}</h1>
+
+<mat-dialog-content class="mat-typography">
+  <br>
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Scheibenart</mat-label>
+    <mat-select [(ngModel)]="data.reservation.facilityType" [disabled]="data.facilityTypeDisabled" required>
+      <mat-option *ngFor="let type of facilityTypes" [value]="type">
+        {{getFacilityTypeString(type)}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Kategorie</mat-label>
+    <mat-select [(ngModel)]="data.reservation.eventType" required>
+      <mat-option *ngFor="let type of eventTypes" [value]="type">
+        {{getEventTypeString(type)}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Anzahl</mat-label>
+    <input [(ngModel)]="data.reservation.count" matInput max="{{data.maxCount}}" min="1" required type="number">
+    <mat-hint align="end">Maximal 1 - {{data.maxCount}}</mat-hint>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Kommentar</mat-label>
+    <textarea [(ngModel)]="data.reservation.comment" matInput rows="3"></textarea>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-flat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isFormValid()" color="primary" mat-flat-button>Speichern</button>
+</mat-dialog-actions>

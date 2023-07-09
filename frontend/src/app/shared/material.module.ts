@@ -34,6 +34,7 @@ import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { InfoDialogComponent } from './components/info-dialog/info-dialog.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 const materialModules = [
   FormsModule,
@@ -50,6 +51,7 @@ const materialModules = [
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatGridListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
   MatPaginatorModule,

@@ -9,6 +9,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
 import { AdminBusinessHourEditDialogComponent } from '../admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-business-hour-list',
@@ -19,10 +20,8 @@ export class AdminBusinessHourListComponent {
   public dataSource = new MatTableDataSource<BusinessHoursDto>();
   public displayedColumns: string[] = [
     'date',
-    '25m_m',
-    '25m_e',
-    '50m_m',
-    '50m_e',
+    '25m',
+    '50m',
     '100m',
     '300m',
     'public',
@@ -34,7 +33,7 @@ export class AdminBusinessHourListComponent {
   @ViewChild(MatSort) sort: any = MatSort;
   private businessHourApi: BusinessHourAdminApi;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) {
+  constructor(private apiService: ApiService, private dialog: MatDialog, private router: Router) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
   }
 
@@ -52,21 +51,15 @@ export class AdminBusinessHourListComponent {
   }
 
   public getOccupancyString(occupancy: BusinessHourOccupancyDto): string {
-    return occupancy.current + ' / ' + occupancy.max;
+    return StringHelper.getOccupancyString(occupancy);
+  }
+
+  public getOccupanciesString(occupancy1: BusinessHourOccupancyDto, occupancy2: BusinessHourOccupancyDto): string {
+    return StringHelper.getOccupanciesString(occupancy1, occupancy2);
   }
 
   public onAdd() {
-    const newElement = new BusinessHoursDto();
-    this.openEditDialog(newElement);
-  }
-
-  public onEdit(element: BusinessHoursDto) {
-    this.openEditDialog(element);
-  }
-
-  public onDelete(element: BusinessHoursDto) {}
-
-  private openEditDialog(element: BusinessHoursDto) {
+    const element = new BusinessHoursDto();
     const dialogRef = this.dialog.open(AdminBusinessHourEditDialogComponent, {
       data: {
         businessHours: element,
@@ -88,6 +81,10 @@ export class AdminBusinessHourListComponent {
         this.fetch();
       }
     });
+  }
+
+  public onView(element: BusinessHoursDto) {
+    this.router.navigate(['/admin/business-hour', { id: element.id }]);
   }
 
   private fetch() {

@@ -27,8 +27,8 @@ export class BusinessHourReservationDto {
     this.businessHour = new BusinessHoursDto();
     this.businessHourId = 0;
     this.facilityType = ReservationFacilityType.Distance25mBlockManuel;
-    this.eventType = ReservationEventType.Other;
-    this.count = 0;
+    this.eventType = ReservationEventType.FU;
+    this.count = 1;
     this.comment = '';
     this.locked = true;
   }

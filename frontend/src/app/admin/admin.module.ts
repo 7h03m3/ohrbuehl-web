@@ -22,6 +22,9 @@ import { AdminNotifierEditDialogComponent } from './components/admin-notifier-ed
 import { AdminBusinessHourListComponent } from './components/admin-business-hour-list/admin-business-hour-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { AdminBusinessHourEditDialogComponent } from './components/admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
+import { AdminBusinessHourViewComponent } from './components/admin-business-hour-view/admin-business-hour-view.component';
+import { AdminBusinessHourReservationListComponent } from './components/admin-business-hour-view/components/admin-business-hour-reservation-list/admin-business-hour-reservation-list.component';
+import { AdminBusinessHourReservationEditDialogComponent } from './components/admin-business-hour-reservation-edit-dialog/admin-business-hour-reservation-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,9 @@ import { AdminBusinessHourEditDialogComponent } from './components/admin-busines
     AdminNotifierEditDialogComponent,
     AdminBusinessHourListComponent,
     AdminBusinessHourEditDialogComponent,
+    AdminBusinessHourViewComponent,
+    AdminBusinessHourReservationListComponent,
+    AdminBusinessHourReservationEditDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, SharedModule, AdminRoutingModule],
 })

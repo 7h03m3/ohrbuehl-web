@@ -14,6 +14,7 @@ import { AdminEventShiftCategoryListComponent } from './components/admin-event-s
 import { AdminEventShiftCategoryEditComponent } from './components/admin-event-shift-category-edit/admin-event-shift-category-edit.component';
 import { AdminNotifierListComponent } from './components/admin-notifier-list/admin-notifier-list.component';
 import { AdminBusinessHourListComponent } from './components/admin-business-hour-list/admin-business-hour-list.component';
+import { AdminBusinessHourViewComponent } from './components/admin-business-hour-view/admin-business-hour-view.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,10 @@ const routes: Routes = [
       {
         path: 'business-hour-list',
         component: AdminBusinessHourListComponent,
+      },
+      {
+        path: 'business-hour',
+        component: AdminBusinessHourViewComponent,
       },
     ],
   },

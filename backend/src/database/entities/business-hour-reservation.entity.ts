@@ -50,7 +50,9 @@ export class BusinessHourReservationEntity {
   public fillFromDto(dto: BusinessHourReservationDto) {
     this.id = dto.id;
     this.ownerId = dto.ownerId;
-    this.organizationId = dto.organizationId;
+    if (dto.organizationId != 0) {
+      this.organizationId = dto.organizationId;
+    }
     this.businessHourId = dto.businessHourId;
     this.facilityType = dto.facilityType;
     this.eventType = dto.eventType;

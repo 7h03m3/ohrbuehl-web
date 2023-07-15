@@ -34,7 +34,15 @@ export class BusinessHourAdminApi extends BaseApi {
     return this.http.post<BusinessHourReservationDto>(this.url + '/reservation', dto);
   }
 
+  public updateReservation(dto: BusinessHourReservationDto): Observable<BusinessHourReservationDto> {
+    return this.http.put<BusinessHourReservationDto>(this.url + '/reservation', dto);
+  }
+
   public deleteReservation(id: number): Observable<any> {
     return this.http.delete(this.url + '/reservation/' + id);
+  }
+
+  public lockReservation(dto: BusinessHourReservationDto): Observable<BusinessHourReservationDto> {
+    return this.http.put<BusinessHourReservationDto>(this.url + '/reservation/lock/', dto);
   }
 }

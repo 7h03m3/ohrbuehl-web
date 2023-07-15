@@ -78,7 +78,8 @@ export class BusinessHoursAdminController {
     const userEntity = await this.getUserById(dto.ownerId);
     const organizationEntity = dto.organizationId != 0 ? await this.getOrganizationById(dto.organizationId) : null;
 
-    await this.incrementOccupancy(dto.facilityType, dto.count, businessHourEntity);
+    this.incrementOccupancy(dto.facilityType, dto.count, businessHourEntity);
+    await this.businessHoursService.update(businessHourEntity);
 
     const entity = new BusinessHourReservationEntity();
     entity.fillFromDto(dto);
@@ -89,9 +90,38 @@ export class BusinessHoursAdminController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Put('reservation/')
+  public async updateReservation(@Body() dto: BusinessHourReservationDto): Promise<BusinessHourReservationEntity> {
+    const entity = await this.getReservationById(dto.id);
+
+    const businessHourEntity = await this.getBusinessHourById(entity.businessHourId);
+    this.decrementOccupancy(entity.facilityType, entity.count, businessHourEntity);
+    entity.fillFromDto(dto);
+    this.incrementOccupancy(entity.facilityType, entity.count, businessHourEntity);
+    await this.businessHoursService.update(businessHourEntity);
+
+    return this.reservationService.update(entity);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete('reservation/:id')
   public async deleteReservation(@Param('id') id: number): Promise<any> {
+    const entity = await this.getReservationById(id);
+    const businessHourEntity = await this.getBusinessHourById(entity.businessHourId);
+    this.decrementOccupancy(entity.facilityType, entity.count, businessHourEntity);
+    await this.businessHoursService.update(businessHourEntity);
+
     return this.reservationService.deleteById(id);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Put('reservation/lock/')
+  public async lockReservation(@Body() dto: BusinessHourReservationDto): Promise<BusinessHourReservationEntity> {
+    const entity = await this.getReservationById(dto.id);
+    entity.locked = dto.locked;
+    return this.reservationService.update(entity);
   }
 
   private async getBusinessHourById(id: number): Promise<BusinessHourEntity> {
@@ -114,6 +144,17 @@ export class BusinessHoursAdminController {
     return entity;
   }
 
+  private async getReservationById(id: number): Promise<BusinessHourReservationEntity> {
+    const entity = await this.reservationService.getById(id);
+
+    if (!entity) {
+      const errorMessage = 'business hours reservation with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    return entity;
+  }
+
   private async getOrganizationById(id: number): Promise<OrganizationEntity> {
     const entity = await this.organizationService.findOne(id);
     if (!entity) {
@@ -124,7 +165,7 @@ export class BusinessHoursAdminController {
     return entity;
   }
 
-  private async incrementOccupancy(type: ReservationFacilityType, count: number, businessHours: BusinessHourEntity) {
+  private incrementOccupancy(type: ReservationFacilityType, count: number, businessHours: BusinessHourEntity) {
     const occupancy = this.getOccupancy(type, businessHours);
     occupancy.current += count;
 
@@ -138,8 +179,14 @@ export class BusinessHoursAdminController {
         businessHours.id;
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
+  }
 
-    await this.businessHoursService.update(businessHours);
+  private decrementOccupancy(type: ReservationFacilityType, count: number, businessHours: BusinessHourEntity) {
+    const occupancy = this.getOccupancy(type, businessHours);
+    occupancy.current -= count;
+    if (occupancy.current < 0) {
+      occupancy.current = 0;
+    }
   }
 
   private getOccupancy(type: ReservationFacilityType, businessHours: BusinessHourEntity): BusinessHourOccupancyEntity {

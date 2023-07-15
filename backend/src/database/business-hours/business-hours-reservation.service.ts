@@ -9,7 +9,16 @@ export class BusinessHoursReservationService {
     @InjectRepository(BusinessHourReservationEntity) private repository: Repository<BusinessHourReservationEntity>,
   ) {}
 
+  public async getById(id: number): Promise<BusinessHourReservationEntity> {
+    return this.repository.findOne({ where: { id: id } });
+  }
+
   public async add(entity: BusinessHourReservationEntity): Promise<BusinessHourReservationEntity> {
+    await this.repository.save(entity);
+    return entity;
+  }
+
+  public async update(entity: BusinessHourReservationEntity): Promise<BusinessHourReservationEntity> {
     await this.repository.save(entity);
     return entity;
   }

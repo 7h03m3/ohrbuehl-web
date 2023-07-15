@@ -12,7 +12,33 @@ export class BusinessHoursService {
   }
 
   public getById(id: number): Promise<BusinessHourEntity> {
-    return this.repository.findOne({ where: { id: id } });
+    return this.repository.findOne({
+      where: { id: id },
+      relations: {
+        reservations: {
+          owner: true,
+          organization: true,
+        },
+      },
+      select: {
+        reservations: {
+          id: true,
+          locked: true,
+          count: true,
+          ownerId: true,
+          comment: true,
+          eventType: true,
+          facilityType: true,
+          organizationId: true,
+          owner: {
+            firstName: true,
+            lastName: true,
+            userName: true,
+            id: true,
+          },
+        },
+      },
+    });
   }
 
   public async create(entity: BusinessHourEntity): Promise<BusinessHourEntity> {

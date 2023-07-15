@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminBusinessHourEditDialogComponent } from '../admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { OrganizationApi } from '../../../api/classes/organization-api';
 
 export interface TableData {
   text: string;
@@ -25,7 +27,9 @@ export class AdminBusinessHourViewComponent {
   public dataSource: MatTableDataSource<TableData> = new MatTableDataSource<TableData>();
   public displayedColumns: string[] = ['text', 'count'];
   public deleteDisabled = true;
+  public organizationList = new Array<OrganizationDto>();
   private businessHourApi: BusinessHourAdminApi;
+  private organizationApi: OrganizationApi;
 
   constructor(
     private apiService: ApiService,
@@ -34,6 +38,7 @@ export class AdminBusinessHourViewComponent {
     private router: Router,
   ) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
+    this.organizationApi = apiService.getOrganization();
   }
 
   public ngOnInit() {
@@ -98,6 +103,19 @@ export class AdminBusinessHourViewComponent {
   }
 
   private fetch(id: number) {
+    this.organizationApi.getAll().subscribe((response) => {
+      this.organizationList = new Array<OrganizationDto>();
+
+      const dummy = new OrganizationDto();
+      dummy.id = 0;
+      dummy.abbreviation = '-';
+      this.organizationList.push(dummy);
+
+      response.forEach((current) => {
+        this.organizationList.push(current);
+      });
+    });
+
     this.businessHourApi.getById(id).subscribe((response) => {
       this.businessHour = response;
       let tableData = new Array<TableData>();

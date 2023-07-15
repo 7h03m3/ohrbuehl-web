@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BusinessHourEntity } from './business-hour.entity';
 import { ReservationFacilityType } from '../../shared/enums/reservation-facility-type.enum';
 import { ReservationEventType } from '../../shared/enums/reservation-event-type.enum';
@@ -11,7 +11,7 @@ export class BusinessHourReservationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany((type) => UserEntity, (user) => user.reservations)
+  @ManyToOne((type) => UserEntity, (user) => user.reservations)
   @JoinColumn({ name: 'ownerId' })
   owner: UserEntity;
 
@@ -52,6 +52,8 @@ export class BusinessHourReservationEntity {
     this.ownerId = dto.ownerId;
     if (dto.organizationId != 0) {
       this.organizationId = dto.organizationId;
+    } else {
+      this.organizationId = null;
     }
     this.businessHourId = dto.businessHourId;
     this.facilityType = dto.facilityType;

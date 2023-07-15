@@ -31,34 +31,40 @@
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()"
                                           [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance25mBlockManualOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance25mBlockManuel"
-                                          title="25m (manuell)"></app-admin-business-hour-reservation-list>
+                                          title="25m - manuell"></app-admin-business-hour-reservation-list>
 
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()"
                                           [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance25mBlockElectronicOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance25mBlockElectronic"
-                                          title="25m (elektronisch)"></app-admin-business-hour-reservation-list>
+                                          title="25m - elektronisch"></app-admin-business-hour-reservation-list>
 
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()"
                                           [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance50mManualOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance50mManuel"
-                                          title="50m (manuell)"></app-admin-business-hour-reservation-list>
+                                          title="50m - manuell"></app-admin-business-hour-reservation-list>
 
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()"
                                           [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance50mElectronicOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance50mElectronic"
-                                          title="50m (elektronisch)"></app-admin-business-hour-reservation-list>
+                                          title="50m - elektronisch"></app-admin-business-hour-reservation-list>
 
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()" [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance100mOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance100m"
                                           title="100m"></app-admin-business-hour-reservation-list>
 
 <app-admin-business-hour-reservation-list (reservationChanged)="onReservationChanged()" [businessHour]="businessHour"
                                           [occupancy]="businessHour.distance300mOccupancy"
+                                          [organizationList]="organizationList"
                                           facilityType="Distance300m"
                                           title="300m"></app-admin-business-hour-reservation-list>
 

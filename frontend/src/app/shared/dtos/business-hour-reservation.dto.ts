@@ -30,6 +30,6 @@ export class BusinessHourReservationDto {
     this.eventType = ReservationEventType.FU;
     this.count = 1;
     this.comment = '';
-    this.locked = true;
+    this.locked = false;
   }
 }

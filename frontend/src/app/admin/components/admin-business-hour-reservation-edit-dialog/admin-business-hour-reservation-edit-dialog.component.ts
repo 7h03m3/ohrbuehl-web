@@ -4,11 +4,13 @@ import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-r
 import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ReservationEventType } from '../../../shared/enums/reservation-event-type.enum';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 
 export interface AdminBusinessHourReservationEditDialogData {
   reservation: BusinessHourReservationDto;
   facilityTypeDisabled: boolean;
   maxCount: number;
+  organizationList: OrganizationDto[];
 }
 
 @Component({

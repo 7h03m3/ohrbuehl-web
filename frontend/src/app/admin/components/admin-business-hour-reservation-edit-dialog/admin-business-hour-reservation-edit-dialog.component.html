@@ -21,6 +21,15 @@
   </mat-form-field>
   <br>
   <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Verein</mat-label>
+    <mat-select [(ngModel)]="data.reservation.organizationId" required>
+      <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
+        {{organization.abbreviation}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="outline" class="select-width">
     <mat-label>Anzahl</mat-label>
     <input [(ngModel)]="data.reservation.count" matInput max="{{data.maxCount}}" min="1" required type="number">
     <mat-hint align="end">Maximal 1 - {{data.maxCount}}</mat-hint>

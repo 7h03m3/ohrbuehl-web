@@ -7,16 +7,16 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
-import { AdminBusinessHourEditDialogComponent } from '../admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
+import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edit-dialog/business-hour-admin-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-business-hour-list',
-  templateUrl: './admin-business-hour-list.component.html',
-  styleUrls: ['./admin-business-hour-list.component.css'],
+  selector: 'business-hour-admin-list',
+  templateUrl: './business-hour-admin-list.component.html',
+  styleUrls: ['./business-hour-admin-list.component.css'],
 })
-export class AdminBusinessHourListComponent {
+export class BusinessHourAdminListComponent {
   public dataSource = new MatTableDataSource<BusinessHoursDto>();
   public displayedColumns: string[] = [
     'date',
@@ -60,7 +60,7 @@ export class AdminBusinessHourListComponent {
 
   public onAdd() {
     const element = new BusinessHoursDto();
-    const dialogRef = this.dialog.open(AdminBusinessHourEditDialogComponent, {
+    const dialogRef = this.dialog.open(BusinessHourAdminEditDialogComponent, {
       data: {
         businessHours: element,
       },
@@ -83,7 +83,8 @@ export class AdminBusinessHourListComponent {
     });
   }
 
-  public onView(element: BusinessHoursDto) {
+  public async onView(element: BusinessHoursDto) {
+    await new Promise((f) => setTimeout(f, 250));
     this.router.navigate(['/admin/business-hour', { id: element.id }]);
   }
 

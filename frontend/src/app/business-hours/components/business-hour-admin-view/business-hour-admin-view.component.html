@@ -1,0 +1,76 @@
+<mat-card class="main-cards" xmlns="http://www.w3.org/1999/html">
+  <mat-card-header>
+    <mat-card-title>{{getDateString()}}</mat-card-title>
+    <mat-card-subtitle *ngIf="businessHour.comment.length != 0">{{businessHour.comment}}</mat-card-subtitle>
+    <span class="spacer"></span>
+    <button (click)="onEdit()" class="action-buttons" color="accent" mat-stroked-button>
+      <mat-icon>edit</mat-icon>
+      Bearbeiten
+    </button>
+    <button (click)="onDelete()" [disabled]="deleteDisabled" class="action-buttons" color="accent" mat-stroked-button>
+      <mat-icon>delete</mat-icon>
+      Löschen
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <button (click)="onBack()" class="action-buttons" color="accent" mat-button>
+      <mat-icon>arrow_back</mat-icon>
+      Zurück
+    </button>
+    <mat-grid-list cols="2" rowHeight="4em">
+      <mat-grid-tile *ngFor="let element of dataSource.data">
+        <div class="top-left">
+          <table>
+            <tr>
+              <td>
+                <i>{{element.text}}</i>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>
+                  {{element.count}}
+                </b>
+              </td>
+            <tr>
+          </table>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()"
+                                      [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance25mBlockManualOccupancy"
+                                      facilityType="Distance25mBlockManuel"
+                                      title="25m - manuell"></business-hour-admin-reservation-list>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()"
+                                      [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance25mBlockElectronicOccupancy"
+                                      facilityType="Distance25mBlockElectronic"
+                                      title="25m - elektronisch"></business-hour-admin-reservation-list>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()"
+                                      [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance50mManualOccupancy"
+                                      facilityType="Distance50mManuel"
+                                      title="50m - manuell"></business-hour-admin-reservation-list>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()"
+                                      [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance50mElectronicOccupancy"
+                                      facilityType="Distance50mElectronic"
+                                      title="50m - elektronisch"></business-hour-admin-reservation-list>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()" [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance100mOccupancy"
+                                      facilityType="Distance100m"
+                                      title="100m"></business-hour-admin-reservation-list>
+
+<business-hour-admin-reservation-list (reservationChanged)="onReservationChanged()" [businessHour]="businessHour"
+                                      [occupancy]="businessHour.distance300mOccupancy"
+                                      facilityType="Distance300m"
+                                      title="300m"></business-hour-admin-reservation-list>
+

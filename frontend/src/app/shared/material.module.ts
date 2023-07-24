@@ -35,6 +35,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { InfoDialogComponent } from './components/info-dialog/info-dialog.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 const materialModules = [
   FormsModule,
@@ -73,6 +74,7 @@ const materialModules = [
   MatDatepickerModule,
   MatRadioModule,
   MatBottomSheetModule,
+  MatMomentDateModule,
 ];
 
 @NgModule({

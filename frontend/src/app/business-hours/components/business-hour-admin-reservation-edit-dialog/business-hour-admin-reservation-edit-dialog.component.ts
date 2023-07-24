@@ -6,7 +6,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { ReservationEventType } from '../../../shared/enums/reservation-event-type.enum';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 
-export interface AdminBusinessHourReservationEditDialogData {
+export interface BusinessHourAdminReservationEditDialogData {
   reservation: BusinessHourReservationDto;
   facilityTypeDisabled: boolean;
   maxCount: number;
@@ -14,17 +14,17 @@ export interface AdminBusinessHourReservationEditDialogData {
 }
 
 @Component({
-  selector: 'app-admin-business-hour-reservation-edit-dialog',
-  templateUrl: './admin-business-hour-reservation-edit-dialog.component.html',
-  styleUrls: ['./admin-business-hour-reservation-edit-dialog.component.css'],
+  selector: 'business-hour-admin-reservation-edit-dialog',
+  templateUrl: './business-hour-admin-reservation-edit-dialog.component.html',
+  styleUrls: ['./business-hour-admin-reservation-edit-dialog.component.css'],
 })
-export class AdminBusinessHourReservationEditDialogComponent {
+export class BusinessHourAdminReservationEditDialogComponent {
   public facilityTypes = Object.keys(ReservationFacilityType);
   public eventTypes = Object.keys(ReservationEventType);
 
   constructor(
-    public dialogRef: MatDialogRef<AdminBusinessHourReservationEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AdminBusinessHourReservationEditDialogData,
+    public dialogRef: MatDialogRef<BusinessHourAdminReservationEditDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: BusinessHourAdminReservationEditDialogData,
   ) {}
 
   public ngOnInit() {}

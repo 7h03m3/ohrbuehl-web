@@ -15,6 +15,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-intl';
+import { UrlService } from './shared/services/url.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, UserPasswordChangeComponent],
@@ -39,4 +40,6 @@ import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-in
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private urlService: UrlService) {}
+}

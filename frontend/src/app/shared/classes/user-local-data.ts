@@ -6,6 +6,7 @@ import { NotificationSource } from '../enums/notification-source.enum';
 })
 export class UserLocalData {
   private eventCategoryKey = 'eventCategoryId';
+  private currentDateKey = 'currentDate';
 
   constructor() {}
 
@@ -32,6 +33,22 @@ export class UserLocalData {
 
   public setEventCategory(eventCategoryId: number) {
     localStorage.setItem(this.eventCategoryKey, eventCategoryId.toString());
+  }
+
+  public setDate(date: Date) {
+    sessionStorage.setItem(this.currentDateKey, date.getTime().toString());
+  }
+
+  public getDate(): Date {
+    const time = sessionStorage.getItem(this.currentDateKey);
+
+    if (time != null) {
+      return new Date(parseInt(time));
+    }
+
+    const now = new Date(Date.now());
+    this.setDate(now);
+    return now;
   }
 
   public convertRoleText(role: string) {

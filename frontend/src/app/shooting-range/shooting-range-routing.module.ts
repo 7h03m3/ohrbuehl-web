@@ -8,6 +8,8 @@ import { ShootingRangeAccountingListComponent } from './components/shooting-rang
 import { ShootingRangeAccountingViewComponent } from './components/shooting-range-accounting-view/shooting-range-accounting-view.component';
 import { ShootingRangeAccountingEditComponent } from './components/shooting-range-accounting-edit/shooting-range-accounting-edit.component';
 import { ShootingRangeComponent } from './shooting-range.component';
+import { BusinessHourAdminDailyViewComponent } from '../business-hours/components/business-hour-admin-daily-view/business-hour-admin-daily-view.component';
+import { BusinessHourAdminViewComponent } from '../business-hours/components/business-hour-admin-view/business-hour-admin-view.component';
 
 const routes: Routes = [
   {
@@ -16,8 +18,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'daily-accounting',
+        redirectTo: 'reservations',
         pathMatch: 'full',
+      },
+      {
+        path: 'reservations',
+        component: BusinessHourAdminDailyViewComponent,
+      },
+      {
+        path: 'reservation-edit',
+        component: BusinessHourAdminViewComponent,
       },
       {
         path: 'invoice-list',

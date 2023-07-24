@@ -6,7 +6,7 @@ import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
 import { MatTableDataSource } from '@angular/material/table';
-import { AdminBusinessHourEditDialogComponent } from '../admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
+import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edit-dialog/business-hour-admin-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
@@ -18,11 +18,11 @@ export interface TableData {
 }
 
 @Component({
-  selector: 'app-admin-business-hour-view',
-  templateUrl: './admin-business-hour-view.component.html',
-  styleUrls: ['./admin-business-hour-view.component.css'],
+  selector: 'business-hour-admin-view',
+  templateUrl: './business-hour-admin-view.component.html',
+  styleUrls: ['./business-hour-admin-view.component.css'],
 })
-export class AdminBusinessHourViewComponent {
+export class BusinessHourAdminViewComponent {
   public businessHour = new BusinessHoursDto();
   public dataSource: MatTableDataSource<TableData> = new MatTableDataSource<TableData>();
   public displayedColumns: string[] = ['text', 'count'];
@@ -64,7 +64,7 @@ export class AdminBusinessHourViewComponent {
   }
 
   public onEdit() {
-    const dialogRef = this.dialog.open(AdminBusinessHourEditDialogComponent, {
+    const dialogRef = this.dialog.open(BusinessHourAdminEditDialogComponent, {
       data: {
         businessHours: this.businessHour,
       },
@@ -118,7 +118,7 @@ export class AdminBusinessHourViewComponent {
 
     this.businessHourApi.getById(id).subscribe((response) => {
       this.businessHour = response;
-      let tableData = new Array<TableData>();
+      const tableData = new Array<TableData>();
       tableData.push({
         text: '25m (manuell)',
         count: this.getOccupancyString(this.businessHour.distance25mBlockManualOccupancy),

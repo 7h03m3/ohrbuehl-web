@@ -1,14 +1,66 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { BusinessHourEntity } from '../entities/business-hour.entity';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class BusinessHoursService {
   constructor(@InjectRepository(BusinessHourEntity) private repository: Repository<BusinessHourEntity>) {}
 
-  public getAll(): Promise<BusinessHourEntity[]> {
-    return this.repository.find();
+  public getAllOfYear(year: number): Promise<BusinessHourEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.repository.find({
+      where: {
+        start: Between(timeStart, timeEnd),
+      },
+      order: {
+        start: 'DESC',
+      },
+    });
+  }
+
+  public getAllOfDay(time: number): Promise<BusinessHourEntity[]> {
+    const timeStart = DateHelper.getDayStart(time).getTime();
+    const timeEnd = DateHelper.getDayEnd(time).getTime();
+
+    return this.repository.find({
+      where: {
+        start: Between(timeStart, timeEnd),
+      },
+      order: {
+        start: 'DESC',
+        reservations: {
+          facilityType: 'ASC',
+        },
+      },
+      relations: {
+        reservations: {
+          owner: true,
+          organization: true,
+        },
+      },
+      select: {
+        reservations: {
+          id: true,
+          locked: true,
+          count: true,
+          ownerId: true,
+          comment: true,
+          eventType: true,
+          facilityType: true,
+          organizationId: true,
+          owner: {
+            firstName: true,
+            lastName: true,
+            userName: true,
+            id: true,
+          },
+        },
+      },
+    });
   }
 
   public getById(id: number): Promise<BusinessHourEntity> {

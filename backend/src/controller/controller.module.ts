@@ -35,6 +35,7 @@ import { BusinessHoursAdminController } from './business-hours/business-hours-ad
 import { BusinessHoursModule } from '../database/business-hours/business-hours.module';
 import { ConfigModule } from '@nestjs/config';
 import { BusinessHoursConfigService } from './business-hours/helpers/business-hours-config.service';
+import { BusinessHoursHelperService } from './business-hours/helpers/business-hours-helper.service';
 
 @Module({
   imports: [
@@ -57,7 +58,7 @@ import { BusinessHoursConfigService } from './business-hours/helpers/business-ho
     BusinessHoursModule,
     ConfigModule,
   ],
-  providers: [BusinessHoursConfigService],
+  providers: [BusinessHoursConfigService, BusinessHoursHelperService],
   controllers: [
     UsersController,
     AuthController,

@@ -73,6 +73,44 @@ export class DateHelper {
     return hours + '_' + minutes;
   }
 
+  public static getYearStart(year: number): Date {
+    const date = new Date();
+    date.setFullYear(year, 0, 1);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    return date;
+  }
+
+  public static getYearEnd(year: number): Date {
+    const date = new Date();
+    date.setFullYear(year, 11, 31);
+    date.setHours(23);
+    date.setMinutes(59);
+    date.setSeconds(59);
+
+    return date;
+  }
+
+  public static getDayStart(time: number): Date {
+    const date = new Date(time);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    return date;
+  }
+
+  public static getDayEnd(time: number): Date {
+    const date = new Date(time);
+    date.setHours(23);
+    date.setMinutes(59);
+    date.setSeconds(59);
+
+    return date;
+  }
+
   private static addLeadingZero(inputNumber: number): string {
     let input = inputNumber.toString();
     if (input.length < 2) {

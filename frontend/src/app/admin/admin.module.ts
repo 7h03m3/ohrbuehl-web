@@ -19,12 +19,8 @@ import { AdminEventShiftCategoryListComponent } from './components/admin-event-s
 import { AdminEventShiftCategoryEditComponent } from './components/admin-event-shift-category-edit/admin-event-shift-category-edit.component';
 import { AdminNotifierListComponent } from './components/admin-notifier-list/admin-notifier-list.component';
 import { AdminNotifierEditDialogComponent } from './components/admin-notifier-edit-dialog/admin-notifier-edit-dialog.component';
-import { AdminBusinessHourListComponent } from './components/admin-business-hour-list/admin-business-hour-list.component';
 import { SharedModule } from '../shared/shared.module';
-import { AdminBusinessHourEditDialogComponent } from './components/admin-business-hour-edit-dialog/admin-business-hour-edit-dialog.component';
-import { AdminBusinessHourViewComponent } from './components/admin-business-hour-view/admin-business-hour-view.component';
-import { AdminBusinessHourReservationListComponent } from './components/admin-business-hour-view/components/admin-business-hour-reservation-list/admin-business-hour-reservation-list.component';
-import { AdminBusinessHourReservationEditDialogComponent } from './components/admin-business-hour-reservation-edit-dialog/admin-business-hour-reservation-edit-dialog.component';
+import { BusinessHoursModule } from '../business-hours/business-hours.module';
 
 @NgModule({
   declarations: [
@@ -44,12 +40,7 @@ import { AdminBusinessHourReservationEditDialogComponent } from './components/ad
     AdminEventShiftCategoryEditComponent,
     AdminNotifierListComponent,
     AdminNotifierEditDialogComponent,
-    AdminBusinessHourListComponent,
-    AdminBusinessHourEditDialogComponent,
-    AdminBusinessHourViewComponent,
-    AdminBusinessHourReservationListComponent,
-    AdminBusinessHourReservationEditDialogComponent,
   ],
-  imports: [CommonModule, MaterialModule, SharedModule, AdminRoutingModule],
+  imports: [CommonModule, MaterialModule, SharedModule, AdminRoutingModule, BusinessHoursModule],
 })
 export class AdminModule {}

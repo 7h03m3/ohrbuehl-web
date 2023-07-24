@@ -8,17 +8,17 @@ export interface AdminBusinessHourEditDialogData {
 }
 
 @Component({
-  selector: 'app-admin-business-hour-edit-dialog',
-  templateUrl: './admin-business-hour-edit-dialog.component.html',
-  styleUrls: ['./admin-business-hour-edit-dialog.component.css'],
+  selector: 'business-hour-admin-edit-dialog',
+  templateUrl: './business-hour-admin-edit-dialog.component.html',
+  styleUrls: ['./business-hour-admin-edit-dialog.component.css'],
 })
-export class AdminBusinessHourEditDialogComponent {
+export class BusinessHourAdminEditDialogComponent {
   public date = '';
   public startTime = '';
   public endTime = '';
 
   constructor(
-    public dialogRef: MatDialogRef<AdminBusinessHourEditDialogComponent>,
+    public dialogRef: MatDialogRef<BusinessHourAdminEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AdminBusinessHourEditDialogData,
   ) {}
 

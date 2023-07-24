@@ -1,29 +1,30 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { BusinessHourOccupancyDto } from '../../../../../shared/dtos/business-hour-occupancy.dto';
-import { StringHelper } from '../../../../../shared/classes/string-helper';
-import { BusinessHourReservationDto } from '../../../../../shared/dtos/business-hour-reservation.dto';
+import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
+import { StringHelper } from '../../../shared/classes/string-helper';
+import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { MatDialog } from '@angular/material/dialog';
-import { AdminBusinessHourReservationEditDialogComponent } from '../../../admin-business-hour-reservation-edit-dialog/admin-business-hour-reservation-edit-dialog.component';
-import { ReservationFacilityType } from '../../../../../shared/enums/reservation-facility-type.enum';
-import { ApiService } from '../../../../../api/api.service';
-import { BusinessHourAdminApi } from '../../../../../api/classes/business-hour-admin-api';
+import { BusinessHourAdminReservationEditDialogComponent } from '../business-hour-admin-reservation-edit-dialog/business-hour-admin-reservation-edit-dialog.component';
+import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
+import { ApiService } from '../../../api/api.service';
+import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
 import { catchError, EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BusinessHoursDto } from '../../../../../shared/dtos/business-hours.dto';
-import { AuthService } from '../../../../../auth/auth.service';
-import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
+import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
+import { AuthService } from '../../../auth/auth.service';
+import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 
 @Component({
-  selector: 'app-admin-business-hour-reservation-list',
-  templateUrl: './admin-business-hour-reservation-list.component.html',
-  styleUrls: ['./admin-business-hour-reservation-list.component.css'],
+  selector: 'business-hour-admin-reservation-list',
+  templateUrl: './business-hour-admin-reservation-list.component.html',
+  styleUrls: ['./business-hour-admin-reservation-list.component.css'],
 })
-export class AdminBusinessHourReservationListComponent implements OnChanges {
+export class BusinessHourAdminReservationListComponent implements OnChanges {
   @Input() title!: string;
   @Input() businessHour!: BusinessHoursDto;
   @Input() occupancy!: BusinessHourOccupancyDto;
   @Input() facilityType = ReservationFacilityType.Distance25mBlockManuel.toString();
   @Input() organizationList = new Array<OrganizationDto>();
+  @Input() showOwner = false;
   @Output() reservationChanged = new EventEmitter<boolean>();
 
   public reservations = new Array<BusinessHourReservationDto>();
@@ -109,7 +110,7 @@ export class AdminBusinessHourReservationListComponent implements OnChanges {
   }
 
   private openDialog(reservation: BusinessHourReservationDto, maxCount: number) {
-    const dialogRef = this.dialog.open(AdminBusinessHourReservationEditDialogComponent, {
+    const dialogRef = this.dialog.open(BusinessHourAdminReservationEditDialogComponent, {
       data: {
         reservation: reservation,
         facilityTypeDisabled: true,
@@ -158,6 +159,12 @@ export class AdminBusinessHourReservationListComponent implements OnChanges {
   }
 
   private fetchReservations() {
+    if (!this.showOwner) {
+      this.displayedColumns = this.displayedColumns.filter((current) => {
+        return current != 'owner';
+      });
+    }
+
     this.addDisabled = this.occupancy.current >= this.occupancy.max;
 
     const facilityType = this.facilityType as ReservationFacilityType;

@@ -137,17 +137,32 @@ export class StringHelper {
       case ReservationFacilityType.Distance100m:
         return '100m';
       case ReservationFacilityType.Distance50mElectronic:
-        return '50m (elektronisch)';
+        return '50m - elektronisch';
       case ReservationFacilityType.Distance50mManuel:
-        return '50m (manuell)';
+        return '50m - manuell';
       case ReservationFacilityType.Distance25mBlockManuel:
-        return '25m-Block (manuell)';
+        return '25m-Block - manuell';
       case ReservationFacilityType.Distance25mBlockElectronic:
-        return '25m-Block (elektronisch)';
+        return '25m-Block - elektronisch';
     }
   }
 
-  public static getEventFacilityTypeString(type: ReservationEventType): string {
+  public static getReservationFacilityTypeSimpleString(type: ReservationFacilityType): string {
+    switch (type) {
+      case ReservationFacilityType.Distance300m:
+        return '300m';
+      case ReservationFacilityType.Distance100m:
+        return '100m';
+      case ReservationFacilityType.Distance50mElectronic:
+      case ReservationFacilityType.Distance50mManuel:
+        return '50m';
+      case ReservationFacilityType.Distance25mBlockManuel:
+      case ReservationFacilityType.Distance25mBlockElectronic:
+        return '25m';
+    }
+  }
+
+  public static getEventTypeString(type: ReservationEventType): string {
     switch (type) {
       case ReservationEventType.BU:
         return 'Bundesübung';
@@ -157,6 +172,23 @@ export class StringHelper {
         return 'Jungschützenkurs';
       case ReservationEventType.FU:
         return 'Freie Übung';
+      case ReservationEventType.Event:
+        return 'Anlass';
+      case ReservationEventType.Other:
+        return 'Anderes';
+    }
+  }
+
+  public static getEventTypeSimpleString(type: ReservationEventType): string {
+    switch (type) {
+      case ReservationEventType.BU:
+        return 'BU';
+      case ReservationEventType.FS:
+        return 'FS';
+      case ReservationEventType.JS:
+        return 'JS';
+      case ReservationEventType.FU:
+        return 'FU';
       case ReservationEventType.Event:
         return 'Anlass';
       case ReservationEventType.Other:

@@ -1,0 +1,37 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-column-number {
+  width: 3em;
+}
+
+.mat-column-facilityType {
+  width: 5em;
+}
+
+.mat-column-count {
+  width: 10em;
+}
+
+.mat-column-eventType {
+  width: 20em;
+  white-space: nowrap;
+}
+
+.mat-column-organization {
+  width: 20em;
+  white-space: nowrap;
+}
+
+.table-row {
+  height: 2.5em;
+}
+
+.mat-mdc-card {
+  margin-bottom: 1em;
+}
+
+.date-picker-input {
+  visibility: hidden;
+}

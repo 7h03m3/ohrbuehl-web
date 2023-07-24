@@ -1,0 +1,50 @@
+<h1>Reservationen vom {{getDateString()}}
+  <mat-datepicker-toggle [for]="picker" matIconSuffix matTooltip="Datum ändern"></mat-datepicker-toggle>
+  <input (dateChange)="onDateChange($event)" [matDatepicker]="picker" class="date-picker-input" disabled="true"
+         disabled matInput name="date">
+  <mat-datepicker #picker disabled="false"></mat-datepicker>
+</h1>
+
+<h3 *ngIf="businessHourList.length == 0">Keine Reservationen vorhanden</h3>
+
+<mat-card *ngFor="let businessHour of businessHourList">
+  <mat-card-header>
+    <mat-card-title>{{getTimeString(businessHour)}}</mat-card-title>
+    <span class="spacer"></span>
+    <button (click)="onReservationEdit(businessHour)" color="accent" mat-stroked-button>
+      <mat-icon>edit</mat-icon>
+      Bearbeiten
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <table [dataSource]="businessHour.reservations" mat-table>
+      <ng-container matColumnDef="number">
+        <th *matHeaderCellDef mat-header-cell>Nr.</th>
+        <td *matCellDef="let element; let i = index" mat-cell>{{i + 1}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="facilityType">
+        <th *matHeaderCellDef mat-header-cell>Distanz</th>
+        <td *matCellDef="let element" mat-cell>{{getFacilityTypeString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="count">
+        <th *matHeaderCellDef mat-header-cell>Anzahl</th>
+        <td *matCellDef="let element" mat-cell>{{getCountString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="organization">
+        <th *matHeaderCellDef mat-header-cell>Verein</th>
+        <td *matCellDef="let element" mat-cell>{{getOrganizationString(element)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="eventType">
+        <th *matHeaderCellDef mat-header-cell>Typ</th>
+        <td *matCellDef="let element" mat-cell>{{getEventTypeString(element)}}</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" class="table-row" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" class="table-row" mat-row></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

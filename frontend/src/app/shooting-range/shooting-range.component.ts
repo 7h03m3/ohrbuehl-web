@@ -18,6 +18,7 @@ export class ShootingRangeComponent {
   }
 
   private setupSidenav() {
+    this.sidenavService.addElement('Reservationen', 'donut_large', './reservations');
     this.sidenavService.addElement('Tagesabrechnung', 'account_balance', './daily-accounting');
     this.sidenavService.addElement('Schusszahlen', 'list_alt', './accounting-list');
     this.sidenavService.addElement('Rechnungen', 'list', './invoice-list');

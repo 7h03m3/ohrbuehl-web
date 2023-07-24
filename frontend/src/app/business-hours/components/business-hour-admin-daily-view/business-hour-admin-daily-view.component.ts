@@ -8,6 +8,7 @@ import { ReservationFacilityType } from '../../../shared/enums/reservation-facil
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'app-business-hour-admin-daily-view',
@@ -19,6 +20,7 @@ export class BusinessHourAdminDailyViewComponent {
   public displayedColumns = ['number', 'facilityType', 'count', 'organization', 'eventType'];
   public date: Date;
   private businessHoursApi: BusinessHourAdminApi;
+  private dateList = new Array<Date>();
 
   constructor(private apiService: ApiService, private router: Router, private userService: UserLocalData) {
     this.businessHoursApi = apiService.getBusinessHoursAdmin();
@@ -26,8 +28,33 @@ export class BusinessHourAdminDailyViewComponent {
   }
 
   public ngOnInit() {
+    this.businessHoursApi.getAllDates().subscribe((response) => {
+      response.map((current) => {
+        this.dateList.push(new Date(+current));
+      });
+    });
     this.fetch();
   }
+
+  public dateFilter = (dateMoment: Moment | null): boolean => {
+    if (!dateMoment || !this.dateList) {
+      return false;
+    }
+
+    const date = new Date(dateMoment.valueOf());
+
+    for (const current of this.dateList) {
+      if (
+        current.getFullYear() == date.getFullYear() &&
+        current.getMonth() == date.getMonth() &&
+        current.getDate() == date.getDate()
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
 
   public onDateChange(event: MatDatepickerInputEvent<any>) {
     this.date = new Date(event.value._d);

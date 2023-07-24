@@ -15,6 +15,11 @@ export class BusinessHourAdminApi extends BaseApi {
     return this.http.get<BusinessHoursDto[]>(this.url + '/list/' + date.getFullYear());
   }
 
+  public getAllDates(): Observable<number[]> {
+    const date = new Date(Date.now());
+    return this.http.get<number[]>(this.url + '/list/dates/' + date.getFullYear());
+  }
+
   public getAllOfDay(time: number): Observable<BusinessHoursDto[]> {
     return this.http.get<BusinessHoursDto[]>(this.url + '/list/day/' + time);
   }

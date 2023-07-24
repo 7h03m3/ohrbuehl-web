@@ -23,6 +23,13 @@ export class BusinessHoursAdminController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('list/dates/:year')
+  public async getAllDatesOfYear(@Param('year') year: number): Promise<number[]> {
+    return this.businessHours.getAllDatesOfYear(year);
+  }
+
+  @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('list/day/:time')
   public async getAllOfDay(@Param('time') time: number): Promise<BusinessHourEntity[]> {
     return this.businessHours.getAllOfDay(+time);

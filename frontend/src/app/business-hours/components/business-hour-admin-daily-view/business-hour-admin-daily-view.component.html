@@ -1,6 +1,7 @@
 <h1>Reservationen vom {{getDateString()}}
   <mat-datepicker-toggle [for]="picker" matIconSuffix matTooltip="Datum ändern"></mat-datepicker-toggle>
-  <input (dateChange)="onDateChange($event)" [matDatepicker]="picker" class="date-picker-input" disabled="true"
+  <input (dateChange)="onDateChange($event)" [matDatepickerFilter]="dateFilter" [matDatepicker]="picker"
+         class="date-picker-input" disabled="true"
          disabled matInput name="date">
   <mat-datepicker #picker disabled="false"></mat-datepicker>
 </h1>

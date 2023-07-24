@@ -28,6 +28,14 @@ export class BusinessHoursHelperService {
     return this.businessHoursService.getAllOfYear(year);
   }
 
+  public async getAllDatesOfYear(year: number): Promise<number[]> {
+    const entities = await this.businessHoursService.getAllDatesOfYear(year);
+
+    return entities.map((current) => {
+      return current.start;
+    });
+  }
+
   public async getAllOfDay(time: number): Promise<BusinessHourEntity[]> {
     return this.businessHoursService.getAllOfDay(time);
   }

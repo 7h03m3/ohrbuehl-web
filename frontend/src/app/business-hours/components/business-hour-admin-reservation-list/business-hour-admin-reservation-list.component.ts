@@ -11,7 +11,6 @@ import { catchError, EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { AuthService } from '../../../auth/auth.service';
-import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 
 @Component({
   selector: 'business-hour-admin-reservation-list',
@@ -23,7 +22,6 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
   @Input() businessHour!: BusinessHoursDto;
   @Input() occupancy!: BusinessHourOccupancyDto;
   @Input() facilityType = ReservationFacilityType.Distance25mBlockManuel.toString();
-  @Input() organizationList = new Array<OrganizationDto>();
   @Input() showOwner = false;
   @Output() reservationChanged = new EventEmitter<boolean>();
 
@@ -51,6 +49,10 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
 
   public getOccupancyString(): string {
     return StringHelper.getOccupancyString(this.occupancy);
+  }
+
+  public isAddDisabled(): boolean {
+    return this.addDisabled || !this.businessHour.enableReservation;
   }
 
   public getOwnerString(element: BusinessHourReservationDto): string {
@@ -98,7 +100,7 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
 
   public getOrganizationString(element: BusinessHourReservationDto): string {
     if (!element.organization) {
-      return 'Einzelschütze';
+      return 'Einzelschütze (' + element.owner.firstName + ' ' + element.owner.lastName + ')';
     }
 
     return element.organization.name + ' (' + element.organization.abbreviation + ')';
@@ -115,7 +117,6 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
         reservation: reservation,
         facilityTypeDisabled: true,
         maxCount: maxCount,
-        organizationList: this.organizationList,
       },
     });
 
@@ -135,7 +136,7 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
       .createReservation(element)
       .pipe(
         catchError((response) => {
-          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay');
+          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
           return EMPTY;
         }),
       )
@@ -149,7 +150,7 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
       .updateReservation(element)
       .pipe(
         catchError((response) => {
-          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay');
+          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
           return EMPTY;
         }),
       )

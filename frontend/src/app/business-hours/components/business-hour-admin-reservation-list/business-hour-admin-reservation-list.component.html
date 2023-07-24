@@ -3,7 +3,7 @@
     <mat-card-title>{{title}} ({{getOccupancyString()}})
     </mat-card-title>
     <span class="spacer"></span>
-    <button (click)="onAdd()" [disabled]="addDisabled" class="action-buttons" color="accent" mat-stroked-button>
+    <button (click)="onAdd()" [disabled]="isAddDisabled()" class="action-buttons" color="accent" mat-stroked-button>
       <mat-icon>add</mat-icon>
       Erstellen
     </button>

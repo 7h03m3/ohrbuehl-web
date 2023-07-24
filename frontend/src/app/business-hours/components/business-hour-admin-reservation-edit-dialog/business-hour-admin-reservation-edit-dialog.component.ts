@@ -5,12 +5,15 @@ import { ReservationFacilityType } from '../../../shared/enums/reservation-facil
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ReservationEventType } from '../../../shared/enums/reservation-event-type.enum';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
+import { OrganizationApi } from '../../../api/classes/organization-api';
+import { ApiService } from '../../../api/api.service';
+import { UserApi } from '../../../api/classes/user-api';
+import { UserDto } from '../../../shared/dtos/user.dto';
 
 export interface BusinessHourAdminReservationEditDialogData {
   reservation: BusinessHourReservationDto;
   facilityTypeDisabled: boolean;
   maxCount: number;
-  organizationList: OrganizationDto[];
 }
 
 @Component({
@@ -21,13 +24,24 @@ export interface BusinessHourAdminReservationEditDialogData {
 export class BusinessHourAdminReservationEditDialogComponent {
   public facilityTypes = Object.keys(ReservationFacilityType);
   public eventTypes = Object.keys(ReservationEventType);
+  public organizationList = new Array<OrganizationDto>();
+  public userList = new Array<UserDto>();
+  private organizationApi: OrganizationApi;
+  private userApi: UserApi;
 
   constructor(
     public dialogRef: MatDialogRef<BusinessHourAdminReservationEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BusinessHourAdminReservationEditDialogData,
-  ) {}
+    private apiService: ApiService,
+  ) {
+    this.organizationApi = apiService.getOrganization();
+    this.userApi = apiService.getUser();
+  }
 
-  public ngOnInit() {}
+  public ngOnInit() {
+    this.fetchOrganizationList();
+    this.fetchUserList();
+  }
 
   public onSubmit(): void {
     this.dialogRef.close(this.data.reservation);
@@ -47,6 +61,27 @@ export class BusinessHourAdminReservationEditDialogComponent {
   }
 
   public getEventTypeString(type: string): string {
-    return StringHelper.getEventFacilityTypeString(type as ReservationEventType);
+    return StringHelper.getEventTypeString(type as ReservationEventType);
+  }
+
+  public fetchOrganizationList() {
+    this.organizationApi.getAll().subscribe((response) => {
+      this.organizationList = new Array<OrganizationDto>();
+
+      const dummy = new OrganizationDto();
+      dummy.id = 0;
+      dummy.abbreviation = 'Einzelschütze';
+      this.organizationList.push(dummy);
+
+      response.forEach((current) => {
+        this.organizationList.push(current);
+      });
+    });
+  }
+
+  public fetchUserList() {
+    this.userApi.getAll().subscribe((response) => {
+      this.userList = response;
+    });
   }
 }

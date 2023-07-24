@@ -1,16 +1,22 @@
 <h1 mat-dialog-title>Reservation {{data.reservation.id == 0 ? 'erstellen' : 'bearbeiten'}}</h1>
 
 <mat-dialog-content class="mat-typography">
-  <br>
-  <mat-form-field appearance="outline" class="select-width">
+  <br *ngIf="!data.facilityTypeDisabled">
+  <mat-form-field *ngIf="!data.facilityTypeDisabled" appearance="outline" class="select-width">
     <mat-label>Scheibenart</mat-label>
-    <mat-select [(ngModel)]="data.reservation.facilityType" [disabled]="data.facilityTypeDisabled" required>
+    <mat-select [(ngModel)]="data.reservation.facilityType" required>
       <mat-option *ngFor="let type of facilityTypes" [value]="type">
         {{getFacilityTypeString(type)}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <br>
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Anzahl</mat-label>
+    <input [(ngModel)]="data.reservation.count" matInput max="{{data.maxCount}}" min="1" required type="number">
+    <mat-hint align="end">Maximal 1 - {{data.maxCount}}</mat-hint>
+  </mat-form-field>
+
   <mat-form-field appearance="outline" class="select-width">
     <mat-label>Kategorie</mat-label>
     <mat-select [(ngModel)]="data.reservation.eventType" required>
@@ -21,23 +27,27 @@
   </mat-form-field>
   <br>
   <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Benutzer</mat-label>
+    <mat-select [(ngModel)]="data.reservation.ownerId" required>
+      <mat-option *ngFor="let user of userList" [value]="user.id">
+        {{user.firstName}} {{user.lastName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="select-width">
     <mat-label>Verein</mat-label>
     <mat-select [(ngModel)]="data.reservation.organizationId" required>
-      <mat-option *ngFor="let organization of data.organizationList" [value]="organization.id">
+      <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
         {{organization.abbreviation}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <br>
-  <mat-form-field appearance="outline" class="select-width">
-    <mat-label>Anzahl</mat-label>
-    <input [(ngModel)]="data.reservation.count" matInput max="{{data.maxCount}}" min="1" required type="number">
-    <mat-hint align="end">Maximal 1 - {{data.maxCount}}</mat-hint>
-  </mat-form-field>
-  <br>
-  <mat-form-field appearance="outline" class="select-width">
+
+  <mat-form-field appearance="outline" class="textarea-width">
     <mat-label>Kommentar</mat-label>
-    <textarea [(ngModel)]="data.reservation.comment" matInput rows="3"></textarea>
+    <textarea [(ngModel)]="data.reservation.comment" matInput rows="1"></textarea>
   </mat-form-field>
 
 </mat-dialog-content>

@@ -4,4 +4,9 @@
 
 .select-width {
   min-width: 20em;
+  margin-right: 1em;
+}
+
+.textarea-width {
+  min-width: 41em;
 }

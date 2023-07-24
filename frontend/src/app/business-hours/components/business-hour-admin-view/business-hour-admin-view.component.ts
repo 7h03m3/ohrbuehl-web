@@ -9,8 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edit-dialog/business-hour-admin-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { UrlService } from '../../../shared/services/url.service';
 
 export interface TableData {
   text: string;
@@ -27,18 +26,16 @@ export class BusinessHourAdminViewComponent {
   public dataSource: MatTableDataSource<TableData> = new MatTableDataSource<TableData>();
   public displayedColumns: string[] = ['text', 'count'];
   public deleteDisabled = true;
-  public organizationList = new Array<OrganizationDto>();
   private businessHourApi: BusinessHourAdminApi;
-  private organizationApi: OrganizationApi;
 
   constructor(
     private apiService: ApiService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
+    private urlService: UrlService,
   ) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
-    this.organizationApi = apiService.getOrganization();
   }
 
   public ngOnInit() {
@@ -56,7 +53,7 @@ export class BusinessHourAdminViewComponent {
   }
 
   public onBack() {
-    this.router.navigate(['/admin/business-hour-list']);
+    this.router.navigate([this.urlService.getPreviousUrl()]);
   }
 
   public onReservationChanged() {
@@ -103,19 +100,6 @@ export class BusinessHourAdminViewComponent {
   }
 
   private fetch(id: number) {
-    this.organizationApi.getAll().subscribe((response) => {
-      this.organizationList = new Array<OrganizationDto>();
-
-      const dummy = new OrganizationDto();
-      dummy.id = 0;
-      dummy.abbreviation = '-';
-      this.organizationList.push(dummy);
-
-      response.forEach((current) => {
-        this.organizationList.push(current);
-      });
-    });
-
     this.businessHourApi.getById(id).subscribe((response) => {
       this.businessHour = response;
       const tableData = new Array<TableData>();

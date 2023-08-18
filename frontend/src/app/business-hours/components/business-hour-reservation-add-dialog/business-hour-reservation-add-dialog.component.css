@@ -1,0 +1,13 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.form-element {
+  margin-right: 0.5em;
+  min-width: 20em;
+}
+
+button.add-date-class {
+  background: orange;
+  border-radius: 100%;
+}

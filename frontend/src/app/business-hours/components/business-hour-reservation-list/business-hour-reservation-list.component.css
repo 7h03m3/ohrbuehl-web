@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+}
+
+.mat-column-date {
+    white-space: nowrap;
+    min-width: 15em;
+}
+
+.mat-column-distance {
+    white-space: nowrap;
+    min-width: 5em;
+}
+
+.mat-column-count {
+    white-space: nowrap;
+    min-width: 9em;
+}
+
+.mat-column-type {
+    min-width: 15em;
+}

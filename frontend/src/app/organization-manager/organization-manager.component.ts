@@ -19,6 +19,8 @@ export class OrganizationManagerComponent {
 
   private setupSidenav() {
     this.sidenavService.addElement('Informationen', 'info', './info');
+    this.sidenavService.addElement('Reservationen', 'donut_large', './reservations/list');
+
     const memberMenu = this.sidenavService.addElement('Mitglieder', 'person', './member-list');
     this.sidenavService.addSubElement(memberMenu, 'Mitgliederliste', 'list', './member-list');
     this.sidenavService.addSubElement(memberMenu, 'VVA-Import', 'publish', './member-import');

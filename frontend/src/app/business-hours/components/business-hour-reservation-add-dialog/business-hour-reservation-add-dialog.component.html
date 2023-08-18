@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>Reservation hinzufügen</h2>
+<div mat-dialog-content>
+  <form>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>1. Datum wählen</mat-label>
+      <input (dateChange)="onDateChange($event)" [matDatepicker]="addDatePicker"
+             disabled matInput name="date" required>
+      <mat-datepicker-toggle [for]="addDatePicker" matIconSuffix matTooltip="Datum wählen">
+        <mat-icon color="accent" matDatepickerToggleIcon>today</mat-icon>
+      </mat-datepicker-toggle>
+
+      <!-- [matDatepickerFilter]="dateFilter" -->
+      <mat-datepicker #addDatePicker [dateClass]="dateClass" disabled="false"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>2. Zeit wählen</mat-label>
+      <mat-select (valueChange)="onTimeChange($event)" [disabled]="businessHourList.length == 0"
+                  name="time" required>
+        <mat-option *ngFor="let businessHour of businessHourList" [value]="businessHour.id">
+          {{getTimeString(businessHour)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>3. Scheibenart wählen</mat-label>
+      <mat-select (valueChange)="onFacilityTypeChange($event)" [disabled]="facilityList.length == 0"
+                  [value]="selectedFacilityType" name="facilityType" required>
+        <mat-option *ngFor="let facilityType of facilityList" [disabled]="facilityType.disabled"
+                    [value]="facilityType.type">
+          {{facilityType.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>4. Anlassart wählen</mat-label>
+      <mat-select (valueChange)="onEventTypeChange($event)" [disabled]="selectedEventType == undefined"
+                  [value]="selectedEventType" name="eventType" required>
+        <mat-option *ngFor="let eventType of eventList" [value]="eventType">
+          {{getEventTypeString(eventType)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>5. Anzahl eingeben</mat-label>
+      <input [(ngModel)]="count" [disabled]="countMax == 0" [max]="countMax" [min]="1" matInput name="count" required
+             type="number">
+      <mat-hint *ngIf="countMax != 0">1 - {{countMax}}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Kommentar (optional)</mat-label>
+      <input [(ngModel)]="comment" [disabled]="countMax == 0" matInput name="comment" type="text">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button cdkFocusInitial mat-button mat-dialog-close>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isFormValid()" color="primary" mat-raised-button>Hinzufügen</button>
+</div>
+
+

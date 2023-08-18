@@ -1,0 +1,113 @@
+import { Component } from '@angular/core';
+import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
+import { ApiService } from '../../../api/api.service';
+import { BusinessHourOrganizationApi } from '../../../api/classes/business-hour-organization-api';
+import { AuthService } from '../../../auth/auth.service';
+import { catchError, EMPTY, Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
+import { BusinessHourHelperService } from '../../../business-hours/classes/business-hour-helper.service';
+import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+
+@Component({
+  selector: 'app-reservation-list',
+  templateUrl: './reservation-list.component.html',
+  styleUrls: ['./reservation-list.component.css'],
+})
+export class ReservationListComponent {
+  public reservationList = new Array<BusinessHourReservationDto>();
+  public dateList = new Array<BusinessHoursDto>();
+  private reservationApi: BusinessHourOrganizationApi;
+  private organizationId = 0;
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private helper: BusinessHourHelperService,
+  ) {
+    this.reservationApi = apiService.getBusinessHoursOrganization();
+  }
+
+  public ngOnInit() {
+    this.organizationId = this.authService.getManagingOrganizationId();
+
+    // TODO REMOVE!!!!!!!!!!!!!!!!!!!!
+    this.organizationId = 7;
+
+    this.fetch();
+  }
+
+  public onAdd() {
+    this.reservationApi.getReservationDates().subscribe((response) => {
+      const dialogRef = this.helper.openAddDialog(response);
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          const reservation = result as BusinessHourReservationDto;
+          reservation.organizationId = this.organizationId;
+          reservation.ownerId = this.authService.getUserId();
+
+          this.triggerRequest(this.reservationApi.createReservation(reservation));
+        }
+      });
+    });
+  }
+
+  public onEdit(element: BusinessHourReservationDto) {
+    const dialogRef = this.helper.openEditDialog(element);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.triggerRequest(this.reservationApi.updateReservation(result));
+      } else {
+        this.fetch();
+      }
+    });
+  }
+
+  public onDelete(element: BusinessHourReservationDto) {
+    const dialogRef = this.helper.openDeleteDialog(element);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.triggerRequest(this.reservationApi.deleteReservation(element.id));
+      }
+    });
+  }
+
+  dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
+    // Only highligh dates inside the month view.
+    if (view === 'month') {
+      const date = new Date(+cellDate.valueOf());
+      const day = date.getDate();
+
+      // Highlight the 1st and 20th day of each month.
+      return day == 1 || day == 20 ? 'example-custom-date-class' : '';
+    }
+
+    return '';
+  };
+
+  private fetch() {
+    if (this.organizationId != 0) {
+      const date = new Date(Date.now());
+      this.reservationApi.getReservationsOfYear(this.organizationId, date.getFullYear()).subscribe((response) => {
+        this.reservationList = response;
+      });
+    }
+  }
+
+  private triggerRequest(obervable: Observable<any>) {
+    obervable
+      .pipe(
+        catchError((response) => {
+          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => {
+        this.fetch();
+      });
+  }
+}

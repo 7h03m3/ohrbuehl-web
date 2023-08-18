@@ -10,6 +10,7 @@ import { ShootingRangeAccountingEditComponent } from './components/shooting-rang
 import { ShootingRangeComponent } from './shooting-range.component';
 import { BusinessHourAdminDailyViewComponent } from '../business-hours/components/business-hour-admin-daily-view/business-hour-admin-daily-view.component';
 import { BusinessHourAdminViewComponent } from '../business-hours/components/business-hour-admin-view/business-hour-admin-view.component';
+import { BusinessHourAdminListComponent } from '../business-hours/components/business-hour-admin-list/business-hour-admin-list.component';
 
 const routes: Routes = [
   {
@@ -26,8 +27,12 @@ const routes: Routes = [
         component: BusinessHourAdminDailyViewComponent,
       },
       {
-        path: 'reservation-edit',
+        path: 'reservations/edit',
         component: BusinessHourAdminViewComponent,
+      },
+      {
+        path: 'reservations/list',
+        component: BusinessHourAdminListComponent,
       },
       {
         path: 'invoice-list',

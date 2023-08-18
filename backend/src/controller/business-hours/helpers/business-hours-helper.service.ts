@@ -16,6 +16,8 @@ import { BusinessHourOccupancyEntity } from '../../../database/entities/business
 
 @Injectable()
 export class BusinessHoursHelperService {
+  static DayOffset = 86400000;
+
   constructor(
     private businessHoursService: BusinessHoursService,
     private reservationService: BusinessHoursReservationService,
@@ -26,6 +28,11 @@ export class BusinessHoursHelperService {
 
   public async getAllOfYear(year: number): Promise<BusinessHourEntity[]> {
     return this.businessHoursService.getAllOfYear(year);
+  }
+
+  public async getReservationDates(): Promise<BusinessHourEntity[]> {
+    const startTime = Date.now() + BusinessHoursHelperService.DayOffset;
+    return this.businessHoursService.getReservationDates(startTime);
   }
 
   public async getAllDatesOfYear(year: number): Promise<number[]> {
@@ -40,8 +47,23 @@ export class BusinessHoursHelperService {
     return this.businessHoursService.getAllOfDay(time);
   }
 
+  public async getReservationsByOrganization(id: number, year: number): Promise<BusinessHourReservationEntity[]> {
+    return this.reservationService.getByOrganization(id, year);
+  }
+
+  public async getNextReservationsByOrganization(id: number): Promise<BusinessHourReservationEntity[]> {
+    return this.reservationService.getNextByOrganization(id);
+  }
+
   public async getById(id: number): Promise<BusinessHourEntity> {
-    return this.businessHoursService.getById(id);
+    const entity = await this.businessHoursService.getById(id);
+
+    if (!entity) {
+      const errorMessage = 'business hour with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    return entity;
   }
 
   public async create(dto: BusinessHoursCreateDto): Promise<BusinessHourEntity> {
@@ -121,6 +143,32 @@ export class BusinessHoursHelperService {
     return this.reservationService.update(entity);
   }
 
+  public async getReservationById(id: number): Promise<BusinessHourReservationEntity> {
+    const entity = await this.reservationService.getById(id);
+
+    if (!entity) {
+      const errorMessage = 'business hours reservation with id ' + id.toString() + ' not found';
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    return entity;
+  }
+
+  public is24HoursBefore(time: number): boolean {
+    const timeNow = Date.now();
+
+    console.log('timeNow = ' + timeNow);
+    console.log('time    = ' + time);
+    if (timeNow > time) {
+      return false;
+    }
+
+    const diff = time - timeNow;
+    console.log('diff    = ' + diff);
+    console.log('offset  = ' + BusinessHoursHelperService.DayOffset);
+    return diff > BusinessHoursHelperService.DayOffset;
+  }
+
   private incrementOccupancy(type: ReservationFacilityType, count: number, businessHours: BusinessHourEntity) {
     const occupancy = this.getOccupancy(type, businessHours);
     occupancy.current += count;
@@ -180,17 +228,6 @@ export class BusinessHoursHelperService {
     const entity = await this.userService.findOne(id);
     if (!entity) {
       const errorMessage = 'user with id ' + id.toString() + ' not found';
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    return entity;
-  }
-
-  private async getReservationById(id: number): Promise<BusinessHourReservationEntity> {
-    const entity = await this.reservationService.getById(id);
-
-    if (!entity) {
-      const errorMessage = 'business hours reservation with id ' + id.toString() + ' not found';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
     }
 

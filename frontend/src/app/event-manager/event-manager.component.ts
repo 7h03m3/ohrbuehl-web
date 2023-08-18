@@ -18,6 +18,7 @@ export class EventManagerComponent {
   }
 
   private setupSidenav() {
+    this.sidenavService.addElement('Öffnungszeiten', 'av_timer', './reservations/list');
     this.sidenavService.addElement('Anlässe', 'event', './event-list');
     this.sidenavService.addElement('Schichtenplanung', 'schedule', './event-shift-list');
     const element = this.sidenavService.addElement('Statistik', 'bar_chart', './statistic-event-shift');

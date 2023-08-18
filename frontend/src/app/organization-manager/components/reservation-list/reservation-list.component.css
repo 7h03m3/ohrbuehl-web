@@ -1,0 +1,8 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+button.example-custom-date-class {
+  background: orange;
+  border-radius: 100%;
+}

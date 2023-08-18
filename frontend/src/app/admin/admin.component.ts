@@ -24,6 +24,5 @@ export class AdminComponent implements OnInit {
     this.sidenavService.addElement('Preise', 'money', './price-list');
     this.sidenavService.addElement('Anlasskategorie', 'festival', './event-category-list');
     this.sidenavService.addElement('Schichtenkategorie', 'category', './event-shift-category-list');
-    this.sidenavService.addElement('Öffnungszeiten', 'av_timer', './business-hour-list');
   }
 }

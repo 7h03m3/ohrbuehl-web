@@ -24,3 +24,13 @@ Distanzen:
     </mat-select>
   </mat-form-field>
 </p>
+
+<mat-card *ngIf="reservationList.length != 0" class="reservation-card">
+  <mat-card-header>
+    <mat-card-title>Nächste Reservationen</mat-card-title>
+    <mat-icon class="mat-card-icon" color="primary" mat-card-avatar>donut_large</mat-icon>
+  </mat-card-header>
+  <mat-card-content>
+    <business-hour-next-reservations [reservationList]="reservationList"></business-hour-next-reservations>
+  </mat-card-content>
+</mat-card>

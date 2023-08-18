@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Reservation bearbeiten</h2>
+<div mat-dialog-content>
+  <form>
+    <b>{{getDateString()}}</b>
+    <br>
+    {{getFacilityTypeString()}}
+    <br>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Anlassart</mat-label>
+      <mat-select [(ngModel)]="data.reservation.eventType" name="eventType" required>
+        <mat-option *ngFor="let eventType of eventList" [value]="eventType">
+          {{getEventTypeString(eventType)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Anzahl</mat-label>
+      <input [(ngModel)]="data.reservation.count" [max]="countMax" [min]="1" matInput name="count" required
+             type="number">
+      <mat-hint *ngIf="countMax != 0">1 - {{countMax}}</mat-hint>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Kommentar (optional)</mat-label>
+      <input [(ngModel)]="data.reservation.comment" matInput name="comment" type="text">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button cdkFocusInitial mat-button mat-dialog-close>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isFormValid()" color="primary" mat-raised-button>Speichern</button>
+</div>

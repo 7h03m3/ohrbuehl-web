@@ -1,0 +1,10 @@
+.mat-column-date {
+    white-space: nowrap;
+    min-width: 15em;
+}
+
+.mat-column-count {
+    white-space: nowrap;
+    min-width: 9em;
+}
+

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, MoreThan, Repository } from 'typeorm';
 import { BusinessHourReservationEntity } from '../entities/business-hour-reservation.entity';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class BusinessHoursReservationService {
@@ -10,7 +11,70 @@ export class BusinessHoursReservationService {
   ) {}
 
   public async getById(id: number): Promise<BusinessHourReservationEntity> {
-    return this.repository.findOne({ where: { id: id } });
+    return this.repository.findOne({
+      where: { id: id },
+      relations: {
+        businessHour: true,
+      },
+    });
+  }
+
+  public async getByOrganization(id: number, year: number): Promise<BusinessHourReservationEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.repository.find({
+      where: {
+        organizationId: id,
+        businessHour: {
+          start: Between(timeStart, timeEnd),
+        },
+      },
+      relations: {
+        businessHour: true,
+      },
+      select: {
+        owner: {
+          id: true,
+          userName: true,
+          firstName: true,
+          lastName: true,
+        },
+      },
+      order: {
+        businessHour: {
+          start: 'DESC',
+        },
+      },
+    });
+  }
+
+  public async getNextByOrganization(id: number): Promise<BusinessHourReservationEntity[]> {
+    const start = DateHelper.getDayStart(Date.now());
+    return this.repository.find({
+      where: {
+        organizationId: id,
+        businessHour: {
+          start: MoreThan(start.getTime()),
+        },
+      },
+      relations: {
+        businessHour: true,
+      },
+      select: {
+        owner: {
+          id: true,
+          userName: true,
+          firstName: true,
+          lastName: true,
+        },
+      },
+      order: {
+        businessHour: {
+          start: 'ASC',
+        },
+      },
+    });
   }
 
   public async add(entity: BusinessHourReservationEntity): Promise<BusinessHourReservationEntity> {

@@ -73,7 +73,7 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
       .deleteReservation(element.id)
       .pipe(
         catchError((response) => {
-          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay');
+          this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
           return EMPTY;
         }),
       )

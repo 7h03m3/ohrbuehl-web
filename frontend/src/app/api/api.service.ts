@@ -18,6 +18,7 @@ import { EventStaffPoolApi } from './classes/event-staff-pool-api';
 import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
 import { NotificationApi } from './classes/notification-api';
 import { BusinessHourAdminApi } from './classes/business-hour-admin-api';
+import { BusinessHourOrganizationApi } from './classes/business-hour-organization-api';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,7 @@ export class ApiService {
   private readonly eventStaffPoolApi: EventStaffPoolApi;
   private readonly notificationApi: NotificationApi;
   private readonly businessHoursAdminApi: BusinessHourAdminApi;
+  private readonly businessHoursOrganizationApi: BusinessHourOrganizationApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -54,6 +56,7 @@ export class ApiService {
     this.eventStaffPoolApi = new EventStaffPoolApi(this.baseUrl, this.http);
     this.notificationApi = new NotificationApi(this.baseUrl, this.http);
     this.businessHoursAdminApi = new BusinessHourAdminApi(this.baseUrl, this.http);
+    this.businessHoursOrganizationApi = new BusinessHourOrganizationApi(this.baseUrl, this.http);
   }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -121,5 +124,9 @@ export class ApiService {
 
   public getBusinessHoursAdmin(): BusinessHourAdminApi {
     return this.businessHoursAdminApi;
+  }
+
+  public getBusinessHoursOrganization(): BusinessHourOrganizationApi {
+    return this.businessHoursOrganizationApi;
   }
 }

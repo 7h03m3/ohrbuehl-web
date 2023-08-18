@@ -4,9 +4,8 @@ import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-a
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Moment } from 'moment';
 
@@ -22,7 +21,12 @@ export class BusinessHourAdminDailyViewComponent {
   private businessHoursApi: BusinessHourAdminApi;
   private dateList = new Array<Date>();
 
-  constructor(private apiService: ApiService, private router: Router, private userService: UserLocalData) {
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserLocalData,
+  ) {
     this.businessHoursApi = apiService.getBusinessHoursAdmin();
     this.date = userService.getDate();
   }
@@ -63,7 +67,7 @@ export class BusinessHourAdminDailyViewComponent {
   }
 
   public onReservationEdit(businessHour: BusinessHoursDto) {
-    this.router.navigate(['/shooting-range/reservation-edit', { id: businessHour.id }]);
+    this.router.navigate(['edit', { id: businessHour.id }], { relativeTo: this.route });
   }
 
   public getOrganizationString(element: BusinessHourReservationDto): string {
@@ -97,18 +101,7 @@ export class BusinessHourAdminDailyViewComponent {
   }
 
   public getCountString(element: BusinessHourReservationDto): string {
-    switch (element.facilityType) {
-      case ReservationFacilityType.Distance50mManuel:
-      case ReservationFacilityType.Distance25mBlockManuel:
-        return element.count + ' (manuell)';
-      case ReservationFacilityType.Distance50mElectronic:
-      case ReservationFacilityType.Distance25mBlockElectronic:
-        return element.count + ' (elektronisch)';
-      default:
-        return element.count.toString();
-    }
-
-    return StringHelper.getReservationFacilityTypeSimpleString(element.facilityType);
+    return StringHelper.getReservationCountString(element);
   }
 
   private fetch() {

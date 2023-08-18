@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../shared/material.module';
-import { OrganizationManagerRoutingModule } from './organization-manager-routing.module';
 import { OrganizationInformationComponent } from './components/organization-information/organization-information.component';
 import { OrganizationManagerComponent } from './organization-manager.component';
 import { OrganizationMemberListComponent } from './components/organization-member-list/organization-member-list.component';
@@ -13,6 +12,9 @@ import { EventStaffStatisticComponent } from './components/event-staff-statistic
 import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
 import { SharedModule } from '../shared/shared.module';
+import { ReservationListComponent } from './components/reservation-list/reservation-list.component';
+import { OrganizationManagerRoutingModule } from './organization-manager-routing.module';
+import { BusinessHoursModule } from '../business-hours/business-hours.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { SharedModule } from '../shared/shared.module';
     EventStaffStatisticComponent,
     OrganizationMemberVvaImportComponent,
     EventShiftDownloadsComponent,
+    ReservationListComponent,
   ],
-  imports: [CommonModule, MaterialModule, SharedModule, OrganizationManagerRoutingModule],
+  imports: [CommonModule, MaterialModule, SharedModule, OrganizationManagerRoutingModule, BusinessHoursModule],
 })
 export class OrganizationManagerModule {}

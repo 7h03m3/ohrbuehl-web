@@ -9,7 +9,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
 import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edit-dialog/business-hour-admin-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'business-hour-admin-list',
@@ -33,7 +33,12 @@ export class BusinessHourAdminListComponent {
   @ViewChild(MatSort) sort: any = MatSort;
   private businessHourApi: BusinessHourAdminApi;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog, private router: Router) {
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
   }
 
@@ -85,7 +90,7 @@ export class BusinessHourAdminListComponent {
 
   public async onView(element: BusinessHoursDto) {
     await new Promise((f) => setTimeout(f, 250));
-    this.router.navigate(['/admin/business-hour', { id: element.id }]);
+    this.router.navigate(['reservations/edit', { id: element.id }], { relativeTo: this.route.parent });
   }
 
   private fetch() {

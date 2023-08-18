@@ -7,7 +7,6 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
-import { MatDialog } from '@angular/material/dialog';
 import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
@@ -28,7 +27,7 @@ export class TrackAssignmentComponent implements OnInit {
   private organizationApi: OrganizationApi;
   private priceApi: ShootingRangePriceApi;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) {
+  constructor(private apiService: ApiService) {
     this.organizationApi = this.apiService.getOrganization();
     this.priceApi = this.apiService.getShootingRangePrice();
   }

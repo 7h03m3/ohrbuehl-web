@@ -5,6 +5,7 @@ import { NotificationSource } from '../enums/notification-source.enum';
 import { BusinessHourOccupancyDto } from '../dtos/business-hour-occupancy.dto';
 import { ReservationFacilityType } from '../enums/reservation-facility-type.enum';
 import { ReservationEventType } from '../enums/reservation-event-type.enum';
+import { BusinessHourReservationDto } from '../dtos/business-hour-reservation.dto';
 
 @Injectable({ providedIn: 'root' })
 export class StringHelper {
@@ -193,6 +194,19 @@ export class StringHelper {
         return 'Anlass';
       case ReservationEventType.Other:
         return 'Anderes';
+    }
+  }
+
+  public static getReservationCountString(element: BusinessHourReservationDto): string {
+    switch (element.facilityType) {
+      case ReservationFacilityType.Distance50mManuel:
+      case ReservationFacilityType.Distance25mBlockManuel:
+        return element.count + ' (manuell)';
+      case ReservationFacilityType.Distance50mElectronic:
+      case ReservationFacilityType.Distance25mBlockElectronic:
+        return element.count + ' (elektronisch)';
+      default:
+        return element.count.toString();
     }
   }
 

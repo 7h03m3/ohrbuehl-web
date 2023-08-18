@@ -6,6 +6,9 @@ import { EventShiftListComponent } from './components/event-shift-list/event-shi
 import { EventEditComponent } from './components/event-edit/event-edit.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
 import { StatisticEventShiftsBuComponent } from './components/statistic-event-shifts-bu/statistic-event-shifts-bu.component';
+import { BusinessHourAdminDailyViewComponent } from '../business-hours/components/business-hour-admin-daily-view/business-hour-admin-daily-view.component';
+import { BusinessHourAdminViewComponent } from '../business-hours/components/business-hour-admin-view/business-hour-admin-view.component';
+import { BusinessHourAdminListComponent } from '../business-hours/components/business-hour-admin-list/business-hour-admin-list.component';
 
 const routes: Routes = [
   {
@@ -35,6 +38,18 @@ const routes: Routes = [
       {
         path: 'statistic-event-shift',
         component: StatisticEventShiftsBuComponent,
+      },
+      {
+        path: 'reservations',
+        component: BusinessHourAdminDailyViewComponent,
+      },
+      {
+        path: 'reservations/edit',
+        component: BusinessHourAdminViewComponent,
+      },
+      {
+        path: 'reservations/list',
+        component: BusinessHourAdminListComponent,
       },
     ],
   },

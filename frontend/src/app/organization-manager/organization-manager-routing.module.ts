@@ -10,6 +10,7 @@ import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
 import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
+import { ReservationListComponent } from './components/reservation-list/reservation-list.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,6 @@ const routes: Routes = [
         path: 'info',
         component: OrganizationInformationComponent,
       },
-
       {
         path: 'member-list',
         component: OrganizationMemberListComponent,
@@ -56,6 +56,10 @@ const routes: Routes = [
       {
         path: 'event-staff-statistic',
         component: EventStaffStatisticComponent,
+      },
+      {
+        path: 'reservations/list',
+        component: ReservationListComponent,
       },
     ],
   },

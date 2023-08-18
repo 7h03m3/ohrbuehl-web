@@ -8,6 +8,21 @@ import { DateHelper } from '../../shared/classes/date-helper';
 export class BusinessHoursService {
   constructor(@InjectRepository(BusinessHourEntity) private repository: Repository<BusinessHourEntity>) {}
 
+  public getReservationDates(timeStart: number): Promise<BusinessHourEntity[]> {
+    const startDate = new Date(timeStart);
+    const timeEnd = DateHelper.getYearEnd(startDate.getFullYear()).getTime();
+
+    return this.repository.find({
+      where: {
+        start: Between(timeStart, timeEnd),
+        enableReservation: true,
+      },
+      order: {
+        start: 'DESC',
+      },
+    });
+  }
+
   public getAllDatesOfYear(year: number): Promise<BusinessHourEntity[]> {
     const timeStart = DateHelper.getYearStart(year).getTime();
     const timeEnd = DateHelper.getYearEnd(year).getTime();

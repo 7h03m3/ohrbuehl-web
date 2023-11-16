@@ -19,7 +19,6 @@ export class StatisticEventShiftsBuComponent {
   public eventList = new Array<EventDto>();
   public organizationList = new Array<OrganizationDto>();
   public categoryList = new Array<EventCategoryDto>();
-  public selectedCategory = 0;
   private tableComponent: any;
   private eventApi: EventApi;
   private eventCategoryApi: EventCategoryApi;
@@ -37,24 +36,34 @@ export class StatisticEventShiftsBuComponent {
   }
 
   public ngOnInit(): void {
-    this.selectedCategory = this.userLocalData.getEventCategory();
     this.loadCategories();
-    this.loadShifts(this.selectedCategory);
+    this.loadShifts();
+  }
+
+  public onYearChange() {
+    this.loadShifts();
   }
 
   public onCategoryChange(newValue: number) {
     this.userLocalData.setEventCategory(newValue);
-    this.loadShifts(newValue);
+    this.loadShifts();
   }
 
-  private loadShifts(categoryId: number) {
+  public getCategory(): number {
+    return this.userLocalData.getEventCategory();
+  }
+
+  private loadShifts() {
+    const categoryId = this.userLocalData.getEventCategory();
     if (categoryId == 0) {
-      this.eventApi.getAllWithShifts().subscribe((response) => {
+      const year = this.userLocalData.getCurrentYear();
+      this.eventApi.getAllWithShiftsOfYear(year).subscribe((response) => {
         this.eventList = response;
         this.fetch();
       });
     } else {
-      this.eventApi.getAllWithShiftsByCategoryId(categoryId).subscribe((response) => {
+      const year = this.userLocalData.getCurrentYear();
+      this.eventApi.getAllWithShiftsByCategoryId(categoryId, year).subscribe((response) => {
         this.eventList = response;
         this.fetch();
       });

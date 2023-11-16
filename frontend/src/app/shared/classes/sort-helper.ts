@@ -4,6 +4,7 @@ import { EventShiftEditListItemDto } from '../../event-manager/components/event-
 import { OrganizationDto } from '../dtos/organization.dto';
 import { ShootingRangeAccountingUnitDto } from '../dtos/shooting-range-accounting-unit.dto';
 import { ShootingRangeAccountingDto } from '../dtos/shooting-range-accounting.dto';
+import { UserDto } from '../dtos/user.dto';
 
 @Injectable({ providedIn: 'root' })
 export class SortHelper {
@@ -94,6 +95,20 @@ export class SortHelper {
       }
 
       if (a.shift.organizationId < b.shift.organizationId) {
+        return -1;
+      }
+
+      return 0;
+    });
+  }
+
+  public static sortUserListByName(userList: UserDto[]) {
+    userList.sort((a, b) => {
+      if (a.firstName > b.firstName) {
+        return 1;
+      }
+
+      if (a.firstName < b.firstName) {
         return -1;
       }
 

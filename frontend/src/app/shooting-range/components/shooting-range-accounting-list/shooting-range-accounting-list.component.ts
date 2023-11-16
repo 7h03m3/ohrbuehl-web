@@ -70,6 +70,10 @@ export class ShootingRangeAccountingListComponent implements OnInit {
     });
   }
 
+  public onTimeRangeChange() {
+    this.fetch();
+  }
+
   public getDateString(element: ShootingRangeAccountingDto): string {
     return (
       StringHelper.getDayOfWeekShort(element.start) +
@@ -83,7 +87,8 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   }
 
   private fetch() {
-    this.accountingApi.getList().subscribe((result) => {
+    const year = this.userData.getCurrentYear();
+    this.accountingApi.getList(year).subscribe((result) => {
       this.dataSource.data = result;
     });
   }

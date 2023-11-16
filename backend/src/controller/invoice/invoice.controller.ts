@@ -43,9 +43,9 @@ export class InvoiceController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get()
-  async getAllInvoices(): Promise<any> {
-    return await this.invoiceService.findAll();
+  @Get('/year/:year')
+  async getAllInvoices(@Param('year') year: number): Promise<any> {
+    return await this.invoiceService.findAllByYear(year);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.Cashier)

@@ -18,7 +18,7 @@ import { InfoDialogComponent } from '../../../shared/components/info-dialog/info
 })
 export class PublicEventListComponent {
   public dataSource = new MatTableDataSource<EventDto>();
-  public displayedColumns: string[] = ['date', 'day', 'title', 'category', 'action'];
+  public displayedColumns: string[] = ['date', 'title', 'category', 'action'];
   public title = 'Anlässe';
   public displayPaginator = false;
   @ViewChild(MatPaginator) paginator: any = MatPaginator;

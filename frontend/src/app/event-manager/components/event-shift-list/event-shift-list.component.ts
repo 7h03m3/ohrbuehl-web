@@ -14,6 +14,7 @@ import { MatSort } from '@angular/material/sort';
 import { EventCategoryApi } from '../../../api/classes/event-category-api';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
 import { SidenavService } from '../../../shared/services/sidenav.service';
+import { EventHelper } from '../../classes/event-helper';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -37,6 +38,7 @@ export class EventShiftListComponent {
     private router: Router,
     private downloadHelper: DownloadHelper,
     private sidenavService: SidenavService,
+    private helper: EventHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.categoryApi = this.apiService.getEventCategory();
@@ -81,6 +83,10 @@ export class EventShiftListComponent {
     return element.totalShifts == element.assignedOrganization;
   }
 
+  public onTimeRangeChange() {
+    this.fetchEvents();
+  }
+
   private isOrganizationAssigned(shift: EventShiftDto): boolean {
     return shift.organizationId != null && shift.organizationId != 0;
   }
@@ -111,7 +117,10 @@ export class EventShiftListComponent {
       this.displayedColumns = ['time', 'title', 'category', 'organization', 'shift', 'action'];
     }
 
-    this.eventApi.getAllWithShifts().subscribe((response) => {
+    const year = this.userLocalData.getCurrentYear();
+    this.eventApi.getAllWithShiftsOfYear(year).subscribe((response) => {
+      response = this.helper.filterEventList(response);
+
       const shiftList = new Array<EventShiftListItemDto>();
 
       response.forEach((event) => {

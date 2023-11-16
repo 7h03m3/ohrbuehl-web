@@ -1,0 +1,33 @@
+<h1>Reservationen
+  <span class="spacer"></span>
+  <button (click)="onAdd()" class="action-buttons" color="accent" mat-stroked-button>
+    <mat-icon>add</mat-icon>
+    Hinzufügen
+  </button>
+</h1>
+<p *ngIf="authService.isAdmin()">
+  <mat-form-field appearance="outline" class="select-width">
+    <mat-label>Benutzer</mat-label>
+    <mat-select (valueChange)="onUserChange($event)" [(ngModel)]="userId" required>
+      <mat-option *ngFor="let user of userList" [value]="user.id">
+        {{user.firstName}} {{user.lastName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</p>
+<div>
+  <i>Hinweis: Anzahl Reservationen sind auf {{eventLimit}} pro Halbtag limitiert.</i>
+</div>
+<br>
+
+<app-time-range-selector (changeEvent)="onTimeRangeChange()"></app-time-range-selector>
+
+<br>
+
+<business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
+                                [reservationList]="reservationList"></business-hour-reservation-list>
+
+
+
+
+

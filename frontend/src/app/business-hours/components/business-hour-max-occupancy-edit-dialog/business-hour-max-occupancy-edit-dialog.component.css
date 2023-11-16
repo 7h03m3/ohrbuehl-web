@@ -1,0 +1,24 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.occupancy-label {
+  display: table-cell;
+  min-width: 15em;
+  color: black;
+}
+
+.occupancy-count {
+  display: table-cell;
+  color: black;
+  white-space: pre;
+  min-width: 3em;
+}
+
+.occupancy-input-form {
+  display: table-cell;
+}
+
+.occupancy-input {
+  width: 8em;
+}

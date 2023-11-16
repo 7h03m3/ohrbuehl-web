@@ -16,12 +16,12 @@ export class AccountingApi extends BaseApi {
     return this.http.delete<any>(this.url + '/' + id);
   }
 
-  public getList(): Observable<ShootingRangeAccountingDto[]> {
-    return this.http.get<ShootingRangeAccountingDto[]>(this.url);
+  public getList(year: number): Observable<ShootingRangeAccountingDto[]> {
+    return this.http.get<ShootingRangeAccountingDto[]>(this.url + '/year/' + year);
   }
 
-  public getListDetailed(): Observable<ShootingRangeAccountingDto[]> {
-    return this.http.get<ShootingRangeAccountingDto[]>(this.url + '/detail');
+  public getListDetailed(year: number): Observable<ShootingRangeAccountingDto[]> {
+    return this.http.get<ShootingRangeAccountingDto[]>(this.url + '/detail/' + year);
   }
 
   public getById(id: number): Observable<ShootingRangeAccountingDto> {

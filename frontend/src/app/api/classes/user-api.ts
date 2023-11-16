@@ -25,6 +25,10 @@ export class UserApi extends BaseApi {
     return this.http.put<UserDto>(this.url, updateUser);
   }
 
+  public updateAccountInformation(user: UserDto): Observable<UserDto> {
+    return this.http.put<UserDto>(this.url + '/account-information', user);
+  }
+
   public delete(id: string): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }

@@ -11,6 +11,7 @@ import { InfoDialogComponent } from '../../../shared/components/info-dialog/info
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { EventHelper } from '../../classes/event-helper';
 
 @Component({
   selector: 'app-event-list',
@@ -29,6 +30,7 @@ export class EventListComponent {
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
+    private helper: EventHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
   }
@@ -78,6 +80,10 @@ export class EventListComponent {
     this.router.navigate(['/event-manager/event-edit']);
   }
 
+  public onTimeRangeChange() {
+    this.fetch();
+  }
+
   public getDateString(event: EventDto): string {
     return StringHelper.getStartEndDateTimeString(event.start, event.end);
   }
@@ -87,8 +93,9 @@ export class EventListComponent {
   }
 
   private fetch() {
-    this.eventApi.getAll().subscribe((data) => {
-      this.dataSource.data = data;
+    const year = this.userLocalData.getCurrentYear();
+    this.eventApi.getAllOfYear(year).subscribe((response) => {
+      this.dataSource.data = this.helper.filterEventList(response);
     });
   }
 }

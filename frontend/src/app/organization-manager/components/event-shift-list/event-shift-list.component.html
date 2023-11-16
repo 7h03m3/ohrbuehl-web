@@ -1,72 +1,68 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Schichtenplanung</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <br>
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
-        <mat-option *ngFor="let category of categoryList" [value]="category.id">
-          {{category.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <table [dataSource]="eventList" mat-table>
-      <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell>Zeit</th>
-        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
-      </ng-container>
+<h1>Schichtenplanung</h1>
+<app-time-range-selector (changeEvent)="onTimeRangeChange()"></app-time-range-selector>
+<br>
+<mat-form-field appearance="outline">
+  <mat-label>Kategorie</mat-label>
+  <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
+    <mat-option *ngFor="let category of categoryList" [value]="category.id">
+      {{category.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<table [dataSource]="eventList" class="mat-elevation-z4" mat-table>
+  <ng-container matColumnDef="time">
+    <th *matHeaderCellDef mat-header-cell>Zeit</th>
+    <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="day">
-        <th *matHeaderCellDef mat-header-cell>Tag</th>
-        <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
-      </ng-container>
+  <ng-container matColumnDef="day">
+    <th *matHeaderCellDef mat-header-cell>Tag</th>
+    <td *matCellDef="let element" mat-cell> {{getDayString(element)}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell>Titel</th>
-        <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
-      </ng-container>
+  <ng-container matColumnDef="title">
+    <th *matHeaderCellDef mat-header-cell>Titel</th>
+    <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell>Kategorie</th>
-        <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
-      </ng-container>
+  <ng-container matColumnDef="category">
+    <th *matHeaderCellDef mat-header-cell>Kategorie</th>
+    <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="shift">
-        <th *matHeaderCellDef mat-header-cell>Schichten</th>
-        <td *matCellDef="let element"
-            [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
-      </ng-container>
+  <ng-container matColumnDef="shift">
+    <th *matHeaderCellDef mat-header-cell>Schichten</th>
+    <td *matCellDef="let element"
+        [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+        mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="rangeOfficer">
-        <th *matHeaderCellDef mat-header-cell>SM</th>
-        <td *matCellDef="let element"
-            [ngClass]="isRangeOfficerAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedRangeOfficer}} / {{element.totalRangeOfficer}}</td>
-      </ng-container>
+  <ng-container matColumnDef="rangeOfficer">
+    <th *matHeaderCellDef mat-header-cell>SM</th>
+    <td *matCellDef="let element"
+        [ngClass]="isRangeOfficerAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+        mat-cell> {{element.assignedRangeOfficer}} / {{element.totalRangeOfficer}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="pool">
-        <th *matHeaderCellDef mat-header-cell>Im Pool</th>
-        <td *matCellDef="let element" class="total-pool" mat-cell> {{element.totalInPool}}</td>
-      </ng-container>
+  <ng-container matColumnDef="pool">
+    <th *matHeaderCellDef mat-header-cell>Im Pool</th>
+    <td *matCellDef="let element" class="total-pool" mat-cell> {{element.totalInPool}}</td>
+  </ng-container>
 
-      <ng-container matColumnDef="action">
-        <th *matHeaderCellDef mat-header-cell>
-          Aktion
-        </th>
-        <td *matCellDef="let element" class="align-right" mat-cell>
-          <mat-button-toggle-group #elementGroup="matButtonToggleGroup" *ngIf="isShiftPlanningPossible(element)">
-            <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
-              <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </td>
-      </ng-container>
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell>
+      Aktion
+    </th>
+    <td *matCellDef="let element" class="align-right" mat-cell>
+      <mat-button-toggle-group #elementGroup="matButtonToggleGroup" *ngIf="isShiftPlanningPossible(element)">
+        <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
+          <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </td>
+  </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-    </table>
-  </mat-card-content>
-</mat-card>
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>
+

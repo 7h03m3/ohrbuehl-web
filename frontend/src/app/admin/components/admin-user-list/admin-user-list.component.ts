@@ -51,7 +51,7 @@ export class AdminUserListComponent implements OnInit {
   }
 
   public getRoleText(role: string): string {
-    return this.userLocalData.convertRoleText(role);
+    return UserLocalData.convertRoleText(role);
   }
 
   public getAssignedOrganizationText(user: UserDto): string {

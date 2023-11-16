@@ -1,0 +1,8 @@
+.contact-message-content {
+  flex: auto;
+  height: auto;
+  width: auto;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}

@@ -1,67 +1,66 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Schichtenplanung</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <br>
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
-        <mat-option *ngFor="let category of categoryList" [value]="category.id">
-          {{category.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <table [dataSource]="dataSource" mat-table matSort>
-      <ng-container matColumnDef="time">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Zeit</th>
-        <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
-      </ng-container>
+<h1>Schichtenplanung</h1>
 
-      <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header="title">Titel</th>
-        <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
-      </ng-container>
+<app-time-range-selector (changeEvent)="onTimeRangeChange()"></app-time-range-selector>
 
-      <ng-container matColumnDef="category">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header="categoryId">Kategorie</th>
-        <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
-      </ng-container>
+<br>
+<mat-form-field appearance="outline">
+  <mat-label>Kategorie</mat-label>
+  <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
+    <mat-option *ngFor="let category of categoryList" [value]="category.id">
+      {{category.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
-      <ng-container matColumnDef="organization">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedOrganization">Vereinszuteilung</th>
-        <td *matCellDef="let element"
-            [ngClass]="isOrganizationAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedOrganization}} / {{element.totalShifts}}</td>
-      </ng-container>
+<div class="mat-elevation-z4">
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="time">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="start">Zeit</th>
+      <td *matCellDef="let element" mat-cell> {{getTimeString(element)}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="shift">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedShifts">Schichten</th>
-        <td *matCellDef="let element"
-            [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
-            mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
-      </ng-container>
+    <ng-container matColumnDef="title">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="title">Titel</th>
+      <td *matCellDef="let element" mat-cell> {{element.event.title}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="action">
-        <th *matHeaderCellDef mat-header-cell>
-          Aktion
-        </th>
-        <td *matCellDef="let element" class="align-right" mat-cell>
-          <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
-            <mat-button-toggle (click)="onDownload(element)" matTooltip="Download PDF">
-              <mat-icon color="primary" inline="true">file_download</mat-icon>
-            </mat-button-toggle>
-            <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
-              <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="category">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="categoryId">Kategorie</th>
+      <td *matCellDef="let element" mat-cell> {{element.event.category.name}}</td>
+    </ng-container>
 
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25"
-                   aria-label="Select page of events"></mat-paginator>
-  </mat-card-content>
-</mat-card>
+    <ng-container matColumnDef="organization">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedOrganization">Vereinszuteilung</th>
+      <td *matCellDef="let element"
+          [ngClass]="isOrganizationAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+          mat-cell> {{element.assignedOrganization}} / {{element.totalShifts}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="shift">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="assignedShifts">Schichten</th>
+      <td *matCellDef="let element"
+          [ngClass]="isShiftAssignmentOkay(element) ? 'assignment-okay ' : 'assignment-not-okay '"
+          mat-cell> {{element.assignedShifts}} / {{element.totalShifts}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef mat-header-cell>
+        Aktion
+      </th>
+      <td *matCellDef="let element" class="align-right" mat-cell>
+        <mat-button-toggle-group #elementGroup="matButtonToggleGroup">
+          <mat-button-toggle (click)="onDownload(element)" matTooltip="Download PDF">
+            <mat-icon color="primary" inline="true">file_download</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="onShiftPlaning(element)" matTooltip="Schichten planen">
+            <mat-icon class="list-action-icon" color="primary" inline="true">schedule</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25" aria-label="Select page of events"/>
+</div>

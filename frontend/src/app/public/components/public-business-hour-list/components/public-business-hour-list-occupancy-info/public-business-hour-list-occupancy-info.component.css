@@ -1,0 +1,22 @@
+.occupancy-label {
+  display: table-cell;
+  min-width: 20em;
+}
+
+.occupancy-value {
+  display: table-cell;
+  min-width: 4em;
+  font-weight: bold;
+}
+
+.occupancy-unit {
+  display: table-cell;
+}
+
+.occupancy-red-text {
+  color: red;
+}
+
+.occupancy-green-text {
+  color: green;
+}

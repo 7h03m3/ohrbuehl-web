@@ -7,7 +7,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { BusinessHourHelperService } from '../../../business-hours/classes/business-hour-helper.service';
-import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-reservation-list',
@@ -25,16 +25,17 @@ export class ReservationListComponent {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private helper: BusinessHourHelperService,
+    private userLocalData: UserLocalData,
   ) {
     this.reservationApi = apiService.getBusinessHoursOrganization();
   }
 
   public ngOnInit() {
     this.organizationId = this.authService.getManagingOrganizationId();
+    this.fetch();
+  }
 
-    // TODO REMOVE!!!!!!!!!!!!!!!!!!!!
-    this.organizationId = 7;
-
+  public onTimeRangeChange() {
     this.fetch();
   }
 
@@ -76,24 +77,11 @@ export class ReservationListComponent {
     });
   }
 
-  dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
-    // Only highligh dates inside the month view.
-    if (view === 'month') {
-      const date = new Date(+cellDate.valueOf());
-      const day = date.getDate();
-
-      // Highlight the 1st and 20th day of each month.
-      return day == 1 || day == 20 ? 'example-custom-date-class' : '';
-    }
-
-    return '';
-  };
-
   private fetch() {
     if (this.organizationId != 0) {
-      const date = new Date(Date.now());
-      this.reservationApi.getReservationsOfYear(this.organizationId, date.getFullYear()).subscribe((response) => {
-        this.reservationList = response;
+      const year = this.userLocalData.getCurrentYear();
+      this.reservationApi.getReservationsOfYear(this.organizationId, year).subscribe((response) => {
+        this.reservationList = this.helper.filterReservationList(response);
       });
     }
   }
@@ -103,6 +91,7 @@ export class ReservationListComponent {
       .pipe(
         catchError((response) => {
           this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
+          this.fetch();
           return EMPTY;
         }),
       )

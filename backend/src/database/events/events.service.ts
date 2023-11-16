@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, Repository } from 'typeorm';
+import { Between, MoreThanOrEqual, Repository } from 'typeorm';
 import { EventEntity } from '../entities/event.entity';
 import { EventCreateDto } from '../../shared/dtos/event-create.dto';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventsCategoryService } from './events-category.service';
 import { EventCategoryEntity } from '../entities/event-category.entity';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class EventsService {
@@ -14,8 +15,15 @@ export class EventsService {
     private categoryService: EventsCategoryService,
   ) {}
 
-  public findAll(): Promise<EventEntity[]> {
-    return this.eventRepository.find({ order: { start: 'DESC' }, relations: { category: true } });
+  public findAllByYear(year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.eventRepository.find({
+      order: { start: 'DESC' },
+      relations: { category: true },
+      where: { start: Between(timeStart, timeEnd) },
+    });
   }
 
   public findAllPublic(currentDate: number): Promise<EventEntity[]> {
@@ -42,10 +50,16 @@ export class EventsService {
     });
   }
 
-  public findAllWithShifts(): Promise<EventEntity[]> {
+  public findAllWithShifts(year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.eventRepository.find({
       order: { start: 'DESC' },
-      where: { shiftPlanning: true },
+      where: {
+        shiftPlanning: true,
+        start: Between(timeStart, timeEnd),
+      },
       relations: {
         category: true,
         shifts: {
@@ -55,9 +69,12 @@ export class EventsService {
     });
   }
 
-  public findAllWithShiftsByCategoryId(categoryId: number): Promise<EventEntity[]> {
+  public findAllWithShiftsByCategoryId(categoryId: number, year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.eventRepository.find({
-      where: { categoryId: categoryId },
+      where: { categoryId: categoryId, start: Between(timeStart, timeEnd) },
       order: { start: 'DESC' },
       relations: { category: true, shifts: true },
     });

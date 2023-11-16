@@ -1,9 +1,13 @@
 <h1>Reservationen vom {{getDateString()}}
-  <mat-datepicker-toggle [for]="picker" matIconSuffix matTooltip="Datum ändern"></mat-datepicker-toggle>
+
+  <button (click)="picker.open()" color="accent" mat-stroked-button>
+    <mat-icon matDatepickerToggleIcon>today</mat-icon>
+    Datum ändern
+  </button>
   <input (dateChange)="onDateChange($event)" [matDatepickerFilter]="dateFilter" [matDatepicker]="picker"
          class="date-picker-input" disabled="true"
          disabled matInput name="date">
-  <mat-datepicker #picker disabled="false"></mat-datepicker>
+  <mat-datepicker #picker [dateClass]="dateClass" disabled="false"></mat-datepicker>
 </h1>
 
 <h3 *ngIf="businessHourList.length == 0">Keine Reservationen vorhanden</h3>
@@ -36,7 +40,10 @@
 
       <ng-container matColumnDef="organization">
         <th *matHeaderCellDef mat-header-cell>Verein</th>
-        <td *matCellDef="let element" mat-cell>{{getOrganizationString(element)}}</td>
+        <td *matCellDef="let element" mat-cell>
+          <!--{{getOrganizationString(element)}}-->
+          <business-hour-organization-chip [reservation]="element"/>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="eventType">
@@ -49,3 +56,6 @@
     </table>
   </mat-card-content>
 </mat-card>
+
+
+

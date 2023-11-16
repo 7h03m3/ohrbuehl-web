@@ -25,7 +25,7 @@
 }
 
 .table-row {
-  height: 2.5em;
+  height: 3em !important;
 }
 
 .mat-mdc-card {
@@ -34,4 +34,9 @@
 
 .date-picker-input {
   visibility: hidden;
+}
+
+button.date-picker-date-class {
+  background: lightgreen;
+  border-radius: 100%;
 }

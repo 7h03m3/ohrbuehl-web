@@ -4,6 +4,8 @@ import { PublicWelcomeComponent } from './components/public-welcome/public-welco
 import { PublicEventListComponent } from './components/public-event-list/public-event-list.component';
 import { PublicComponent } from './public.component';
 import { PublicShootingRangeInformationComponent } from './components/public-shooting-range-information/public-shooting-range-information.component';
+import { PublicBusinessHourListComponent } from './components/public-business-hour-list/public-business-hour-list.component';
+import { PublicContactComponent } from './components/public-contact/public-contact.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,14 @@ const routes: Routes = [
       {
         path: 'event-list',
         component: PublicEventListComponent,
+      },
+      {
+        path: 'business-hours',
+        component: PublicBusinessHourListComponent,
+      },
+      {
+        path: 'contact',
+        component: PublicContactComponent,
       },
     ],
   },

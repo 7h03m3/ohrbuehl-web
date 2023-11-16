@@ -1,0 +1,17 @@
+<div *ngIf="username.length!=0" class="align-center">
+  <h1 style="">Benutzerkonto {{username}}&nbsp;
+    <button (click)="onEdit()" color="accent" mat-stroked-button>Bearbeiten</button>
+  </h1>
+  <br>
+</div>
+<div class="flex-container">
+  <mat-grid-list cols="2" rowHeight="4em">
+    <mat-grid-tile *ngFor="let info of accountInformation" class="mat-grid-tile-test">
+      <div class="mat-grid-tile-content">
+        <div>{{info.label}}</div>
+        <div><b>{{info.value}}</b></div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+

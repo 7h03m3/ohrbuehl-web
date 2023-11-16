@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from '../../database/users/users.service';
 import { UserEntity } from '../../database/entities/user.entity';
 import { Roles } from '../../shared/decorators/roles.decorator';
@@ -8,14 +20,18 @@ import { Role } from '../../shared/enums/role.enum';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { AuthService } from '../../auth/auth.service';
 import { UserDto } from '../../shared/dtos/user.dto';
-import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
+import { BusinessHoursHelperService } from '../business-hours/helpers/business-hours-helper.service';
+import { MailService } from '../../mail/mail.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
-@Controller('users')
+@Controller('users/')
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
+    private businessHourService: BusinessHoursHelperService,
     private authService: AuthService,
-    private notificationManager: NotificationManagerService,
+    private mailService: MailService,
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   @Roles(Role.Admin)
@@ -25,10 +41,18 @@ export class UsersController {
     return this.userService.findAll();
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.SingleShooter)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')
-  public getById(@Param('id') id: number): Promise<UserEntity> {
+  public getById(@Param('id') id: number, @Request() req: any): Promise<UserEntity> {
+    if (req.user.roles != Role.Admin) {
+      if (req.user.id != id) {
+        const errorMessage = 'access denied to user with id ' + id;
+        throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
+      }
+
+      return this.userService.findOneUser(id);
+    }
     return this.userService.findOne(id);
   }
 
@@ -52,10 +76,27 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Put('account-information')
+  public async updateAccountInformation(@Body() userDto: UserDto, @Request() req: any): Promise<any> {
+    if (req.user.id != userDto.id) {
+      const errorMessage = 'access denied to user with id ' + userDto.id;
+      throw new HttpException(errorMessage, HttpStatus.FORBIDDEN);
+    }
+
+    return this.userService.updateAccountInformation(userDto);
+  }
+
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   public async deleteUser(@Param('id') id: number): Promise<any> {
+    await this.businessHourService.deleteUser(id);
     return await this.userService.deleteUser(id);
+  }
+
+  private getRegistrationKey(): string {
+    const crypto = require('crypto');
+    return crypto.randomBytes(20).toString('hex');
   }
 }

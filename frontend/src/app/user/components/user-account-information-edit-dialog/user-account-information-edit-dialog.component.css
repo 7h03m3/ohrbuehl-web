@@ -1,0 +1,25 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.common-form-field {
+  display: block;
+}
+
+.firstname-form-field {
+  width: 13em;
+}
+
+.lastname-form-field {
+  width: 14em;
+  margin-left: 1em;
+}
+
+.zip-form-field {
+  width: 5em;
+}
+
+.location-form-field {
+  width: 22em;
+  margin-left: 1em;
+}

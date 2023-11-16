@@ -1,17 +1,13 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Schichtenstatistik</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <br>
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <mat-select (valueChange)="onCategoryChange($event)" [value]="selectedCategory" name="category">
-        <mat-option *ngFor="let category of categoryList" [value]="category.id">
-          {{category.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <app-statistic-event-shifts-table></app-statistic-event-shifts-table>
-  </mat-card-content>
-</mat-card>
+<h1>Schichtenstatistik</h1>
+<app-year-selector-standalone (yearChangeEvent)="onYearChange()"></app-year-selector-standalone>
+<br>
+<mat-form-field appearance="outline">
+  <mat-label>Kategorie</mat-label>
+  <mat-select (valueChange)="onCategoryChange($event)" [value]="getCategory()" name="category">
+    <mat-option *ngFor="let category of categoryList" [value]="category.id">
+      {{category.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<app-statistic-event-shifts-table></app-statistic-event-shifts-table>
+

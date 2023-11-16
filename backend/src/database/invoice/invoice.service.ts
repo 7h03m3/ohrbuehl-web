@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { InvoiceEntity } from '../entities/invoice.entity';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
 import { UserEntity } from '../entities/user.entity';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
 import { UsersService } from '../users/users.service';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class InvoiceService {
@@ -14,8 +15,14 @@ export class InvoiceService {
     private userService: UsersService,
   ) {}
 
-  findAll(): Promise<InvoiceEntity[]> {
+  findAllByYear(year: number): Promise<InvoiceEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.invoiceRepository.find({
+      where: {
+        date: Between(timeStart, timeEnd),
+      },
       relations: {
         creator: true,
       },

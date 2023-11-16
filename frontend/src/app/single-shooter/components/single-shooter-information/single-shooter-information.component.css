@@ -1,0 +1,9 @@
+.mat-card-icon {
+  width: 30px;
+  height: 30px;
+  font-size: 1.5em;
+}
+
+.reservation-card {
+  min-width: 40em;
+}

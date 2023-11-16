@@ -12,6 +12,9 @@ import { BusinessHourNextReservationsComponent } from './components/business-hou
 import { BusinessHourReservationListComponent } from './components/business-hour-reservation-list/business-hour-reservation-list.component';
 import { BusinessHourReservationAddDialogComponent } from './components/business-hour-reservation-add-dialog/business-hour-reservation-add-dialog.component';
 import { BusinessHourReservationEditDialogComponent } from './components/business-hour-reservation-edit-dialog/business-hour-reservation-edit-dialog.component';
+import { BusinessHourMaxOccupancyEditDialogComponent } from './components/business-hour-max-occupancy-edit-dialog/business-hour-max-occupancy-edit-dialog.component';
+import { BusinessHourOrganizationChipComponent } from './components/business-hour-organization-chip/business-hour-organization-chip.component';
+import { BusinessHourOrganizationChipBottomSheetComponent } from './components/business-hour-organization-chip/components/business-hour-organization-chip-bottom-sheet/business-hour-organization-chip-bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { BusinessHourReservationEditDialogComponent } from './components/busines
     BusinessHourReservationListComponent,
     BusinessHourReservationAddDialogComponent,
     BusinessHourReservationEditDialogComponent,
+    BusinessHourMaxOccupancyEditDialogComponent,
+    BusinessHourOrganizationChipComponent,
+    BusinessHourOrganizationChipBottomSheetComponent,
   ],
   exports: [
     BusinessHourAdminReservationListComponent,

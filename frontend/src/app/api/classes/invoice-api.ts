@@ -10,8 +10,8 @@ export class InvoiceApi extends BaseApi {
     super(baseUrl + 'invoice');
   }
 
-  public getAll(): Observable<InvoiceListItemDto[]> {
-    return this.http.get<InvoiceListItemDto[]>(this.url);
+  public getAll(year: number): Observable<InvoiceListItemDto[]> {
+    return this.http.get<InvoiceListItemDto[]>(this.url + '/year/' + year);
   }
 
   public getById(id: number): Observable<InvoiceDto> {

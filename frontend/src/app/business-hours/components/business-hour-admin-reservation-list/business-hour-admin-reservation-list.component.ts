@@ -18,7 +18,7 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrls: ['./business-hour-admin-reservation-list.component.css'],
 })
 export class BusinessHourAdminReservationListComponent implements OnChanges {
-  @Input() title!: string;
+  public title = '';
   @Input() businessHour!: BusinessHoursDto;
   @Input() occupancy!: BusinessHourOccupancyDto;
   @Input() facilityType = ReservationFacilityType.Distance25mBlockManuel.toString();
@@ -40,15 +40,12 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
   }
 
   public ngOnInit() {
+    this.title = StringHelper.getReservationFacilityTypeString(this.facilityType as ReservationFacilityType);
     this.fetchReservations();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
     this.fetchReservations();
-  }
-
-  public getOccupancyString(): string {
-    return StringHelper.getOccupancyString(this.occupancy);
   }
 
   public isAddDisabled(): boolean {
@@ -96,14 +93,6 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
 
   public onUnlock(element: BusinessHourReservationDto) {
     this.setLocked(element, false);
-  }
-
-  public getOrganizationString(element: BusinessHourReservationDto): string {
-    if (!element.organization) {
-      return 'Einzelschütze (' + element.owner.firstName + ' ' + element.owner.lastName + ')';
-    }
-
-    return element.organization.name + ' (' + element.organization.abbreviation + ')';
   }
 
   private setLocked(element: BusinessHourReservationDto, isLocked: boolean) {

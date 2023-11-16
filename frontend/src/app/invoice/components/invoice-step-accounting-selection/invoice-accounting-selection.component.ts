@@ -37,7 +37,8 @@ export class InvoiceAccountingSelectionComponent {
 
     this.organizationMap.clear();
 
-    this.accountingApi.getList().subscribe((response) => {
+    const year = this.userData.getCurrentYear();
+    this.accountingApi.getList(year).subscribe((response) => {
       this.accountingList = response;
     });
   }
@@ -45,9 +46,11 @@ export class InvoiceAccountingSelectionComponent {
   public onAccountingChange() {
     this.disableOrganization = true;
     this.disableSubmitButton = true;
+
     this.accountingApi.getById(+this.selectedAccounting).subscribe((response) => {
       this.organizationMap.clear();
       this.accountingData = response;
+
       this.accountingData.items.forEach((item) => {
         this.organizationMap.set(item.organization.id, item.organization);
       });

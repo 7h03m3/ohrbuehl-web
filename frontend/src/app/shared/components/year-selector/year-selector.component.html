@@ -1,0 +1,7 @@
+<button mat-stroked-button>
+  <mat-select (valueChange)="onYearChange($event)" [(ngModel)]="selectedYear" class="year-select">
+    <mat-option *ngFor="let year of yearList" [value]="year">
+      {{year}}
+    </mat-option>
+  </mat-select>
+</button>

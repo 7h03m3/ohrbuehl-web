@@ -1,0 +1,61 @@
+<h1 mat-dialog-title>Benutzer {{data.userName}} bearbeiten</h1>
+
+<mat-dialog-content class="mat-typography">
+  <br>
+  <form (ngSubmit)="onSubmit()" [formGroup]="editForm">
+    <mat-form-field appearance="outline" class="firstname-form-field">
+      <mat-label>Vorname</mat-label>
+      <input formControlName="firstname" matInput>
+      <mat-error *ngIf="isError('firstname')">
+        {{ getErrorMessage('firstname') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="lastname-form-field">
+      <mat-label>Nachname</mat-label>
+      <input formControlName="lastname" matInput>
+      <mat-error *ngIf="isError('lastname')">
+        {{ getErrorMessage('lastname') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="common-form-field">
+      <mat-label>Strasse</mat-label>
+      <input formControlName="street" matInput>
+      <mat-error *ngIf="isError('street')">
+        {{ getErrorMessage('street') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="zip-form-field">
+      <mat-label>PLZ</mat-label>
+      <input formControlName="zip" matInput>
+      <mat-error *ngIf="isError('zip')">
+        {{ getErrorMessage('zip') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="location-form-field">
+      <mat-label>Ort</mat-label>
+      <input formControlName="location" matInput>
+      <mat-error *ngIf="isError('location')">
+        {{ getErrorMessage('location') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="common-form-field">
+      <mat-label>Telefonnummer</mat-label>
+      <input formControlName="mobile" matInput>
+      <mat-error *ngIf="isError('mobile')">
+        {{ getErrorMessage('mobile') }}
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-flat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!editForm.valid" color="primary" mat-flat-button>Speichern</button>
+</mat-dialog-actions>

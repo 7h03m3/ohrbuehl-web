@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export class InfoDialogData {
   text = '';
+  title = 'Information';
 }
 
 @Component({
@@ -13,5 +14,9 @@ export class InfoDialogData {
 export class InfoDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data.title == undefined) {
+      this.data.title = 'Information';
+    }
+  }
 }

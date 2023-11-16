@@ -6,7 +6,7 @@ import { Role } from '../shared/enums/role.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleGuardService  {
+export class RoleGuardService {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
@@ -29,7 +29,7 @@ export class RoleGuardService  {
       }
     }
 
-    this.router.navigate(['login']);
+    this.router.navigate(['/user/login']);
     return false;
   }
 

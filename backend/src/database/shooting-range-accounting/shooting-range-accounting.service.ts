@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { ShootingRangeAccountingEntity } from '../entities/shooting-range-accounting.entity';
 import { ShootingRangeAccountingUnitEntity } from '../entities/shooting-range-accounting-unit.entity';
 import { ShootingRangeAccountingCreateDto } from '../../shared/dtos/shooting-range-accounting-create.dto';
 import { ShootingRangeAccountingUnitDto } from '../../shared/dtos/shooting-range-accounting-unit.dto';
 import { ShootingRangeAccountingDto } from '../../shared/dtos/shooting-range-accounting.dto';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class ShootingRangeAccountingService {
@@ -16,11 +17,22 @@ export class ShootingRangeAccountingService {
     private accountingUnitRepository: Repository<ShootingRangeAccountingUnitEntity>,
   ) {}
 
-  findAll(): Promise<ShootingRangeAccountingEntity[]> {
-    return this.accountingRepository.find({ order: { start: 'DESC' } });
+  findAllByYear(year: number): Promise<ShootingRangeAccountingEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.accountingRepository.find({
+      order: { start: 'DESC' },
+      where: {
+        start: Between(timeStart, timeEnd),
+      },
+    });
   }
 
-  findAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
+  findAllDetailed(year: number): Promise<ShootingRangeAccountingEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.accountingRepository.find({
       order: { start: 'DESC' },
       relations: {
@@ -28,6 +40,9 @@ export class ShootingRangeAccountingService {
           organization: true,
           price: true,
         },
+      },
+      where: {
+        start: Between(timeStart, timeEnd),
       },
     });
   }

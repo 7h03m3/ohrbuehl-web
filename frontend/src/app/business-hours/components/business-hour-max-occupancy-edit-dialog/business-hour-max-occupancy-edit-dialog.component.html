@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Belegungsmaximum bearbeiten</h1>
+<br>
+<div mat-dialog-content>
+  <section *ngFor="let element of facilityTypes">
+    <div class="occupancy-label">{{getFacilityTypeString(element)}}</div>
+    <div class="occupancy-count">{{getCountString(element)}}</div>
+    <div class="occupancy-input-form">
+      <mat-form-field appearance="outline" class="occupancy-input">
+        <mat-label>Anzahl</mat-label>
+        <input [(ngModel)]="getOccupancy(element).max" [min]="getOccupancy(element).current" matInput required
+               type="number">
+        <div matSuffix>{{getOccupancyUnitString(element)}}&nbsp;</div>
+      </mat-form-field>
+    </div>
+
+  </section>
+
+</div>
+
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-flat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isFormValid()" color="primary" mat-flat-button>Speichern</button>
+</mat-dialog-actions>

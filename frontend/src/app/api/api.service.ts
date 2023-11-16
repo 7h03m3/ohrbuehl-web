@@ -19,6 +19,9 @@ import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
 import { NotificationApi } from './classes/notification-api';
 import { BusinessHourAdminApi } from './classes/business-hour-admin-api';
 import { BusinessHourOrganizationApi } from './classes/business-hour-organization-api';
+import { BusinessHourSingleShooterApi } from './classes/business-hour-single-shooter-api';
+import { BusinessHourApi } from './classes/business-hour-api';
+import { ContactMessageApi } from './classes/contact-message-api';
 
 @Injectable({
   providedIn: 'root',
@@ -38,8 +41,11 @@ export class ApiService {
   private readonly eventShiftCategoryApi: EventShiftCategoryApi;
   private readonly eventStaffPoolApi: EventStaffPoolApi;
   private readonly notificationApi: NotificationApi;
+  private readonly businessHoursApi: BusinessHourApi;
   private readonly businessHoursAdminApi: BusinessHourAdminApi;
   private readonly businessHoursOrganizationApi: BusinessHourOrganizationApi;
+  private readonly businessHoursSingleShooterApi: BusinessHourSingleShooterApi;
+  private readonly contactMessageApi: ContactMessageApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
@@ -55,8 +61,11 @@ export class ApiService {
     this.eventShiftCategoryApi = new EventShiftCategoryApi(this.baseUrl, this.http);
     this.eventStaffPoolApi = new EventStaffPoolApi(this.baseUrl, this.http);
     this.notificationApi = new NotificationApi(this.baseUrl, this.http);
+    this.businessHoursApi = new BusinessHourApi(this.baseUrl, this.http);
     this.businessHoursAdminApi = new BusinessHourAdminApi(this.baseUrl, this.http);
     this.businessHoursOrganizationApi = new BusinessHourOrganizationApi(this.baseUrl, this.http);
+    this.businessHoursSingleShooterApi = new BusinessHourSingleShooterApi(this.baseUrl, this.http);
+    this.contactMessageApi = new ContactMessageApi(this.baseUrl, this.http);
   }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -122,11 +131,23 @@ export class ApiService {
     return this.notificationApi;
   }
 
+  public getBusinessHours(): BusinessHourApi {
+    return this.businessHoursApi;
+  }
+
   public getBusinessHoursAdmin(): BusinessHourAdminApi {
     return this.businessHoursAdminApi;
   }
 
   public getBusinessHoursOrganization(): BusinessHourOrganizationApi {
     return this.businessHoursOrganizationApi;
+  }
+
+  public getBusinessHoursSingleShooter(): BusinessHourSingleShooterApi {
+    return this.businessHoursSingleShooterApi;
+  }
+
+  public getContactMessage(): ContactMessageApi {
+    return this.contactMessageApi;
   }
 }

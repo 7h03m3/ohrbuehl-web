@@ -10,9 +10,8 @@ export class BusinessHourAdminApi extends BaseApi {
     super(baseUrl + 'business-hours/admin');
   }
 
-  public getAll(): Observable<BusinessHoursDto[]> {
-    const date = new Date(Date.now());
-    return this.http.get<BusinessHoursDto[]>(this.url + '/list/' + date.getFullYear());
+  public getAll(year: number): Observable<BusinessHoursDto[]> {
+    return this.http.get<BusinessHoursDto[]>(this.url + '/list/' + year);
   }
 
   public getAllDates(): Observable<number[]> {
@@ -34,6 +33,10 @@ export class BusinessHourAdminApi extends BaseApi {
 
   public update(updateDto: BusinessHoursDto): Observable<BusinessHoursDto> {
     return this.http.put<BusinessHoursDto>(this.url, updateDto);
+  }
+
+  public updateMaxOccupancy(updateDto: BusinessHoursDto): Observable<BusinessHoursDto> {
+    return this.http.put<BusinessHoursDto>(this.url + '/maxOccupancy/', updateDto);
   }
 
   public delete(id: number): Observable<any> {

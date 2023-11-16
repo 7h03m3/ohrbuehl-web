@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { DefaultValuesService } from '../default/default-values/default-values.service';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { UserDto } from '../../shared/dtos/user.dto';
+import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 
 @Injectable()
 export class UsersService {
@@ -44,8 +44,33 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
-  public async findOneByName(name: string): Promise<UserEntity> | undefined {
-    return this.usersRepository.findOneBy({ userName: name });
+  public findOneUser(id: number): Promise<UserEntity> {
+    return this.usersRepository.findOne({
+      where: {
+        id: id,
+      },
+      select: {
+        id: true,
+        userName: true,
+        firstName: true,
+        lastName: true,
+        roles: true,
+        password: false,
+        email: true,
+        mobile: true,
+        street: true,
+        zip: true,
+        location: true,
+      },
+    });
+  }
+
+  public async findOneByUsername(username: string): Promise<UserEntity> | undefined {
+    return this.usersRepository.findOneBy({ userName: username });
+  }
+
+  public async findOneByEmail(email: string): Promise<UserEntity> | undefined {
+    return this.usersRepository.findOneBy({ email: email });
   }
 
   public async deleteUser(id: number): Promise<void> {
@@ -54,9 +79,13 @@ export class UsersService {
 
   public async createUser(dto: UserCreateDto): Promise<UserEntity> {
     const entity = new UserEntity();
-    entity.loadFromDto(dto);
+    entity.loadDto(dto);
 
-    entity.assignedOrganization = await this.getOrganization(dto.assignedOrganizationId);
+    return await this.createUserByEntity(entity);
+  }
+
+  public async createUserByEntity(entity: UserEntity): Promise<UserEntity> {
+    entity.assignedOrganization = await this.getOrganization(entity.assignedOrganizationId);
 
     await this.usersRepository.save(entity);
 
@@ -73,8 +102,29 @@ export class UsersService {
         userName: user.userName,
         firstName: user.firstName,
         lastName: user.lastName,
+        street: user.street,
+        zip: user.zip,
+        location: user.location,
+        email: user.email,
+        mobile: user.mobile,
         roles: user.roles,
         assignedOrganization: organization,
+      })
+      .where('id = :id', { id: user.id })
+      .execute();
+  }
+
+  public async updateAccountInformation(user: UserDto): Promise<any> {
+    await this.usersRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        street: user.street,
+        zip: user.zip,
+        location: user.location,
+        mobile: user.mobile,
       })
       .where('id = :id', { id: user.id })
       .execute();
@@ -89,6 +139,11 @@ export class UsersService {
       .set({
         firstName: user.firstName,
         lastName: user.lastName,
+        street: user.street,
+        zip: user.zip,
+        location: user.location,
+        email: user.email,
+        mobile: user.mobile,
         roles: user.roles,
         userName: user.userName,
         password: user.password,

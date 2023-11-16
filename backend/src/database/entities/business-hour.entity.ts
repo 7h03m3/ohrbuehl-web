@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BusinessHourReservationEntity } from './business-hour-reservation.entity';
 import { BusinessHourOccupancyEntity } from './business-hour-occupancy.entity';
 import { BusinessHoursCreateDto } from '../../shared/dtos/business-hours-create.dto';
+import { BusinessHoursDto } from '../../shared/dtos/business-hours.dto';
 
 @Entity('business-hours')
 export class BusinessHourEntity {
@@ -60,5 +61,14 @@ export class BusinessHourEntity {
     this.public = dto.public;
     this.enableReservation = dto.enableReservation;
     this.comment = dto.comment;
+  }
+
+  public fillMaxOccupancyFromDto(dto: BusinessHoursDto) {
+    this.distance25mBlockElectronicOccupancy.max = dto.distance25mBlockElectronicOccupancy.max;
+    this.distance25mBlockManualOccupancy.max = dto.distance25mBlockManualOccupancy.max;
+    this.distance50mElectronicOccupancy.max = dto.distance50mElectronicOccupancy.max;
+    this.distance50mManualOccupancy.max = dto.distance50mManualOccupancy.max;
+    this.distance100mOccupancy.max = dto.distance100mOccupancy.max;
+    this.distance300mOccupancy.max = dto.distance300mOccupancy.max;
   }
 }

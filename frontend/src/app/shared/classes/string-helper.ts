@@ -138,13 +138,13 @@ export class StringHelper {
       case ReservationFacilityType.Distance100m:
         return '100m';
       case ReservationFacilityType.Distance50mElectronic:
-        return '50m - elektronisch';
+        return '50m (elektronisch)';
       case ReservationFacilityType.Distance50mManuel:
-        return '50m - manuell';
+        return '50m (manuell)';
       case ReservationFacilityType.Distance25mBlockManuel:
-        return '25m-Block - manuell';
+        return '25m (Block manuell)';
       case ReservationFacilityType.Distance25mBlockElectronic:
-        return '25m-Block - elektronisch';
+        return '25m (Block elektronisch)';
     }
   }
 
@@ -207,6 +207,27 @@ export class StringHelper {
         return element.count + ' (elektronisch)';
       default:
         return element.count.toString();
+    }
+  }
+
+  public static getOccupancyUnitString(type: ReservationFacilityType, count: number): string {
+    switch (type) {
+      case ReservationFacilityType.Distance300m:
+      case ReservationFacilityType.Distance100m:
+      case ReservationFacilityType.Distance50mElectronic:
+      case ReservationFacilityType.Distance50mManuel:
+        if (count > 1) {
+          return 'Scheiben';
+        } else {
+          return 'Scheibe';
+        }
+      case ReservationFacilityType.Distance25mBlockManuel:
+      case ReservationFacilityType.Distance25mBlockElectronic:
+        if (count > 1) {
+          return 'Blöcke';
+        } else {
+          return 'Block';
+        }
     }
   }
 

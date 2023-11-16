@@ -17,20 +17,20 @@ export class EventApi extends BaseApi {
     return this.http.get<EventDto[]>(this.url + '/public/' + startDate + '/' + categoryId);
   }
 
-  public getAll(): Observable<EventDto[]> {
-    return this.http.get<EventDto[]>(this.url);
+  public getAllOfYear(year: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/byYear/' + year);
   }
 
-  public getAllWithShifts(): Observable<EventDto[]> {
-    return this.http.get<EventDto[]>(this.url + '/withShifts/');
+  public getAllWithShiftsOfYear(year: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/withShifts/' + year);
   }
 
-  public getAllWithShiftsByCategoryId(categoryId: number): Observable<EventDto[]> {
-    return this.http.get<EventDto[]>(this.url + '/withShiftsByCategoryId/' + categoryId);
+  public getAllWithShiftsByCategoryId(categoryId: number, year: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/withShiftsByCategoryId/' + categoryId + '/' + year);
   }
 
-  public getAllWithShiftsByOrganizationId(organizationId: number): Observable<EventDto[]> {
-    return this.http.get<EventDto[]>(this.url + '/withShiftsByOrganization/' + organizationId);
+  public getAllWithShiftsByOrganizationId(organizationId: number, year: number): Observable<EventDto[]> {
+    return this.http.get<EventDto[]>(this.url + '/withShiftsByOrganization/' + organizationId + '/' + year);
   }
 
   public getById(id: number): Observable<EventDto> {

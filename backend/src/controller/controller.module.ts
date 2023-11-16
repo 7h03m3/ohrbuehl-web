@@ -36,6 +36,9 @@ import { BusinessHoursModule } from '../database/business-hours/business-hours.m
 import { ConfigModule } from '@nestjs/config';
 import { BusinessHoursConfigService } from './business-hours/helpers/business-hours-config.service';
 import { BusinessHoursHelperService } from './business-hours/helpers/business-hours-helper.service';
+import { MailModule } from '../mail/mail.module';
+import { ContactMessageController } from './contact-message/contact-message.controller';
+import { ContactMessageModule } from '../database/contact-message/contact-message.module';
 
 @Module({
   imports: [
@@ -57,6 +60,8 @@ import { BusinessHoursHelperService } from './business-hours/helpers/business-ho
     SharedModule,
     BusinessHoursModule,
     ConfigModule,
+    MailModule,
+    ContactMessageModule,
   ],
   providers: [BusinessHoursConfigService, BusinessHoursHelperService],
   controllers: [
@@ -77,6 +82,7 @@ import { BusinessHoursHelperService } from './business-hours/helpers/business-ho
     BusinessHoursOrganizationController,
     BusinessHoursSingleController,
     BusinessHoursAdminController,
+    ContactMessageController,
   ],
   exports: [],
 })

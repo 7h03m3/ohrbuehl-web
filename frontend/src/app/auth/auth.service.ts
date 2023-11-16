@@ -4,7 +4,6 @@ import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { Role } from '../shared/enums/role.enum';
 import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { OrganizationApi } from '../api/classes/organization-api';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +14,8 @@ export class AuthService {
   private readonly userRolesKey = 'userRoles';
   private readonly userAssignedOrganizationKey = 'userAssignedOrganizationId';
   private managingOrganizationId = 0;
-  private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, public jwtHelper: JwtHelperService) {
-    this.organizationApi = this.apiService.getOrganization();
-  }
+  constructor(private apiService: ApiService, public jwtHelper: JwtHelperService) {}
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
     return this.apiService.login(username, password).pipe(
@@ -102,6 +98,10 @@ export class AuthService {
     return this.isRole(Role.EventOrganizer);
   }
 
+  public isSingleShooter(): boolean {
+    return this.isRole(Role.SingleShooter);
+  }
+
   public getUserAccessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
   }
@@ -134,6 +134,8 @@ export class AuthService {
         return Role.Admin;
       case Role.Cashier:
         return Role.Cashier;
+      case Role.SingleShooter:
+        return Role.SingleShooter;
       default:
         return Role.Anonymous;
     }

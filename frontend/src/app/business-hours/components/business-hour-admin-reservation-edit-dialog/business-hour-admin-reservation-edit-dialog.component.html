@@ -14,6 +14,7 @@
   <mat-form-field appearance="outline" class="select-width">
     <mat-label>Anzahl</mat-label>
     <input [(ngModel)]="data.reservation.count" matInput max="{{data.maxCount}}" min="1" required type="number">
+    <div matSuffix>{{getOccupancyUnitString()}}&nbsp;</div>
     <mat-hint align="end">Maximal 1 - {{data.maxCount}}</mat-hint>
   </mat-form-field>
 

@@ -10,6 +10,8 @@ import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occ
 import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edit-dialog/business-hour-admin-edit-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BusinessHourHelperService } from '../../classes/business-hour-helper.service';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'business-hour-admin-list',
@@ -38,6 +40,8 @@ export class BusinessHourAdminListComponent {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private helper: BusinessHourHelperService,
+    private userData: UserLocalData,
   ) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
   }
@@ -49,6 +53,10 @@ export class BusinessHourAdminListComponent {
   public ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  public onTimeRangeChange() {
+    this.fetch();
   }
 
   public getDateString(element: BusinessHoursDto): string {
@@ -94,8 +102,9 @@ export class BusinessHourAdminListComponent {
   }
 
   private fetch() {
-    this.businessHourApi.getAll().subscribe((response) => {
-      this.dataSource.data = response;
+    const year = this.userData.getCurrentYear();
+    this.businessHourApi.getAll(year).subscribe((response) => {
+      this.dataSource.data = this.helper.filterBusinessHourList(response);
     });
   }
 }

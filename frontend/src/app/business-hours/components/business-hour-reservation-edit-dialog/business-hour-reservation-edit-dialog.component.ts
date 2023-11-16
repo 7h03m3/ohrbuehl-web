@@ -7,6 +7,7 @@ import { BusinessHourHelperService } from '../../classes/business-hour-helper.se
 
 export interface BusinessHourReservationEditDialogData {
   reservation: BusinessHourReservationDto;
+  isSingleShooter: boolean;
 }
 
 @Component({
@@ -30,6 +31,13 @@ export class BusinessHourReservationEditDialogComponent {
     );
 
     this.countMax = occupancy.max - occupancy.current + this.data.reservation.count;
+
+    if (this.data.isSingleShooter) {
+      this.countMax = BusinessHourHelperService.limitSingleShooterMaxCount(
+        this.data.reservation.facilityType,
+        this.countMax,
+      );
+    }
   }
 
   public onSubmit() {
@@ -46,6 +54,10 @@ export class BusinessHourReservationEditDialogComponent {
 
   public getFacilityTypeString(): string {
     return StringHelper.getReservationFacilityTypeString(this.data.reservation.facilityType);
+  }
+
+  public getOccupancyString(): string {
+    return StringHelper.getOccupancyUnitString(this.data.reservation.facilityType, this.data.reservation.count);
   }
 
   public getDateString(): string {

@@ -4,7 +4,6 @@ import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './user/components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
@@ -12,13 +11,12 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-intl';
 import { UrlService } from './shared/services/url.service';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, UserPasswordChangeComponent],
+  declarations: [AppComponent],
   imports: [BrowserModule, BrowserAnimationsModule, CdkTreeModule, HttpClientModule, MaterialModule, AppRoutingModule],
   providers: [
     DatePipe,

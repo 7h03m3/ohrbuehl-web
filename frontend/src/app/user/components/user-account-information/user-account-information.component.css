@@ -1,0 +1,23 @@
+.align-center {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-grid-list {
+  width: 30em;
+}
+
+mat-grid-tile {
+}
+
+.mat-grid-tile-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

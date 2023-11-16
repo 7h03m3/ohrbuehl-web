@@ -38,4 +38,8 @@ export class BusinessHoursConfigService {
     entity.distance100mOccupancy.max = this.get100mCount();
     entity.distance300mOccupancy.max = this.get300mCount();
   }
+
+  public getSingleShooterEventLimit(): number {
+    return this.configService.get<number>('shootingRange.singleShooterEventLimit');
+  }
 }

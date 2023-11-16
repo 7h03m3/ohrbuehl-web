@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '../../../api/api.service';
 import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
-import { Moment } from 'moment';
+import { BusinessHourHelperService } from '../../classes/business-hour-helper.service';
 
 @Component({
   selector: 'app-business-hour-admin-daily-view',
   templateUrl: './business-hour-admin-daily-view.component.html',
   styleUrls: ['./business-hour-admin-daily-view.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BusinessHourAdminDailyViewComponent {
   public businessHourList = new Array<BusinessHoursDto>();
@@ -40,24 +41,23 @@ export class BusinessHourAdminDailyViewComponent {
     this.fetch();
   }
 
-  public dateFilter = (dateMoment: Moment | null): boolean => {
+  public dateFilter = (dateMoment: Date | null): boolean => {
     if (!dateMoment || !this.dateList) {
       return false;
     }
 
     const date = new Date(dateMoment.valueOf());
 
-    for (const current of this.dateList) {
-      if (
-        current.getFullYear() == date.getFullYear() &&
-        current.getMonth() == date.getMonth() &&
-        current.getDate() == date.getDate()
-      ) {
-        return true;
-      }
+    return BusinessHourHelperService.isStartInDateList(date.getTime(), this.dateList);
+  };
+
+  public dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
+    if (view === 'month') {
+      const isInList = BusinessHourHelperService.isStartInDateList(cellDate.valueOf(), this.dateList);
+      return isInList ? 'date-picker-date-class' : '';
     }
 
-    return false;
+    return '';
   };
 
   public onDateChange(event: MatDatepickerInputEvent<any>) {
@@ -68,14 +68,6 @@ export class BusinessHourAdminDailyViewComponent {
 
   public onReservationEdit(businessHour: BusinessHoursDto) {
     this.router.navigate(['edit', { id: businessHour.id }], { relativeTo: this.route });
-  }
-
-  public getOrganizationString(element: BusinessHourReservationDto): string {
-    if (element.organization) {
-      return element.organization.abbreviation;
-    }
-
-    return 'Einzelschütze (' + element.owner.firstName + ' ' + element.owner.lastName + ')';
   }
 
   public getDateString(): string {

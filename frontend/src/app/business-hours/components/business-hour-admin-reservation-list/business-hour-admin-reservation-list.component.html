@@ -1,74 +1,76 @@
 <mat-card class="main-cards" class="card" xmlns="http://www.w3.org/1999/html">
-    <mat-card-header>
-        <mat-card-title>{{title}} ({{getOccupancyString()}})</mat-card-title>
-        <span class="spacer"></span>
-        <button (click)="onAdd()" [disabled]="isAddDisabled()" color="accent" mat-stroked-button>
-            <mat-icon>add</mat-icon>
-            Hinzufügen
-        </button>
-    </mat-card-header>
-    <mat-card-content>
-        <table *ngIf="reservations.length != 0" [dataSource]="reservations" mat-table>
+  <mat-card-header>
+    <mat-card-title>{{title}}</mat-card-title>
+    <span class="spacer"></span>
+    <button (click)="onAdd()" [disabled]="isAddDisabled()" color="accent" mat-stroked-button>
+      <mat-icon>add</mat-icon>
+      Hinzufügen
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <table *ngIf="reservations.length != 0" [dataSource]="reservations" mat-table>
 
-            <ng-container matColumnDef="number">
-                <th *matHeaderCellDef mat-header-cell>Nr.</th>
-                <td *matCellDef="let element;       let i = index" mat-cell>{{i + 1}}</td>
-            </ng-container>
+      <ng-container matColumnDef="number">
+        <th *matHeaderCellDef mat-header-cell>Nr.</th>
+        <td *matCellDef="let element;       let i = index" mat-cell>{{i + 1}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="owner">
-                <th *matHeaderCellDef mat-header-cell>Besitzer</th>
-                <td *matCellDef="let element" mat-cell>{{getOwnerString(element)}}</td>
-            </ng-container>
+      <ng-container matColumnDef="owner">
+        <th *matHeaderCellDef mat-header-cell>Besitzer</th>
+        <td *matCellDef="let element" mat-cell>{{getOwnerString(element)}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="organization">
-                <th *matHeaderCellDef mat-header-cell>Verein</th>
-                <td *matCellDef="let element" mat-cell>{{getOrganizationString(element)}}</td>
-            </ng-container>
+      <ng-container matColumnDef="organization">
+        <th *matHeaderCellDef mat-header-cell>Verein</th>
+        <td *matCellDef="let element" mat-cell>
+          <business-hour-organization-chip [reservation]="element"/>
+        </td>
+      </ng-container>
 
-            <ng-container matColumnDef="eventType">
-                <th *matHeaderCellDef mat-header-cell>Typ</th>
-                <td *matCellDef="let element" mat-cell>{{element.eventType}}</td>
-            </ng-container>
+      <ng-container matColumnDef="eventType">
+        <th *matHeaderCellDef mat-header-cell>Typ</th>
+        <td *matCellDef="let element" mat-cell>{{element.eventType}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="count">
-                <th *matHeaderCellDef mat-header-cell>Anzahl</th>
-                <td *matCellDef="let element" mat-cell>{{element.count}}</td>
-            </ng-container>
+      <ng-container matColumnDef="count">
+        <th *matHeaderCellDef mat-header-cell>Anzahl</th>
+        <td *matCellDef="let element" mat-cell>{{element.count}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="comment">
-                <th *matHeaderCellDef mat-header-cell></th>
-                <td *matCellDef="let element" mat-cell>{{element.comment}}</td>
-            </ng-container>
+      <ng-container matColumnDef="comment">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let element" mat-cell>{{element.comment}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="action">
-                <th *matHeaderCellDef mat-header-cell></th>
-                <td *matCellDef="let element" mat-cell>
-                    <button (click)="onUnlock(element)" *ngIf="element.locked" mat-icon-button>
-                        <mat-icon>lock</mat-icon>
-                    </button>
-                    <button *ngIf="!element.locked" [matMenuTriggerFor]="menu" mat-icon-button>
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button (click)="onEdit(element)" mat-menu-item>
-                            <mat-icon>edit</mat-icon>
-                            <span>Bearbeiten</span>
-                        </button>
-                        <button (click)="onDelete(element)" mat-menu-item>
-                            <mat-icon>delete</mat-icon>
-                            <span>Löschen</span>
-                        </button>
-                        <button (click)="onLock(element)" mat-menu-item>
-                            <mat-icon>lock</mat-icon>
-                            <span>Sperren</span>
-                        </button>
-                    </mat-menu>
-                </td>
-            </ng-container>
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let element" mat-cell>
+          <button (click)="onUnlock(element)" *ngIf="element.locked" mat-icon-button>
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button *ngIf="!element.locked" [matMenuTriggerFor]="menu" mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="onEdit(element)" mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Bearbeiten</span>
+            </button>
+            <button (click)="onDelete(element)" mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Löschen</span>
+            </button>
+            <button (click)="onLock(element)" mat-menu-item>
+              <mat-icon>lock</mat-icon>
+              <span>Sperren</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
 
-            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-        </table>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
 
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

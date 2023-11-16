@@ -65,9 +65,9 @@ export class EventsController {
 
   @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get()
-  async getAll(): Promise<EventEntity[]> {
-    return await this.eventService.findAll();
+  @Get('byYear/:year')
+  async getAllOfYear(@Param('year') year: number): Promise<EventEntity[]> {
+    return await this.eventService.findAllByYear(year);
   }
 
   @Roles(Role.Admin, Role.EventOrganizer, Role.OrganizationManager)
@@ -79,20 +79,21 @@ export class EventsController {
 
   @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('withShifts')
-  async getAllWithShifts(): Promise<EventEntity[]> {
-    return await this.eventService.findAllWithShifts();
+  @Get('withShifts/:year')
+  async getAllWithShifts(@Param('year') year: number): Promise<EventEntity[]> {
+    return await this.eventService.findAllWithShifts(year);
   }
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('withShiftsByOrganization/:organizationId')
+  @Get('withShiftsByOrganization/:organizationId/:year')
   async getAllWithShiftsByOrganizationId(
     @Param('organizationId') organizationId: number,
+    @Param('year') year: number,
     @Request() req: any,
   ): Promise<EventEntity[]> {
     await this.authService.checkOrganizationAccess(organizationId, req);
-    const eventList = await this.eventService.findAllWithShifts();
+    const eventList = await this.eventService.findAllWithShifts(year);
 
     this.filterShiftsByOrganization(eventList, organizationId);
 
@@ -101,12 +102,13 @@ export class EventsController {
 
   @Roles(Role.Admin, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('withShiftsByCategoryId/:categoryId')
+  @Get('withShiftsByCategoryId/:categoryId/:year')
   async getAllWithShiftsByCategoryId(
     @Param('categoryId') categoryId: number,
+    @Param('year') year: number,
     @Request() req: any,
   ): Promise<EventEntity[]> {
-    return await this.eventService.findAllWithShiftsByCategoryId(categoryId);
+    return await this.eventService.findAllWithShiftsByCategoryId(categoryId, year);
   }
 
   @Roles(Role.Admin, Role.EventOrganizer)
@@ -159,7 +161,8 @@ export class EventsController {
   ): Promise<any> {
     await this.authService.checkOrganizationAccess(organizationId, req);
 
-    const eventList = await this.eventService.findAll();
+    const date = new Date(Date.now());
+    const eventList = await this.eventService.findAllByYear(date.getFullYear());
     if (eventList.length == 0) {
       const errorMessage = 'no events found';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
@@ -198,7 +201,11 @@ export class EventsController {
   ): Promise<any> {
     await this.authService.checkOrganizationAccess(organizationId, req);
 
-    const staffList = await this.organizationMemberService.findAllDetailedByOrganizationId(organizationId);
+    const date = new Date(Date.now());
+    const staffList = await this.organizationMemberService.findAllDetailedByOrganizationId(
+      organizationId,
+      date.getFullYear(),
+    );
     if (staffList.length == 0) {
       const errorMessage = 'no staff list found';
       throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);

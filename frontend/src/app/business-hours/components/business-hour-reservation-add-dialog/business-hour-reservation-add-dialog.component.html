@@ -4,13 +4,11 @@
     <br>
     <mat-form-field appearance="outline" class="form-element">
       <mat-label>1. Datum wählen</mat-label>
-      <input (dateChange)="onDateChange($event)" [matDatepicker]="addDatePicker"
+      <input (dateChange)="onDateChange($event)" [matDatepickerFilter]="dateFilter" [matDatepicker]="addDatePicker"
              disabled matInput name="date" required>
       <mat-datepicker-toggle [for]="addDatePicker" matIconSuffix matTooltip="Datum wählen">
         <mat-icon color="accent" matDatepickerToggleIcon>today</mat-icon>
       </mat-datepicker-toggle>
-
-      <!-- [matDatepickerFilter]="dateFilter" -->
       <mat-datepicker #addDatePicker [dateClass]="dateClass" disabled="false"></mat-datepicker>
     </mat-form-field>
 
@@ -35,8 +33,8 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-element">
-      <mat-label>4. Anlassart wählen</mat-label>
+    <mat-form-field *ngIf="!data.isSingleShooter" appearance="outline" class="form-element">
+      <mat-label>Anlassart wählen</mat-label>
       <mat-select (valueChange)="onEventTypeChange($event)" [disabled]="selectedEventType == undefined"
                   [value]="selectedEventType" name="eventType" required>
         <mat-option *ngFor="let eventType of eventList" [value]="eventType">
@@ -46,10 +44,11 @@
     </mat-form-field>
     <br>
     <mat-form-field appearance="outline" class="form-element">
-      <mat-label>5. Anzahl eingeben</mat-label>
+      <mat-label>Anzahl eingeben</mat-label>
       <input [(ngModel)]="count" [disabled]="countMax == 0" [max]="countMax" [min]="1" matInput name="count" required
              type="number">
-      <mat-hint *ngIf="countMax != 0">1 - {{countMax}}</mat-hint>
+      <div matSuffix>{{getOccupancyString()}}&nbsp;</div>
+      <mat-hint *ngIf="countMax != 0" align="end">1 - {{countMax}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-element">

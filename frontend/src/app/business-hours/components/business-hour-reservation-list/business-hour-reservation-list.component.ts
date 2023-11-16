@@ -14,7 +14,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { MatSort } from '@angular/material/sort';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'business-hour-reservation-list',
@@ -33,7 +32,7 @@ export class BusinessHourReservationListComponent implements OnChanges, AfterVie
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
 
-  constructor(private dialog: MatDialog) {}
+  constructor() {}
 
   public ngOnChanges(changes: SimpleChanges) {
     this.dataSource.data = this.reservationList;

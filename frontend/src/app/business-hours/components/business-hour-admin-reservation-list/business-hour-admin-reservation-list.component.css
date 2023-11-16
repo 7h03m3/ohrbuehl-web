@@ -5,3 +5,23 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+.mat-column-number {
+  width: 1em;
+}
+
+.mat-column-organization {
+  width: 20em;
+}
+
+.mat-column-eventType {
+  width: 5em;
+}
+
+.mat-column-count {
+  width: 5em;
+}
+
+.mat-column-comment {
+  width: 20em;
+}

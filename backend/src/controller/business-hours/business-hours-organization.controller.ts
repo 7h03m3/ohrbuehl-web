@@ -65,7 +65,7 @@ export class BusinessHoursOrganizationController {
     return this.businessHours.deleteReservation(id);
   }
 
-  @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
+  @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post('')
   public async addReservation(
@@ -83,7 +83,7 @@ export class BusinessHoursOrganizationController {
     return this.businessHours.addReservation(dto);
   }
 
-  @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
+  @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Put('')
   public async updateReservation(

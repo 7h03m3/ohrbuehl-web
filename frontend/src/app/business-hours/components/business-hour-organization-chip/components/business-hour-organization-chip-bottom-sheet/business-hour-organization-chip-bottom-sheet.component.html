@@ -1,0 +1,23 @@
+<div *ngIf="data.organizationId != null">
+  <h3>{{data.organization.name}}</h3>
+  <section>
+    <div class="section-item-label">Vereinsnummer</div>
+    <div class="section-item">&nbsp;:&nbsp;</div>
+    <div class="section-item">{{data.organization.vvaId}}</div>
+  </section>
+</div>
+
+<div *ngIf="data.organizationId == null">
+  <h3>{{data.owner.firstName}} {{data.owner.lastName}}</h3>
+  <section>
+    <div class="section-item-label">Telefonnummer</div>
+    <div class="section-item">&nbsp;:&nbsp;</div>
+    <div class="section-item">{{data.owner.mobile}}</div>
+  </section>
+
+  <section>
+    <div class="section-item-label">E-Mail</div>
+    <div class="section-item">&nbsp;:&nbsp;</div>
+    <div class="section-item">{{data.owner.email}}</div>
+  </section>
+</div>

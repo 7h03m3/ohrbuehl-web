@@ -7,10 +7,14 @@ import { OrganizationsService } from '../../database/organizations/organizations
 import { OrganizationEntity } from '../../database/entities/organization.entity';
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { OrganizationDto } from '../../shared/dtos/organization.dto';
+import { BusinessHoursReservationService } from '../../database/business-hours/business-hours-reservation.service';
 
 @Controller('organizations')
 export class OrganizationsController {
-  constructor(private readonly organizationsService: OrganizationsService) {}
+  constructor(
+    private readonly organizationsService: OrganizationsService,
+    private reservationService: BusinessHoursReservationService,
+  ) {}
 
   @Get()
   getAll(): Promise<OrganizationEntity[]> {
@@ -79,6 +83,7 @@ export class OrganizationsController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<any> {
+    await this.reservationService.deleteByOrganization(+id);
     return this.organizationsService.delete(id);
   }
 }

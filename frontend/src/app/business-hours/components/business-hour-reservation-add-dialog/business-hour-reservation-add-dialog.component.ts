@@ -1,7 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
-import { Moment } from 'moment';
 import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -14,12 +13,14 @@ import { BusinessHourHelperService } from '../../classes/business-hour-helper.se
 export interface BusinessHourReservationAddDialogData {
   dates: BusinessHoursDto[];
   reservation: BusinessHourReservationDto;
+  isSingleShooter: boolean;
 }
 
 @Component({
   selector: 'business-hour-reservation-add-dialog',
   templateUrl: './business-hour-reservation-add-dialog.component.html',
   styleUrls: ['./business-hour-reservation-add-dialog.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BusinessHourReservationAddDialogComponent {
   public businessHourList = new Array<BusinessHoursDto>();
@@ -39,18 +40,14 @@ export class BusinessHourReservationAddDialogComponent {
 
   public dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
     if (view === 'month') {
-      const date = new Date(+cellDate.valueOf());
-      const day = +date.getDate();
-
-      const result = day == 1 || day == 20;
-      console.log(day + ' = ' + result);
-      return day == 1 || day == 20 ? 'add-date-class' : '';
+      const isInList = BusinessHourHelperService.isStartInBusinessHourList(cellDate.valueOf(), this.data.dates);
+      return isInList ? 'add-date-class' : '';
     }
 
     return '';
   };
 
-  public dateFilter = (dateMoment: Moment | null): boolean => {
+  public dateFilter = (dateMoment: Date | null): boolean => {
     if (!dateMoment || !this.data.dates) {
       return false;
     }
@@ -105,6 +102,11 @@ export class BusinessHourReservationAddDialogComponent {
 
     this.count = 1;
     this.countMax = occupancy.max - occupancy.current;
+
+    if (this.data.isSingleShooter) {
+      this.countMax = BusinessHourHelperService.limitSingleShooterMaxCount(this.selectedFacilityType, this.countMax);
+    }
+
     this.selectedEventType = ReservationEventType.FU;
   }
 
@@ -129,6 +131,14 @@ export class BusinessHourReservationAddDialogComponent {
 
   public getEventTypeString(eventTypeString: string): string {
     return StringHelper.getEventTypeString(eventTypeString as ReservationEventType);
+  }
+
+  public getOccupancyString(): string {
+    if (this.selectedFacilityType != undefined) {
+      return StringHelper.getOccupancyUnitString(this.selectedFacilityType, this.count);
+    } else {
+      return '';
+    }
   }
 
   public isFormValid(): boolean {

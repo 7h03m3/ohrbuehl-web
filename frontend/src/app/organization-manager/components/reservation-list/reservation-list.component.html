@@ -6,20 +6,13 @@
   </button>
 </h1>
 
+<app-time-range-selector (changeEvent)="onTimeRangeChange()"></app-time-range-selector>
 
-<mat-card>
-  <mat-card-content>
-    <business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
-                                    [reservationList]="reservationList"></business-hour-reservation-list>
-  </mat-card-content>
-</mat-card>
+<br>
 
-<mat-form-field class="example-full-width">
-  <mat-label>Choose a date</mat-label>
-  <input [matDatepicker]="picker" matInput>
-  <mat-hint>MM/DD/YYYY</mat-hint>
-  <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
-  <mat-datepicker #picker [dateClass]="dateClass"></mat-datepicker>
-</mat-form-field>
+<business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
+                                [reservationList]="reservationList"></business-hour-reservation-list>
+
+
 
 

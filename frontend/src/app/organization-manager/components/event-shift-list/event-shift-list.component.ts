@@ -11,6 +11,7 @@ import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 import { AuthService } from '../../../auth/auth.service';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
 import { EventCategoryApi } from '../../../api/classes/event-category-api';
+import { EventHelper } from '../../classes/event-helper';
 
 @Component({
   selector: 'app-event-shift-list',
@@ -33,6 +34,7 @@ export class EventShiftListComponent {
     private userLocalData: UserLocalData,
     private router: Router,
     private authService: AuthService,
+    private helper: EventHelper,
   ) {
     this.eventApi = this.apiService.getEvent();
     this.poolApi = this.apiService.getStaffPool();
@@ -57,6 +59,10 @@ export class EventShiftListComponent {
 
   public onShiftPlaning(element: EventShiftListItemDto) {
     this.router.navigate(['/organization-manager/event-shift-edit', { eventId: element.event.id }]);
+  }
+
+  public onTimeRangeChange() {
+    this.fetch();
   }
 
   public getTimeString(element: EventShiftListItemDto): string {
@@ -92,7 +98,9 @@ export class EventShiftListComponent {
     allCategory.name = 'Alle';
     this.categoryList.push(allCategory);
 
-    this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
+    const year = this.userLocalData.getCurrentYear();
+    this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId, year).subscribe((response) => {
+      response = this.helper.filterEventList(response);
       this.eventList = new Array<EventShiftListItemDto>();
       response.forEach((event) => {
         if (this.selectedCategory == 0 || event.categoryId == this.selectedCategory) {

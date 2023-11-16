@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { OrganizationMemberEntity } from '../entities/organization-member.entity';
 import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-member-create.dto';
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class OrganizationMemberService {
@@ -33,11 +34,17 @@ export class OrganizationMemberService {
     });
   }
 
-  public findAllDetailedByOrganizationId(id: number): Promise<OrganizationMemberEntity[]> {
+  public findAllDetailedByOrganizationId(id: number, year: number): Promise<OrganizationMemberEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.memberRepository.find({
       relations: { organization: true, eventShifts: true, staffPool: true },
       where: {
         organizationId: id,
+        eventShifts: {
+          start: Between(timeStart, timeEnd),
+        },
       },
       order: {
         firstName: 'ASC',

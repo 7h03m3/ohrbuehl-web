@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './user/components/login/login.component';
 import { RoleGuardService } from './auth/role-guard.service';
 import { Role } from './shared/enums/role.enum';
-import { UserPasswordChangeComponent } from './user/components/user-password-change/user-password-change.component';
 
 const routes: Routes = [
   {
@@ -15,21 +13,9 @@ const routes: Routes = [
     path: 'public',
     loadChildren: () => import('./public/public.module').then((m) => m.PublicModule),
   },
-  { path: 'login', component: LoginComponent },
   {
-    path: 'user/password-change',
-    canActivate: [RoleGuardService],
-    component: UserPasswordChangeComponent,
-    data: {
-      expectedRole: [
-        Role.Cashier,
-        Role.Admin,
-        Role.OrganizationManager,
-        Role.ShootingRangeManager,
-        Role.EventOrganizer,
-        Role.User,
-      ],
-    },
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
   {
     path: 'shooting-range',
@@ -57,11 +43,27 @@ const routes: Routes = [
     },
   },
   {
+    path: 'contact-message',
+    loadChildren: () => import('./contact-messages/contact-message.module').then((m) => m.ContactMessageModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: [Role.Admin, Role.ShootingRangeManager],
+    },
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
     canActivate: [RoleGuardService],
     data: {
       expectedRole: Role.Admin,
+    },
+  },
+  {
+    path: 'single-shooter',
+    loadChildren: () => import('./single-shooter/single-shooter.module').then((m) => m.SingleShooterModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: Role.SingleShooter,
     },
   },
 ];

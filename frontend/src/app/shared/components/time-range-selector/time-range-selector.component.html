@@ -1,0 +1,13 @@
+<div class="button-container">
+  <span class="spacer"></span>
+
+  <button class="time-range-button" mat-stroked-button>
+    <mat-select (valueChange)="onTimeRangeChange($event)" [(ngModel)]="selectedTimeRange" class="year-select">
+      <mat-option *ngFor="let range of timeRanges" [value]="range">
+        {{getTimeRangeString(range)}}
+      </mat-option>
+    </mat-select>
+  </button>
+
+  <app-year-selector (yearChangeEvent)="onYearChange($event)"></app-year-selector>
+</div>

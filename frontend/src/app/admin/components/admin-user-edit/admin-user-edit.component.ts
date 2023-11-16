@@ -49,12 +49,9 @@ export class AdminUserEditComponent implements OnInit {
 
       if (idString != undefined) {
         this.user.id = Number(idString);
-        this.user.password = '';
         this.userApi.getById(this.user.id).subscribe((data) => {
-          this.user.userName = data.userName;
-          this.user.firstName = data.firstName;
-          this.user.lastName = data.lastName;
-          this.user.roles = data.roles;
+          this.user = data;
+          this.user.password = '';
 
           if (data.assignedOrganizationId != undefined) {
             this.user.assignedOrganizationId = data.assignedOrganizationId;
@@ -89,7 +86,7 @@ export class AdminUserEditComponent implements OnInit {
   }
 
   public getRoleText(role: string): string {
-    return this.userLocalData.convertRoleText(role);
+    return UserLocalData.convertRoleText(role);
   }
 
   private updateDisableOrganization(role: Role) {

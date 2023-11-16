@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationSource } from '../enums/notification-source.enum';
+import { ListTimeRange } from '../enums/list-time-range';
 
 @Injectable({
   providedIn: 'root',
@@ -7,6 +8,8 @@ import { NotificationSource } from '../enums/notification-source.enum';
 export class UserLocalData {
   private eventCategoryKey = 'eventCategoryId';
   private currentDateKey = 'currentDate';
+  private currentYearKey = 'currentYear';
+  private currentListItemRangeKey = 'currentListItemRange';
 
   constructor() {}
 
@@ -19,6 +22,56 @@ export class UserLocalData {
       default:
         return '';
     }
+  }
+
+  public static convertRoleText(role: string) {
+    switch (role) {
+      case 'admin':
+        return 'Administrator';
+      case 'user':
+        return 'Benutzer';
+      case 'shootingRangeManager':
+        return 'Standwart';
+      case 'organizationManager':
+        return 'Vereinspräsident';
+      case 'eventOrganizer':
+        return 'Anlassorganisator';
+      case 'cashier':
+        return 'Kassier';
+      case 'singleShooter':
+        return 'Einzelschütze';
+      default:
+        return '';
+    }
+  }
+
+  public setCurrentListItemRange(listRange: ListTimeRange) {
+    localStorage.setItem(this.currentListItemRangeKey, listRange.toString());
+  }
+
+  public getCurrentListItemRange(): ListTimeRange {
+    const itemRange = localStorage.getItem(this.currentListItemRangeKey);
+    if (itemRange == null) {
+      this.setCurrentListItemRange(ListTimeRange.All);
+      return ListTimeRange.All;
+    }
+
+    return itemRange as ListTimeRange;
+  }
+
+  public setCurrentYear(newSelectYear: number) {
+    sessionStorage.setItem(this.currentYearKey, newSelectYear.toString());
+  }
+
+  public getCurrentYear(): number {
+    const yearString = sessionStorage.getItem(this.currentYearKey);
+    if (yearString == null) {
+      const date = new Date(Date.now());
+      this.setCurrentYear(date.getFullYear());
+      return date.getFullYear();
+    }
+
+    return parseInt(yearString);
   }
 
   public getEventCategory(): number {
@@ -49,25 +102,6 @@ export class UserLocalData {
     const now = new Date(Date.now());
     this.setDate(now);
     return now;
-  }
-
-  public convertRoleText(role: string) {
-    switch (role) {
-      case 'admin':
-        return 'Administrator';
-      case 'user':
-        return 'Benutzer';
-      case 'shootingRangeManager':
-        return 'Standwart';
-      case 'organizationManager':
-        return 'Vereinspräsident';
-      case 'eventOrganizer':
-        return 'Anlassorganisator';
-      case 'cashier':
-        return 'Kassier';
-      default:
-        return '';
-    }
   }
 
   public convertPriceTypeText(type: string) {

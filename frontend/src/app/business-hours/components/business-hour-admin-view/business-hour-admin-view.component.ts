@@ -10,10 +10,15 @@ import { BusinessHourAdminEditDialogComponent } from '../business-hour-admin-edi
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { UrlService } from '../../../shared/services/url.service';
+import { BusinessHourHelperService } from '../../classes/business-hour-helper.service';
+import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
 
 export interface TableData {
   text: string;
   count: string;
+
+  occupancy: BusinessHourOccupancyDto;
+  facilityType: ReservationFacilityType;
 }
 
 @Component({
@@ -34,6 +39,7 @@ export class BusinessHourAdminViewComponent {
     private route: ActivatedRoute,
     private router: Router,
     private urlService: UrlService,
+    private helper: BusinessHourHelperService,
   ) {
     this.businessHourApi = apiService.getBusinessHoursAdmin();
   }
@@ -95,41 +101,50 @@ export class BusinessHourAdminViewComponent {
     });
   }
 
+  public onOccupancyEdit() {
+    const dialogRef = this.helper.openMaxOccupancyEditDialog(this.businessHour);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.businessHourApi.updateMaxOccupancy(result).subscribe(() => {
+          this.fetch(this.businessHour.id);
+        });
+      } else {
+        this.fetch(this.businessHour.id);
+      }
+    });
+  }
+
   public getOccupancyString(occupancy: BusinessHourOccupancyDto): string {
     return occupancy.current + ' / ' + occupancy.max;
+  }
+
+  getOccupancyUnitString(data: TableData): string {
+    return StringHelper.getOccupancyUnitString(data.facilityType, data.occupancy.max);
   }
 
   private fetch(id: number) {
     this.businessHourApi.getById(id).subscribe((response) => {
       this.businessHour = response;
       const tableData = new Array<TableData>();
-      tableData.push({
-        text: '25m (manuell)',
-        count: this.getOccupancyString(this.businessHour.distance25mBlockManualOccupancy),
-      });
-      tableData.push({
-        text: '25m (elektronisch)',
-        count: this.getOccupancyString(this.businessHour.distance25mBlockElectronicOccupancy),
+
+      const facilityTypes = Object.values(ReservationFacilityType);
+      facilityTypes.forEach((current) => {
+        tableData.push(this.getTableData(current));
       });
 
-      tableData.push({
-        text: '50m (manuell)',
-        count: this.getOccupancyString(this.businessHour.distance50mManualOccupancy),
-      });
-      tableData.push({
-        text: '50m (elektronisch)',
-        count: this.getOccupancyString(this.businessHour.distance50mElectronicOccupancy),
-      });
-      tableData.push({
-        text: '100m',
-        count: this.getOccupancyString(this.businessHour.distance100mOccupancy),
-      });
-      tableData.push({
-        text: '300m',
-        count: this.getOccupancyString(this.businessHour.distance300mOccupancy),
-      });
       this.dataSource.data = tableData;
       this.deleteDisabled = false;
     });
+  }
+
+  private getTableData(facilityType: ReservationFacilityType): TableData {
+    const occupancy = BusinessHourHelperService.getOccupancy(this.businessHour, facilityType);
+    const tableData: TableData = {
+      text: StringHelper.getReservationFacilityTypeString(facilityType),
+      count: this.getOccupancyString(occupancy),
+      occupancy: occupancy,
+      facilityType: facilityType,
+    };
+    return tableData;
   }
 }

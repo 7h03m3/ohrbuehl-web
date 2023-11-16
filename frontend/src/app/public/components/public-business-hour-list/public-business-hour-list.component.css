@@ -1,0 +1,22 @@
+table {
+  min-width: 30em;
+}
+
+.mat-column-date {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 15em;
+}
+
+.mat-column-day {
+  min-width: 10em;
+}
+
+.mat-column-comment {
+  min-width: 10em;
+}
+
+.align-right {
+  text-align: right;
+  justify-content: flex-end;
+}

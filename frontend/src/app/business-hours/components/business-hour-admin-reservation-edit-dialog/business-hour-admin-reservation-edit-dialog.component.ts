@@ -9,6 +9,7 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 import { ApiService } from '../../../api/api.service';
 import { UserApi } from '../../../api/classes/user-api';
 import { UserDto } from '../../../shared/dtos/user.dto';
+import { SortHelper } from '../../../shared/classes/sort-helper';
 
 export interface BusinessHourAdminReservationEditDialogData {
   reservation: BusinessHourReservationDto;
@@ -64,6 +65,10 @@ export class BusinessHourAdminReservationEditDialogComponent {
     return StringHelper.getEventTypeString(type as ReservationEventType);
   }
 
+  public getOccupancyUnitString(): string {
+    return StringHelper.getOccupancyUnitString(this.data.reservation.facilityType, this.data.reservation.count);
+  }
+
   public fetchOrganizationList() {
     this.organizationApi.getAll().subscribe((response) => {
       this.organizationList = new Array<OrganizationDto>();
@@ -82,6 +87,7 @@ export class BusinessHourAdminReservationEditDialogComponent {
   public fetchUserList() {
     this.userApi.getAll().subscribe((response) => {
       this.userList = response;
+      SortHelper.sortUserListByName(this.userList);
     });
   }
 }

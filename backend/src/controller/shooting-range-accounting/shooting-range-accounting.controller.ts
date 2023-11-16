@@ -25,7 +25,7 @@ import { NotificationManagerService } from '../../notification-manager/notificat
 import { NotificationSource } from '../../shared/enums/notification-source.enum';
 import { DateHelper } from '../../shared/classes/date-helper';
 
-@Controller('shooting-range-accounting')
+@Controller('shooting-range-accounting/')
 export class ShootingRangeAccountingController {
   constructor(
     private readonly accountingService: ShootingRangeAccountingService,
@@ -35,16 +35,17 @@ export class ShootingRangeAccountingController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get()
-  public getAll(): Promise<ShootingRangeAccountingEntity[]> {
-    return this.accountingService.findAll();
+  @Get('year/:year')
+  public getAllByYear(@Param('year') year: number): Promise<ShootingRangeAccountingEntity[]> {
+    console.log(year);
+    return this.accountingService.findAllByYear(year);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('/detail')
-  public getAllDetailed(): Promise<ShootingRangeAccountingEntity[]> {
-    return this.accountingService.findAllDetailed();
+  @Get('/detail/:year')
+  public getAllDetailed(@Param('year') year: number): Promise<ShootingRangeAccountingEntity[]> {
+    return this.accountingService.findAllDetailed(year);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)

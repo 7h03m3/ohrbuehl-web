@@ -36,7 +36,7 @@ export class NotificationManagerService {
       completeReceiverList = await this.notifications.getAllReceiver();
     }
 
-    notificationList.forEach((entry) => {
+    for (const entry of notificationList) {
       if (!this.isDone(entry)) {
         const entryEvents = notificationList.filter((current) => {
           return entry.source == current.source && entry.id && current.id;
@@ -45,18 +45,17 @@ export class NotificationManagerService {
         const receiverList = this.filterReceiver(entry.source, completeReceiverList);
 
         if (receiverList.length != 0) {
-          this.notifyReceivers(entryEvents, receiverList);
+          await this.notifyReceivers(entryEvents, receiverList);
         }
 
         this.setAsDone(entry);
       }
-    });
-
+    }
     this.clearDoneList();
     await this.notifications.deleteAllOlderThan(pollDate);
   }
 
-  private notifyReceivers(entries: NotificationEntity[], receiverList: NotificationReceiverEntity[]) {
+  private async notifyReceivers(entries: NotificationEntity[], receiverList: NotificationReceiverEntity[]) {
     const entry = entries[0];
     let addEvent = false;
     let updateEvent = false;
@@ -77,43 +76,43 @@ export class NotificationManagerService {
     });
 
     if (addEvent && !deleteEvent) {
-      this.sendAddEventMail(entry, receiverList);
+      await this.sendAddEventMail(entry, receiverList);
     } else if (updateEvent && !deleteEvent) {
-      this.sendUpdateEventMail(entry, receiverList);
+      await this.sendUpdateEventMail(entry, receiverList);
     } else if (deleteEvent && !addEvent) {
-      this.sendDeleteEventMail(entry, receiverList);
+      await this.sendDeleteEventMail(entry, receiverList);
     }
   }
 
-  private sendAddEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+  private async sendAddEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     switch (event.source) {
       case NotificationSource.Invoice:
-        this.mailService.sendInvoiceAdd(event, receiverList);
+        await this.mailService.sendInvoiceAdd(event, receiverList);
         break;
       case NotificationSource.ShootingRangeAccounting:
-        this.mailService.senAccountingAdd(event, receiverList);
-        break;
-    }
-  }
-
-  private sendUpdateEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
-    switch (event.source) {
-      case NotificationSource.Invoice:
-        this.mailService.sendInvoiceUpdate(event, receiverList);
-        break;
-      case NotificationSource.ShootingRangeAccounting:
-        this.mailService.sendAccountingUpdate(event, receiverList);
+        await this.mailService.senAccountingAdd(event, receiverList);
         break;
     }
   }
 
-  private sendDeleteEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+  private async sendUpdateEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     switch (event.source) {
       case NotificationSource.Invoice:
-        this.mailService.sendInvoiceDelete(event, receiverList);
+        await this.mailService.sendInvoiceUpdate(event, receiverList);
         break;
       case NotificationSource.ShootingRangeAccounting:
-        this.mailService.sendAccountingDelete(event, receiverList);
+        await this.mailService.sendAccountingUpdate(event, receiverList);
+        break;
+    }
+  }
+
+  private async sendDeleteEventMail(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+    switch (event.source) {
+      case NotificationSource.Invoice:
+        await this.mailService.sendInvoiceDelete(event, receiverList);
+        break;
+      case NotificationSource.ShootingRangeAccounting:
+        await this.mailService.sendAccountingDelete(event, receiverList);
         break;
     }
   }

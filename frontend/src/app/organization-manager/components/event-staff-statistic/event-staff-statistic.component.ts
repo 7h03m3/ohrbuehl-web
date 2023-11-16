@@ -8,6 +8,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-event-staff-statistic',
@@ -23,7 +24,7 @@ export class EventStaffStatisticComponent {
   private memberList = new Array<OrganizationMemberDto>();
   private memberApi: OrganizationMemberApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService) {
+  constructor(private apiService: ApiService, private authService: AuthService, private userDate: UserLocalData) {
     this.memberApi = apiService.getOrganizationMember();
   }
 
@@ -41,10 +42,8 @@ export class EventStaffStatisticComponent {
 
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();
-    this.memberApi.getAllDetailedByOrganization(this.organizationId).subscribe((response) => {
-      this.memberList = response;
-      this.fetch();
-    });
+
+    this.fetch();
   }
 
   public ngAfterViewInit() {
@@ -52,23 +51,31 @@ export class EventStaffStatisticComponent {
     this.dataSource.sort = this.sort;
   }
 
+  public onYearChange() {
+    this.fetch();
+  }
+
   private fetch() {
-    const statisticList = new Array<EventStaffStatisticItem>();
-    this.memberList.forEach((member) => {
-      const staffPoolCount = member.staffPool.length;
-      const shiftCount = member.eventShifts.length;
+    const year = this.userDate.getCurrentYear();
+    this.memberApi.getAllDetailedByOrganization(this.organizationId, year).subscribe((response) => {
+      this.memberList = response;
+      const statisticList = new Array<EventStaffStatisticItem>();
+      this.memberList.forEach((member) => {
+        const staffPoolCount = member.staffPool.length;
+        const shiftCount = member.eventShifts.length;
 
-      if (staffPoolCount != 0 || shiftCount != 0) {
-        const listItem = new EventStaffStatisticItem();
-        listItem.name = member.firstName + ' ' + member.lastName;
-        listItem.poolCount = member.staffPool.length;
-        listItem.shiftCount = member.eventShifts.length;
-        listItem.presentCount = EventStaffStatisticComponent.getPresentCount(member.eventShifts);
-        listItem.notPresentCount = EventStaffStatisticComponent.getNotePresentCount(member.eventShifts);
-        statisticList.push(listItem);
-      }
+        if (staffPoolCount != 0 || shiftCount != 0) {
+          const listItem = new EventStaffStatisticItem();
+          listItem.name = member.firstName + ' ' + member.lastName;
+          listItem.poolCount = member.staffPool.length;
+          listItem.shiftCount = member.eventShifts.length;
+          listItem.presentCount = EventStaffStatisticComponent.getPresentCount(member.eventShifts);
+          listItem.notPresentCount = EventStaffStatisticComponent.getNotePresentCount(member.eventShifts);
+          statisticList.push(listItem);
+        }
+      });
+
+      this.dataSource.data = statisticList;
     });
-
-    this.dataSource.data = statisticList;
   }
 }

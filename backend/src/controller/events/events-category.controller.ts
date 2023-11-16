@@ -8,7 +8,7 @@ import { EventCategoryCreateDto } from '../../shared/dtos/event-category-create.
 import { EventCategoryDto } from '../../shared/dtos/event-category.dto';
 import { EventsCategoryService } from '../../database/events/events-category.service';
 
-@Controller('events/category')
+@Controller('events/category/')
 export class EventsCategoryController {
   constructor(private categoryService: EventsCategoryService) {}
 

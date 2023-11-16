@@ -1,32 +1,23 @@
+<h1 *ngIf="user.id != 0">Benutzer editieren</h1>
+<h1 *ngIf="user.id == 0">Benutzer erstellen</h1>
+
 <mat-card class="mat-elevation-z1">
   <mat-card-content>
     <form #userCreateForm="ngForm" (ngSubmit)="onSubmit()">
-      <h3 *ngIf="user.id != 0">Benutzer editieren</h3>
-      <h3 *ngIf="user.id == 0">Benutzer erstellen</h3>
+
       <mat-error *ngIf="!formValid">
         Bitte alle Daten eingeben.
       </mat-error>
 
       <mat-form-field appearance="outline">
-        <input [(ngModel)]="user.userName" matInput name="userName" placeholder="Benutzername" required>
+        <mat-label>Benutzername</mat-label>
+        <input [(ngModel)]="user.userName" matInput name="userName" required>
         <mat-error>
           Bitte einen Spitznamen angeben.
         </mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <input [(ngModel)]="user.firstName" matInput name="firstName" placeholder="Vorname" required>
-        <mat-error>
-          Bitte einen Vornamen angeben.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <input [(ngModel)]="user.lastName" matInput name="lastName" placeholder="Nachname" required>
-        <mat-error>
-          Bitte einen Nachnamen angeben.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
+      <br>
+      <mat-form-field appearance="outline" class="form-field-half">
         <mat-select (valueChange)="onRoleChange($event)" [(ngModel)]="user.roles" name="userRole">
           <mat-option *ngFor="let userRole of userRoles" [value]="userRole">
             {{getRoleText(userRole)}}
@@ -34,7 +25,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="form-field-half">
         <mat-select [(ngModel)]="user.assignedOrganizationId" [disabled]="disableOrganization"
                     name="assignedOrganizationId">
           <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
@@ -43,9 +34,11 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-divider></mat-divider>
+      <br>
       <mat-form-field appearance="outline">
-        <input [(ngModel)]="user.password" [type]="hidePassword ? 'password' : 'text'" matInput name="password"
-               placeholder="Passwort">
+        <mat-label>Passwort</mat-label>
+        <input [(ngModel)]="user.password" [type]="hidePassword ? 'password' : 'text'" matInput name="password">
         <button (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hidePassword" mat-icon-button
                 matSuffix>
@@ -55,8 +48,70 @@
           Bitte ein Passwort angeben.
         </mat-error>
       </mat-form-field>
+      <br>
+      <mat-divider></mat-divider>
+      <br>
+      <mat-form-field appearance="outline" class="form-field-half">
+        <mat-label>Vorname</mat-label>
+        <input [(ngModel)]="user.firstName" matInput name="firstName" required>
+        <mat-error>
+          Bitte einen Vornamen angeben.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field-half">
+        <mat-label>Nachname</mat-label>
+        <input [(ngModel)]="user.lastName" matInput name="lastName" required>
+        <mat-error>
+          Bitte einen Nachnamen angeben.
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>E-Mail Adresse</mat-label>
+        <input [(ngModel)]="user.email" matInput name="email" required>
+        <mat-error>
+          Bitte eine E-Mail Adresse angeben.
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>Telefonnummer</mat-label>
+        <input [(ngModel)]="user.mobile" matInput name="mobile">
+        <mat-error>
+          Bitte eine Telefonnummer angeben.
+        </mat-error>
+      </mat-form-field>
+      <br>
 
-      <button [disabled]="!userCreateForm.form.valid" color="primary" mat-raised-button>Speichern</button>
+      <mat-form-field appearance="outline">
+        <mat-label>Strasse</mat-label>
+        <input [(ngModel)]="user.street" matInput name="street">
+        <mat-error>
+          Bitte eine Telefonnummer angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <br>
+      <mat-form-field appearance="outline" class="form-field-quarter">
+        <mat-label>PLZ</mat-label>
+        <input [(ngModel)]="user.zip" matInput name="zip">
+        <mat-error>
+          Bitte eine PLZ angeben.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field-three-quarter">
+        <mat-label>Ort</mat-label>
+        <input [(ngModel)]="user.location" matInput name="location">
+        <mat-error>
+          Bitte eine Ort angeben.
+        </mat-error>
+      </mat-form-field>
     </form>
+
   </mat-card-content>
+  <mat-card-actions align="end">
+    <button (click)="onSubmit()" [disabled]="!userCreateForm.form.valid" color="primary" mat-raised-button>Speichern
+    </button>
+  </mat-card-actions>
 </mat-card>

@@ -28,6 +28,8 @@ import { NotificationReceiverEntity } from './entities/notification-receiver.ent
 import { BusinessHoursModule } from './business-hours/business-hours.module';
 import { BusinessHourEntity } from './entities/business-hour.entity';
 import { BusinessHourReservationEntity } from './entities/business-hour-reservation.entity';
+import { ContactMessageEntity } from './entities/contact-message.entity';
+import { ContactMessageModule } from './contact-message/contact-message.module';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { BusinessHourReservationEntity } from './entities/business-hour-reservat
           NotificationReceiverEntity,
           BusinessHourEntity,
           BusinessHourReservationEntity,
+          ContactMessageEntity,
         ],
         synchronize: true,
       }),
@@ -74,6 +77,7 @@ import { BusinessHourReservationEntity } from './entities/business-hour-reservat
     EventsModule,
     NotificationModule,
     BusinessHoursModule,
+    ContactMessageModule,
   ],
   providers: [DefaultValuesService],
 })

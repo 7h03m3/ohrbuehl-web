@@ -16,15 +16,22 @@ import { ShootingRangeAccountingEntity } from '../database/entities/shooting-ran
 import { AccountingDeleteMessage } from './message/accounting-delete-message.class';
 import { AccountingUpdateMessage } from './message/accounting-update-message.class';
 import { AccountingAddMessage } from './message/accounting-add-message.class';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
+  private static readonly AppendText =
+    '<br><br>Freundliche Grüsse<br>' +
+    'Schiessanlage Ohrbühl<br><br>' +
+    '<i>P.S. Bitte nicht auf diese Nachricht antworten, E-Mails auf diese Adresse werden nicht gelesen.</i>';
+
   constructor(
     private readonly mailerService: MailerService,
     private invoiceService: InvoiceService,
     private invoicePdfService: InvoicePdfService,
     private accountingService: ShootingRangeAccountingService,
     private accountingPdfServer: ShootingRangeAccountingPdfService,
+    private configService: ConfigService,
   ) {}
 
   public async sendInvoiceAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
@@ -34,7 +41,7 @@ export class MailService {
     }
 
     const message = new InvoiceAddMessage(invoice, pdf, buffer);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   public async sendInvoiceUpdate(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
@@ -44,12 +51,12 @@ export class MailService {
     }
 
     const message = new InvoiceUpdateMessage(invoice, pdf, buffer);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   public async sendInvoiceDelete(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     const message = new InvoiceDeleteMessage(event.targetId, event.comment);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   public async senAccountingAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
@@ -59,7 +66,7 @@ export class MailService {
     }
 
     const message = new AccountingAddMessage(accountingData, pdf, buffer);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   public async sendAccountingUpdate(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
@@ -69,12 +76,12 @@ export class MailService {
     }
 
     const message = new AccountingUpdateMessage(accountingData, pdf, buffer);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   public async sendAccountingDelete(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     const message = new AccountingDeleteMessage(event.targetId, event.comment);
-    this.sendMail(message, receiverList);
+    await this.sendMailBulk(message, receiverList);
   }
 
   private async getInvoiceData(id: number): Promise<[InvoiceEntity, PdfFile, Buffer]> {
@@ -101,27 +108,26 @@ export class MailService {
     return [accountingData, pdf, buffer];
   }
 
-  private sendMail(message: Message, receiverList: NotificationReceiverEntity[]) {
-    const appendText =
-      '<br><br>Freundliche Grüsse<br>' +
-      'Schiessanlage Ohrbühl<br><br>' +
-      '<i>P.S. Bitte nicht auf diese Nachricht antworten, E-Mails auf diese Adresse werden nicht gelesen.</i>';
+  private async sendMailBulk(message: Message, receiverList: NotificationReceiverEntity[]) {
+    for (const receiver of receiverList) {
+      await this.sendMail(receiver.name, receiver.email, message);
+    }
+  }
 
-    receiverList.forEach((receiver) => {
-      const prependText = 'Hallo ' + receiver.name;
+  private async sendMail(name: string, email: string, message: Message) {
+    const prependText = 'Hallo ' + name;
 
-      this.mailerService
-        .sendMail({
-          to: receiver.email,
-          from: 'Schiessanlage Ohrbühl <ohrbuehl@gmail.com>',
-          subject: message.getSubject(),
-          html: prependText + message.getText() + appendText,
-          attachments: message.getAttachments(),
-        })
-        .then((message) => {})
-        .catch((message) => {
-          console.log(message);
-        });
-    });
+    await this.mailerService
+      .sendMail({
+        to: email,
+        from: 'Schiessanlage Ohrbühl <ohrbuehl@gmail.com>',
+        subject: message.getSubject(),
+        html: prependText + message.getText() + MailService.AppendText,
+        attachments: message.getAttachments(),
+      })
+      .then((message) => {})
+      .catch((message) => {
+        console.log(message);
+      });
   }
 }

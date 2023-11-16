@@ -1,10 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { InvoiceEntity } from './invoice.entity';
 import { OrganizationEntity } from './organization.entity';
-import { UserCreateDto } from '../../shared/dtos/user-create.dto';
-import { UserDto } from '../../shared/dtos/user.dto';
-import { Role } from '../../shared/enums/role.enum';
 import { BusinessHourReservationEntity } from './business-hour-reservation.entity';
+import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 
 @Entity('users')
 export class UserEntity {
@@ -23,6 +21,21 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column({ default: '' })
+  street: string;
+
+  @Column({ default: 0 })
+  zip: number;
+
+  @Column({ default: '' })
+  location: string;
+
+  @Column({ default: '' })
+  email: string;
+
+  @Column({ default: '' })
+  mobile: string;
+
   @Column()
   roles: string;
 
@@ -39,22 +52,16 @@ export class UserEntity {
   @OneToMany((type) => BusinessHourReservationEntity, (reservation) => reservation.owner)
   reservations: BusinessHourReservationEntity[];
 
-  public loadFromDto(dto: UserCreateDto) {
-    this.userName = dto.userName;
-    this.firstName = dto.firstName;
-    this.lastName = dto.lastName;
-    this.password = dto.password;
-    this.roles = dto.roles;
-  }
-
-  public getDto(): UserDto {
-    const dto = new UserDto();
-    dto.userName = this.userName;
-    dto.firstName = this.firstName;
-    dto.lastName = this.lastName;
-    dto.password = this.password;
-    dto.roles = Role[this.roles];
-
-    return dto;
+  public loadDto(data: UserCreateDto) {
+    this.userName = data.userName;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
+    this.password = data.password;
+    this.street = data.street;
+    this.zip = data.zip;
+    this.location = data.location;
+    this.email = data.email;
+    this.mobile = data.mobile;
+    this.roles = data.roles;
   }
 }

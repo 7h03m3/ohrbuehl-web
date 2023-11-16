@@ -14,6 +14,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { EventStaffPoolEditTableMember } from './classes/event-staff-pool-edit-table-member';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-event-staff-pool-edit',
@@ -34,7 +35,7 @@ export class EventStaffPoolEditComponent {
   private staffPoolApi: EventStaffPoolApi;
   private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService) {
+  constructor(private apiService: ApiService, private authService: AuthService, private userData: UserLocalData) {
     this.organizationApi = this.apiService.getOrganization();
     this.eventApi = apiService.getEvent();
     this.memberApi = apiService.getOrganizationMember();
@@ -54,7 +55,8 @@ export class EventStaffPoolEditComponent {
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();
 
-    this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId).subscribe((response) => {
+    const year = this.userData.getCurrentYear();
+    this.eventApi.getAllWithShiftsByOrganizationId(this.organizationId, year).subscribe((response) => {
       this.eventList = response;
 
       this.eventList.sort(function (a, b) {

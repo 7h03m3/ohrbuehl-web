@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-invoice-list',
@@ -28,6 +29,7 @@ export class InvoiceListComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private downloadHelper: DownloadHelper,
+    private userData: UserLocalData,
   ) {
     this.invoiceApi = this.apiService.getInvoice();
   }
@@ -69,6 +71,10 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
+  public onYearChange() {
+    this.loadTable();
+  }
+
   public getDateString(dateNumber: string): string {
     return StringHelper.getDateString(Number(dateNumber));
   }
@@ -82,7 +88,8 @@ export class InvoiceListComponent implements OnInit {
   }
 
   private loadTable() {
-    this.invoiceApi.getAll().subscribe((result) => {
+    const year = this.userData.getCurrentYear();
+    this.invoiceApi.getAll(year).subscribe((result) => {
       this.dataSource.data = result;
     });
   }

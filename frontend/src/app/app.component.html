@@ -5,6 +5,8 @@
       <button class="toolbar-home-button" mat-button routerLink="/"></button>
       <span class="toolbar-bg-spacer"></span>
 
+      <button color="primary" mat-flat-button routerLink="/public/business-hours">Öffnungszeiten</button>
+
       <button [matMenuTriggerFor]="eventMenu" color="primary" mat-flat-button>Anlässe</button>
       <mat-menu #eventMenu="matMenu">
         <button (click)="onEventSelect('')" mat-menu-item>
@@ -23,8 +25,22 @@
           <span>Nachschiesskurs</span>
         </button>
       </mat-menu>
-      <button color="primary" mat-flat-button routerLink="/public/shooting-range">Schiessanlage</button>
+
+      <button [matMenuTriggerFor]="shootingRangeMenu" color="primary" mat-flat-button>Schiessanlage</button>
+      <mat-menu #shootingRangeMenu="matMenu">
+        <button mat-menu-item routerLink="/public/shooting-range">
+          <span>Informationen</span>
+        </button>
+        <button mat-menu-item routerLink="/public/contact">
+          <span>Kontakt</span>
+        </button>
+      </mat-menu>
       <span class="toolbar-spacer"></span>
+
+      <button *ngIf="authService.isSingleShooter()" class="toolbar-buttons" color="accent" mat-flat-button
+              routerLink="/single-shooter">
+        Einzelschütze
+      </button>
 
       <button *ngIf="authService.isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
               routerLink="/shooting-range">
@@ -41,12 +57,18 @@
         Anlassorganisator
       </button>
 
+      <button *ngIf="authService.isShootingRangeManager()" mat-icon-button matTooltip="Nachrichten"
+              routerLink="/contact-message">
+        <mat-icon [matBadgeHidden]="messageCount == 0" [matBadge]="messageCount" aria-hidden="false"
+                  matBadgeColor="warn">question_answer
+        </mat-icon>
+      </button>
 
       <button *ngIf="authService.isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
         <mat-icon color="accent">admin_panel_settings</mat-icon>
       </button>
 
-      <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/login">
+      <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/user/login">
         <mat-icon>login</mat-icon>
       </button>
 
@@ -58,6 +80,10 @@
         <mat-menu #menu="matMenu">
           <button disabled mat-menu-item>
             <span>Rolle: {{getRoleText()}}</span>
+          </button>
+          <button mat-menu-item routerLink="user/account">
+            <mat-icon>account_circle</mat-icon>
+            <span>Benutzerkonto</span>
           </button>
           <button mat-menu-item routerLink="user/password-change">
             <mat-icon>password</mat-icon>
@@ -74,3 +100,5 @@
 
   <router-outlet></router-outlet>
 </div>
+
+

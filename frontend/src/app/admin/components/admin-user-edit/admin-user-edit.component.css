@@ -1,9 +1,23 @@
 mat-card {
-  width: 20rem;
-  margin: 2em auto;
-  text-align: center;
+  width: 40rem;
 }
 
 mat-form-field {
-  display: block;
+  margin-left: 1em;
+  width: 37rem;
+}
+
+.form-field-half {
+  width: 18rem;
+  margin-left: 1em;
+}
+
+.form-field-quarter {
+  width: 9rem;
+  margin-left: 1em;
+}
+
+.form-field-three-quarter {
+  width: 27rem;
+  margin-left: 1em;
 }

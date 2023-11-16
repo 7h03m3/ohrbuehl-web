@@ -26,6 +26,10 @@ export class BusinessHoursHelperService {
     private config: BusinessHoursConfigService,
   ) {}
 
+  public async getAllNextPublic(): Promise<BusinessHourEntity[]> {
+    return this.businessHoursService.getAllNextPublic();
+  }
+
   public async getAllOfYear(year: number): Promise<BusinessHourEntity[]> {
     return this.businessHoursService.getAllOfYear(year);
   }
@@ -55,6 +59,21 @@ export class BusinessHoursHelperService {
     return this.reservationService.getNextByOrganization(id);
   }
 
+  public async getReservationsByUserAndYear(id: number, year: number): Promise<BusinessHourReservationEntity[]> {
+    return this.reservationService.getByUserAndYear(id, year);
+  }
+
+  public async getReservationsByUserAndBusinessHour(
+    userId: number,
+    businessHourId: number,
+  ): Promise<BusinessHourReservationEntity[]> {
+    return this.reservationService.getByUserAndBusinessHour(userId, businessHourId);
+  }
+
+  public async getNextReservationsByUser(id: number): Promise<BusinessHourReservationEntity[]> {
+    return this.reservationService.getNextByUser(id);
+  }
+
   public async getById(id: number): Promise<BusinessHourEntity> {
     const entity = await this.businessHoursService.getById(id);
 
@@ -77,6 +96,12 @@ export class BusinessHoursHelperService {
     const entity = await this.getBusinessHourById(dto.id);
     entity.fillFromDto(dto);
 
+    return this.businessHoursService.update(entity);
+  }
+
+  public async updateMaxOccupancy(dto: BusinessHoursDto): Promise<BusinessHourEntity> {
+    const entity = await this.getBusinessHourById(dto.id);
+    entity.fillMaxOccupancyFromDto(dto);
     return this.businessHoursService.update(entity);
   }
 
@@ -137,6 +162,18 @@ export class BusinessHoursHelperService {
     return this.reservationService.deleteById(id);
   }
 
+  public async deleteUser(userId: number): Promise<any> {
+    const reservationList = await this.reservationService.getByUser(userId);
+
+    for (const reservation of reservationList) {
+      const businessHourEntity = await this.getBusinessHourById(reservation.businessHourId);
+      this.decrementOccupancy(reservation.facilityType, reservation.count, businessHourEntity);
+      await this.businessHoursService.update(businessHourEntity);
+    }
+
+    return this.reservationService.deleteByOwnerId(userId);
+  }
+
   public async setReservationLock(id: number, isLocked: boolean): Promise<BusinessHourReservationEntity> {
     const entity = await this.getReservationById(id);
     entity.locked = isLocked;
@@ -157,16 +194,16 @@ export class BusinessHoursHelperService {
   public is24HoursBefore(time: number): boolean {
     const timeNow = Date.now();
 
-    console.log('timeNow = ' + timeNow);
-    console.log('time    = ' + time);
     if (timeNow > time) {
       return false;
     }
 
     const diff = time - timeNow;
-    console.log('diff    = ' + diff);
-    console.log('offset  = ' + BusinessHoursHelperService.DayOffset);
     return diff > BusinessHoursHelperService.DayOffset;
+  }
+
+  public getSingleShooterEventLimit(): number {
+    return this.config.getSingleShooterEventLimit();
   }
 
   private incrementOccupancy(type: ReservationFacilityType, count: number, businessHours: BusinessHourEntity) {

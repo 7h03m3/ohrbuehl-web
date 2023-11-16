@@ -16,8 +16,6 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {}
 
-  public ngOnDestroy(): void {}
-
   public async onSubmit() {
     this.loginValid = true;
     this.authService.login(this.username, this.password).subscribe({

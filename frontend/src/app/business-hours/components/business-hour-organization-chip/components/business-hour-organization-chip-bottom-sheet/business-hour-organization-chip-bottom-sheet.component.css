@@ -1,0 +1,15 @@
+section {
+  display: table;
+  margin: 8px;
+}
+
+.section-item {
+  display: table-cell;
+}
+
+.section-item-label {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  width: 120px;
+}

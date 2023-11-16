@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, MoreThan, Repository } from 'typeorm';
 import { BusinessHourEntity } from '../entities/business-hour.entity';
 import { DateHelper } from '../../shared/classes/date-helper';
 
@@ -36,6 +36,20 @@ export class BusinessHoursService {
       },
       select: {
         start: true,
+      },
+    });
+  }
+
+  public getAllNextPublic(): Promise<BusinessHourEntity[]> {
+    const start = DateHelper.getDayStart(Date.now());
+
+    return this.repository.find({
+      where: {
+        start: MoreThan(start.getTime()),
+        public: true,
+      },
+      order: {
+        start: 'ASC',
       },
     });
   }
@@ -89,6 +103,10 @@ export class BusinessHoursService {
             lastName: true,
             userName: true,
             id: true,
+            mobile: true,
+            email: true,
+            zip: true,
+            street: true,
           },
         },
       },
@@ -119,6 +137,10 @@ export class BusinessHoursService {
             lastName: true,
             userName: true,
             id: true,
+            mobile: true,
+            email: true,
+            zip: true,
+            street: true,
           },
         },
       },

@@ -1,5 +1,5 @@
 mat-card {
-  width: 20em;
+  width: 22em;
   margin: 2em auto;
   text-align: center;
 }
@@ -7,3 +7,5 @@ mat-card {
 mat-form-field {
   display: block;
 }
+
+

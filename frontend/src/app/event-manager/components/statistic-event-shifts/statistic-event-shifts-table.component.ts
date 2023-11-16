@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { StatisticEventShiftTableColumn } from './classes/statistic-event-shift-table-column';
 import { EventDto } from '../../../shared/dtos/event.dto';
-import { ApiService } from '../../../api/api.service';
-import { EventApi } from '../../../api/classes/event-api';
-import { OrganizationApi } from '../../../api/classes/organization-api';
 import { StatisticEventShiftTableData } from './classes/statistic-event-shift-table-data';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -19,13 +16,8 @@ export class StatisticEventShiftsTableComponent {
   public dataSource = new Array<StatisticEventShiftTableData>();
   private eventList = new Array<EventDto>();
   private organizationList = new Array<OrganizationDto>();
-  private eventApi: EventApi;
-  private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService) {
-    this.eventApi = this.apiService.getEvent();
-    this.organizationApi = this.apiService.getOrganization();
-  }
+  constructor() {}
 
   public ngOnInit(): void {}
 

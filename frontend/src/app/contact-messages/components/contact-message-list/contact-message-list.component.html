@@ -1,0 +1,75 @@
+<h1>Nachrichten</h1>
+
+<div class="mat-elevation-z4">
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="date">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="date">Datum</th>
+      <td *matCellDef="let element" mat-cell>{{getDateString(element)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="firstname">Vorname</th>
+      <td *matCellDef="let element" mat-cell>{{element.firstname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="lastname">Nachname</th>
+      <td *matCellDef="let element" mat-cell>{{element.lastname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="subject">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="subject">Betreff</th>
+      <td *matCellDef="let element" mat-cell>{{element.subject}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header="status">Status</th>
+      <td *matCellDef="let element" mat-cell>
+        <mat-icon [matTooltip]="getStatusTooltip(element)"
+                  class="status-{{element.status}}">{{getStatusIcon(element)}}</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef mat-header-cell>
+      </th>
+      <td *matCellDef="let element" class="align-right" mat-cell>
+        <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" mat-icon-button>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button (click)="onView(element)" mat-menu-item>
+            <mat-icon>visibility</mat-icon>
+            <span>Ansehen</span>
+          </button>
+
+          <button (click)="onSetStatusOpen(element)" *ngIf="element.status != ContactMessageStatus.Open" mat-menu-item>
+            <mat-icon class="status-Open">highlight_off</mat-icon>
+            <span>"Offen" setzen</span>
+          </button>
+
+          <button (click)="onSetStatusInProcess(element)" *ngIf="element.status != ContactMessageStatus.InProcess"
+                  mat-menu-item>
+            <mat-icon class="status-InProcess">pending</mat-icon>
+            <span>"In Bearbeitung" setzen</span>
+          </button>
+
+          <button (click)="onSetStatusDone(element)" *ngIf="element.status != ContactMessageStatus.Done" mat-menu-item>
+            <mat-icon class="status-Done">done</mat-icon>
+            <span>"Erledigt" setzen</span>
+          </button>
+
+          <button (click)="onDelete(element)" mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Löschen</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of events" pageSize="10"></mat-paginator>
+</div>

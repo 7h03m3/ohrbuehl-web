@@ -58,6 +58,13 @@ export class BusinessHoursAdminController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Put('maxOccupancy/')
+  public async updateMaxOccupancy(@Body() dto: BusinessHoursDto): Promise<BusinessHourEntity> {
+    return this.businessHours.updateMaxOccupancy(dto);
+  }
+
+  @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   public async delete(@Param('id') id: number): Promise<any> {
     return this.businessHours.delete(id);

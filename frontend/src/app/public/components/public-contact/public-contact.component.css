@@ -1,0 +1,17 @@
+mat-card {
+  width: 30em;
+  margin: 2em auto;
+}
+
+.common-form-field {
+  display: block;
+}
+
+.firstname-form-field {
+  width: 13em;
+}
+
+.lastname-form-field {
+  width: 14em;
+  margin-left: 1em;
+}

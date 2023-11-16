@@ -9,6 +9,7 @@ import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { InvoiceItemHelper } from '../../classes/invoice-item-helper';
 import { StringHelper } from '../../../shared/classes/string-helper';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-invoice-step-accounting-select-time-range',
@@ -31,7 +32,7 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
   public disableSubmitButton = true;
   private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private userData: UserLocalData) {
     this.accountingApi = this.apiService.getAccounting();
   }
 
@@ -40,7 +41,8 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
     this.disableOrganization = true;
     this.disableSubmitButton = true;
 
-    this.accountingApi.getListDetailed().subscribe((response) => {
+    const year = this.userData.getCurrentYear();
+    this.accountingApi.getListDetailed(year).subscribe((response) => {
       this.accountingList = response;
       SortHelper.sortAccountingByDate(this.accountingList, true);
     });

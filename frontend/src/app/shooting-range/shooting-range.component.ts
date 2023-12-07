@@ -24,5 +24,6 @@ export class ShootingRangeComponent {
     this.sidenavService.addElement('Schusszahlen', 'list_alt', './accounting-list');
     this.sidenavService.addElement('Rechnungen', 'list', './invoice-list');
     this.sidenavService.addElement('Rechnung erstellen', 'money', './invoice-edit');
+    this.sidenavService.addElement('Berichte', 'summarize', './reports');
   }
 }

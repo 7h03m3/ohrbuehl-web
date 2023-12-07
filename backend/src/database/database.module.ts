@@ -30,6 +30,7 @@ import { BusinessHourEntity } from './entities/business-hour.entity';
 import { BusinessHourReservationEntity } from './entities/business-hour-reservation.entity';
 import { ContactMessageEntity } from './entities/contact-message.entity';
 import { ContactMessageModule } from './contact-message/contact-message.module';
+import { OrganizationFeatureEntity } from './entities/organization-feature.entity';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ContactMessageModule } from './contact-message/contact-message.module';
           UserEntity,
           OrganizationEntity,
           OrganizationMemberEntity,
+          OrganizationFeatureEntity,
           ShootingRangePriceEntity,
           InvoiceEntity,
           InvoiceItemEntity,

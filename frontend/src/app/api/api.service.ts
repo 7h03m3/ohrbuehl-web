@@ -22,6 +22,8 @@ import { BusinessHourOrganizationApi } from './classes/business-hour-organizatio
 import { BusinessHourSingleShooterApi } from './classes/business-hour-single-shooter-api';
 import { BusinessHourApi } from './classes/business-hour-api';
 import { ContactMessageApi } from './classes/contact-message-api';
+import { ReportApi } from './classes/report-api';
+import { OrganizationFeatureApi } from './classes/organization-feature-api';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +33,7 @@ export class ApiService {
   private readonly accountingApi: AccountingApi;
   private readonly organizationApi: OrganizationApi;
   private readonly organizationMemberApi: OrganizationMemberApi;
+  private readonly organizationFeatureApi: OrganizationFeatureApi;
   private readonly shootingRangePriceApi: ShootingRangePriceApi;
   private readonly invoiceApi: InvoiceApi;
   private readonly invoiceItemApi: InvoiceItemApi;
@@ -46,11 +49,13 @@ export class ApiService {
   private readonly businessHoursOrganizationApi: BusinessHourOrganizationApi;
   private readonly businessHoursSingleShooterApi: BusinessHourSingleShooterApi;
   private readonly contactMessageApi: ContactMessageApi;
+  private readonly reportApi: ReportApi;
 
   constructor(private http: HttpClient) {
     this.accountingApi = new AccountingApi(this.baseUrl, this.http);
     this.organizationApi = new OrganizationApi(this.baseUrl, this.http);
     this.organizationMemberApi = new OrganizationMemberApi(this.baseUrl, this.http);
+    this.organizationFeatureApi = new OrganizationFeatureApi(this.baseUrl, this.http);
     this.shootingRangePriceApi = new ShootingRangePriceApi(this.baseUrl, this.http);
     this.invoiceApi = new InvoiceApi(this.baseUrl, this.http);
     this.invoiceItemApi = new InvoiceItemApi(this.baseUrl, this.http);
@@ -66,6 +71,7 @@ export class ApiService {
     this.businessHoursOrganizationApi = new BusinessHourOrganizationApi(this.baseUrl, this.http);
     this.businessHoursSingleShooterApi = new BusinessHourSingleShooterApi(this.baseUrl, this.http);
     this.contactMessageApi = new ContactMessageApi(this.baseUrl, this.http);
+    this.reportApi = new ReportApi(this.baseUrl, this.http);
   }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -101,6 +107,10 @@ export class ApiService {
 
   public getOrganizationMember(): OrganizationMemberApi {
     return this.organizationMemberApi;
+  }
+
+  public getOrganizationFeature(): OrganizationFeatureApi {
+    return this.organizationFeatureApi;
   }
 
   public getShootingRangePrice(): ShootingRangePriceApi {
@@ -149,5 +159,9 @@ export class ApiService {
 
   public getContactMessage(): ContactMessageApi {
     return this.contactMessageApi;
+  }
+
+  public getReport(): ReportApi {
+    return this.reportApi;
   }
 }

@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Verein und Jahr auswählen</h2>
+<mat-dialog-content class="mat-typography">
+  <br>
+  <mat-form-field appearance="outline">
+    <mat-label>Verein</mat-label>
+    <mat-select [(ngModel)]="data.organizationId">
+      <mat-option *ngFor="let organization of organizationList"
+                  [value]="organization.id">{{organization.abbreviation}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Jahr</mat-label>
+    <mat-select [(ngModel)]="data.year">
+      <mat-option *ngFor="let year of yearList"
+                  [value]="year">{{year}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isValid()" color="primary" mat-raised-button>Okay</button>
+</mat-dialog-actions>

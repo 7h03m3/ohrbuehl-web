@@ -11,6 +11,7 @@ import { ShootingRangeComponent } from './shooting-range.component';
 import { BusinessHourAdminDailyViewComponent } from '../business-hours/components/business-hour-admin-daily-view/business-hour-admin-daily-view.component';
 import { BusinessHourAdminViewComponent } from '../business-hours/components/business-hour-admin-view/business-hour-admin-view.component';
 import { BusinessHourAdminListComponent } from '../business-hours/components/business-hour-admin-list/business-hour-admin-list.component';
+import { ShootingRangeReportsComponent } from './components/shooting-range-reports/shooting-range-reports.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,10 @@ const routes: Routes = [
       {
         path: 'accounting-edit',
         component: ShootingRangeAccountingEditComponent,
+      },
+      {
+        path: 'reports',
+        component: ShootingRangeReportsComponent,
       },
     ],
   },

@@ -15,6 +15,7 @@ import { MailModule } from './mail/mail.module';
 import { NotificationManagerModule } from './notification-manager/notification-manager.module';
 import configuration from './config/configuration';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AccountingItemsOrganizationPdfModule } from './pdf/accounting-items-organization-pdf/accounting-items-organization-pdf.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
     NotificationManagerModule,
+    AccountingItemsOrganizationPdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

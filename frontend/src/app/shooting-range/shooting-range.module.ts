@@ -29,6 +29,8 @@ import { ShootingRangeAccountingEditTimeDialogComponent } from './components/sho
 import { ShootingRangeTrackEditButtonsComponent } from './components/shooting-range-track-edit-buttons/shooting-range-track-edit-buttons.component';
 import { SharedModule } from '../shared/shared.module';
 import { BusinessHoursModule } from '../business-hours/business-hours.module';
+import { ShootingRangeReportsComponent } from './components/shooting-range-reports/shooting-range-reports.component';
+import { ShootingRangeReportYearOrganizationDialogComponent } from './components/shooting-range-reports/components/shooting-range-report-year-organization-dialog/shooting-range-report-year-organization-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { BusinessHoursModule } from '../business-hours/business-hours.module';
     ShootingRangeTrackEditDialogComponent,
     ShootingRangeAccountingEditTimeDialogComponent,
     ShootingRangeTrackEditButtonsComponent,
+    ShootingRangeReportsComponent,
+    ShootingRangeReportYearOrganizationDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, SharedModule, ShootingRangeRoutingModule, BusinessHoursModule],
   exports: [ShootingRangeTrackEditButtonsComponent],

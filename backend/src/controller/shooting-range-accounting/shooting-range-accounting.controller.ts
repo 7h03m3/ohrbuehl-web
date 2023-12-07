@@ -37,7 +37,6 @@ export class ShootingRangeAccountingController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('year/:year')
   public getAllByYear(@Param('year') year: number): Promise<ShootingRangeAccountingEntity[]> {
-    console.log(year);
     return this.accountingService.findAllByYear(year);
   }
 

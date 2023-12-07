@@ -9,6 +9,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { ContactMessageStatus } from '../../../shared/enums/contact-message-status.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactMessageDialogComponent } from '../contact-message-dialog/contact-message-dialog.component';
+import { ContactMessageService } from '../../../shared/services/contact-message.service';
 
 @Component({
   selector: 'app-contact-message-list',
@@ -23,7 +24,7 @@ export class ContactMessageListComponent implements OnInit, AfterViewInit {
   protected readonly ContactMessageStatus = ContactMessageStatus;
   private messageApi: ContactMessageApi;
 
-  constructor(apiService: ApiService, private dialog: MatDialog) {
+  constructor(apiService: ApiService, private dialog: MatDialog, private contactMessageService: ContactMessageService) {
     this.messageApi = apiService.getContactMessage();
   }
 
@@ -98,6 +99,7 @@ export class ContactMessageListComponent implements OnInit, AfterViewInit {
   private loadData() {
     this.messageApi.getAll().subscribe((response) => {
       this.dataSource.data = response;
+      this.contactMessageService.update();
     });
   }
 }

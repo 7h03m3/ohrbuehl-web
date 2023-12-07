@@ -1,0 +1,48 @@
+<h1>Vereins-Features
+  <button (click)="onAdd()" color="accent" mat-stroked-button>
+    <mat-icon>add</mat-icon>
+    Hinzufügen
+  </button>
+</h1>
+
+<div class="mat-elevation-z4">
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="organization">
+      <mat-header-cell *matHeaderCellDef mat-header-cell>Verein</mat-header-cell>
+      <mat-cell *matCellDef="let element" mat-cell>{{element.organization.abbreviation}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reservations">
+      <mat-header-cell *matHeaderCellDef mat-header-cell>Reservationen</mat-header-cell>
+      <mat-cell *matCellDef="let element" mat-cell>
+        <mat-icon *ngIf="element.reservations" class="mat-check-icon">check</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="members">
+      <mat-header-cell *matHeaderCellDef mat-header-cell>Mitglieder</mat-header-cell>
+      <mat-cell *matCellDef="let element" mat-cell>
+        <mat-icon *ngIf="element.members" class="mat-check-icon">check</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="shiftPlaning">
+      <mat-header-cell *matHeaderCellDef mat-header-cell>Schichten</mat-header-cell>
+      <mat-cell *matCellDef="let element" mat-cell>
+        <mat-icon *ngIf="element.shiftPlanning" class="mat-check-icon">check</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-header-cell></mat-header-cell>
+      <mat-cell *matCellDef="let element" mat-cell>
+        <mat-icon>navigate_next</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns" mat-header-row></mat-header-row>
+    <mat-row (click)="onEdit(row)" *matRowDef="let row; columns: displayedColumns;" mat-row matRipple></mat-row>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" pageSize="10"/>
+</div>

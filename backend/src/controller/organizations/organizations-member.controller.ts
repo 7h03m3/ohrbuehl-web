@@ -19,7 +19,6 @@ import { OrganizationMemberService } from '../../database/organizations/organiza
 import { OrganizationMemberEntity } from '../../database/entities/organization-member.entity';
 import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-member-create.dto';
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
-import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { EventsShiftService } from '../../database/events/events-shift.service';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
 import { UsersService } from '../../database/users/users.service';
@@ -28,7 +27,6 @@ import { UsersService } from '../../database/users/users.service';
 export class OrganizationsMemberController {
   constructor(
     private memberService: OrganizationMemberService,
-    private organizationService: OrganizationsService,
     private eventShiftService: EventsShiftService,
     private eventStaffPoolService: EventsStaffPoolService,
     private userService: UsersService,

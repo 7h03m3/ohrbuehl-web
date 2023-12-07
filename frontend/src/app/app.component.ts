@@ -3,9 +3,7 @@ import { AuthService } from './auth/auth.service';
 
 import { Router } from '@angular/router';
 import { UserLocalData } from './shared/classes/user-local-data';
-import { ApiService } from './api/api.service';
-import { ContactMessageApi } from './api/classes/contact-message-api';
-import { ContactMessageStatus } from './shared/enums/contact-message-status.enum';
+import { ContactMessageService } from './shared/services/contact-message.service';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +11,14 @@ import { ContactMessageStatus } from './shared/enums/contact-message-status.enum
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  public messageCount = 0;
-  private contactMessageApi: ContactMessageApi | undefined;
-
-  constructor(public authService: AuthService, private router: Router, private apiService: ApiService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    public contactMessageService: ContactMessageService,
+  ) {}
 
   public ngOnInit() {
-    if (this.authService.isShootingRangeManager()) {
-      this.contactMessageApi = this.apiService.getContactMessage();
-      this.contactMessageApi.getStatusCount(ContactMessageStatus.Open).subscribe((response) => {
-        this.messageCount = +response;
-      });
-    }
+    this.contactMessageService.update();
   }
 
   public getRoleText(): string {

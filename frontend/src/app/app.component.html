@@ -31,6 +31,9 @@
         <button mat-menu-item routerLink="/public/shooting-range">
           <span>Informationen</span>
         </button>
+        <button mat-menu-item routerLink="/public/track-reservation">
+          <span>Scheibenreservationen</span>
+        </button>
         <button mat-menu-item routerLink="/public/contact">
           <span>Kontakt</span>
         </button>
@@ -59,8 +62,10 @@
 
       <button *ngIf="authService.isShootingRangeManager()" mat-icon-button matTooltip="Nachrichten"
               routerLink="/contact-message">
-        <mat-icon [matBadgeHidden]="messageCount == 0" [matBadge]="messageCount" aria-hidden="false"
-                  matBadgeColor="warn">question_answer
+        <mat-icon [matBadgeHidden]="contactMessageService.getMessageCount() == 0"
+                  [matBadge]="contactMessageService.getMessageCount()"
+                  aria-hidden="false" matBadgeColor="warn">
+          question_answer
         </mat-icon>
       </button>
 
@@ -71,7 +76,6 @@
       <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/user/login">
         <mat-icon>login</mat-icon>
       </button>
-
 
       <p *ngIf="authService.isLoggedIn() == true">
         <button [matMenuTriggerFor]="menu" mat-icon-button>

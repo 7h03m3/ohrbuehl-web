@@ -20,7 +20,8 @@ export class AdminComponent implements OnInit {
   private setupSidenav() {
     this.sidenavService.addElement('Benutzer', 'person', './user-list');
     this.sidenavService.addElement('Benachrichtigungen', 'notifications', './notifier-list');
-    this.sidenavService.addElement('Organisationen', 'corporate_fare', './organization-list');
+    const organization = this.sidenavService.addElement('Organisationen', 'corporate_fare', './organization-list');
+    this.sidenavService.addSubElement(organization, 'Features', 'tune', './organization-feature-list');
     this.sidenavService.addElement('Preise', 'money', './price-list');
     this.sidenavService.addElement('Anlasskategorie', 'festival', './event-category-list');
     this.sidenavService.addElement('Schichtenkategorie', 'category', './event-shift-category-list');

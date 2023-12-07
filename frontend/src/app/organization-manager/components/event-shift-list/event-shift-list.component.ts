@@ -10,7 +10,6 @@ import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
 import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
 import { AuthService } from '../../../auth/auth.service';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
 import { EventHelper } from '../../classes/event-helper';
 
 @Component({
@@ -26,7 +25,6 @@ export class EventShiftListComponent {
   private organizationId = 0;
   private eventApi: EventApi;
   private poolApi: EventStaffPoolApi;
-  private categoryApi: EventCategoryApi;
 
   constructor(
     private apiService: ApiService,
@@ -38,7 +36,6 @@ export class EventShiftListComponent {
   ) {
     this.eventApi = this.apiService.getEvent();
     this.poolApi = this.apiService.getStaffPool();
-    this.categoryApi = this.apiService.getEventCategory();
   }
 
   private static isAssigned(shift: EventShiftDto): boolean {

@@ -8,12 +8,14 @@ import { OrganizationEntity } from '../../database/entities/organization.entity'
 import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
 import { OrganizationDto } from '../../shared/dtos/organization.dto';
 import { BusinessHoursReservationService } from '../../database/business-hours/business-hours-reservation.service';
+import { OrganizationFeatureService } from '../../database/organizations/organization-feature.service';
 
 @Controller('organizations')
 export class OrganizationsController {
   constructor(
     private readonly organizationsService: OrganizationsService,
     private reservationService: BusinessHoursReservationService,
+    private featureService: OrganizationFeatureService,
   ) {}
 
   @Get()
@@ -84,6 +86,7 @@ export class OrganizationsController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<any> {
     await this.reservationService.deleteByOrganization(+id);
+    await this.featureService.deleteByOrganization(+id);
     return this.organizationsService.delete(id);
   }
 }

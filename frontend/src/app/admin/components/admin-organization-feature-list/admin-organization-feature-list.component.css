@@ -1,0 +1,37 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-check-icon {
+  color: green;
+}
+
+.mat-column-organization {
+  white-space: nowrap;
+  min-width: 15em;
+}
+
+.mat-column-reservations {
+  white-space: nowrap;
+  width: 8em;
+  text-align: center;
+  justify-content: center;
+}
+
+.mat-column-members {
+  white-space: nowrap;
+  width: 8em;
+  text-align: center;
+  justify-content: center;
+}
+
+.mat-column-shiftPlaning {
+  white-space: nowrap;
+  width: 8em;
+  text-align: center;
+  justify-content: center;
+}

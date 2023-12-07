@@ -31,4 +31,41 @@ export class SummarizeHelper {
 
     return resultArray;
   }
+
+  public static summarizeShootingRangeDaysAccounting(source: ShootingRangeAccountingUnitEntity[]) {
+    const resultArray = new Array<ShootingRangeAccountingUnitEntity>();
+
+    const sortedData = source.sort((a, b) => {
+      const accountingA = a.accountingEntry;
+      const accountingB = b.accountingEntry;
+      if (accountingA.start > accountingB.start) {
+        return -1;
+      }
+
+      if (accountingA.start < accountingB.start) {
+        return 1;
+      }
+      return 0;
+    });
+
+    let currentPriceId = 0;
+    let currentComment = '';
+    let currentStart = 0;
+    for (const current of sortedData) {
+      if (
+        currentStart != current.accountingEntry.start ||
+        current.price.id != currentPriceId ||
+        current.comment != currentComment
+      ) {
+        currentPriceId = current.price.id;
+        currentComment = current.comment;
+        currentStart = current.accountingEntry.start;
+        resultArray.push(current);
+      } else {
+        resultArray.at(-1).amount += current.amount;
+      }
+    }
+
+    return resultArray;
+  }
 }

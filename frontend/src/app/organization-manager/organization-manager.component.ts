@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { SidenavService } from '../shared/services/sidenav.service';
+import { ApiService } from '../api/api.service';
+import { OrganizationFeatureApi } from '../api/classes/organization-feature-api';
+import { AuthService } from '../auth/auth.service';
+import { OrganizationFeatureDto } from '../shared/dtos/organization-feature.dto';
 
 @Component({
   selector: 'app-organization-manager',
@@ -7,31 +11,61 @@ import { SidenavService } from '../shared/services/sidenav.service';
   styleUrls: ['./organization-manager.component.css'],
 })
 export class OrganizationManagerComponent {
-  public constructor(private sidenavService: SidenavService) {}
+  private organizationId = 0;
+  private featureApi: OrganizationFeatureApi;
+
+  public constructor(
+    private sidenavService: SidenavService,
+    private authService: AuthService,
+    private apiService: ApiService,
+  ) {
+    this.featureApi = apiService.getOrganizationFeature();
+  }
 
   public ngOnInit() {
-    this.setupSidenav();
+    if (!this.authService.isAdmin()) {
+      this.organizationId = this.authService.getManagingOrganizationId();
+      this.featureApi.getByOrganizationId(this.organizationId).subscribe((response) => {
+        if (response == null) {
+          response = new OrganizationFeatureDto();
+        }
+        this.setupSidenav(response);
+      });
+    } else {
+      const features = new OrganizationFeatureDto();
+      features.shiftPlanning = true;
+      features.members = true;
+      features.reservations = true;
+      this.setupSidenav(features);
+    }
   }
 
   public ngOnDestroy() {
     this.sidenavService.reset();
   }
 
-  private setupSidenav() {
+  private setupSidenav(features: OrganizationFeatureDto) {
     this.sidenavService.addElement('Informationen', 'info', './info');
-    this.sidenavService.addElement('Reservationen', 'donut_large', './reservations/list');
 
-    const memberMenu = this.sidenavService.addElement('Mitglieder', 'person', './member-list');
-    this.sidenavService.addSubElement(memberMenu, 'Mitgliederliste', 'list', './member-list');
-    this.sidenavService.addSubElement(memberMenu, 'VVA-Import', 'publish', './member-import');
+    if (features.reservations) {
+      this.sidenavService.addElement('Reservationen', 'donut_large', './reservations/list');
+    }
 
-    this.sidenavService.addElement('Helfer-Pool', 'groups', './event-staff-pool-edit');
+    if (features.members) {
+      const memberMenu = this.sidenavService.addElement('Mitglieder', 'person', './member-list');
+      this.sidenavService.addSubElement(memberMenu, 'Mitgliederliste', 'list', './member-list');
+      this.sidenavService.addSubElement(memberMenu, 'VVA-Import', 'publish', './member-import');
+    }
 
-    const shiftMenu = this.sidenavService.addElement('Schichtenplanung', 'schedule', './event-shift-list');
-    this.sidenavService.addSubElement(shiftMenu, 'Schichten', 'schedule', './event-shift-list');
-    this.sidenavService.addSubElement(shiftMenu, 'Downloads', 'download', './event-shift-downloads');
+    if (features.shiftPlanning) {
+      this.sidenavService.addElement('Helfer-Pool', 'groups', './event-staff-pool-edit');
 
-    const statisticMenu = this.sidenavService.addElement('Statistik', 'bar_chart', './event-staff-statistic');
-    this.sidenavService.addSubElement(statisticMenu, 'Helferstatistik', 'bar_chart', './event-staff-statistic');
+      const shiftMenu = this.sidenavService.addElement('Schichtenplanung', 'schedule', './event-shift-list');
+      this.sidenavService.addSubElement(shiftMenu, 'Schichten', 'schedule', './event-shift-list');
+      this.sidenavService.addSubElement(shiftMenu, 'Downloads', 'download', './event-shift-downloads');
+
+      const statisticMenu = this.sidenavService.addElement('Statistik', 'bar_chart', './event-staff-statistic');
+      this.sidenavService.addSubElement(statisticMenu, 'Helferstatistik', 'bar_chart', './event-staff-statistic');
+    }
   }
 }

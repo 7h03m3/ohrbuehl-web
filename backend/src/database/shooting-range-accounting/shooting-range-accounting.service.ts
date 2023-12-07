@@ -29,6 +29,38 @@ export class ShootingRangeAccountingService {
     });
   }
 
+  findAllItemsByYearAndOrganization(
+    year: number,
+    organizationId: number,
+  ): Promise<ShootingRangeAccountingUnitEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.accountingUnitRepository.find({
+      order: { price: { name: 'ASC' }, accountingEntry: { start: 'DESC' }, comment: 'ASC' },
+      where: {
+        accountingEntry: {
+          start: Between(timeStart, timeEnd),
+        },
+        organization: {
+          id: organizationId,
+        },
+      },
+      relations: {
+        accountingEntry: true,
+        organization: true,
+        price: true,
+      },
+      select: {
+        organization: {
+          id: true,
+          name: true,
+          abbreviation: true,
+        },
+      },
+    });
+  }
+
   findAllDetailed(year: number): Promise<ShootingRangeAccountingEntity[]> {
     const timeStart = DateHelper.getYearStart(year).getTime();
     const timeEnd = DateHelper.getYearEnd(year).getTime();

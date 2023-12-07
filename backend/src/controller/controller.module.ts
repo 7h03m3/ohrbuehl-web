@@ -39,6 +39,9 @@ import { BusinessHoursHelperService } from './business-hours/helpers/business-ho
 import { MailModule } from '../mail/mail.module';
 import { ContactMessageController } from './contact-message/contact-message.controller';
 import { ContactMessageModule } from '../database/contact-message/contact-message.module';
+import { ReportsController } from './reports/reports.controller';
+import { AccountingItemsOrganizationPdfModule } from '../pdf/accounting-items-organization-pdf/accounting-items-organization-pdf.module';
+import { OrganizationsFeaturesController } from './organizations/organizations-features.controller';
 
 @Module({
   imports: [
@@ -47,6 +50,7 @@ import { ContactMessageModule } from '../database/contact-message/contact-messag
     ShootingRangeAccountingPdfModule,
     ShootingRangePriceModule,
     ShootingRangeAccountingModule,
+    AccountingItemsOrganizationPdfModule,
     InvoicePdfModule,
     InvoiceModule,
     InvoiceItemModule,
@@ -83,6 +87,8 @@ import { ContactMessageModule } from '../database/contact-message/contact-messag
     BusinessHoursSingleController,
     BusinessHoursAdminController,
     ContactMessageController,
+    ReportsController,
+    OrganizationsFeaturesController,
   ],
   exports: [],
 })

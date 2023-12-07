@@ -1,0 +1,15 @@
+<h1>Berichte</h1>
+
+<mat-card class="mat-elevation-z1" style="width: 30em">
+  <mat-card-content>
+    <mat-radio-group>
+      <mat-radio-button *ngFor="let type of reportTypes">
+        {{getReportString(type)}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="onSubmit()" class="full-width" color="primary" mat-raised-button>Download</button>
+  </mat-card-actions>
+</mat-card>
+

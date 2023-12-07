@@ -6,6 +6,7 @@ import { ContactMessageDto } from '../../../shared/dtos/contact-message.dto';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ContactMessageService } from '../../../shared/services/contact-message.service';
 
 @Component({
   selector: 'app-public-contact',
@@ -15,9 +16,15 @@ import { Router } from '@angular/router';
 export class PublicContactComponent implements OnInit {
   public readonly MaxMessageLength = 1024;
   public contactForm!: FormGroup;
+  public antiBotValid = false;
   private contactApi: ContactMessageApi;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog, private router: Router) {
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    private router: Router,
+    private contactMessageService: ContactMessageService,
+  ) {
     this.contactApi = this.apiService.getContactMessage();
   }
 
@@ -45,6 +52,7 @@ export class PublicContactComponent implements OnInit {
     message.message = this.contactForm.value['message'];
 
     this.contactApi.add(message).subscribe(() => {
+      this.contactForm.reset();
       this.showInfoDialog();
     });
   }
@@ -58,6 +66,7 @@ export class PublicContactComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
+      this.contactMessageService.update();
       this.router.navigateByUrl('/');
     });
   }

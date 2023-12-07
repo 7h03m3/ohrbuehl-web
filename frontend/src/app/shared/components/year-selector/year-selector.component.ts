@@ -13,10 +13,10 @@ export class YearSelectorComponent {
   public yearList = new Array<number>();
   @Output() yearChangeEvent = new EventEmitter<number>();
 
-  constructor(private userLocalDate: UserLocalData) {}
+  constructor(private userLocalData: UserLocalData) {}
 
   public ngOnInit() {
-    this.selectedYear = this.userLocalDate.getCurrentYear();
+    this.selectedYear = this.userLocalData.getCurrentYear();
     for (let i = -1 * YearSelectorComponent.YearRange; i <= YearSelectorComponent.YearRange; i++) {
       this.yearList.push(this.selectedYear + i);
     }
@@ -24,7 +24,7 @@ export class YearSelectorComponent {
 
   public onYearChange(year: number) {
     this.selectedYear = +year;
-    this.userLocalDate.setCurrentYear(this.selectedYear);
+    this.userLocalData.setCurrentYear(this.selectedYear);
     this.yearChangeEvent.emit(this.selectedYear);
   }
 }

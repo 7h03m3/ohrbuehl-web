@@ -6,6 +6,7 @@ import { EventShiftEntity } from './event-shift.entity';
 import { OrganizationMemberEntity } from './organization-member.entity';
 import { UserEntity } from './user.entity';
 import { BusinessHourReservationEntity } from './business-hour-reservation.entity';
+import { OrganizationFeatureEntity } from './organization-feature.entity';
 
 @Entity('organizations')
 export class OrganizationEntity {
@@ -56,6 +57,9 @@ export class OrganizationEntity {
 
   @OneToMany((type) => BusinessHourReservationEntity, (reservation) => reservation.organization)
   reservations: BusinessHourReservationEntity[];
+
+  @OneToMany((type) => OrganizationFeatureEntity, (feature) => feature.organization)
+  features: OrganizationFeatureEntity[];
 
   public loadFromCreateDto(createDto: OrganizationCreateDto) {
     this.name = createDto.name;

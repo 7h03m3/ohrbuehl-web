@@ -21,6 +21,8 @@ import { AdminNotifierListComponent } from './components/admin-notifier-list/adm
 import { AdminNotifierEditDialogComponent } from './components/admin-notifier-edit-dialog/admin-notifier-edit-dialog.component';
 import { SharedModule } from '../shared/shared.module';
 import { BusinessHoursModule } from '../business-hours/business-hours.module';
+import { AdminOrganizationFeatureListComponent } from './components/admin-organization-feature-list/admin-organization-feature-list.component';
+import { AdminOrganizationFeatureDialogComponent } from './components/admin-organization-feature-dialog/admin-organization-feature-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { BusinessHoursModule } from '../business-hours/business-hours.module';
     AdminEventShiftCategoryEditComponent,
     AdminNotifierListComponent,
     AdminNotifierEditDialogComponent,
+    AdminOrganizationFeatureListComponent,
+    AdminOrganizationFeatureDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, SharedModule, AdminRoutingModule, BusinessHoursModule],
 })

@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Feature {{data.id == 0 ? 'erstellen' : 'bearbeiten'}}</h1>
+<div mat-dialog-content>
+  <mat-form-field *ngIf="data.id==0" appearance="outline" class="form-field-half">
+    <mat-select [(ngModel)]="data.organizationId">
+      <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
+        {{organization.abbreviation}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br *ngIf="data.id==0">
+  <mat-checkbox [(ngModel)]="data.reservations">Reservationen</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="data.members">Mitglieder</mat-checkbox>
+  <br>
+  <mat-checkbox [(ngModel)]="data.shiftPlanning">Schicktenplanung</mat-checkbox>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSave()" [disabled]="data.organizationId == 0" color="primary" mat-raised-button>Okay</button>
+</div>

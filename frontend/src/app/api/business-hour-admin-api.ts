@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BusinessHoursDto } from '../../shared/dtos/business-hours.dto';
-import { BusinessHoursCreateDto } from '../../shared/dtos/business-hours-create.dto';
-import { BusinessHourReservationDto } from '../../shared/dtos/business-hour-reservation.dto';
+import { BusinessHoursDto } from '../shared/dtos/business-hours.dto';
+import { BusinessHoursCreateDto } from '../shared/dtos/business-hours-create.dto';
+import { BusinessHourReservationDto } from '../shared/dtos/business-hour-reservation.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

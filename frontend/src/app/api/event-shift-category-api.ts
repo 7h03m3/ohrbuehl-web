@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EventShiftCategoryDto } from '../../shared/dtos/event-shift-category.dto';
-import { EventShiftCategoryCreateDto } from '../../shared/dtos/event-shift-category-create.dto';
+import { EventShiftCategoryDto } from '../shared/dtos/event-shift-category.dto';
+import { EventShiftCategoryCreateDto } from '../shared/dtos/event-shift-category-create.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

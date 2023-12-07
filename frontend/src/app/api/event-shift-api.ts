@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EventShiftDto } from '../../shared/dtos/event-shift.dto';
-import { EventShiftCreateDto } from '../../shared/dtos/event-shift-create.dto';
+import { EventShiftDto } from '../shared/dtos/event-shift.dto';
+import { EventShiftCreateDto } from '../shared/dtos/event-shift-create.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

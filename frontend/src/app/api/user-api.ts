@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserDto } from '../../shared/dtos/user.dto';
-import { UserCreateDto } from '../../shared/dtos/user-create.dto';
+import { UserDto } from '../shared/dtos/user.dto';
+import { UserCreateDto } from '../shared/dtos/user-create.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

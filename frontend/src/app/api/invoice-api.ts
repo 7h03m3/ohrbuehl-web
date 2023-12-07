@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InvoiceDto } from '../../shared/dtos/invoice.dto';
-import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
-import { InvoiceListItemDto } from '../../shared/dtos/invoice-list-item.dto';
+import { InvoiceDto } from '../shared/dtos/invoice.dto';
+import { InvoiceCreateDto } from '../shared/dtos/invoice-create.dto';
+import { InvoiceListItemDto } from '../shared/dtos/invoice-list-item.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ContactMessageDto } from '../../shared/dtos/contact-message.dto';
-import { ContactMessageStatus } from '../../shared/enums/contact-message-status.enum';
+import { ContactMessageDto } from '../shared/dtos/contact-message.dto';
+import { ContactMessageStatus } from '../shared/enums/contact-message-status.enum';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

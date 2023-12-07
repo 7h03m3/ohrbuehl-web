@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BusinessHoursDto } from '../../shared/dtos/business-hours.dto';
+import { BusinessHoursDto } from '../shared/dtos/business-hours.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

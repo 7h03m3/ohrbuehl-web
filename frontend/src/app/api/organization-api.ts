@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { OrganizationDto } from '../../shared/dtos/organization.dto';
-import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto';
-import { ShootingRangeAccountingTypeEnum } from '../../shared/enums/shooting-range-accounting-type.enum';
+import { OrganizationDto } from '../shared/dtos/organization.dto';
+import { OrganizationCreateDto } from '../shared/dtos/organization-create.dto';
+import { ShootingRangeAccountingTypeEnum } from '../shared/enums/shooting-range-accounting-type.enum';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

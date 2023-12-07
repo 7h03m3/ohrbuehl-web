@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EventCategoryDto } from '../../shared/dtos/event-category.dto';
-import { EventCategoryCreateDto } from '../../shared/dtos/event-category-create.dto';
+import { EventCategoryDto } from '../shared/dtos/event-category.dto';
+import { EventCategoryCreateDto } from '../shared/dtos/event-category-create.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

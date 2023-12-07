@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ShootingRangePriceDto } from '../../shared/dtos/shooting-range-price.dto';
-import { ShootingRangePriceCreateDto } from '../../shared/dtos/shooting-range-price-create.dto';
+import { ShootingRangePriceDto } from '../shared/dtos/shooting-range-price.dto';
+import { ShootingRangePriceCreateDto } from '../shared/dtos/shooting-range-price-create.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

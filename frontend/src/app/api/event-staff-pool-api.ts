@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
+import { EventStaffPoolDto } from '../shared/dtos/event-staff-pool.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

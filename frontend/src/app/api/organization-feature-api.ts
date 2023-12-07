@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { OrganizationFeatureDto } from '../../shared/dtos/organization-feature.dto';
+import { OrganizationFeatureDto } from '../shared/dtos/organization-feature.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

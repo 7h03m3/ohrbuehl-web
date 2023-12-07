@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
+import { InvoiceItemDto } from '../shared/dtos/invoice-item.dto';
 import { Observable } from 'rxjs';
-import { InvoiceDto } from '../../shared/dtos/invoice.dto';
+import { InvoiceDto } from '../shared/dtos/invoice.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { NotificationReceiverDto } from '../../shared/dtos/notification-receiver.dto';
+import { NotificationReceiverDto } from '../shared/dtos/notification-receiver.dto';
 import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 

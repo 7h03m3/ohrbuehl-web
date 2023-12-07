@@ -1,4 +1,4 @@
-import { ShootingRangeAccountingDto } from '../../shared/dtos/shooting-range-accounting.dto';
+import { ShootingRangeAccountingDto } from '../shared/dtos/shooting-range-accounting.dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';

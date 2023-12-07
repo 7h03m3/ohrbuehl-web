@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourApi } from '../../../api/classes/business-hour-api';
+import { BusinessHourApi } from '../../../api/business-hour-api';
 import { MatTableDataSource } from '@angular/material/table';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -27,11 +26,8 @@ export class PublicBusinessHourListComponent {
   public displayedColumns: string[] = ['date', 'day', 'comment', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private businessHourApi: BusinessHourApi;
 
-  constructor(private apiService: ApiService, private bottomSheet: MatBottomSheet) {
-    this.businessHourApi = apiService.getBusinessHours();
-  }
+  constructor(private businessHourApi: BusinessHourApi, private bottomSheet: MatBottomSheet) {}
 
   public ngOnInit() {
     this.businessHourApi.getAll().subscribe((response) => {

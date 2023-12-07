@@ -1,11 +1,15 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventStaffPoolDto } from '../../shared/dtos/event-staff-pool.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EventStaffPoolApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'events/staff-pool');
+  constructor(private http: HttpClient) {
+    super('events/staff-pool');
   }
 
   public getAllByOrganization(organizationId: number): Observable<EventStaffPoolDto[]> {

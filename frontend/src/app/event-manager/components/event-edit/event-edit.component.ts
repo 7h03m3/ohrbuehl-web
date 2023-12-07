@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
-import { EventApi } from '../../../api/classes/event-api';
+import { EventCategoryApi } from '../../../api/event-category-api';
+import { EventApi } from '../../../api/event-api';
 import { StringHelper } from '../../../shared/classes/string-helper';
 
 @Component({
@@ -19,18 +18,14 @@ export class EventEditComponent {
   public date = '';
   public startTime = '';
   public endTime = '';
-  private eventApi: EventApi;
-  private categoryApi: EventCategoryApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
+    private eventApi: EventApi,
+    private categoryApi: EventCategoryApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.eventApi = this.apiService.getEvent();
-    this.categoryApi = this.apiService.getEventCategory();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.categoryApi.getAll().subscribe((response) => {

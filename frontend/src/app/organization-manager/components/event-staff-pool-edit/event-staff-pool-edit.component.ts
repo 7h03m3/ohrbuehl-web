@@ -1,13 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { EventStaffPoolEditTableColumn } from './classes/event-staff-pool-edit-table-column';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
-import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { EventApi } from '../../../api/classes/event-api';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { EventApi } from '../../../api/event-api';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { EventDto } from '../../../shared/dtos/event.dto';
-import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { EventStaffPoolApi } from '../../../api/event-staff-pool-api';
 import { EventStaffPoolDto } from '../../../shared/dtos/event-staff-pool.dto';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { AuthService } from '../../../auth/auth.service';
@@ -30,17 +28,14 @@ export class EventStaffPoolEditComponent {
   private eventList = new Array<EventDto>();
   private memberList = new Array<OrganizationMemberDto>();
   private staffPool = new Array<EventStaffPoolDto>();
-  private eventApi: EventApi;
-  private memberApi: OrganizationMemberApi;
-  private staffPoolApi: EventStaffPoolApi;
-  private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService, private userData: UserLocalData) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.eventApi = apiService.getEvent();
-    this.memberApi = apiService.getOrganizationMember();
-    this.staffPoolApi = apiService.getStaffPool();
-  }
+  constructor(
+    private eventApi: EventApi,
+    private memberApi: OrganizationMemberApi,
+    private staffPoolApi: EventStaffPoolApi,
+    private authService: AuthService,
+    private userData: UserLocalData,
+  ) {}
 
   private static incrementColumnCount(column: EventStaffPoolEditTableColumn) {
     column.totalCount = column.totalCount + 1;

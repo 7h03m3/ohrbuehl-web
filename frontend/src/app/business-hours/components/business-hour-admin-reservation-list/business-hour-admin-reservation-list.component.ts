@@ -5,8 +5,7 @@ import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-r
 import { MatDialog } from '@angular/material/dialog';
 import { BusinessHourAdminReservationEditDialogComponent } from '../business-hour-admin-reservation-edit-dialog/business-hour-admin-reservation-edit-dialog.component';
 import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
+import { BusinessHourAdminApi } from '../../../api/business-hour-admin-api';
 import { catchError, EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
@@ -28,16 +27,13 @@ export class BusinessHourAdminReservationListComponent implements OnChanges {
   public reservations = new Array<BusinessHourReservationDto>();
   public displayedColumns = ['number', 'owner', 'organization', 'eventType', 'count', 'comment', 'action'];
   public addDisabled = false;
-  private businessHourApi: BusinessHourAdminApi;
 
   constructor(
     private dialog: MatDialog,
-    private apiService: ApiService,
+    private businessHourApi: BusinessHourAdminApi,
     private snackBar: MatSnackBar,
     private authService: AuthService,
-  ) {
-    this.businessHourApi = this.apiService.getBusinessHoursAdmin();
-  }
+  ) {}
 
   public ngOnInit() {
     this.title = StringHelper.getReservationFacilityTypeString(this.facilityType as ReservationFacilityType);

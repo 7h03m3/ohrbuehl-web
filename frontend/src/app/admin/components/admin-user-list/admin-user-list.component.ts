@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { AdminUserDeleteDialogComponent } from '../admin-user-delete-dialog/admin-user-delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
-import { UserApi } from '../../../api/classes/user-api';
+import { UserApi } from '../../../api/user-api';
 import { Observable } from 'rxjs';
 import { UserDto } from '../../../shared/dtos/user.dto';
 
@@ -16,16 +15,8 @@ import { UserDto } from '../../../shared/dtos/user.dto';
 export class AdminUserListComponent implements OnInit {
   userList$ = new Observable<UserDto[]>();
   displayedColumns: string[] = ['id', 'username', 'firstname', 'lastname', 'role', 'assignedOrganization', 'action'];
-  private userApi: UserApi;
 
-  constructor(
-    private apiService: ApiService,
-    public dialog: MatDialog,
-    private userLocalData: UserLocalData,
-    private router: Router,
-  ) {
-    this.userApi = this.apiService.getUser();
-  }
+  constructor(private userApi: UserApi, public dialog: MatDialog, private router: Router) {}
 
   public ngOnInit(): void {
     this.fetch();

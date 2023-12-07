@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../../api/api.service';
-import { ContactMessageApi } from '../../../api/classes/contact-message-api';
+import { ContactMessageApi } from '../../../api/contact-message-api';
 import { ContactMessageDto } from '../../../shared/dtos/contact-message.dto';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,16 +16,13 @@ export class PublicContactComponent implements OnInit {
   public readonly MaxMessageLength = 1024;
   public contactForm!: FormGroup;
   public antiBotValid = false;
-  private contactApi: ContactMessageApi;
 
   constructor(
-    private apiService: ApiService,
+    private contactApi: ContactMessageApi,
     private dialog: MatDialog,
     private router: Router,
     private contactMessageService: ContactMessageService,
-  ) {
-    this.contactApi = this.apiService.getContactMessage();
-  }
+  ) {}
 
   public ngOnInit() {
     this.contactForm = new FormGroup({

@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
-import { ApiService } from '../../../api/api.service';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { OrganizationApi } from '../../../api/organization-api';
+import { ShootingRangePriceApi } from '../../../api/shooting-range-price-api';
 import { ShootingRangeAccountingUnitDto } from '../../../shared/dtos/shooting-range-accounting-unit.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
@@ -24,13 +23,8 @@ export class TrackAssignmentComponent implements OnInit {
   public nextButtonDisabled = true;
   public organizations = new Array<OrganizationDto>();
   public prices = new Array<ShootingRangePriceDto>();
-  private organizationApi: OrganizationApi;
-  private priceApi: ShootingRangePriceApi;
 
-  constructor(private apiService: ApiService) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.priceApi = this.apiService.getShootingRangePrice();
-  }
+  constructor(private organizationApi: OrganizationApi, private priceApi: ShootingRangePriceApi) {}
 
   ngOnInit(): void {
     this.organizationApi.getByAccountingType(this.accountingData.type).subscribe((response) => {

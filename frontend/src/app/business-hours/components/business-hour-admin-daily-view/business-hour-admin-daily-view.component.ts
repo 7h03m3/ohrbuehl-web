@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
+import { BusinessHourAdminApi } from '../../../api/business-hour-admin-api';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -19,16 +18,14 @@ export class BusinessHourAdminDailyViewComponent {
   public businessHourList = new Array<BusinessHoursDto>();
   public displayedColumns = ['number', 'facilityType', 'count', 'organization', 'eventType'];
   public date: Date;
-  private businessHoursApi: BusinessHourAdminApi;
   private dateList = new Array<Date>();
 
   constructor(
-    private apiService: ApiService,
+    private businessHoursApi: BusinessHourAdminApi,
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserLocalData,
   ) {
-    this.businessHoursApi = apiService.getBusinessHoursAdmin();
     this.date = userService.getDate();
   }
 

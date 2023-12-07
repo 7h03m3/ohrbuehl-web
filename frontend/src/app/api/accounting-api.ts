@@ -1,11 +1,15 @@
 import { ShootingRangeAccountingDto } from '../../shared/dtos/shooting-range-accounting.dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class AccountingApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'shooting-range-accounting');
+  constructor(private http: HttpClient) {
+    super('shooting-range-accounting');
   }
 
   public create(createDto: ShootingRangeAccountingDto): Observable<ShootingRangeAccountingDto> {

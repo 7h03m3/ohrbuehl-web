@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ShootingRangePriceDto } from '../../shared/dtos/shooting-range-price.dto';
 import { ShootingRangePriceCreateDto } from '../../shared/dtos/shooting-range-price-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class ShootingRangePriceApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'shooting-range-price');
+  constructor(private http: HttpClient) {
+    super('shooting-range-price');
   }
 
   public getAll(): Observable<ShootingRangePriceDto[]> {

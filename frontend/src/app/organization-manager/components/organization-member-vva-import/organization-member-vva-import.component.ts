@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
-import { ApiService } from '../../../api/api.service';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
@@ -20,18 +18,13 @@ export class OrganizationMemberVvaImportComponent {
   public memberList = new Array<OrganizationMemberDto>();
   public uploadButtonDisabled = false;
   private organizationId = 0;
-  private organizationApi: OrganizationApi;
-  private memberApi: OrganizationMemberApi;
 
   constructor(
-    private apiService: ApiService,
+    private memberApi: OrganizationMemberApi,
     private snackBar: MatSnackBar,
     private router: Router,
     private authService: AuthService,
-  ) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.memberApi = apiService.getOrganizationMember();
-  }
+  ) {}
 
   private static mergeMemberData(existingMember: OrganizationMemberDto, csvMember: OrganizationMemberDto) {
     existingMember.vvaId = csvMember.vvaId;

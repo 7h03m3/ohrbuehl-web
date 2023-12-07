@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { EventDto } from '../../../shared/dtos/event.dto';
-import { EventApi } from '../../../api/classes/event-api';
+import { EventApi } from '../../../api/event-api';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,17 +22,14 @@ export class EventListComponent {
   public displayedColumns: string[] = ['date', 'title', 'category', 'public', 'shifts', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private eventApi: EventApi;
 
   constructor(
-    private apiService: ApiService,
+    private eventApi: EventApi,
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
     private helper: EventHelper,
-  ) {
-    this.eventApi = this.apiService.getEvent();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.fetch();

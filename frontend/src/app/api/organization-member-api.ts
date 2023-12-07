@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrganizationMemberDto } from '../../shared/dtos/organization-member.dto';
 import { OrganizationMemberCreateDto } from '../../shared/dtos/organization-member-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class OrganizationMemberApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'organizations/member');
+  constructor(private http: HttpClient) {
+    super('organizations/member');
   }
 
   public getAll(): Observable<OrganizationMemberDto[]> {

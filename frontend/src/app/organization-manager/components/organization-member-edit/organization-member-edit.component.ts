@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
@@ -17,18 +16,15 @@ export class OrganizationMemberEditComponent {
   public memberData = new OrganizationMemberDto();
   public buttonDisabled = false;
   private organizationId = 0;
-  private memberApi: OrganizationMemberApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
+    private memberApi: OrganizationMemberApi,
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private formBuilder: UntypedFormBuilder,
-  ) {
-    this.memberApi = apiService.getOrganizationMember();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.memberForm = this.formBuilder.group({

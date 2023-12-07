@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventCategoryDto } from '../../shared/dtos/event-category.dto';
 import { EventCategoryCreateDto } from '../../shared/dtos/event-category-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EventCategoryApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'events/category');
+  constructor(private http: HttpClient) {
+    super('events/category');
   }
 
   public getAll(): Observable<EventCategoryDto[]> {

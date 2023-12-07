@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
+import { BusinessHourAdminApi } from '../../../api/business-hour-admin-api';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { BusinessHourOccupancyDto } from '../../../shared/dtos/business-hour-occupancy.dto';
@@ -31,18 +30,15 @@ export class BusinessHourAdminViewComponent {
   public dataSource: MatTableDataSource<TableData> = new MatTableDataSource<TableData>();
   public displayedColumns: string[] = ['text', 'count'];
   public deleteDisabled = true;
-  private businessHourApi: BusinessHourAdminApi;
 
   constructor(
-    private apiService: ApiService,
+    private businessHourApi: BusinessHourAdminApi,
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     private urlService: UrlService,
     private helper: BusinessHourHelperService,
-  ) {
-    this.businessHourApi = apiService.getBusinessHoursAdmin();
-  }
+  ) {}
 
   public ngOnInit() {
     this.route.paramMap.subscribe((data) => {

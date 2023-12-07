@@ -3,8 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { NotificationReceiverDto } from '../../../shared/dtos/notification-receiver.dto';
-import { NotificationApi } from '../../../api/classes/notification-api';
-import { ApiService } from '../../../api/api.service';
+import { NotificationApi } from '../../../api/notification-api';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AdminNotifierEditDialogComponent } from '../admin-notifier-edit-dialog/admin-notifier-edit-dialog.component';
@@ -21,11 +20,8 @@ export class AdminNotifierListComponent {
   public displayedColumns: string[] = ['name', 'email', 'triggers', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private notificationApi: NotificationApi;
 
-  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router) {
-    this.notificationApi = this.apiService.getNotification();
-  }
+  constructor(private notificationApi: NotificationApi, public dialog: MatDialog, private router: Router) {}
 
   public ngOnInit(): void {
     this.fetch();

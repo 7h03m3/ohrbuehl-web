@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
-import { ApiService } from '../../../api/api.service';
-import { InvoiceApi } from '../../../api/classes/invoice-api';
+import { InvoiceApi } from '../../../api/invoice-api';
 
 @Component({
   selector: 'app-invoice-view',
@@ -11,11 +10,8 @@ import { InvoiceApi } from '../../../api/classes/invoice-api';
 })
 export class InvoiceViewComponent implements OnInit {
   invoiceData: InvoiceDto = new InvoiceDto();
-  private invoiceApi: InvoiceApi;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
-    this.invoiceApi = this.apiService.getInvoice();
-  }
+  constructor(private route: ActivatedRoute, private invoiceApi: InvoiceApi) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

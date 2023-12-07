@@ -1,12 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { MatStepper } from '@angular/material/stepper';
 import { InvoiceCreateDto } from '../../../shared/dtos/invoice-create.dto';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceTemplates } from '../../../invoice/components/invoice-templates';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InvoiceApi } from '../../../api/classes/invoice-api';
+import { InvoiceApi } from '../../../api/invoice-api';
 import { InvoiceTypeEnum } from '../../../shared/enums/invoice-type.enum';
 import { InvoiceItemEditComponent } from '../../../invoice/components/invoice-step-item-edit/invoice-item-edit.component';
 
@@ -29,17 +28,14 @@ export class ShootingRangeInvoicesComponent implements OnInit {
   public stepEnableCheck = false;
   private invoiceItemEditComponent: any;
   private templates = new InvoiceTemplates();
-  private invoiceApi: InvoiceApi;
 
   constructor(
-    private apiService: ApiService,
+    private invoiceApi: InvoiceApi,
     private router: Router,
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar,
     private changeDetector: ChangeDetectorRef,
-  ) {
-    this.invoiceApi = this.apiService.getInvoice();
-  }
+  ) {}
 
   @ViewChild(InvoiceItemEditComponent)
   set appShark(child: InvoiceItemEditComponent) {

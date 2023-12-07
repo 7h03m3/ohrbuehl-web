@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
-import { ApiService } from '../../../api/api.service';
-import { UserApi } from '../../../api/classes/user-api';
+import { UserApi } from '../../../api/user-api';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAccountInformationEditDialogComponent } from '../user-account-information-edit-dialog/user-account-information-edit-dialog.component';
 import { UserDto } from '../../../shared/dtos/user.dto';
@@ -20,11 +19,8 @@ export class UserAccountInformationComponent implements OnInit {
   public accountInformation = new Array<AccountInformation>();
   public username = '';
   private user = new UserDto();
-  private userApi: UserApi;
 
-  constructor(private authService: AuthService, apiService: ApiService, private dialog: MatDialog) {
-    this.userApi = apiService.getUser();
-  }
+  constructor(private authService: AuthService, private userApi: UserApi, private dialog: MatDialog) {}
 
   public ngOnInit() {
     this.fetch();

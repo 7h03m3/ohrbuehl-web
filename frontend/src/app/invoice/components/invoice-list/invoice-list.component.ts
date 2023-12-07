@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { InvoiceListItemDto } from '../../../shared/dtos/invoice-list-item.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { Router } from '@angular/router';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
-import { InvoiceApi } from '../../../api/classes/invoice-api';
+import { InvoiceApi } from '../../../api/invoice-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,17 +21,14 @@ export class InvoiceListComponent implements OnInit {
   public displayedColumns: string[] = ['id', 'title', 'date', 'payed', 'creator', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private invoiceApi: InvoiceApi;
 
   constructor(
-    private apiService: ApiService,
+    private invoiceApi: InvoiceApi,
     public dialog: MatDialog,
     private router: Router,
     private downloadHelper: DownloadHelper,
     private userData: UserLocalData,
-  ) {
-    this.invoiceApi = this.apiService.getInvoice();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.loadTable();

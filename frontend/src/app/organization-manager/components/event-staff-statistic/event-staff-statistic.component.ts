@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { EventStaffStatisticItem } from './classes/event-staff-statistic-item';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
@@ -22,11 +21,12 @@ export class EventStaffStatisticComponent {
   @ViewChild(MatSort) sort: any = MatSort;
   private organizationId = 0;
   private memberList = new Array<OrganizationMemberDto>();
-  private memberApi: OrganizationMemberApi;
 
-  constructor(private apiService: ApiService, private authService: AuthService, private userDate: UserLocalData) {
-    this.memberApi = apiService.getOrganizationMember();
-  }
+  constructor(
+    private memberApi: OrganizationMemberApi,
+    private authService: AuthService,
+    private userDate: UserLocalData,
+  ) {}
 
   private static getPresentCount(shiftList: EventShiftDto[]): number {
     return shiftList.filter((value) => {

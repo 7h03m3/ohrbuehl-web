@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OrganizationFeatureDto } from '../../../shared/dtos/organization-feature.dto';
-import { ApiService } from '../../../api/api.service';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { OrganizationApi } from '../../../api/organization-api';
 
 @Component({
   selector: 'app-admin-organization-feature-dialog',
@@ -12,15 +11,12 @@ import { OrganizationApi } from '../../../api/classes/organization-api';
 })
 export class AdminOrganizationFeatureDialogComponent implements OnInit {
   public organizationList = new Array<OrganizationDto>();
-  private organizationApi: OrganizationApi;
 
   constructor(
     public dialogRef: MatDialogRef<AdminOrganizationFeatureDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: OrganizationFeatureDto,
-    private apiService: ApiService,
-  ) {
-    this.organizationApi = apiService.getOrganization();
-  }
+    private organizationApi: OrganizationApi,
+  ) {}
 
   public ngOnInit() {
     if (this.data.id == 0) {

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { Role } from '../../../shared/enums/role.enum';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserApi } from '../../../api/classes/user-api';
+import { UserApi } from '../../../api/user-api';
 import { UserDto } from '../../../shared/dtos/user.dto';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { OrganizationApi } from '../../../api/organization-api';
 
 @Component({
   selector: 'app-admin-user-edit',
@@ -21,19 +20,14 @@ export class AdminUserEditComponent implements OnInit {
   public userRoles = Object.values(Role);
   public organizationList = new Array<OrganizationDto>();
   public disableOrganization = true;
-  private userApi: UserApi;
-  private organizationApi: OrganizationApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
-    private userLocalData: UserLocalData,
+    private userApi: UserApi,
+    private organizationApi: OrganizationApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.userApi = this.apiService.getUser();
-    this.organizationApi = this.apiService.getOrganization();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.organizationApi.getAll().subscribe((response) => {

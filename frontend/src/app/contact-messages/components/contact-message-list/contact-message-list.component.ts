@@ -2,8 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ApiService } from '../../../api/api.service';
-import { ContactMessageApi } from '../../../api/classes/contact-message-api';
+import { ContactMessageApi } from '../../../api/contact-message-api';
 import { ContactMessageDto } from '../../../shared/dtos/contact-message.dto';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ContactMessageStatus } from '../../../shared/enums/contact-message-status.enum';
@@ -22,11 +21,12 @@ export class ContactMessageListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
   protected readonly ContactMessageStatus = ContactMessageStatus;
-  private messageApi: ContactMessageApi;
 
-  constructor(apiService: ApiService, private dialog: MatDialog, private contactMessageService: ContactMessageService) {
-    this.messageApi = apiService.getContactMessage();
-  }
+  constructor(
+    private messageApi: ContactMessageApi,
+    private dialog: MatDialog,
+    private contactMessageService: ContactMessageService,
+  ) {}
 
   public ngOnInit() {
     this.loadData();

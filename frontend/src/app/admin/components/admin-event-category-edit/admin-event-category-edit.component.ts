@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
+import { EventCategoryApi } from '../../../api/event-category-api';
 
 @Component({
   selector: 'app-admin-event-category-edit',
@@ -13,16 +12,13 @@ import { EventCategoryApi } from '../../../api/classes/event-category-api';
 export class AdminEventCategoryEditComponent {
   public formValid = true;
   public category: EventCategoryDto = new EventCategoryDto();
-  private categoryApi: EventCategoryApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
+    private categoryApi: EventCategoryApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.categoryApi = this.apiService.getEventCategory();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

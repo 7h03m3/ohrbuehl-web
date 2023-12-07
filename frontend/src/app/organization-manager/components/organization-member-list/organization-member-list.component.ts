@@ -1,10 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
-import { ApiService } from '../../../api/api.service';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { OrganizationApi } from '../../../api/classes/organization-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { AuthService } from '../../../auth/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,18 +30,13 @@ export class OrganizationMemberListComponent {
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
   private organizationId = 0;
-  private organizationApi: OrganizationApi;
-  private memberApi: OrganizationMemberApi;
 
   constructor(
-    private apiService: ApiService,
+    private memberApi: OrganizationMemberApi,
     public dialog: MatDialog,
     private router: Router,
     private authService: AuthService,
-  ) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.memberApi = this.apiService.getOrganizationMember();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();

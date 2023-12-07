@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
-import { ApiService } from '../../../api/api.service';
-import { AccountingApi } from '../../../api/classes/accounting-api';
+import { AccountingApi } from '../../../api/accounting-api';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
@@ -30,11 +29,8 @@ export class InvoiceStepAccountingSelectTimeRangeComponent {
   public disableStartAccounting = true;
   public disableOrganization = true;
   public disableSubmitButton = true;
-  private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData) {
-    this.accountingApi = this.apiService.getAccounting();
-  }
+  constructor(private accountingApi: AccountingApi, private userData: UserLocalData) {}
 
   ngOnInit(): void {
     this.disableStartAccounting = true;

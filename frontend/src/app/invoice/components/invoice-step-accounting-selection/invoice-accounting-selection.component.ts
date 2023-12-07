@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
-import { AccountingApi } from '../../../api/classes/accounting-api';
-import { ApiService } from '../../../api/api.service';
+import { AccountingApi } from '../../../api/accounting-api';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -25,11 +24,8 @@ export class InvoiceAccountingSelectionComponent {
   public selectedOrganization = '';
   public disableOrganization = true;
   public disableSubmitButton = true;
-  private accountingApi: AccountingApi;
 
-  constructor(private apiService: ApiService, private userData: UserLocalData) {
-    this.accountingApi = this.apiService.getAccounting();
-  }
+  constructor(private accountingApi: AccountingApi, private userData: UserLocalData) {}
 
   ngOnInit(): void {
     this.disableOrganization = true;

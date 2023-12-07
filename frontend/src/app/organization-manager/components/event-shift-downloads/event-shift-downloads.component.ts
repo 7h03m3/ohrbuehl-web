@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
-import { ApiService } from '../../../api/api.service';
-import { EventApi } from '../../../api/classes/event-api';
+import { EventCategoryApi } from '../../../api/event-category-api';
+import { EventApi } from '../../../api/event-api';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
 import { AuthService } from '../../../auth/auth.service';
 import { catchError, EMPTY } from 'rxjs';
@@ -17,18 +16,14 @@ export class EventShiftDownloadsComponent {
   public categoryList: EventCategoryDto[] = new Array<EventCategoryDto>();
   public shiftReportSelect = 0;
   private organizationId = 0;
-  private categoryApi: EventCategoryApi;
-  private eventApi: EventApi;
 
   constructor(
-    private apiService: ApiService,
+    private categoryApi: EventCategoryApi,
+    private eventApi: EventApi,
     private downloadHelper: DownloadHelper,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-  ) {
-    this.categoryApi = this.apiService.getEventCategory();
-    this.eventApi = this.apiService.getEvent();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();

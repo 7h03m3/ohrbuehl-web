@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class UserApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'users');
+  constructor(private http: HttpClient) {
+    super('users');
   }
 
   public getAll(): Observable<UserDto[]> {

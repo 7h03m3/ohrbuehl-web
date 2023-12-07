@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { EventShiftCategoryApi } from '../../../api/classes/event-shift-category-api';
-import { ApiService } from '../../../api/api.service';
+import { EventShiftCategoryApi } from '../../../api/event-shift-category-api';
 import { EventShiftCategoryDto } from '../../../shared/dtos/event-shift-category.dto';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { StringHelper } from '../../../shared/classes/string-helper';
@@ -15,16 +14,13 @@ import { EventShiftEditDialogData } from './event-shift-edit-dialog-data';
 export class EventShiftEditDialogComponent {
   public categoryList = new Array<EventShiftCategoryDto>();
   public newShiftForm: UntypedFormGroup = new UntypedFormGroup({});
-  private categoryApi: EventShiftCategoryApi;
 
   constructor(
     public dialogRef: MatDialogRef<EventShiftEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EventShiftEditDialogData,
-    private apiService: ApiService,
+    private categoryApi: EventShiftCategoryApi,
     private formBuilder: UntypedFormBuilder,
-  ) {
-    this.categoryApi = this.apiService.getEventShiftCategory();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.data.result = false;

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { ApiService } from '../../../api/api.service';
+import { OrganizationApi } from '../../../api/organization-api';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { AuthService } from '../../../auth/auth.service';
-import { BusinessHourOrganizationApi } from '../../../api/classes/business-hour-organization-api';
+import { BusinessHourOrganizationApi } from '../../../api/business-hour-organization-api';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 
 @Component({
@@ -16,13 +15,12 @@ export class OrganizationInformationComponent {
   public organizationList = new Array<OrganizationDto>();
   public organizationId = 0;
   public reservationList = new Array<BusinessHourReservationDto>();
-  private organizationApi: OrganizationApi;
-  private businessHoursApi: BusinessHourOrganizationApi;
 
-  constructor(private apiService: ApiService, public authService: AuthService) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.businessHoursApi = this.apiService.getBusinessHoursOrganization();
-  }
+  constructor(
+    private organizationApi: OrganizationApi,
+    private businessHoursApi: BusinessHourOrganizationApi,
+    public authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.loadOrganizationData();

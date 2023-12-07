@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { SidenavService } from '../shared/services/sidenav.service';
-import { ApiService } from '../api/api.service';
-import { OrganizationFeatureApi } from '../api/classes/organization-feature-api';
+import { OrganizationFeatureApi } from '../api/organization-feature-api';
 import { AuthService } from '../auth/auth.service';
 import { OrganizationFeatureDto } from '../shared/dtos/organization-feature.dto';
 
@@ -12,15 +11,12 @@ import { OrganizationFeatureDto } from '../shared/dtos/organization-feature.dto'
 })
 export class OrganizationManagerComponent {
   private organizationId = 0;
-  private featureApi: OrganizationFeatureApi;
 
   public constructor(
     private sidenavService: SidenavService,
     private authService: AuthService,
-    private apiService: ApiService,
-  ) {
-    this.featureApi = apiService.getOrganizationFeature();
-  }
+    private featureApi: OrganizationFeatureApi,
+  ) {}
 
   public ngOnInit() {
     if (!this.authService.isAdmin()) {

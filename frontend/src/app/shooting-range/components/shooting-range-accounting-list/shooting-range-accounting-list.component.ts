@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
-import { AccountingApi } from '../../../api/classes/accounting-api';
+import { AccountingApi } from '../../../api/accounting-api';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,17 +21,14 @@ export class ShootingRangeAccountingListComponent implements OnInit {
   dataSource = new MatTableDataSource<ShootingRangeAccountingDto>();
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private accountingApi: AccountingApi;
 
   constructor(
     private router: Router,
-    private apiService: ApiService,
+    private accountingApi: AccountingApi,
     public dialog: MatDialog,
     private userData: UserLocalData,
     private downloadHelper: DownloadHelper,
-  ) {
-    this.accountingApi = this.apiService.getAccounting();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.fetch();

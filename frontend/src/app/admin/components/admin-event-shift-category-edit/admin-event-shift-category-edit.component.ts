@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventShiftCategoryApi } from '../../../api/classes/event-shift-category-api';
+import { EventShiftCategoryApi } from '../../../api/event-shift-category-api';
 import { EventShiftCategoryDto } from '../../../shared/dtos/event-shift-category.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -13,16 +12,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AdminEventShiftCategoryEditComponent {
   public formValid = true;
   public category: EventShiftCategoryDto = new EventShiftCategoryDto();
-  private categoryApi: EventShiftCategoryApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
+    private categoryApi: EventShiftCategoryApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.categoryApi = this.apiService.getEventShiftCategory();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { EventApi } from '../../../api/classes/event-api';
-import { ApiService } from '../../../api/api.service';
+import { EventApi } from '../../../api/event-api';
 import { MatDialog } from '@angular/material/dialog';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { EventShiftListItemDto } from './dtos/event-shift-list-item.dto';
-import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { EventStaffPoolApi } from '../../../api/event-staff-pool-api';
 import { AuthService } from '../../../auth/auth.service';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
 import { EventHelper } from '../../classes/event-helper';
@@ -23,20 +22,16 @@ export class EventShiftListComponent {
   public categoryList = new Array<EventCategoryDto>();
   public selectedCategory = 0;
   private organizationId = 0;
-  private eventApi: EventApi;
-  private poolApi: EventStaffPoolApi;
 
   constructor(
-    private apiService: ApiService,
+    private eventApi: EventApi,
+    private poolApi: EventStaffPoolApi,
     public dialog: MatDialog,
     private userLocalData: UserLocalData,
     private router: Router,
     private authService: AuthService,
     private helper: EventHelper,
-  ) {
-    this.eventApi = this.apiService.getEvent();
-    this.poolApi = this.apiService.getStaffPool();
-  }
+  ) {}
 
   private static isAssigned(shift: EventShiftDto): boolean {
     return (

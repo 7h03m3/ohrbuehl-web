@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
-import { AccountingApi } from '../../../api/classes/accounting-api';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { OrganizationApi } from '../../../api/organization-api';
+import { ShootingRangePriceApi } from '../../../api/shooting-range-price-api';
 import { MatDialog } from '@angular/material/dialog';
 import { ShootingRangeAccountingEditTimeDialogComponent } from './components/shooting-range-accounting-edit-time-dialog/shooting-range-accounting-edit-time-dialog.component';
+import { AccountingApi } from '../../../api/accounting-api';
 
 @Component({
   selector: 'app-shooting-range-accounting-edit',
@@ -23,21 +22,16 @@ export class ShootingRangeAccountingEditComponent implements OnInit {
   public prices = new Array<ShootingRangePriceDto>();
   public minTrack = '0';
   public maxTrack = '0';
-  private accountingApi: AccountingApi;
-  private organizationApi: OrganizationApi;
-  private priceApi: ShootingRangePriceApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-  ) {
-    this.accountingApi = this.apiService.getAccounting();
-    this.organizationApi = this.apiService.getOrganization();
-    this.priceApi = this.apiService.getShootingRangePrice();
-  }
+    private accountingApi: AccountingApi,
+    private organizationApi: OrganizationApi,
+    private priceApi: ShootingRangePriceApi,
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { OrganizationApi } from '../../../api/organization-api';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,11 +30,8 @@ export class AdminOrganizationListComponent implements OnInit {
   ];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, public dialog: MatDialog, private router: Router) {
-    this.organizationApi = this.apiService.getOrganization();
-  }
+  constructor(private organizationApi: OrganizationApi, public dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.fetch();

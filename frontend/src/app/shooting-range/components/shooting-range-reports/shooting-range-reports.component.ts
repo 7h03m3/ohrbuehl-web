@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ShootingRangeReportYearOrganizationDialogComponent } from './components/shooting-range-report-year-organization-dialog/shooting-range-report-year-organization-dialog.component';
-import { ReportApi } from '../../../api/classes/report-api';
-import { ApiService } from '../../../api/api.service';
+import { ReportApi } from '../../../api/report-api';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
 
 enum ShootingRangeReportType {
@@ -16,11 +15,8 @@ enum ShootingRangeReportType {
 })
 export class ShootingRangeReportsComponent {
   public reportTypes = Object.values(ShootingRangeReportType);
-  private reportApi: ReportApi;
 
-  constructor(private dialog: MatDialog, private apiService: ApiService, private downloadHelper: DownloadHelper) {
-    this.reportApi = apiService.getReport();
-  }
+  constructor(private reportApi: ReportApi, private dialog: MatDialog, private downloadHelper: DownloadHelper) {}
 
   public onSubmit() {
     const dialogRef = this.dialog.open(ShootingRangeReportYearOrganizationDialogComponent);

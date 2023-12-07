@@ -1,13 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BaseApi } from './base-api';
 import { Observable } from 'rxjs';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
 import { InvoiceCreateDto } from '../../shared/dtos/invoice-create.dto';
 import { InvoiceListItemDto } from '../../shared/dtos/invoice-list-item.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class InvoiceApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'invoice');
+  constructor(private http: HttpClient) {
+    super('invoice');
   }
 
   public getAll(year: number): Observable<InvoiceListItemDto[]> {

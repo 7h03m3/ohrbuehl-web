@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
-import { ApiService } from '../../../api/api.service';
+import { EventCategoryApi } from '../../../api/event-category-api';
 import { MatDialog } from '@angular/material/dialog';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
@@ -16,16 +14,8 @@ import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-
 export class AdminEventCategoryListComponent {
   categoryList$ = new Observable<EventCategoryDto[]>();
   displayedColumns: string[] = ['id', 'name', 'abbreviation', 'action'];
-  private categoryApi: EventCategoryApi;
 
-  constructor(
-    private apiService: ApiService,
-    public dialog: MatDialog,
-    private userLocalData: UserLocalData,
-    private router: Router,
-  ) {
-    this.categoryApi = this.apiService.getEventCategory();
-  }
+  constructor(private categoryApi: EventCategoryApi, public dialog: MatDialog, private router: Router) {}
 
   public ngOnInit(): void {
     this.fetch();

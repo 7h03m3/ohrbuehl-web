@@ -1,11 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseApi } from './base-api';
 import { NotificationReceiverDto } from '../../shared/dtos/notification-receiver.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class NotificationApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'notifications');
+  constructor(private http: HttpClient) {
+    super('notifications');
   }
 
   public getAllNotifier(): Observable<NotificationReceiverDto[]> {

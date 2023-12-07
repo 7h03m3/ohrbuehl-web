@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourAdminApi } from '../../../api/classes/business-hour-admin-api';
+import { BusinessHourAdminApi } from '../../../api/business-hour-admin-api';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -33,18 +32,15 @@ export class BusinessHourAdminListComponent {
   ];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private businessHourApi: BusinessHourAdminApi;
 
   constructor(
-    private apiService: ApiService,
+    private businessHourApi: BusinessHourAdminApi,
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
     private helper: BusinessHourHelperService,
     private userData: UserLocalData,
-  ) {
-    this.businessHourApi = apiService.getBusinessHoursAdmin();
-  }
+  ) {}
 
   public ngOnInit() {
     this.fetch();

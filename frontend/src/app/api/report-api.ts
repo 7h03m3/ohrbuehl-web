@@ -1,9 +1,13 @@
-import { BaseApi } from './base-api';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class ReportApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'reports');
+  constructor(private http: HttpClient) {
+    super('reports');
   }
 
   public getShootingRangeAccountingByOrganization(organizationId: number, year: number) {

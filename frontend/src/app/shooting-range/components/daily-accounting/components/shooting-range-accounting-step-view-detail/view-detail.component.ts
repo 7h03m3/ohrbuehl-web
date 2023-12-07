@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ShootingRangeAccountingDto } from '../../../../../shared/dtos/shooting-range-accounting.dto';
-import { ApiService } from '../../../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AccountingApi } from '../../../../../api/classes/accounting-api';
+import { AccountingApi } from '../../../../../api/accounting-api';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,11 +13,8 @@ export class ViewDetailComponent implements OnInit {
   @Input() accountingData!: ShootingRangeAccountingDto;
   @Input() summarizedAccountingData!: ShootingRangeAccountingDto;
   public buttonDisabled = false;
-  private accountingApi: AccountingApi;
 
-  constructor(private router: Router, private apiService: ApiService, private snackBar: MatSnackBar) {
-    this.accountingApi = this.apiService.getAccounting();
-  }
+  constructor(private router: Router, private accountingApi: AccountingApi, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {}
 

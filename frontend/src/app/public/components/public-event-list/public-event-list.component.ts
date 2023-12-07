@@ -1,14 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { EventDto } from '../../../shared/dtos/event.dto';
-import { EventApi } from '../../../api/classes/event-api';
-import { ApiService } from '../../../api/api.service';
+import { EventApi } from '../../../api/event-api';
 import { MatDialog } from '@angular/material/dialog';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
+import { EventCategoryApi } from '../../../api/event-category-api';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 
 @Component({
@@ -23,13 +22,13 @@ export class PublicEventListComponent {
   public displayPaginator = false;
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private eventApi: EventApi;
-  private eventCategoryApi: EventCategoryApi;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService, public dialog: MatDialog) {
-    this.eventApi = this.apiService.getEvent();
-    this.eventCategoryApi = this.apiService.getEventCategory();
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private eventApi: EventApi,
+    private eventCategoryApi: EventCategoryApi,
+    public dialog: MatDialog,
+  ) {}
 
   public ngOnInit(): void {
     const date = new Date();

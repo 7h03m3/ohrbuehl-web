@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShootingRangePriceCreateDto } from '../../../shared/dtos/shooting-range-price-create.dto';
 import { ShootingRangePriceTypeEnum } from '../../../shared/enums/shooting-range-price-type.enum';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
-import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { ShootingRangePriceApi } from '../../../api/shooting-range-price-api';
 
 @Component({
   selector: 'app-admin-shooting-range-price-create',
@@ -16,16 +15,13 @@ export class AdminShootingRangePriceCreateComponent implements OnInit {
   public formValid = true;
   public types = Object.values(ShootingRangePriceTypeEnum);
   public bulletPriceCreateDto: ShootingRangePriceCreateDto = new ShootingRangePriceCreateDto();
-  private priceApi: ShootingRangePriceApi;
 
   constructor(
-    private apiService: ApiService,
+    private priceApi: ShootingRangePriceApi,
     private userLocalData: UserLocalData,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) {
-    this.priceApi = this.apiService.getShootingRangePrice();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.bulletPriceCreateDto.price = 0.05;

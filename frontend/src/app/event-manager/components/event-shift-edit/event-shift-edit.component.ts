@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { EventApi } from '../../../api/classes/event-api';
+import { EventApi } from '../../../api/event-api';
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { ActivatedRoute } from '@angular/router';
-import { EventShiftApi } from '../../../api/classes/event-shift-api';
+import { EventShiftApi } from '../../../api/event-shift-api';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { EventShiftEditListItemDto } from './dtos/event-shift-edit-list-item.dto';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
+import { OrganizationApi } from '../../../api/organization-api';
+import { OrganizationMemberApi } from '../../../api/organization-member-api';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
 import { EventShiftEditDialogComponent } from '../event-shift-edit-dialog/event-shift-edit-dialog.component';
 import { EventShiftCreateDto } from '../../../shared/dtos/event-shift-create.dto';
@@ -34,23 +33,17 @@ export class EventShiftEditComponent {
   public staffMap = new Map<number, OrganizationMemberDto[]>();
   public displayedColumns: string[] = ['category', 'time', 'organization', 'staff', 'action'];
   private eventId = 0;
-  private eventApi: EventApi;
-  private shiftApi: EventShiftApi;
-  private organizationApi: OrganizationApi;
-  private staffApi: OrganizationMemberApi;
 
   constructor(
     private route: ActivatedRoute,
-    private apiService: ApiService,
+    private eventApi: EventApi,
+    private shiftApi: EventShiftApi,
+    private organizationApi: OrganizationApi,
+    private staffApi: OrganizationMemberApi,
     public dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
     private sidenavService: SidenavService,
-  ) {
-    this.eventApi = this.apiService.getEvent();
-    this.shiftApi = this.apiService.getEventShift();
-    this.organizationApi = this.apiService.getOrganization();
-    this.staffApi = this.apiService.getOrganizationMember();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.organizationApi.getAllNative().subscribe((data) => {

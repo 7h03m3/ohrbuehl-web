@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { UserPasswordChangeDto } from '../../../shared/dtos/user-password-change.dto';
-import { ApiService } from '../../../api/api.service';
 import { catchError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,12 +19,7 @@ export class UserPasswordChangeComponent {
   public disableSubmitButton = false;
   public changeFailed = false;
 
-  constructor(
-    private authService: AuthService,
-    private apiService: ApiService,
-    private router: Router,
-    private snackBar: MatSnackBar,
-  ) {}
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   public ngOnInit() {
     this.disableSubmitButton = false;
@@ -39,7 +33,7 @@ export class UserPasswordChangeComponent {
     dto.oldPassword = this.oldPassword;
     dto.newPassword = this.newPassword;
 
-    this.apiService
+    this.authService
       .changePassword(dto)
       .pipe(
         catchError((err) => {

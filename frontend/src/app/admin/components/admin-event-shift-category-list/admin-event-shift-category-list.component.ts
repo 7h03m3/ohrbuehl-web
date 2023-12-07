@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { Router } from '@angular/router';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { EventShiftCategoryDto } from '../../../shared/dtos/event-shift-category.dto';
-import { EventShiftCategoryApi } from '../../../api/classes/event-shift-category-api';
+import { EventShiftCategoryApi } from '../../../api/event-shift-category-api';
 
 @Component({
   selector: 'app-admin-event-shift-category-list',
@@ -16,16 +14,8 @@ import { EventShiftCategoryApi } from '../../../api/classes/event-shift-category
 export class AdminEventShiftCategoryListComponent {
   categoryList$ = new Observable<EventShiftCategoryDto[]>();
   displayedColumns: string[] = ['id', 'name', 'abbreviation', 'position', 'rangeOfficer', 'action'];
-  private categoryApi: EventShiftCategoryApi;
 
-  constructor(
-    private apiService: ApiService,
-    public dialog: MatDialog,
-    private userLocalData: UserLocalData,
-    private router: Router,
-  ) {
-    this.categoryApi = this.apiService.getEventShiftCategory();
-  }
+  constructor(private categoryApi: EventShiftCategoryApi, public dialog: MatDialog, private router: Router) {}
 
   public ngOnInit(): void {
     this.fetch();

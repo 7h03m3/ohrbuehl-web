@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../api/api.service';
-import { OrganizationApi } from '../../../../../api/classes/organization-api';
+import { OrganizationApi } from '../../../../../api/organization-api';
 import { OrganizationDto } from '../../../../../shared/dtos/organization.dto';
 import { SortHelper } from '../../../../../shared/classes/sort-helper';
 import { UserLocalData } from '../../../../../shared/classes/user-local-data';
@@ -21,15 +20,12 @@ export class ShootingRangeReportYearOrganizationDialogComponent implements OnIni
   public organizationList = new Array<OrganizationDto>();
   public yearList = new Array<number>();
   public data = new ShootingRangeReportYearOrganizationDialogData();
-  private organizationApi: OrganizationApi;
 
   constructor(
     public dialogRef: MatDialogRef<ShootingRangeReportYearOrganizationDialogComponent>,
-    private apiService: ApiService,
+    private organizationApi: OrganizationApi,
     private userLocalData: UserLocalData,
-  ) {
-    this.organizationApi = apiService.getOrganization();
-  }
+  ) {}
 
   public ngOnInit() {
     this.data.year = this.userLocalData.getCurrentYear();

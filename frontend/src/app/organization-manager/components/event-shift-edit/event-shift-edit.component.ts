@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { ActivatedRoute } from '@angular/router';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { EventApi } from '../../../api/classes/event-api';
-import { EventShiftApi } from '../../../api/classes/event-shift-api';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { EventApi } from '../../../api/event-api';
+import { EventShiftApi } from '../../../api/event-shift-api';
 import { OrganizationMemberDto } from '../../../shared/dtos/organization-member.dto';
-import { OrganizationMemberApi } from '../../../api/classes/organization-member-api';
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { EventShiftDto } from '../../../shared/dtos/event-shift.dto';
 import { catchError, EMPTY } from 'rxjs';
-import { EventStaffPoolApi } from '../../../api/classes/event-staff-pool-api';
+import { EventStaffPoolApi } from '../../../api/event-staff-pool-api';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({
@@ -26,24 +22,14 @@ export class EventShiftEditComponent {
   public displayedColumns: string[] = ['category', 'time', 'staff', 'action'];
   private organizationId = 0;
   private eventId = 0;
-  private eventApi: EventApi;
-  private shiftApi: EventShiftApi;
-  private organizationApi: OrganizationApi;
-  private staffApi: OrganizationMemberApi;
-  private staffPoolApi: EventStaffPoolApi;
 
   constructor(
-    private apiService: ApiService,
-    private userLocalData: UserLocalData,
+    private eventApi: EventApi,
+    private shiftApi: EventShiftApi,
+    private staffPoolApi: EventStaffPoolApi,
     private route: ActivatedRoute,
     private authService: AuthService,
-  ) {
-    this.eventApi = this.apiService.getEvent();
-    this.shiftApi = this.apiService.getEventShift();
-    this.organizationApi = this.apiService.getOrganization();
-    this.staffApi = this.apiService.getOrganizationMember();
-    this.staffPoolApi = this.apiService.getStaffPool();
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.organizationId = this.authService.getManagingOrganizationId();

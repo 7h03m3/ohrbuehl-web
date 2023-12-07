@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
-import { ApiService } from '../../../api/api.service';
 import { UserDto } from '../../../shared/dtos/user.dto';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
+import { UserApi } from '../../../api/user-api';
+import { BusinessHourSingleShooterApi } from '../../../api/business-hour-single-shooter-api';
 
 @Component({
   selector: 'app-single-shooter-information',
@@ -17,7 +18,11 @@ export class SingleShooterInformationComponent {
   public userList = new Array<UserDto>();
   public userId = 0;
 
-  constructor(public authService: AuthService, private apiService: ApiService) {}
+  constructor(
+    public authService: AuthService,
+    private userApi: UserApi,
+    private businessHourSingleShooterApi: BusinessHourSingleShooterApi,
+  ) {}
 
   public ngOnInit() {
     this.userId = this.authService.getUserId();
@@ -25,13 +30,10 @@ export class SingleShooterInformationComponent {
     this.fetch();
 
     if (this.authService.isAdmin()) {
-      this.apiService
-        .getUser()
-        .getAll()
-        .subscribe((response) => {
-          this.userList = response;
-          SortHelper.sortUserListByName(this.userList);
-        });
+      this.userApi.getAll().subscribe((response) => {
+        this.userList = response;
+        SortHelper.sortUserListByName(this.userList);
+      });
     }
   }
 
@@ -49,18 +51,12 @@ export class SingleShooterInformationComponent {
   }
 
   private fetch() {
-    this.apiService
-      .getUser()
-      .getById(this.userId)
-      .subscribe((response) => {
-        this.userInformation = response;
-      });
+    this.userApi.getById(this.userId).subscribe((response) => {
+      this.userInformation = response;
+    });
 
-    this.apiService
-      .getBusinessHoursSingleShooter()
-      .getNextReservations(this.userId)
-      .subscribe((response) => {
-        this.reservationList = response;
-      });
+    this.businessHourSingleShooterApi.getNextReservations(this.userId).subscribe((response) => {
+      this.reservationList = response;
+    });
   }
 }

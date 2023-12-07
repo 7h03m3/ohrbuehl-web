@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
-import { ApiService } from '../../../api/api.service';
-import { BusinessHourOrganizationApi } from '../../../api/classes/business-hour-organization-api';
+import { BusinessHourOrganizationApi } from '../../../api/business-hour-organization-api';
 import { AuthService } from '../../../auth/auth.service';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,18 +16,15 @@ import { UserLocalData } from '../../../shared/classes/user-local-data';
 export class ReservationListComponent {
   public reservationList = new Array<BusinessHourReservationDto>();
   public dateList = new Array<BusinessHoursDto>();
-  private reservationApi: BusinessHourOrganizationApi;
   private organizationId = 0;
 
   constructor(
-    private apiService: ApiService,
+    private reservationApi: BusinessHourOrganizationApi,
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private helper: BusinessHourHelperService,
     private userLocalData: UserLocalData,
-  ) {
-    this.reservationApi = apiService.getBusinessHoursOrganization();
-  }
+  ) {}
 
   public ngOnInit() {
     this.organizationId = this.authService.getManagingOrganizationId();

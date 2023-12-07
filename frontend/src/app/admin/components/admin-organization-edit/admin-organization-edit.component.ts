@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Role } from '../../../shared/enums/role.enum';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
+import { OrganizationApi } from '../../../api/organization-api';
 import { UserDto } from '../../../shared/dtos/user.dto';
-import { UserApi } from '../../../api/classes/user-api';
+import { UserApi } from '../../../api/user-api';
 
 @Component({
   selector: 'app-admin-organization-edit',
@@ -18,18 +17,14 @@ export class AdminOrganizationEditComponent implements OnInit {
   public organization: OrganizationDto = new OrganizationDto();
   public userList: UserDto[] = new Array<UserDto>();
   public userRoles = Object.values(Role);
-  private organizationApi: OrganizationApi;
-  private userApi: UserApi;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
+    private organizationApi: OrganizationApi,
+    private userApi: UserApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.organizationApi = this.apiService.getOrganization();
-    this.userApi = this.apiService.getUser();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.userApi.getAll().subscribe((response) => {

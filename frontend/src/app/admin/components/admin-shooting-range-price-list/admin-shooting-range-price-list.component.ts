@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AdminShootingRangePriceDeleteDialogComponent } from '../admin-shooting-range-price-delete-dialog/admin-shooting-range-price-delete-dialog.component';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
-import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { ShootingRangePriceApi } from '../../../api/shooting-range-price-api';
 
 @Component({
   selector: 'app-admin-shooting-range-price-list',
@@ -14,16 +13,13 @@ import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price
 export class AdminShootingRangePriceListComponent implements OnInit {
   priceList$: any;
   displayedColumns: string[] = ['id', 'name', 'type', 'description', 'price', 'action'];
-  private priceApi: ShootingRangePriceApi;
 
   constructor(
-    private apiService: ApiService,
+    private priceApi: ShootingRangePriceApi,
     private userLocalData: UserLocalData,
     public dialog: MatDialog,
     private router: Router,
-  ) {
-    this.priceApi = this.apiService.getShootingRangePrice();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.fetch();

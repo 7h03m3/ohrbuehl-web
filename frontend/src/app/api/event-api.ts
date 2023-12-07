@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventDto } from '../../shared/dtos/event.dto';
 import { EventCreateDto } from '../../shared/dtos/event-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EventApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'events');
+  constructor(private http: HttpClient) {
+    super('events');
   }
 
   public getAllPublic(startDate: number): Observable<EventDto[]> {

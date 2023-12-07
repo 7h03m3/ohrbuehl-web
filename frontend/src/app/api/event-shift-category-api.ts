@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventShiftCategoryDto } from '../../shared/dtos/event-shift-category.dto';
 import { EventShiftCategoryCreateDto } from '../../shared/dtos/event-shift-category-create.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class EventShiftCategoryApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'events/shift-category');
+  constructor(private http: HttpClient) {
+    super('events/shift-category');
   }
 
   public getAll(): Observable<EventShiftCategoryDto[]> {

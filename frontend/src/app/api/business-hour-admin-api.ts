@@ -1,13 +1,17 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BusinessHoursDto } from '../../shared/dtos/business-hours.dto';
 import { BusinessHoursCreateDto } from '../../shared/dtos/business-hours-create.dto';
 import { BusinessHourReservationDto } from '../../shared/dtos/business-hour-reservation.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class BusinessHourAdminApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'business-hours/admin');
+  constructor(private http: HttpClient) {
+    super('business-hours/admin');
   }
 
   public getAll(year: number): Observable<BusinessHoursDto[]> {

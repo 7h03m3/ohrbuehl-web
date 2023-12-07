@@ -1,24 +1,29 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { Role } from '../shared/enums/role.enum';
 import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { UserPasswordChangeDto } from '../shared/dtos/user-password-change.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly baseUrl;
   private readonly accessTokenKey = 'accessToken';
   private readonly userIdKey = 'userId';
   private readonly userRolesKey = 'userRoles';
   private readonly userAssignedOrganizationKey = 'userAssignedOrganizationId';
   private managingOrganizationId = 0;
 
-  constructor(private apiService: ApiService, public jwtHelper: JwtHelperService) {}
+  constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {
+    this.baseUrl = environment.backendBaseUrl;
+  }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
-    return this.apiService.login(username, password).pipe(
+    return this.loginRequest(username, password).pipe(
       map((result) => {
         this.setSession(result);
         return result;
@@ -28,6 +33,10 @@ export class AuthService {
         return EMPTY;
       }),
     );
+  }
+
+  public changePassword(dto: UserPasswordChangeDto): Observable<any> {
+    return this.http.put<UserPasswordChangeDto>(this.baseUrl + 'auth/password', dto);
   }
 
   public getManagingOrganizationId(): number {
@@ -159,5 +168,12 @@ export class AuthService {
   private isRole(requiredRole: Role): boolean {
     const userRole = this.getRole();
     return userRole == requiredRole || userRole == Role.Admin;
+  }
+
+  private loginRequest(username: string, password: string): Observable<JwtLoginInformation> {
+    return this.http.post<JwtLoginInformation>(this.baseUrl + 'auth/login', {
+      username,
+      password,
+    });
   }
 }

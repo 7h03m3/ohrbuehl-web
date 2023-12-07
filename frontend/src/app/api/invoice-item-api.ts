@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { BaseApi } from './base-api';
 import { InvoiceItemDto } from '../../shared/dtos/invoice-item.dto';
 import { Observable } from 'rxjs';
 import { InvoiceDto } from '../../shared/dtos/invoice.dto';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class InvoiceItemApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'invoice/item');
+  constructor(private http: HttpClient) {
+    super('invoice/item');
   }
 
   public create(createDto: InvoiceItemDto): Observable<number> {

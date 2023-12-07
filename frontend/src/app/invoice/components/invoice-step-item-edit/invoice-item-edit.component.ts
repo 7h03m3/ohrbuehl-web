@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { InvoiceDto } from '../../../shared/dtos/invoice.dto';
 import { NgForm } from '@angular/forms';
 import { InvoiceItemDto } from '../../../shared/dtos/invoice-item.dto';
-import { ApiService } from '../../../api/api.service';
-import { InvoiceItemApi } from '../../../api/classes/invoice-item-api';
+import { InvoiceItemApi } from '../../../api/invoice-item-api';
 
 @Component({
   selector: 'app-invoice-step-item-edit',
@@ -19,11 +18,8 @@ export class InvoiceItemEditComponent implements OnInit, OnChanges {
   currencyString = ' SFr.';
   newInvoiceItemExpanded = true;
   displayedColumns: string[] = ['position', 'description', 'amount', 'price', 'total', 'action'];
-  private invoiceItemApi: InvoiceItemApi;
 
-  constructor(private apiService: ApiService) {
-    this.invoiceItemApi = this.apiService.getInvoiceItem();
-  }
+  constructor(private invoiceItemApi: InvoiceItemApi) {}
 
   public ngOnInit(): void {
     this.initInvoiceItem();

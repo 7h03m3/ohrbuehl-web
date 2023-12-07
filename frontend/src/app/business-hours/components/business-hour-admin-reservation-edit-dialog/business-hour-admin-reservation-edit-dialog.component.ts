@@ -5,9 +5,8 @@ import { ReservationFacilityType } from '../../../shared/enums/reservation-facil
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { ReservationEventType } from '../../../shared/enums/reservation-event-type.enum';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { ApiService } from '../../../api/api.service';
-import { UserApi } from '../../../api/classes/user-api';
+import { OrganizationApi } from '../../../api/organization-api';
+import { UserApi } from '../../../api/user-api';
 import { UserDto } from '../../../shared/dtos/user.dto';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 
@@ -27,17 +26,13 @@ export class BusinessHourAdminReservationEditDialogComponent {
   public eventTypes = Object.keys(ReservationEventType);
   public organizationList = new Array<OrganizationDto>();
   public userList = new Array<UserDto>();
-  private organizationApi: OrganizationApi;
-  private userApi: UserApi;
 
   constructor(
     public dialogRef: MatDialogRef<BusinessHourAdminReservationEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BusinessHourAdminReservationEditDialogData,
-    private apiService: ApiService,
-  ) {
-    this.organizationApi = apiService.getOrganization();
-    this.userApi = apiService.getUser();
-  }
+    private organizationApi: OrganizationApi,
+    private userApi: UserApi,
+  ) {}
 
   public ngOnInit() {
     this.fetchOrganizationList();

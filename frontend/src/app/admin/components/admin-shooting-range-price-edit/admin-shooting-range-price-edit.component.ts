@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShootingRangePriceDto } from '../../../shared/dtos/shooting-range-price.dto';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { ShootingRangePriceTypeEnum } from '../../../shared/enums/shooting-range-price-type.enum';
-import { ShootingRangePriceApi } from '../../../api/classes/shooting-range-price-api';
+import { ShootingRangePriceApi } from '../../../api/shooting-range-price-api';
 
 @Component({
   selector: 'app-admin-shooting-range-price-edit',
@@ -16,17 +15,14 @@ export class AdminShootingRangePriceEditComponent implements OnInit {
   public formValid = true;
   public types = Object.values(ShootingRangePriceTypeEnum);
   public bulletPrice: ShootingRangePriceDto = new ShootingRangePriceDto();
-  private priceApi: ShootingRangePriceApi;
 
   constructor(
     private route: ActivatedRoute,
     private userLocalData: UserLocalData,
     private router: Router,
-    private apiService: ApiService,
+    private priceApi: ShootingRangePriceApi,
     private snackBar: MatSnackBar,
-  ) {
-    this.priceApi = this.apiService.getShootingRangePrice();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

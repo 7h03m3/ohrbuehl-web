@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ShootingRangeAccountingDto } from '../../../shared/dtos/shooting-range-accounting.dto';
-import { ApiService } from '../../../api/api.service';
 import { StringHelper } from '../../../shared/classes/string-helper';
-import { AccountingApi } from '../../../api/classes/accounting-api';
+import { AccountingApi } from '../../../api/accounting-api';
 import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 
 @Component({
@@ -14,11 +13,8 @@ import { SummarizeHelper } from '../../../shared/classes/summarize-helper';
 export class ShootingRangeAccountingViewComponent implements OnInit {
   @Input() accountingData = new ShootingRangeAccountingDto();
   @Input() summarizedAccountingData = new ShootingRangeAccountingDto();
-  private accountingApi: AccountingApi;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
-    this.accountingApi = this.apiService.getAccounting();
-  }
+  constructor(private route: ActivatedRoute, private accountingApi: AccountingApi) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((data) => {

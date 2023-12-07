@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
-import { BusinessHourSingleShooterApi } from '../../../api/classes/business-hour-single-shooter-api';
-import { ApiService } from '../../../api/api.service';
+import { BusinessHourSingleShooterApi } from '../../../api/business-hour-single-shooter-api';
 import { AuthService } from '../../../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BusinessHourHelperService } from '../../../business-hours/classes/business-hour-helper.service';
@@ -10,6 +9,7 @@ import { catchError, EMPTY, Observable } from 'rxjs';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { UserDto } from '../../../shared/dtos/user.dto';
+import { UserApi } from '../../../api/user-api';
 
 @Component({
   selector: 'app-single-shooter-reservation-list',
@@ -22,17 +22,15 @@ export class SingleShooterReservationListComponent {
   public eventLimit = 0;
   public userList = new Array<UserDto>();
   public userId = 0;
-  private reservationApi: BusinessHourSingleShooterApi;
 
   constructor(
-    private apiService: ApiService,
+    private reservationApi: BusinessHourSingleShooterApi,
+    private userApi: UserApi,
     public authService: AuthService,
     private snackBar: MatSnackBar,
     private helper: BusinessHourHelperService,
     private userLocalData: UserLocalData,
-  ) {
-    this.reservationApi = apiService.getBusinessHoursSingleShooter();
-  }
+  ) {}
 
   public ngOnInit() {
     this.userId = this.authService.getUserId();
@@ -43,13 +41,10 @@ export class SingleShooterReservationListComponent {
     });
 
     if (this.authService.isAdmin()) {
-      this.apiService
-        .getUser()
-        .getAll()
-        .subscribe((response) => {
-          this.userList = response;
-          SortHelper.sortUserListByName(this.userList);
-        });
+      this.userApi.getAll().subscribe((response) => {
+        this.userList = response;
+        SortHelper.sortUserListByName(this.userList);
+      });
     }
   }
 

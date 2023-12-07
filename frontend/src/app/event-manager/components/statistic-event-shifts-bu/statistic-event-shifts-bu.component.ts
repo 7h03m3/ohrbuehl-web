@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { EventDto } from '../../../shared/dtos/event.dto';
 import { OrganizationDto } from '../../../shared/dtos/organization.dto';
-import { EventApi } from '../../../api/classes/event-api';
-import { OrganizationApi } from '../../../api/classes/organization-api';
-import { ApiService } from '../../../api/api.service';
+import { EventApi } from '../../../api/event-api';
+import { OrganizationApi } from '../../../api/organization-api';
 import { StatisticEventShiftsTableComponent } from '../statistic-event-shifts/statistic-event-shifts-table.component';
 import { EventCategoryDto } from '../../../shared/dtos/event-category.dto';
-import { EventCategoryApi } from '../../../api/classes/event-category-api';
+import { EventCategoryApi } from '../../../api/event-category-api';
 import { SortHelper } from '../../../shared/classes/sort-helper';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 
@@ -20,15 +19,13 @@ export class StatisticEventShiftsBuComponent {
   public organizationList = new Array<OrganizationDto>();
   public categoryList = new Array<EventCategoryDto>();
   private tableComponent: any;
-  private eventApi: EventApi;
-  private eventCategoryApi: EventCategoryApi;
-  private organizationApi: OrganizationApi;
 
-  constructor(private apiService: ApiService, private userLocalData: UserLocalData) {
-    this.eventApi = this.apiService.getEvent();
-    this.organizationApi = this.apiService.getOrganization();
-    this.eventCategoryApi = this.apiService.getEventCategory();
-  }
+  constructor(
+    private eventApi: EventApi,
+    private eventCategoryApi: EventCategoryApi,
+    private organizationApi: OrganizationApi,
+    private userLocalData: UserLocalData,
+  ) {}
 
   @ViewChild(StatisticEventShiftsTableComponent)
   set appShark(child: StatisticEventShiftsTableComponent) {

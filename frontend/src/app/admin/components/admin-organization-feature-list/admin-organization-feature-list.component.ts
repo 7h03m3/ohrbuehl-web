@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../api/api.service';
-import { OrganizationFeatureApi } from '../../../api/classes/organization-feature-api';
+import { OrganizationFeatureApi } from '../../../api/organization-feature-api';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,11 +17,8 @@ export class AdminOrganizationFeatureListComponent implements OnInit, AfterViewI
   public displayedColumns: string[] = ['organization', 'reservations', 'members', 'shiftPlaning', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
-  private featureApi: OrganizationFeatureApi;
 
-  constructor(private apiService: ApiService, public dialog: MatDialog) {
-    this.featureApi = apiService.getOrganizationFeature();
-  }
+  constructor(private featureApi: OrganizationFeatureApi, public dialog: MatDialog) {}
 
   public ngOnInit() {
     this.loadData();

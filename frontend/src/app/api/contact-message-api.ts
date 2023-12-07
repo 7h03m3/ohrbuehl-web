@@ -1,12 +1,16 @@
-import { BaseApi } from './base-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ContactMessageDto } from '../../shared/dtos/contact-message.dto';
 import { ContactMessageStatus } from '../../shared/enums/contact-message-status.enum';
+import { Injectable } from '@angular/core';
+import { BaseApi } from './base-api';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class ContactMessageApi extends BaseApi {
-  constructor(baseUrl: string, private http: HttpClient) {
-    super(baseUrl + 'contact-message');
+  constructor(private http: HttpClient) {
+    super('contact-message');
   }
 
   public getAll(): Observable<ContactMessageDto[]> {

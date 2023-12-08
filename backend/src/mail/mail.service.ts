@@ -17,6 +17,8 @@ import { AccountingDeleteMessage } from './message/accounting-delete-message.cla
 import { AccountingUpdateMessage } from './message/accounting-update-message.class';
 import { AccountingAddMessage } from './message/accounting-add-message.class';
 import { ConfigService } from '@nestjs/config';
+import { ContactMessageService } from '../database/contact-message/contact-message.service';
+import { ContactMessageAddMessage } from './message/contact-message-add-message.class';
 
 @Injectable()
 export class MailService {
@@ -31,8 +33,14 @@ export class MailService {
     private invoicePdfService: InvoicePdfService,
     private accountingService: ShootingRangeAccountingService,
     private accountingPdfServer: ShootingRangeAccountingPdfService,
+    private contactMessageService: ContactMessageService,
     private configService: ConfigService,
   ) {}
+
+  public async sendAccountingDelete(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+    const message = new AccountingDeleteMessage(event.targetId, event.comment);
+    await this.sendMailBulk(message, receiverList);
+  }
 
   public async sendInvoiceAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     const [invoice, pdf, buffer] = await this.getInvoiceData(event.targetId);
@@ -59,7 +67,7 @@ export class MailService {
     await this.sendMailBulk(message, receiverList);
   }
 
-  public async senAccountingAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+  public async sendAccountingAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
     const [accountingData, pdf, buffer] = await this.getAccountingData(event.targetId);
     if (!accountingData) {
       return;
@@ -79,8 +87,13 @@ export class MailService {
     await this.sendMailBulk(message, receiverList);
   }
 
-  public async sendAccountingDelete(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
-    const message = new AccountingDeleteMessage(event.targetId, event.comment);
+  public async sendContactMessageAdd(event: NotificationEntity, receiverList: NotificationReceiverEntity[]) {
+    const contactMessage = await this.contactMessageService.getById(event.targetId);
+    if (!contactMessage) {
+      return;
+    }
+
+    const message = new ContactMessageAddMessage(contactMessage);
     await this.sendMailBulk(message, receiverList);
   }
 

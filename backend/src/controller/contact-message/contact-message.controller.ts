@@ -7,10 +7,15 @@ import { RoleAuthGuard } from '../../auth/guards/role-auth-guard.service';
 import { ContactMessageEntity } from '../../database/entities/contact-message.entity';
 import { ContactMessageDto } from '../../shared/dtos/contact-message.dto';
 import { ContactMessageStatus } from '../../shared/enums/contact-message-status.enum';
+import { NotificationManagerService } from '../../notification-manager/notification-manager.service';
+import { NotificationSource } from '../../shared/enums/notification-source.enum';
 
 @Controller('contact-message/')
 export class ContactMessageController {
-  constructor(private contactMessages: ContactMessageService) {}
+  constructor(
+    private contactMessages: ContactMessageService,
+    private notificationManager: NotificationManagerService,
+  ) {}
 
   @Roles(Role.Admin, Role.ShootingRangeManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
@@ -21,7 +26,11 @@ export class ContactMessageController {
 
   @Post()
   public async add(@Body() dto: ContactMessageDto): Promise<ContactMessageEntity> {
-    return this.contactMessages.add(dto);
+    const entity = await this.contactMessages.add(dto);
+
+    await this.notificationManager.addEvent(NotificationSource.ContactMessage, entity.id);
+
+    return entity;
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager)

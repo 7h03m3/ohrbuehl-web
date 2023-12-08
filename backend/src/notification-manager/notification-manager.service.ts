@@ -39,7 +39,7 @@ export class NotificationManagerService {
     for (const entry of notificationList) {
       if (!this.isDone(entry)) {
         const entryEvents = notificationList.filter((current) => {
-          return entry.source == current.source && entry.id && current.id;
+          return entry.source == current.source && entry.id == current.id;
         });
 
         const receiverList = this.filterReceiver(entry.source, completeReceiverList);
@@ -90,7 +90,10 @@ export class NotificationManagerService {
         await this.mailService.sendInvoiceAdd(event, receiverList);
         break;
       case NotificationSource.ShootingRangeAccounting:
-        await this.mailService.senAccountingAdd(event, receiverList);
+        await this.mailService.sendAccountingAdd(event, receiverList);
+        break;
+      case NotificationSource.ContactMessage:
+        await this.mailService.sendContactMessageAdd(event, receiverList);
         break;
     }
   }

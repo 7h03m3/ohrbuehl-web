@@ -7,6 +7,7 @@ import { InvoiceModule } from '../database/invoice/invoice.module';
 import { InvoicePdfModule } from '../pdf/invoice-pdf/invoicePdfModule';
 import { ShootingRangeAccountingModule } from '../database/shooting-range-accounting/shooting-range-accounting.module';
 import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting-range-accounting-pdf.module';
+import { ContactMessageModule } from '../database/contact-message/contact-message.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ShootingRangeAccountingPdfModule } from '../pdf/accounting-pdf/shooting
       }),
       inject: [ConfigService],
     }),
+    ContactMessageModule,
     InvoiceModule,
     InvoicePdfModule,
     ShootingRangeAccountingModule,

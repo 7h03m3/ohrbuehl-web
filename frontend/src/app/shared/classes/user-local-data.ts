@@ -19,6 +19,8 @@ export class UserLocalData {
         return 'Rechnung';
       case NotificationSource.ShootingRangeAccounting:
         return 'Schussgeld';
+      case NotificationSource.ContactMessage:
+        return 'Kontakt-Nachrichten';
       default:
         return '';
     }

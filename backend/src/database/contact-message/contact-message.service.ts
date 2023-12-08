@@ -17,6 +17,10 @@ export class ContactMessageService {
     });
   }
 
+  public getById(id: number): Promise<ContactMessageEntity> {
+    return this.repository.findOne({ where: { id: id } });
+  }
+
   public getStatusCount(status: ContactMessageStatus): Promise<number> {
     return this.repository.count({ where: { status: status } });
   }

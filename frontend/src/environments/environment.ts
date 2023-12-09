@@ -5,6 +5,9 @@
 export const environment = {
   production: false,
   backendBaseUrl: 'http://127.0.0.1:3000/',
+  recaptcha: {
+    siteKey: '6LccBCspAAAAAOz-oJgIRsP3GAOK9AhiMVlfHtOr',
+  },
 };
 
 /*

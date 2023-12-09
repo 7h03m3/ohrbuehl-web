@@ -12,6 +12,7 @@ import { PublicContactComponent } from './components/public-contact/public-conta
 import { SharedModule } from '../shared/shared.module';
 import { PublicAntiBotCalculationComponent } from './components/public-anti-bot-calculation/public-anti-bot-calculation.component';
 import { PublicTrackReservationComponent } from './components/public-track-reservation/public-track-reservation.component';
+import { RecaptchaV3Module } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,6 @@ import { PublicTrackReservationComponent } from './components/public-track-reser
     PublicAntiBotCalculationComponent,
     PublicTrackReservationComponent,
   ],
-  imports: [CommonModule, MaterialModule, PublicRoutingModule, SharedModule],
+  imports: [CommonModule, MaterialModule, PublicRoutingModule, SharedModule, RecaptchaV3Module],
 })
 export class PublicModule {}

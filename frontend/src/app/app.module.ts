@@ -14,6 +14,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-intl';
 import { UrlService } from './shared/services/url.service';
+import { environment } from '../environments/environment';
+import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +36,10 @@ import { UrlService } from './shared/services/url.service';
     {
       provide: MatPaginatorIntl,
       useClass: GermanMatPaginatorIntl,
+    },
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useValue: environment.recaptcha.siteKey,
     },
   ],
   bootstrap: [AppComponent],

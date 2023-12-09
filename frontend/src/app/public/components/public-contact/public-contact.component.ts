@@ -6,6 +6,8 @@ import { InfoDialogComponent } from '../../../shared/components/info-dialog/info
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ContactMessageService } from '../../../shared/services/contact-message.service';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-public-contact',
@@ -22,6 +24,8 @@ export class PublicContactComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private contactMessageService: ContactMessageService,
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private snackBar: MatSnackBar,
   ) {}
 
   public ngOnInit() {
@@ -47,6 +51,21 @@ export class PublicContactComponent implements OnInit {
     message.subject = this.contactForm.value['subject'];
     message.message = this.contactForm.value['message'];
 
+    this.recaptchaV3Service.execute('contact-message').subscribe({
+      next: (token) => {
+        if (token) {
+          this.sendMessage(message);
+        }
+      },
+      error: (error) => {
+        this.contactForm.reset();
+        this.snackBar.open('Es ist ein Fehler aufgetreten: ' + error, 'okay');
+        console.log('Error trying to verify request (reCaptcha v3): ' + error);
+      },
+    });
+  }
+
+  private sendMessage(message: ContactMessageDto) {
     this.contactApi.add(message).subscribe(() => {
       this.contactForm.reset();
       this.showInfoDialog();

@@ -6,6 +6,7 @@ import { UserPasswordChangeComponent } from './components/user-password-change/u
 import { MaterialModule } from '../shared/material.module';
 import { LoginComponent } from './components/login/login.component';
 import { UserAccountInformationEditDialogComponent } from './components/user-account-information-edit-dialog/user-account-information-edit-dialog.component';
+import { RecaptchaV3Module } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,6 @@ import { UserAccountInformationEditDialogComponent } from './components/user-acc
     UserPasswordChangeComponent,
     UserAccountInformationEditDialogComponent,
   ],
-  imports: [CommonModule, UserRoutingModule, MaterialModule],
+  imports: [CommonModule, UserRoutingModule, MaterialModule, RecaptchaV3Module],
 })
 export class UserModule {}

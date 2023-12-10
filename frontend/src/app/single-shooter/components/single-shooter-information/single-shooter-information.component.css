@@ -7,3 +7,19 @@
 .reservation-card {
   min-width: 40em;
 }
+
+section {
+  display: table;
+}
+
+.section-label {
+  display: table-cell;
+  font-weight: bold;
+  margin-left: 1em;
+  min-width: 9em;
+}
+
+.section-content-row {
+  display: table-cell;
+  max-width: 50em;
+}

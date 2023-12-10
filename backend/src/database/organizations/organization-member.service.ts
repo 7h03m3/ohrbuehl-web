@@ -65,6 +65,10 @@ export class OrganizationMemberService {
     await this.memberRepository.delete(id);
   }
 
+  public async deleteByOrganization(organizationId: number): Promise<void> {
+    await this.memberRepository.delete({ organizationId: organizationId });
+  }
+
   public async create(createDto: OrganizationMemberCreateDto): Promise<OrganizationMemberEntity> {
     const entity = new OrganizationMemberEntity();
     entity.loadFromCreateDto(createDto);

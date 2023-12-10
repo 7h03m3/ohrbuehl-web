@@ -147,6 +147,23 @@ export class BusinessHoursService {
     });
   }
 
+  public getByIdDetails(id: number): Promise<BusinessHourEntity> {
+    return this.repository.findOne({
+      where: { id: id },
+      relations: {
+        reservations: {
+          owner: true,
+          organization: true,
+        },
+      },
+      order: {
+        reservations: {
+          facilityType: 'ASC',
+        },
+      },
+    });
+  }
+
   public async create(entity: BusinessHourEntity): Promise<BusinessHourEntity> {
     await this.repository.save(entity);
     return entity;

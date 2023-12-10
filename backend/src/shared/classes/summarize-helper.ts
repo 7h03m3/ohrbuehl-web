@@ -1,5 +1,7 @@
 import { SortHelper } from './sort-helper';
 import { ShootingRangeAccountingUnitEntity } from '../../database/entities/shooting-range-accounting-unit.entity';
+import { BusinessHourReservationEntity } from '../../database/entities/business-hour-reservation.entity';
+import { ReservationFacilityType } from '../enums/reservation-facility-type.enum';
 
 export class SummarizeHelper {
   public static summarizeShootingRangeAccounting(
@@ -65,6 +67,26 @@ export class SummarizeHelper {
         resultArray.at(-1).amount += current.amount;
       }
     }
+
+    return resultArray;
+  }
+
+  public static summarizeBusinessHoursReservation(source: BusinessHourReservationEntity[]) {
+    const resultArray = new Map<ReservationFacilityType, BusinessHourReservationEntity>();
+
+    source.forEach((current) => {
+      const existingEntry = resultArray.get(current.facilityType);
+
+      if (existingEntry == undefined) {
+        const newEntry = new BusinessHourReservationEntity();
+        newEntry.facilityType = current.facilityType;
+        newEntry.count = current.count;
+        resultArray.set(current.facilityType, newEntry);
+      } else {
+        existingEntry.count += current.count;
+        resultArray.set(current.facilityType, existingEntry);
+      }
+    });
 
     return resultArray;
   }

@@ -9,6 +9,7 @@ import { OrganizationCreateDto } from '../../shared/dtos/organization-create.dto
 import { OrganizationDto } from '../../shared/dtos/organization.dto';
 import { BusinessHoursReservationService } from '../../database/business-hours/business-hours-reservation.service';
 import { OrganizationFeatureService } from '../../database/organizations/organization-feature.service';
+import { OrganizationMemberService } from '../../database/organizations/organization-member.service';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -16,6 +17,7 @@ export class OrganizationsController {
     private readonly organizationsService: OrganizationsService,
     private reservationService: BusinessHoursReservationService,
     private featureService: OrganizationFeatureService,
+    private memberService: OrganizationMemberService,
   ) {}
 
   @Get()
@@ -85,8 +87,10 @@ export class OrganizationsController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<any> {
-    await this.reservationService.deleteByOrganization(+id);
-    await this.featureService.deleteByOrganization(+id);
-    return this.organizationsService.delete(id);
+    const organizationId = +id;
+    await this.reservationService.deleteByOrganization(organizationId);
+    await this.featureService.deleteByOrganization(organizationId);
+    await this.memberService.deleteByOrganization(organizationId);
+    return this.organizationsService.delete(organizationId);
   }
 }

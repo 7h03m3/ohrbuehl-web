@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BusinessHourAdminApi } from '../../../api/business-hour-admin-api';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
 import { BusinessHourReservationDto } from '../../../shared/dtos/business-hour-reservation.dto';
@@ -7,6 +7,8 @@ import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { BusinessHourHelperService } from '../../classes/business-hour-helper.service';
+import { ReportApi } from '../../../api/report-api';
+import { DownloadHelper } from '../../../shared/classes/download-helper';
 
 @Component({
   selector: 'app-business-hour-admin-daily-view',
@@ -14,7 +16,7 @@ import { BusinessHourHelperService } from '../../classes/business-hour-helper.se
   styleUrls: ['./business-hour-admin-daily-view.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class BusinessHourAdminDailyViewComponent {
+export class BusinessHourAdminDailyViewComponent implements OnInit {
   public businessHourList = new Array<BusinessHoursDto>();
   public displayedColumns = ['number', 'facilityType', 'count', 'organization', 'eventType'];
   public date: Date;
@@ -25,6 +27,8 @@ export class BusinessHourAdminDailyViewComponent {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserLocalData,
+    private reportApi: ReportApi,
+    private downloadHelper: DownloadHelper,
   ) {
     this.date = userService.getDate();
   }
@@ -65,6 +69,12 @@ export class BusinessHourAdminDailyViewComponent {
 
   public onReservationEdit(businessHour: BusinessHoursDto) {
     this.router.navigate(['edit', { id: businessHour.id }], { relativeTo: this.route });
+  }
+
+  public onReportDownload(businessHour: BusinessHoursDto) {
+    this.reportApi.getBusinessHourDayReport(businessHour.id).subscribe((response) => {
+      this.downloadHelper.downloadPdfFile(response);
+    });
   }
 
   public getDateString(): string {

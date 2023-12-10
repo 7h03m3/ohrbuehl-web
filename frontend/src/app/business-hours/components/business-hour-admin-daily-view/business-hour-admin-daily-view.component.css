@@ -2,6 +2,10 @@
   flex: 1 1 auto;
 }
 
+.action-buttons {
+  margin-left: 0.5em;
+}
+
 .mat-column-number {
   width: 3em;
 }

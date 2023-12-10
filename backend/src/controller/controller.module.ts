@@ -42,6 +42,7 @@ import { ContactMessageModule } from '../database/contact-message/contact-messag
 import { ReportsController } from './reports/reports.controller';
 import { AccountingItemsOrganizationPdfModule } from '../pdf/accounting-items-organization-pdf/accounting-items-organization-pdf.module';
 import { OrganizationsFeaturesController } from './organizations/organizations-features.controller';
+import { BusinessHourDayPdfModule } from '../pdf/business-hour-day-pdf/business-hour-day-pdf.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { OrganizationsFeaturesController } from './organizations/organizations-f
     NotificationManagerModule,
     SharedModule,
     BusinessHoursModule,
+    BusinessHourDayPdfModule,
     ConfigModule,
     MailModule,
     ContactMessageModule,

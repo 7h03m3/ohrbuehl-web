@@ -19,4 +19,14 @@ export class ReportApi extends BaseApi {
       responseType: 'blob',
     });
   }
+
+  public getBusinessHourDayReport(businessHourId: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/business-hour/' + businessHourId, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
 }

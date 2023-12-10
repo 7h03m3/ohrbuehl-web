@@ -16,6 +16,7 @@ import { NotificationManagerModule } from './notification-manager/notification-m
 import configuration from './config/configuration';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AccountingItemsOrganizationPdfModule } from './pdf/accounting-items-organization-pdf/accounting-items-organization-pdf.module';
+import { BusinessHourDayPdfModule } from './pdf/business-hour-day-pdf/business-hour-day-pdf.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AccountingItemsOrganizationPdfModule } from './pdf/accounting-items-org
     EventOrganizationStaffReportPdfModule,
     NotificationManagerModule,
     AccountingItemsOrganizationPdfModule,
+    BusinessHourDayPdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

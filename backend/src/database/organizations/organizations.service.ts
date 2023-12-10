@@ -56,7 +56,7 @@ export class OrganizationsService {
     return this.organizationsRepository.findOne({ where: { id: id }, relations: { managers: true } });
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     await this.organizationsRepository.delete(id);
   }
 

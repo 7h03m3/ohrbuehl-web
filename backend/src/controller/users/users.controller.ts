@@ -94,9 +94,4 @@ export class UsersController {
     await this.businessHourService.deleteUser(id);
     return await this.userService.deleteUser(id);
   }
-
-  private getRegistrationKey(): string {
-    const crypto = require('crypto');
-    return crypto.randomBytes(20).toString('hex');
-  }
 }

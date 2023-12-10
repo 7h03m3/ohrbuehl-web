@@ -4,6 +4,7 @@ import { FileHelper } from '../../shared/classes/file-helper';
 import { PdfTableRowItem } from './classes/pdf-table-row-item';
 import { PdfTableHeaderItem } from './classes/pdf-table-header-item';
 import { PdfFile } from './classes/pdf-file.class';
+import PDFDocument from 'pdfkit-table';
 
 export class PdfBase {
   private fileHelper = new FileHelper();
@@ -83,5 +84,22 @@ export class PdfBase {
     item.align = align;
     item.width = width;
     return item;
+  }
+
+  protected addText(text: string, fontSize: number, bold: boolean, pdf: PDFDocument) {
+    pdf.fontSize(fontSize);
+    if (bold) {
+      pdf.font('Helvetica-Bold');
+    } else {
+      pdf.font('Helvetica');
+    }
+    pdf.text(text, {
+      width: this.mm2Pt(170),
+      align: 'left',
+    });
+  }
+
+  protected addNewLine(pdf: PDFDocument) {
+    pdf.moveDown();
   }
 }

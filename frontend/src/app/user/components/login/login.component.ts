@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
@@ -8,7 +8,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   public loginValid = true;
   public username = '';
   public password = '';
@@ -18,8 +18,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private recaptchaV3Service: ReCaptchaV3Service,
   ) {}
-
-  public ngOnInit(): void {}
 
   public async onSubmit() {
     this.loginValid = true;

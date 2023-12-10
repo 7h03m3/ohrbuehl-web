@@ -16,21 +16,30 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     super();
   }
 
-  async generatePdf(year: number, accountingUnitData: ShootingRangeAccountingUnitEntity[], @Res() response) {
+  public async generatePdf(
+    year: number,
+    accountingUnitData: ShootingRangeAccountingUnitEntity[],
+    @Res() response: any,
+  ) {
     const firstEntry = accountingUnitData[0];
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const filename = 'Schusszahlen_' + firstEntry.organization.abbreviation + '_' + year + '.pdf';
     const title = 'Schusszahlen ' + firstEntry.organization.name + ' ' + year;
+    const currentDateString = DateHelper.getDateTimeString(Date.now());
 
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
     const fileStream = fs.createWriteStream(tempFilename);
     await doc.pipe(fileStream);
 
+    this.addText(title, 18, true, doc);
+    this.addText('Stand: ' + currentDateString, 10, false, doc);
+    this.addNewLine(doc);
+
     const totalData = SummarizeHelper.summarizeShootingRangeAccounting(accountingUnitData);
-    let table = this.createTable(title, 18);
-    this.addTableHeader(table);
+    let table = this.createTable('', 18);
+    this.addSummaryTableHeader(table);
     for (const current of totalData) {
-      this.addTableRow(current, table);
+      this.addSummaryTableRow(current, table);
     }
     await this.addTableToDocument(table, doc);
 
@@ -48,12 +57,15 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
       return 0;
     });
 
+    this.addNewLine(doc);
+
     table = null;
     let priceId = 0;
     for (const current of summarizedDays) {
       if (priceId != current.price.id || table == null) {
         if (table != null) {
           await this.addTableToDocument(table, doc);
+          this.addNewLine(doc);
         }
         table = this.createTable(current.price.name, 12);
         this.addTableHeader(table);
@@ -81,10 +93,30 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     });
   }
 
+  private addSummaryTableHeader(table: any) {
+    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 250));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 250));
+  }
+
   private addTableHeader(table: any) {
     table.headers.push(this.getTableHeaderItem(' Datum', 'date', 'left', 150));
-    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 150));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 150));
+    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 250));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 100));
+  }
+
+  private addSummaryTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
+    const row: Row = {};
+
+    const accounting = entry.accountingEntry;
+
+    let priceText = entry.price.name;
+    if (entry.comment.length != 0) {
+      priceText += ' (' + entry.comment + ')';
+    }
+
+    row['price'] = this.getTableRowItem(priceText);
+    row['count'] = this.getTableRowItem(entry.amount.toString());
+    table.datas.push(row);
   }
 
   private addTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {

@@ -1,18 +1,34 @@
 <div *ngIf="userInformation != undefined">
   <h1>{{userInformation!.firstName}} {{userInformation!.lastName}} </h1>
-
-  <table>
-    <tr>
-      <td>Benutzername</td>
-      <td>:</td>
-      <td>{{userInformation!.userName}}</td>
-    </tr>
-    <tr>
-      <td>Rolle</td>
-      <td>:</td>
-      <td>{{getUserRole()}}</td>
-    </tr>
-  </table>
+  
+  <section>
+    <div class="section-label">Strasse</div>
+    <div class="section-content-row">{{userInformation!.street}}</div>
+  </section>
+  <section>
+    <div class="section-label">Ort</div>
+    <div class="section-content-row">{{userInformation!.zip}} {{userInformation!.location}}</div>
+  </section>
+  <br>
+  <section>
+    <div class="section-label">Telefonnummer</div>
+    <div class="section-content-row">{{userInformation!.mobile}}</div>
+  </section>
+  <section>
+    <div class="section-label">E-Mail</div>
+    <div class="section-content-row">{{userInformation!.email}}</div>
+  </section>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <section>
+    <div class="section-label">Benutzername</div>
+    <div class="section-content-row">{{userInformation!.userName}}</div>
+  </section>
+  <section>
+    <div class="section-label">Rolle</div>
+    <div class="section-content-row">{{getUserRole()}}</div>
+  </section>
 </div>
 <br>
 

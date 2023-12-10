@@ -9,6 +9,10 @@ export class DateHelper {
     return date.getFullYear().toString();
   }
 
+  public static getDateTimeString(dateNumber: number) {
+    return DateHelper.getDateString(dateNumber) + ' ' + DateHelper.getTimeString(dateNumber);
+  }
+
   public static getDateString(dateNumber: number): string {
     const date = new Date(+dateNumber);
     const days = DateHelper.addLeadingZero(date.getDate());

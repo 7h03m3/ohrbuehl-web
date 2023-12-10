@@ -33,7 +33,7 @@ export class EventOrganizationReportPdfService extends PdfBase {
     shiftList: EventShiftEntity[],
     staffPool: EventStaffPoolEntity[],
     category: EventCategoryEntity | undefined,
-    @Res() response,
+    @Res() response: any,
   ) {
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
     const fullYear = this.getFullYear(eventList);

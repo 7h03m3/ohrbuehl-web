@@ -16,9 +16,13 @@
   <mat-card-header>
     <mat-card-title>{{getTimeString(businessHour)}}</mat-card-title>
     <span class="spacer"></span>
-    <button (click)="onReservationEdit(businessHour)" color="accent" mat-stroked-button>
+    <button (click)="onReservationEdit(businessHour)" class="action-buttons" color="accent" mat-stroked-button>
       <mat-icon>edit</mat-icon>
       Bearbeiten
+    </button>
+    <button (click)="onReportDownload(businessHour)" class="action-buttons" color="accent" mat-stroked-button>
+      <mat-icon>download</mat-icon>
+      Herunterladen
     </button>
   </mat-card-header>
   <mat-card-content>

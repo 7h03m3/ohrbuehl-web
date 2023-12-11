@@ -41,7 +41,7 @@ export class UsersController {
     return this.userService.findAll();
   }
 
-  @Roles(Role.Admin, Role.SingleShooter)
+  @Roles(Role.Admin, Role.SingleShooter, Role.ShootingRangeManager, Role.OrganizationManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')
   public getById(@Param('id') id: number, @Request() req: any): Promise<UserEntity> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, MoreThan, Repository } from 'typeorm';
+import { Between, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { BusinessHourEntity } from '../entities/business-hour.entity';
 import { DateHelper } from '../../shared/classes/date-helper';
 
@@ -9,12 +9,9 @@ export class BusinessHoursService {
   constructor(@InjectRepository(BusinessHourEntity) private repository: Repository<BusinessHourEntity>) {}
 
   public getReservationDates(timeStart: number): Promise<BusinessHourEntity[]> {
-    const startDate = new Date(timeStart);
-    const timeEnd = DateHelper.getYearEnd(startDate.getFullYear()).getTime();
-
     return this.repository.find({
       where: {
-        start: Between(timeStart, timeEnd),
+        start: MoreThanOrEqual(timeStart),
         enableReservation: true,
       },
       order: {
@@ -30,6 +27,22 @@ export class BusinessHoursService {
     return this.repository.find({
       where: {
         start: Between(timeStart, timeEnd),
+      },
+      order: {
+        start: 'DESC',
+      },
+      select: {
+        start: true,
+      },
+    });
+  }
+
+  public getAllUpcomingDates(): Promise<BusinessHourEntity[]> {
+    const timeStart = DateHelper.getDayStart(Date.now()).getTime();
+
+    return this.repository.find({
+      where: {
+        start: MoreThanOrEqual(timeStart),
       },
       order: {
         start: 'DESC',

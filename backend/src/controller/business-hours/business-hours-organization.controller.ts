@@ -27,7 +27,7 @@ export class BusinessHoursOrganizationController {
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('reservation-dates/')
+  @Get('list/upcoming/')
   public async getReservationDates(): Promise<BusinessHourEntity[]> {
     return this.businessHours.getReservationDates();
   }

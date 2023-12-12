@@ -18,7 +18,7 @@ export class BusinessHourSingleShooterApi extends BaseApi {
   }
 
   public getReservationDates(): Observable<BusinessHoursDto[]> {
-    return this.http.get<BusinessHoursDto[]>(this.url + '/reservation-dates/');
+    return this.http.get<BusinessHoursDto[]>(this.url + '/list/upcoming');
   }
 
   public getReservationsOfYear(userId: number, year: number): Observable<BusinessHourReservationDto[]> {

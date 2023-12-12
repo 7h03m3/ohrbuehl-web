@@ -34,7 +34,7 @@ export class BusinessHourAdminDailyViewComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.businessHoursApi.getAllDates().subscribe((response) => {
+    this.businessHoursApi.getAllUpcomingDates().subscribe((response) => {
       response.map((current) => {
         this.dateList.push(new Date(+current));
       });

@@ -36,7 +36,7 @@ export class ReservationListComponent {
   }
 
   public onAdd() {
-    this.reservationApi.getReservationDates().subscribe((response) => {
+    this.reservationApi.getAllUpcomingDates().subscribe((response) => {
       const dialogRef = this.helper.openAddDialog(response);
 
       dialogRef.afterClosed().subscribe((result) => {

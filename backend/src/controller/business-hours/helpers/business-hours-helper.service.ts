@@ -47,6 +47,14 @@ export class BusinessHoursHelperService {
     });
   }
 
+  public async getAllUpcomingDates(): Promise<number[]> {
+    const entities = await this.businessHoursService.getAllUpcomingDates();
+
+    return entities.map((current) => {
+      return current.start;
+    });
+  }
+
   public async getAllOfDay(time: number): Promise<BusinessHourEntity[]> {
     return this.businessHoursService.getAllOfDay(time);
   }

@@ -33,7 +33,7 @@ export class BusinessHoursSingleController {
 
   @Roles(Role.Admin, Role.SingleShooter)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('reservation-dates/')
+  @Get('list/upcoming')
   public async getReservationDates(@Request() req: any): Promise<BusinessHourEntity[]> {
     const list = await this.businessHours.getReservationDates();
     const date = new Date(Date.now());

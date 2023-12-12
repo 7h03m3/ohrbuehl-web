@@ -16,16 +16,16 @@ export class BusinessHoursAdminController {
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('list/:year')
-  public async getAllOfYear(@Param('year') year: number): Promise<BusinessHourEntity[]> {
-    return this.businessHours.getAllOfYear(year);
+  @Get('list/upcoming/')
+  public async getAllUpcomingDates(): Promise<number[]> {
+    return this.businessHours.getAllUpcomingDates();
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('list/dates/:year')
-  public async getAllDatesOfYear(@Param('year') year: number): Promise<number[]> {
-    return this.businessHours.getAllDatesOfYear(year);
+  @Get('list/:year')
+  public async getAllOfYear(@Param('year') year: number): Promise<BusinessHourEntity[]> {
+    return this.businessHours.getAllOfYear(year);
   }
 
   @Roles(Role.Admin, Role.ShootingRangeManager, Role.EventOrganizer)

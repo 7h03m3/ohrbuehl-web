@@ -13,8 +13,8 @@ export class BusinessHourOrganizationApi extends BaseApi {
     super('business-hours/organization');
   }
 
-  public getReservationDates(): Observable<BusinessHoursDto[]> {
-    return this.http.get<BusinessHoursDto[]>(this.url + '/reservation-dates/');
+  public getAllUpcomingDates(): Observable<BusinessHoursDto[]> {
+    return this.http.get<BusinessHoursDto[]>(this.url + '/list/upcoming/');
   }
 
   public getReservationsOfYear(organizationId: number, year: number): Observable<BusinessHourReservationDto[]> {

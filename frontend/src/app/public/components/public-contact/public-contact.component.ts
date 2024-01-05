@@ -51,7 +51,7 @@ export class PublicContactComponent implements OnInit {
     message.subject = this.contactForm.value['subject'];
     message.message = this.contactForm.value['message'];
 
-    this.recaptchaV3Service.execute('contact-message').subscribe({
+    this.recaptchaV3Service.execute('contact_message').subscribe({
       next: (token) => {
         if (token) {
           this.sendMessage(message);

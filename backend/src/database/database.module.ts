@@ -31,6 +31,8 @@ import { BusinessHourReservationEntity } from './entities/business-hour-reservat
 import { ContactMessageEntity } from './entities/contact-message.entity';
 import { ContactMessageModule } from './contact-message/contact-message.module';
 import { OrganizationFeatureEntity } from './entities/organization-feature.entity';
+import { FileModule } from './file/file.module';
+import { FileEntity } from './file/file.entity';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { OrganizationFeatureEntity } from './entities/organization-feature.entit
           EventShiftEntity,
           EventShiftCategoryEntity,
           EventStaffPoolEntity,
+          FileEntity,
           NotificationEntity,
           NotificationReceiverEntity,
           BusinessHourEntity,
@@ -80,6 +83,7 @@ import { OrganizationFeatureEntity } from './entities/organization-feature.entit
     NotificationModule,
     BusinessHoursModule,
     ContactMessageModule,
+    FileModule,
   ],
   providers: [DefaultValuesService],
 })

@@ -23,6 +23,8 @@ import { SharedModule } from '../shared/shared.module';
 import { BusinessHoursModule } from '../business-hours/business-hours.module';
 import { AdminOrganizationFeatureListComponent } from './components/admin-organization-feature-list/admin-organization-feature-list.component';
 import { AdminOrganizationFeatureDialogComponent } from './components/admin-organization-feature-dialog/admin-organization-feature-dialog.component';
+import { AdminFileListComponent } from './components/admin-file-list/admin-file-list.component';
+import { AdminFileDialogComponent } from './components/admin-file-dialog/admin-file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { AdminOrganizationFeatureDialogComponent } from './components/admin-orga
     AdminNotifierEditDialogComponent,
     AdminOrganizationFeatureListComponent,
     AdminOrganizationFeatureDialogComponent,
+    AdminFileListComponent,
+    AdminFileDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, SharedModule, AdminRoutingModule, BusinessHoursModule],
 })

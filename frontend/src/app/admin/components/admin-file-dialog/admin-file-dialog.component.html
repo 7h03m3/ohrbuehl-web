@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Datei {{data.dto.id == 0 ? 'erstellen' : 'bearbeiten'}}</h1>
+
+<mat-dialog-content class="mat-typography">
+  <br>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Titel</mat-label>
+    <input [(ngModel)]="data.dto.title" matInput type="text"/>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Download Code</mat-label>
+    <input [(ngModel)]="data.dto.downloadCode" matInput type="text"/>
+  </mat-form-field>
+
+  <div *ngIf="data.dto.id!= 0">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dateiname</mat-label>
+      <input [(ngModel)]="data.dto.filename" matInput type="text"/>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="data.dto.id== 0">
+    <input #fileUpload (change)="onFileSelected($event)" class="file-input" type="file">
+    <div *ngIf="data.dto.filename==''" class="upload-icon">
+      <button (click)="fileUpload.click()" color="accent" mat-mini-fab matTooltip="Datei auswählen">
+        <mat-icon>upload</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="data.dto.filename!=''" class="remove-icon">
+      {{data.dto.filename}}
+      <button (click)="onFileDeselected()" color="accent" mat-icon-button>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button (click)="onCancel()" cdkFocusInitial mat-flat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isFormValid()" color="primary" mat-flat-button>Speichern</button>
+</mat-dialog-actions>

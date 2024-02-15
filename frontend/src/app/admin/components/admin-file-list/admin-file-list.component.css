@@ -1,0 +1,27 @@
+
+.mat-column-title {
+  min-width: 15em;
+}
+
+.mat-column-filename {
+  min-width: 20em;
+}
+
+.mat-column-downloadCode {
+  min-width: 15em;
+}
+
+/*
+.mat-column-title {
+  white-space: nowrap;
+}
+
+
+.mat-column-date {
+  white-space: nowrap;
+}
+
+.mat-column-downloadCode {
+  white-space: nowrap;
+}
+*/

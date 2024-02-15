@@ -1,0 +1,22 @@
+.full-width {
+  width: 100%;
+  text-align: left;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.file-input {
+  display: none;
+}
+
+.remove-icon {
+  display: flex;
+  align-items: center;
+}
+
+.upload-icon {
+  display: flex;
+  justify-content: center;
+}

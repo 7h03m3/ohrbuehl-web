@@ -43,6 +43,8 @@ import { ReportsController } from './reports/reports.controller';
 import { AccountingItemsOrganizationPdfModule } from '../pdf/accounting-items-organization-pdf/accounting-items-organization-pdf.module';
 import { OrganizationsFeaturesController } from './organizations/organizations-features.controller';
 import { BusinessHourDayPdfModule } from '../pdf/business-hour-day-pdf/business-hour-day-pdf.module';
+import { FileController } from './file/file.controller';
+import { FileModule } from '../database/file/file.module';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { BusinessHourDayPdfModule } from '../pdf/business-hour-day-pdf/business-
     EventReportPdfModule,
     EventOrganizationReportPdfModule,
     EventOrganizationStaffReportPdfModule,
+    FileModule,
     AuthModule,
     NotificationModule,
     NotificationManagerModule,
@@ -91,6 +94,7 @@ import { BusinessHourDayPdfModule } from '../pdf/business-hour-day-pdf/business-
     ContactMessageController,
     ReportsController,
     OrganizationsFeaturesController,
+    FileController,
   ],
   exports: [],
 })

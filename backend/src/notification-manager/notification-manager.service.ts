@@ -5,16 +5,23 @@ import { NotificationAction } from '../shared/enums/notification-action.enum';
 import { NotificationEntity } from '../database/entities/notification.entity';
 import { NotificationReceiverEntity } from '../database/entities/notification-receiver.entity';
 import { MailService } from '../mail/mail.service';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class NotificationManagerService {
   private static AgeTime = 15 * 60 * 1000; // 15min
   private doneList = new Array<string>();
 
-  constructor(private notifications: NotificationService, private mailService: MailService) {}
+  constructor(
+    private notifications: NotificationService,
+    private mailService: MailService,
+    private schedulerRegistry: SchedulerRegistry,
+  ) {}
 
   public async addEvent(source: NotificationSource, targetId: number) {
+    const job = new CronJob(`0 * * * * *`, () => {});
+
     await this.notifications.create(source, NotificationAction.Add, targetId, '');
   }
 

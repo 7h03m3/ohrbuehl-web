@@ -25,6 +25,8 @@ services:
       MAIL_SECURE: "true"
       MAIL_USER: ohrbuehl@gmail.com
       MAIL_PASSWORD: XXX
+    volumes:
+      - ../../data/files:/data/files      
     links: 
       - ohrbuehl-web-mysql-db
     depends_on:

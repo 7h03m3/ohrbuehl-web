@@ -7,8 +7,6 @@ import { PdfFile } from './classes/pdf-file.class';
 import PDFDocument from 'pdfkit-table';
 
 export class PdfBase {
-  private fileHelper = new FileHelper();
-
   constructor() {}
 
   protected finishDocument(doc: any, fileStream: WriteStream, tempFilename: string, filename: string, @Res() response) {
@@ -43,7 +41,7 @@ export class PdfBase {
   }
 
   protected getRandomFilename(): string {
-    return this.fileHelper.getRandomFilename();
+    return FileHelper.getRandomFilename();
   }
 
   protected mm2Pt(millimeters: number) {

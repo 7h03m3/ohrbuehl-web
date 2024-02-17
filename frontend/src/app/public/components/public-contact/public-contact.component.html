@@ -1,8 +1,8 @@
+<h2>Kontaktiere uns</h2>
+Haben sie die <a routerLink="/public/faq">häufig gestellte Fragen</a> geprüft?
 <mat-card>
   <mat-card-content>
     <form (ngSubmit)="onSubmit()" [formGroup]="contactForm">
-      <h2>Kontaktiere uns</h2>
-
       <mat-form-field appearance="outline" class="firstname-form-field">
         <mat-label>Vorname</mat-label>
         <input formControlName="firstname" matInput>

@@ -1,0 +1,46 @@
+<h2>Preise</h2>
+<p>
+  Für Verbandsvereine des Ohrbühls gelten andere Preise.
+</p>
+<p>
+  Alle Hülsen bleiben Eigentum des Schützenverbandes Ohrbühl.
+</p>
+<p>
+  Nicht Verbandsvereine und Einzelschützen werden gebeten die Kosten gleich nach der Reservation beim Standwart zu
+  begleichen.
+</p>
+
+<h3>25m / 50m / 100m</h3>
+<table [dataSource]="pricesOthers" class="mat-elevation-z1" mat-table matSort>
+  <ng-container matColumnDef="price">
+    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header="price">Preis
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" mat-cell>{{element.price | number: '1.2-2'}} {{element.priceUnit}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header="description">Beschreibung</mat-header-cell>
+    <mat-cell *matCellDef="let element" mat-cell>{{element.description}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns" mat-header-row></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" mat-row></mat-row>
+</table>
+<p>Angebrochene Stunden werden als volle Stunde verrechnet.</p>
+
+<h3>300m</h3>
+<table [dataSource]="prices300m" class="mat-elevation-z1" mat-table matSort>
+  <ng-container matColumnDef="price">
+    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header="price">Preis
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" mat-cell>{{element.price}} {{element.priceUnit}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header="description">Beschreibung</mat-header-cell>
+    <mat-cell *matCellDef="let element" mat-cell>{{element.description}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns" mat-header-row></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" mat-row></mat-row>
+</table>

@@ -7,6 +7,12 @@ import { PublicShootingRangeInformationComponent } from './components/public-sho
 import { PublicBusinessHourListComponent } from './components/public-business-hour-list/public-business-hour-list.component';
 import { PublicContactComponent } from './components/public-contact/public-contact.component';
 import { PublicTrackReservationComponent } from './components/public-track-reservation/public-track-reservation.component';
+import { PublicFaqComponent } from './components/public-faq/public-faq.component';
+import { PublicAllowedCaliberComponent } from './components/public-allowed-caliber/public-allowed-caliber.component';
+import { PublicPricesComponent } from './components/public-prices/public-prices.component';
+import { PublicRegistrationComponent } from './components/public-registration/public-registration.component';
+import { PublicGeneralBusinessTermsComponent } from './components/public-general-business-terms/public-general-business-terms.component';
+import { PublicSafetyRegulationsComponent } from './components/public-safety-regulations/public-safety-regulations.component';
 
 const routes: Routes = [
   {
@@ -41,6 +47,30 @@ const routes: Routes = [
       {
         path: 'track-reservation',
         component: PublicTrackReservationComponent,
+      },
+      {
+        path: 'allowed-caliber',
+        component: PublicAllowedCaliberComponent,
+      },
+      {
+        path: 'prices',
+        component: PublicPricesComponent,
+      },
+      {
+        path: 'faq',
+        component: PublicFaqComponent,
+      },
+      {
+        path: 'registration',
+        component: PublicRegistrationComponent,
+      },
+      {
+        path: 'general-business-terms',
+        component: PublicGeneralBusinessTermsComponent,
+      },
+      {
+        path: 'safety-regulations',
+        component: PublicSafetyRegulationsComponent,
       },
     ],
   },

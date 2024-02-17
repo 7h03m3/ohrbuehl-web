@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MaterialModule } from './shared/material.module';
 import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
@@ -16,10 +15,26 @@ import { GermanMatPaginatorIntl } from './shared/classes/german-mat-paginator-in
 import { UrlService } from './shared/services/url.service';
 import { environment } from '../environments/environment';
 import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, CdkTreeModule, HttpClientModule, MaterialModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CdkTreeModule,
+    HttpClientModule,
+    MatIconModule,
+    MatMenuModule,
+    MatBadgeModule,
+    MatToolbarModule,
+    MatButtonModule,
+    AppRoutingModule,
+  ],
   providers: [
     DatePipe,
     {

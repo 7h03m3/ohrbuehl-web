@@ -1,0 +1,16 @@
+<h2>Häufig gestellte Fragen</h2>
+
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let entry of faqList">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{entry.title}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>{{entry.answer}}</p>
+    <button (click)="openLink(link.path)" *ngFor="let link of entry.link" color="primary" mat-stroked-button>
+      <mat-icon>open_in_new</mat-icon>
+      {{link.title}}
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>

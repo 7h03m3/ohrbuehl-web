@@ -45,7 +45,6 @@
       <ng-container matColumnDef="organization">
         <th *matHeaderCellDef mat-header-cell>Verein</th>
         <td *matCellDef="let element" mat-cell>
-          <!--{{getOrganizationString(element)}}-->
           <business-hour-organization-chip [reservation]="element"/>
         </td>
       </ng-container>
@@ -56,7 +55,7 @@
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" class="table-row" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;" class="table-row" mat-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="getRowClass(row)" mat-row></tr>
     </table>
   </mat-card-content>
 </mat-card>

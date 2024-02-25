@@ -9,6 +9,7 @@ import { UserLocalData } from '../../../shared/classes/user-local-data';
 import { BusinessHourHelperService } from '../../classes/business-hour-helper.service';
 import { ReportApi } from '../../../api/report-api';
 import { DownloadHelper } from '../../../shared/classes/download-helper';
+import { ReservationFacilityType } from '../../../shared/enums/reservation-facility-type.enum';
 
 @Component({
   selector: 'app-business-hour-admin-daily-view',
@@ -103,15 +104,17 @@ export class BusinessHourAdminDailyViewComponent implements OnInit {
     return StringHelper.getReservationCountString(element);
   }
 
+  public getRowClass(element: BusinessHourReservationDto): string {
+    const is25m =
+      element.facilityType == ReservationFacilityType.Distance25mBlockManuel ||
+      element.facilityType == ReservationFacilityType.Distance25mBlockElectronic;
+    return element.count == 1 && !is25m ? 'table-row-single' : 'table-row';
+  }
+
   private fetch() {
     this.businessHoursApi.getAllOfDay(this.date.getTime()).subscribe((response) => {
       this.businessHourList = response.sort((a, b) => {
-        if (a.start > b.start) {
-          return 1;
-        } else if (a.start < b.start) {
-          return -1;
-        }
-        return 0;
+        return a.start > b.start ? 1 : a.start < b.start ? -1 : 0;
       });
     });
   }

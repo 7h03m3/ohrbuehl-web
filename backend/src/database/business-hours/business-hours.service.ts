@@ -92,7 +92,8 @@ export class BusinessHoursService {
       order: {
         start: 'DESC',
         reservations: {
-          facilityType: 'ASC',
+          facilityType: 'DESC',
+          count: 'DESC',
         },
       },
       relations: {

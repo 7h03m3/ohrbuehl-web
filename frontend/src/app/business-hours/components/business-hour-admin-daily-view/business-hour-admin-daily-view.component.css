@@ -32,6 +32,11 @@
   height: 3em !important;
 }
 
+.table-row-single {
+  height: 3em !important;
+  background-color: #FFFF00 !important;
+}
+
 .mat-mdc-card {
   margin-bottom: 1em;
 }

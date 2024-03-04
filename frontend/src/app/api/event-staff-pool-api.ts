@@ -12,10 +12,6 @@ export class EventStaffPoolApi extends BaseApi {
     super('events/staff-pool');
   }
 
-  public getAllByOrganization(organizationId: number): Observable<EventStaffPoolDto[]> {
-    return this.http.get<EventStaffPoolDto[]>(this.url + '/' + organizationId);
-  }
-
   public getAllByOrganizationAndEvent(organizationId: number, eventId: number): Observable<EventStaffPoolDto[]> {
     return this.http.get<EventStaffPoolDto[]>(this.url + '/' + organizationId + '/' + eventId);
   }

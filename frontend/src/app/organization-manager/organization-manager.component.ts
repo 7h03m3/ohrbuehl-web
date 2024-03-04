@@ -50,11 +50,10 @@ export class OrganizationManagerComponent {
     if (features.members) {
       const memberMenu = this.sidenavService.addElement('Mitglieder', 'person', './member-list');
       this.sidenavService.addSubElement(memberMenu, 'Mitgliederliste', 'list', './member-list');
-      this.sidenavService.addSubElement(memberMenu, 'VVA-Import', 'publish', './member-import');
     }
 
     if (features.shiftPlanning) {
-      this.sidenavService.addElement('Helfer-Pool', 'groups', './event-staff-pool-edit');
+      this.sidenavService.addElement('Helfer-Pool', 'groups', './event-staff-availability-edit');
 
       const shiftMenu = this.sidenavService.addElement('Schichtenplanung', 'schedule', './event-shift-list');
       this.sidenavService.addSubElement(shiftMenu, 'Schichten', 'schedule', './event-shift-list');

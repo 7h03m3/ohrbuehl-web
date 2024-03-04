@@ -14,17 +14,6 @@ export class EventsStaffPoolController {
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
-  @Get('/:organizationId')
-  async getStaffPollByOrganization(
-    @Param('organizationId') organizationId: number,
-    @Request() req: any,
-  ): Promise<EventStaffPoolEntity[]> {
-    await this.authService.checkOrganizationAccess(organizationId, req);
-    return this.eventStaffPoolService.findAllByOrganization(organizationId);
-  }
-
-  @Roles(Role.Admin, Role.OrganizationManager)
-  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('/:organizationId/:eventId')
   async getStaffPollByOrganizationAndEvent(
     @Param('organizationId') organizationId: number,

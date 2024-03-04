@@ -6,11 +6,10 @@ import { OrganizationMemberListComponent } from './components/organization-membe
 import { OrganizationMemberEditComponent } from './components/organization-member-edit/organization-member-edit.component';
 import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
-import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
-import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
 import { ReservationListComponent } from './components/reservation-list/reservation-list.component';
+import { EventStaffAvailabilityEditComponent } from './components/event-staff-availability-edit/event-staff-availability-edit.component';
 
 const routes: Routes = [
   {
@@ -34,10 +33,6 @@ const routes: Routes = [
         component: OrganizationMemberEditComponent,
       },
       {
-        path: 'member-import',
-        component: OrganizationMemberVvaImportComponent,
-      },
-      {
         path: 'event-shift-list',
         component: EventShiftListComponent,
       },
@@ -50,8 +45,8 @@ const routes: Routes = [
         component: EventShiftDownloadsComponent,
       },
       {
-        path: 'event-staff-pool-edit',
-        component: EventStaffPoolEditComponent,
+        path: 'event-staff-availability-edit',
+        component: EventStaffAvailabilityEditComponent,
       },
       {
         path: 'event-staff-statistic',

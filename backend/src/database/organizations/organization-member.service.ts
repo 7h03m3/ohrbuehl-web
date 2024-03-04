@@ -57,6 +57,34 @@ export class OrganizationMemberService {
     return this.memberRepository.findOneBy({ id });
   }
 
+  public async getShiftsByIdAndYear(id: number, year: number): Promise<OrganizationMemberEntity> {
+    console.log(id);
+    console.log(year);
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+    const member = await this.memberRepository.findOne({
+      where: { id: id },
+      relations: {
+        staffPool: {
+          event: true,
+        },
+        eventShifts: true,
+      },
+    });
+
+    if (member != null) {
+      member.eventShifts = member.eventShifts.filter((a) => {
+        return a.start >= timeStart && a.start <= timeEnd;
+      });
+
+      member.staffPool = member.staffPool.filter((staff) => {
+        return staff.event.start >= timeStart && staff.event.start <= timeEnd;
+      });
+    }
+
+    return member;
+  }
+
   public getDetailById(id: number): Promise<OrganizationMemberEntity> {
     return this.memberRepository.findOne({ where: { id: id }, relations: { organization: true } });
   }

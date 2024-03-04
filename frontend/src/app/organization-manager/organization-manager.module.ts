@@ -7,7 +7,6 @@ import { OrganizationMemberListComponent } from './components/organization-membe
 import { OrganizationMemberEditComponent } from './components/organization-member-edit/organization-member-edit.component';
 import { EventShiftListComponent } from './components/event-shift-list/event-shift-list.component';
 import { EventShiftEditComponent } from './components/event-shift-edit/event-shift-edit.component';
-import { EventStaffPoolEditComponent } from './components/event-staff-pool-edit/event-staff-pool-edit.component';
 import { EventStaffStatisticComponent } from './components/event-staff-statistic/event-staff-statistic.component';
 import { OrganizationMemberVvaImportComponent } from './components/organization-member-vva-import/organization-member-vva-import.component';
 import { EventShiftDownloadsComponent } from './components/event-shift-downloads/event-shift-downloads.component';
@@ -15,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReservationListComponent } from './components/reservation-list/reservation-list.component';
 import { OrganizationManagerRoutingModule } from './organization-manager-routing.module';
 import { BusinessHoursModule } from '../business-hours/business-hours.module';
+import { EventStaffAvailabilityEditComponent } from './components/event-staff-availability-edit/event-staff-availability-edit.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +24,11 @@ import { BusinessHoursModule } from '../business-hours/business-hours.module';
     OrganizationMemberEditComponent,
     EventShiftListComponent,
     EventShiftEditComponent,
-    EventStaffPoolEditComponent,
     EventStaffStatisticComponent,
     OrganizationMemberVvaImportComponent,
     EventShiftDownloadsComponent,
     ReservationListComponent,
+    EventStaffAvailabilityEditComponent,
   ],
   imports: [CommonModule, MaterialModule, SharedModule, OrganizationManagerRoutingModule, BusinessHoursModule],
 })

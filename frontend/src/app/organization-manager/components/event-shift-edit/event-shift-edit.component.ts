@@ -129,7 +129,6 @@ export class EventShiftEditComponent {
   private fetch() {
     this.shiftApi.getAllByOrganization(this.eventId, this.organizationId).subscribe((response) => {
       this.shiftList = response;
-
       this.filterStaffList();
       this.sortList();
     });

@@ -1,0 +1,21 @@
+<h2>Helfer-Pool</h2>
+
+<mat-form-field appearance="outline" class="member-selection">
+  <mat-label>Funktionär</mat-label>
+  <mat-select (valueChange)="onMemberSelect($event)" [(ngModel)]="selectedMember">
+    <mat-option *ngFor="let member of memberList" [value]="member.id">
+      {{member.firstName}} {{member.lastName}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<div *ngIf="memberInfo.id != 0">
+  <div *ngFor="let element of eventList; index as i; first as isFirst">
+    <h3 *ngIf="isNewSection(i)">{{element.category.name}}</h3>
+    <mat-checkbox (change)="onCheckboxChange(element, $event)" [checked]="isAvailable(element)"
+                  [disabled]="hasShift(element)">
+      {{StringHelper.getStartEndDateTimeString(element.start, element.end)}} {{getAddText(element)}}
+    </mat-checkbox>
+  </div>
+</div>

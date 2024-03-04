@@ -74,6 +74,18 @@ export class OrganizationsMemberController {
 
   @Roles(Role.Admin, Role.OrganizationManager)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/shifts/:id/:year')
+  public async getShiftsById(
+    @Param('id') id: number,
+    @Param('year') year: number,
+    @Request() req: any,
+  ): Promise<OrganizationMemberEntity> {
+    await this.checkAccessById(+id, req);
+    return this.memberService.getShiftsByIdAndYear(id, year);
+  }
+
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Post()
   public async create(
     @Body() dto: OrganizationMemberCreateDto,

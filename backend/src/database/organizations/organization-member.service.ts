@@ -58,8 +58,6 @@ export class OrganizationMemberService {
   }
 
   public async getShiftsByIdAndYear(id: number, year: number): Promise<OrganizationMemberEntity> {
-    console.log(id);
-    console.log(year);
     const timeStart = DateHelper.getYearStart(year).getTime();
     const timeEnd = DateHelper.getYearEnd(year).getTime();
     const member = await this.memberRepository.findOne({

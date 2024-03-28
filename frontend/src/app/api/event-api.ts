@@ -63,30 +63,33 @@ export class EventApi extends BaseApi {
     });
   }
 
-  public getOrganizationEventReport(organizationId: number) {
+  public getOrganizationEventReport(organizationId: number, year: number) {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
-    return this.http.get(this.url + '/report/organization/' + organizationId, {
+    return this.http.get(this.url + '/report/organization/shifts/table/' + organizationId + '/' + year, {
       observe: 'response',
       headers: headers,
       responseType: 'blob',
     });
   }
 
-  public getOrganizationEventReportByCategory(organizationId: number, categoryId: number) {
+  public getOrganizationEventReportByCategory(organizationId: number, categoryId: number, year: number) {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
-    return this.http.get(this.url + '/report/organization/' + organizationId + '/' + categoryId, {
-      observe: 'response',
-      headers: headers,
-      responseType: 'blob',
-    });
+    return this.http.get(
+      this.url + '/report/organization/shifts/table/' + organizationId + '/' + year + '/' + categoryId,
+      {
+        observe: 'response',
+        headers: headers,
+        responseType: 'blob',
+      },
+    );
   }
 
-  public getOrganizationShiftReport(organizationId: number) {
+  public getOrganizationShiftReport(organizationId: number, year: number) {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
-    return this.http.get(this.url + '/report/organization-staff/' + organizationId, {
+    return this.http.get(this.url + '/report/organization/shifts/list/' + organizationId + '/' + year, {
       observe: 'response',
       headers: headers,
       responseType: 'blob',

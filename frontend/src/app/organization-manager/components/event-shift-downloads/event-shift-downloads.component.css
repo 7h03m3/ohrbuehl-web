@@ -1,15 +1,23 @@
 
-td {
-  padding: 0.5em;
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 }
 
-.mat-mdc-form-field {
-  flex-direction: unset !important;
+mat-card {
+  margin-right: 1em;
+  min-width: 17em;
 }
 
-.td-select {
-  width: 20em;
+mat-form-field {
+  width: 100%;
 }
+
+mat-card-content {
+  height: 100%;
+}
+
 
 
 

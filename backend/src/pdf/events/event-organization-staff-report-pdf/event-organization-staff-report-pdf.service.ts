@@ -36,7 +36,7 @@ export class EventOrganizationStaffReportPdfService extends PdfBase {
         } else {
           doc.addPage();
         }
-        const table = this.createTable(staff.firstName + ' ' + staff.lastName, 14);
+        const table = this.createTable(staff.firstName + ' ' + staff.lastName, 14, 'Stand: ' + this.getCurrentDate());
         table.headers.push(this.getTableHeaderItem(' Zeit', 'date', 'left', 150));
         table.headers.push(this.getTableHeaderItem(' Tag', 'day', 'left', 60));
         table.headers.push(this.getTableHeaderItem(' Art', 'category', 'left', 150));

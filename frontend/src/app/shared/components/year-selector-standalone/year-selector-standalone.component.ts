@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-year-selector-standalone',
@@ -7,6 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class YearSelectorStandaloneComponent {
   @Output() yearChangeEvent = new EventEmitter<number>();
+  @Input() noSpacer = false;
 
   public onYearChange(year: number) {
     this.yearChangeEvent.emit(+year);

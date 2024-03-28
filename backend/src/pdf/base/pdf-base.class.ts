@@ -5,6 +5,7 @@ import { PdfTableRowItem } from './classes/pdf-table-row-item';
 import { PdfTableHeaderItem } from './classes/pdf-table-header-item';
 import { PdfFile } from './classes/pdf-file.class';
 import PDFDocument from 'pdfkit-table';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 export class PdfBase {
   private fileHelper = new FileHelper();
@@ -50,13 +51,13 @@ export class PdfBase {
     return millimeters * 2.8346456692913;
   }
 
-  protected createTable(title: string, titleFontSize: number): any {
+  protected createTable(title: string, titleFontSize: number, subtitle = ''): any {
     const table = {
       title: {
         label: title,
         fontSize: titleFontSize,
       },
-      subtitle: '',
+      subtitle: subtitle,
       headers: [],
       datas: [],
     };
@@ -101,5 +102,9 @@ export class PdfBase {
 
   protected addNewLine(pdf: PDFDocument) {
     pdf.moveDown();
+  }
+
+  protected getCurrentDate(): string {
+    return DateHelper.getDateTimeString(Date.now());
   }
 }

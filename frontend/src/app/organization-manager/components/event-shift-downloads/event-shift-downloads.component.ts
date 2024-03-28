@@ -6,6 +6,7 @@ import { DownloadHelper } from '../../../shared/classes/download-helper';
 import { AuthService } from '../../../auth/auth.service';
 import { catchError, EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserLocalData } from '../../../shared/classes/user-local-data';
 
 @Component({
   selector: 'app-event-shift-downloads',
@@ -23,6 +24,7 @@ export class EventShiftDownloadsComponent {
     private downloadHelper: DownloadHelper,
     private authService: AuthService,
     private snackBar: MatSnackBar,
+    private useLocalData: UserLocalData,
   ) {}
 
   public ngOnInit(): void {
@@ -42,9 +44,10 @@ export class EventShiftDownloadsComponent {
   }
 
   public onShiftReportDownload() {
+    const year = this.useLocalData.getCurrentYear();
     if (this.shiftReportSelect == 0) {
       this.eventApi
-        .getOrganizationEventReport(this.organizationId)
+        .getOrganizationEventReport(this.organizationId, year)
         .pipe(
           catchError(() => {
             return this.catchReportError();
@@ -55,7 +58,7 @@ export class EventShiftDownloadsComponent {
         });
     } else {
       this.eventApi
-        .getOrganizationEventReportByCategory(this.organizationId, this.shiftReportSelect)
+        .getOrganizationEventReportByCategory(this.organizationId, this.shiftReportSelect, year)
         .pipe(
           catchError(() => {
             return this.catchReportError();
@@ -69,7 +72,7 @@ export class EventShiftDownloadsComponent {
 
   public onShiftStaffReportDownload() {
     this.eventApi
-      .getOrganizationShiftReport(this.organizationId)
+      .getOrganizationShiftReport(this.organizationId, this.useLocalData.getCurrentYear())
       .pipe(
         catchError(() => {
           return this.catchReportError();

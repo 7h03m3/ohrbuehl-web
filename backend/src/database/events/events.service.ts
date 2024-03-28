@@ -26,6 +26,17 @@ export class EventsService {
     });
   }
 
+  public findAllShiftsEnabledByYear(year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.eventRepository.find({
+      order: { start: 'DESC' },
+      relations: { category: true },
+      where: { start: Between(timeStart, timeEnd), shiftPlanning: true },
+    });
+  }
+
   public findAllPublic(currentDate: number): Promise<EventEntity[]> {
     return this.eventRepository.find({
       order: { start: 'ASC' },
@@ -42,10 +53,24 @@ export class EventsService {
     });
   }
 
-  public findAllByCategory(categoryId: number): Promise<EventEntity[]> {
+  public findAllByCategory(categoryId: number, year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.eventRepository.find({
       order: { start: 'DESC' },
-      where: { categoryId: categoryId },
+      where: { categoryId: categoryId, start: Between(timeStart, timeEnd) },
+      relations: { category: true },
+    });
+  }
+
+  public findAllShiftsEnabledByCategory(categoryId: number, year: number): Promise<EventEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.eventRepository.find({
+      order: { start: 'DESC' },
+      where: { categoryId: categoryId, start: Between(timeStart, timeEnd), shiftPlanning: true },
       relations: { category: true },
     });
   }

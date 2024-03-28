@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { EventShiftEntity } from '../entities/event-shift.entity';
 import { EventsShiftCategoryService } from './events-shift-category.service';
 import { EventShiftCreateDto } from '../../shared/dtos/event-shift-create.dto';
@@ -12,6 +12,7 @@ import { OrganizationsService } from '../organizations/organizations.service';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { OrganizationMemberService } from '../organizations/organization-member.service';
 import { OrganizationMemberEntity } from '../entities/organization-member.entity';
+import { DateHelper } from '../../shared/classes/date-helper';
 
 @Injectable()
 export class EventsShiftService {
@@ -51,9 +52,12 @@ export class EventsShiftService {
     });
   }
 
-  public findByOrganizationMemberId(organizationMemberId: number): Promise<EventShiftEntity[]> {
+  public findByOrganizationMemberId(organizationMemberId: number, year: number): Promise<EventShiftEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
     return this.shiftRepository.find({
-      where: { assignedStaffId: organizationMemberId },
+      where: { assignedStaffId: organizationMemberId, start: Between(timeStart, timeEnd) },
       order: { start: 'DESC' },
       relations: {
         event: true,

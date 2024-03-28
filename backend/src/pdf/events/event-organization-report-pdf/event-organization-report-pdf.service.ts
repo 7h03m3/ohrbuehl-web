@@ -18,6 +18,7 @@ type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
 export class EventOrganizationReportPdfService extends PdfBase {
+  private MaxRowsPerPage = 15;
   private colorNotAvailable = '#000000';
   private colorAvailable = '#4DFF00';
   private colorShiftSet = '#FFA200';
@@ -51,24 +52,39 @@ export class EventOrganizationReportPdfService extends PdfBase {
     const fileStream = fs.createWriteStream(tempFilename);
     await doc.pipe(fileStream);
 
-    const table = this.createTable(title, 18);
-    this.addTableHeader(table, eventList);
-    this.addTableRows(table, memberList, eventList, shiftList, staffPool);
+    this.addText(title, 18, true, doc);
+    this.addText('Stand: ' + this.getCurrentDate(), 10, false, doc);
 
-    await doc.table(table, {
-      prepareHeader: () => {
-        doc.font('Helvetica-Bold').fontSize(8);
-      },
-      columnSpacing: 5,
-      divider: {
-        horizontal: {
-          disabled: false,
-          opacity: 1,
+    for (let index = 0; index < eventList.length; ) {
+      let subEventList: EventEntity[];
+      if (eventList.length + index > this.MaxRowsPerPage) {
+        subEventList = eventList.slice(index, index + this.MaxRowsPerPage);
+        index += this.MaxRowsPerPage;
+      } else {
+        subEventList = eventList.slice(index, eventList.length);
+        index = eventList.length;
+      }
+
+      const table = this.createTable('', 18);
+      this.addTableHeader(table, subEventList);
+      this.addTableRows(table, memberList, subEventList, shiftList, staffPool);
+
+      await doc.table(table, {
+        prepareHeader: () => {
+          doc.font('Helvetica-Bold').fontSize(8);
         },
-      },
-    });
+        columnSpacing: 5,
+        divider: {
+          horizontal: {
+            disabled: false,
+            opacity: 1,
+          },
+        },
+      });
 
-    doc.addPage();
+      doc.addPage();
+    }
+
     await this.addLegendTable(shiftList, doc);
 
     this.finishDocument(doc, fileStream, tempFilename, filename, response);

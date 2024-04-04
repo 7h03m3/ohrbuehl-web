@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -14,14 +15,16 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StringHelper } from '../../../shared/classes/string-helper';
 import { MatSort } from '@angular/material/sort';
 import { BusinessHoursDto } from '../../../shared/dtos/business-hours.dto';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'business-hour-reservation-list',
   templateUrl: './business-hour-reservation-list.component.html',
   styleUrls: ['./business-hour-reservation-list.component.css'],
 })
-export class BusinessHourReservationListComponent implements OnChanges, AfterViewInit {
+export class BusinessHourReservationListComponent implements OnChanges, AfterViewInit, OnInit {
   static DayOffset = 86400000;
+  public isMobileView = false;
   @Input() reservationList!: BusinessHourReservationDto[];
   @Input() dateList!: BusinessHoursDto[];
   @Output() editEvent = new EventEmitter<BusinessHourReservationDto>();
@@ -32,7 +35,19 @@ export class BusinessHourReservationListComponent implements OnChanges, AfterVie
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
 
-  constructor() {}
+  constructor(private responsive: BreakpointObserver) {}
+
+  public ngOnInit(): void {
+    this.responsive.observe(Breakpoints.Handset).subscribe((result) => {
+      this.isMobileView = result.matches;
+
+      if (this.isMobileView) {
+        this.displayedColumns = ['date', 'distance', 'count', 'action'];
+      } else {
+        this.displayedColumns = ['date', 'distance', 'count', 'type', 'action'];
+      }
+    });
+  }
 
   public ngOnChanges(changes: SimpleChanges) {
     this.dataSource.data = this.reservationList;
@@ -84,7 +99,7 @@ export class BusinessHourReservationListComponent implements OnChanges, AfterVie
   public getEventTypeString(element: BusinessHourReservationDto): string {
     let eventTypeString = StringHelper.getEventTypeSimpleString(element.eventType);
 
-    if (element.comment.length != 0) {
+    if (!this.isMobileView && element.comment.length != 0) {
       eventTypeString += ' (' + element.comment + ')';
     }
 
@@ -96,6 +111,10 @@ export class BusinessHourReservationListComponent implements OnChanges, AfterVie
   }
 
   public getCountString(element: BusinessHourReservationDto): string {
-    return StringHelper.getReservationCountString(element);
+    if (this.isMobileView) {
+      return element.count.toString();
+    } else {
+      return StringHelper.getReservationCountString(element);
+    }
   }
 }

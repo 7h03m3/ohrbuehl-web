@@ -89,8 +89,10 @@ export class BusinessHourReservationAddDialogComponent {
       const occupancy = this.getOccupancy(this.selectedBusinessHour!, type);
       const facilityString = StringHelper.getReservationFacilityTypeString(type);
       item.type = type;
-      item.label = facilityString + ' (' + occupancy.current + ' / ' + occupancy.max + ')';
-      item.disabled = occupancy.current >= occupancy.max;
+      item.name = facilityString;
+      item.full = occupancy.current >= occupancy.max;
+      item.count = occupancy.current;
+      item.max = occupancy.max;
 
       this.facilityList.push(item);
     });

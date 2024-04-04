@@ -1,17 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SidenavElement } from '../../classes/sidenav-element';
 import { SidenavService } from '../../services/sidenav.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css'],
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit {
   public elements: SidenavElement[];
+  public isMobileView = false;
 
-  public constructor(private sidenavService: SidenavService) {
+  public constructor(private sidenavService: SidenavService, private responsive: BreakpointObserver) {
     this.elements = this.sidenavService.getElements();
+  }
+
+  public ngOnInit() {
+    this.responsive.observe(Breakpoints.Handset).subscribe((result) => {
+      this.isMobileView = result.matches;
+    });
   }
 
   public isSmallView(): boolean {

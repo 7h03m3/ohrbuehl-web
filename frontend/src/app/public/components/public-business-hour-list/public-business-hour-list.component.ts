@@ -23,7 +23,7 @@ export interface TableData {
 })
 export class PublicBusinessHourListComponent {
   public dataSource = new MatTableDataSource<TableData>();
-  public displayedColumns: string[] = ['date', 'day', 'comment', 'action'];
+  public displayedColumns: string[] = ['date', 'day', 'action'];
   @ViewChild(MatPaginator) paginator: any = MatPaginator;
   @ViewChild(MatSort) sort: any = MatSort;
 

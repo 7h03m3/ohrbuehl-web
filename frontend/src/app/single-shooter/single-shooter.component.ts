@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SidenavService } from '../shared/services/sidenav.service';
+import { appSingleShooterMenuEntries } from './single-shooter-menu';
 
 @Component({
   selector: 'app-single-shooter',
@@ -18,7 +19,8 @@ export class SingleShooterComponent {
   }
 
   private setupSidenav() {
-    this.sidenavService.addElement('Informationen', 'info', './info');
-    this.sidenavService.addElement('Reservationen', 'donut_large', './reservations/list');
+    appSingleShooterMenuEntries[0].subs.forEach((entry) => {
+      this.sidenavService.addElement(entry.name, entry.icon, entry.routerLink);
+    });
   }
 }

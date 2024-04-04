@@ -1,3 +1,8 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+.reservation-list {
+  width: 95vw;
+  max-width: 50em;
+}

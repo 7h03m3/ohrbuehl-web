@@ -5,7 +5,8 @@
 }
 
 .reservation-card {
-  min-width: 40em;
+  width: 95vw;
+  max-width: 50em;
 }
 
 section {

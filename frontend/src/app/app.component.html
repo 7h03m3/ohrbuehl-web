@@ -1,85 +1,32 @@
 <div class="content mat-app-background">
   <mat-toolbar color="primary">
-    <mat-toolbar-row class="toolbar-bg">
-
+    <mat-toolbar-row *ngIf="!isMobileView" class="toolbar-bg">
       <button class="toolbar-home-button" mat-button routerLink="/"></button>
       <span class="toolbar-bg-spacer"></span>
+      <app-toolbar-menu-button *ngFor="let entry of appMenuEntries" [hidden]="isMobileView || entry.notVisibleInToolbar"
+                               [menuEntry]="entry"/>
 
-      <button color="primary" mat-flat-button routerLink="/public/business-hours">Öffnungszeiten</button>
+      <span class="spacer"></span>
 
-      <button [matMenuTriggerFor]="eventMenu" color="primary" mat-flat-button>Anlässe</button>
-      <mat-menu #eventMenu="matMenu">
-        <button (click)="onEventSelect('')" mat-menu-item>
-          <span>Alle</span>
-        </button>
-        <button (click)="onEventSelect('BU')" mat-menu-item>
-          <span>Bundesübung (Obli) - Gewehr</span>
-        </button>
-        <button (click)="onEventSelect('BUP')" mat-menu-item>
-          <span>Bundesübung (Obli) - Pistole</span>
-        </button>
-        <button (click)="onEventSelect('FS')" mat-menu-item>
-          <span>Feldschiessen</span>
-        </button>
-        <button (click)="onEventSelect('NSK')" mat-menu-item>
-          <span>Nachschiesskurs</span>
-        </button>
-      </mat-menu>
-
-      <button [matMenuTriggerFor]="shootingRangeMenu" color="primary" mat-flat-button>Schiessanlage</button>
-      <mat-menu #shootingRangeMenu="matMenu">
-        <button mat-menu-item routerLink="/public/shooting-range">
-          <span>Informationen</span>
-        </button>
-        <button mat-menu-item routerLink="/public/allowed-caliber">
-          <span>Erlaubte Kaliber</span>
-        </button>
-        <button mat-menu-item routerLink="/public/prices">
-          <span>Preise</span>
-        </button>
-        <button mat-menu-item routerLink="/public/track-reservation">
-          <span>Scheibenreservationen</span>
-        </button>
-        <button mat-menu-item routerLink="/public/faq">
-          <span>Häufig gestellte Fragen</span>
-        </button>
-        <button mat-menu-item routerLink="/public/registration">
-          <span>Registrierung</span>
-        </button>
-        <button mat-menu-item routerLink="/public/contact">
-          <span>Kontakt</span>
-        </button>
-        <button mat-menu-item routerLink="/public/general-business-terms">
-          <span>AGB</span>
-        </button>
-        <button mat-menu-item routerLink="/public/safety-regulations">
-          <span>Sicherheitsbestimmungen</span>
-        </button>
-      </mat-menu>
-      <span class="toolbar-spacer"></span>
-
-      <button *ngIf="authService.isSingleShooter()" class="toolbar-buttons" color="accent" mat-flat-button
-              routerLink="/single-shooter">
+      <button *appShowSingleShooter class="toolbar-buttons" color="accent" mat-flat-button routerLink="/single-shooter">
         Einzelschütze
       </button>
 
-      <button *ngIf="authService.isShootingRangeManager()" class="toolbar-buttons" color="accent" mat-flat-button
+      <button *appShowShootingRangeManager class="toolbar-buttons" color="accent" mat-flat-button
               routerLink="/shooting-range">
         Standwart
       </button>
 
-      <button *ngIf="authService.isOrganizationManager()" class="toolbar-buttons" color="accent" mat-flat-button
+      <button *appShowOrganizationManager class="toolbar-buttons" color="accent" mat-flat-button
               routerLink="/organization-manager">
         Vereinsmanager
       </button>
 
-      <button *ngIf="authService.isEventOrganizer()" class="toolbar-buttons" color="accent" mat-flat-button
-              routerLink="/event-manager">
+      <button *appShowEventOrganizer class="toolbar-buttons" color="accent" mat-flat-button routerLink="/event-manager">
         Anlassorganisator
       </button>
 
-      <button *ngIf="authService.isShootingRangeManager()" mat-icon-button matTooltip="Nachrichten"
-              routerLink="/contact-message">
+      <button *appShowShootingRangeManager mat-icon-button matTooltip="Nachrichten" routerLink="/contact-message">
         <mat-icon [matBadgeHidden]="contactMessageService.getMessageCount() == 0"
                   [matBadge]="contactMessageService.getMessageCount()"
                   aria-hidden="false" matBadgeColor="warn">
@@ -87,40 +34,101 @@
         </mat-icon>
       </button>
 
-      <button *ngIf="authService.isAdmin()" mat-icon-button matTooltip="Admin" routerLink="/admin">
+      <button *appShowAdmin mat-icon-button matTooltip="Admin" routerLink="/admin">
         <mat-icon color="accent">admin_panel_settings</mat-icon>
       </button>
 
-      <button *ngIf="authService.isLoggedIn() == false" mat-icon-button matTooltip="Login" routerLink="/user/login">
+      <button *appShowLoggedOut mat-icon-button matTooltip="Login" routerLink="/user/login">
         <mat-icon>login</mat-icon>
       </button>
 
-      <p *ngIf="authService.isLoggedIn() == true">
-        <button [matMenuTriggerFor]="menu" mat-icon-button>
-          <mat-icon>person</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button disabled mat-menu-item>
-            <span>Rolle: {{getRoleText()}}</span>
-          </button>
-          <button mat-menu-item routerLink="user/account">
-            <mat-icon>account_circle</mat-icon>
-            <span>Benutzerkonto</span>
-          </button>
-          <button mat-menu-item routerLink="user/password-change">
-            <mat-icon>password</mat-icon>
-            <span>Passwort ändern</span>
-          </button>
-        </mat-menu>
+      <ng-container *ngTemplateOutlet="userMenu"/>
 
-        <button (click)="logout()" mat-icon-button matTooltip="Logout">
-          <mat-icon>logout</mat-icon>
-        </button>
-      </p>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row *ngIf="isMobileView">
+      <button (click)="drawer.toggle()" color="primary" mat-icon-button>
+        <mat-icon class="icon-white">menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+
+      <ng-container *appShowSingleShooter>
+        <app-toolbar-menu-icon *ngFor="let entry of appSingleShooterMenuEntries" [hidden]="!isMobileView"
+                               [menuEntry]="entry" color="accent"/>
+      </ng-container>
+
+      <ng-container *appShowOrganizationManager>
+        <app-toolbar-menu-icon *ngFor="let entry of appOrganizationManagerMenuEntries" [hidden]="!isMobileView"
+                               [menuEntry]="entry" color="accent"/>
+      </ng-container>
+
+      <button *appShowLoggedOut mat-icon-button matTooltip="Login" routerLink="/user/login">
+        <mat-icon>login</mat-icon>
+      </button>
+      
+      <ng-container *ngTemplateOutlet="userMenu"/>
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <router-outlet></router-outlet>
+  <mat-drawer-container autosize class="content-container">
+    <mat-drawer #drawer class="sidenav" mode="side">
+      <mat-nav-list>
+        <ng-container *ngFor="let entry of appMenuEntries">
+          <ng-container *ngIf="entry.subs.length == 0">
+            <mat-list-item (click)="onSidenav(entry)" class="menu-item">
+              {{entry.name}}
+            </mat-list-item>
+          </ng-container>
+          <mat-expansion-panel *ngIf="entry.subs.length != 0" [(expanded)]="entry.expanded"
+                               [class.mat-elevation-z0]="true">
+            <mat-expansion-panel-header (click)="onSidenav(entry)" class="menu-item">
+              {{entry.name}}
+            </mat-expansion-panel-header>
+            <ng-container *ngIf="entry.subs.length != 0">
+              <mat-nav-list *ngFor="let subEntry of entry.subs">
+                <mat-list-item (click)="onSidenav(subEntry)" class="menu-item">
+                  {{subEntry.name}}
+                </mat-list-item>
+              </mat-nav-list>
+            </ng-container>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-nav-list>
+    </mat-drawer>
+
+    <router-outlet></router-outlet>
+
+  </mat-drawer-container>
+
+
+  <mat-toolbar *ngIf="!isMobileView" class="footer" color="primary">
+    &copy; Ohrbühlverband {{currentYear}}
+  </mat-toolbar>
 </div>
+
+<ng-template #userMenu let-description>
+  <ng-container *ngIf="authService.isLoggedIn()">
+    <button [matMenuTriggerFor]="menu" mat-icon-button>
+      <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button disabled mat-menu-item>
+        <span>Rolle: {{getRoleText()}}</span>
+      </button>
+      <button mat-menu-item routerLink="user/account">
+        <mat-icon>account_circle</mat-icon>
+        <span>Benutzerkonto</span>
+      </button>
+      <button mat-menu-item routerLink="user/password-change">
+        <mat-icon>password</mat-icon>
+        <span>Passwort ändern</span>
+      </button>
+    </mat-menu>
+
+    <button (click)="logout()" mat-icon-button matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </ng-container>
+</ng-template>
 
 

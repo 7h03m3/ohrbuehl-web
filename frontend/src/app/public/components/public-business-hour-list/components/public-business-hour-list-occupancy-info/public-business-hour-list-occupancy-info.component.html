@@ -1,6 +1,8 @@
-<section *ngFor="let element of sheetData">
-  <div class="occupancy-label">{{element.facilityString}}</div>
-  <div [ngClass]="element.current >= element.max ? 'occupancy-red-text': 'occupancy-green-text'"
-       class="occupancy-value">{{element.current}} / {{element.max}}</div>
-  <div class="occupancy-unit">&nbsp;{{element.unit}}</div>
-</section>
+<table>
+  <tr *ngFor="let element of sheetData">
+    <td class="occupancy-label">{{element.facilityString}}</td>
+    <td [ngClass]="element.current >= element.max ? 'occupancy-red-text': 'occupancy-green-text'"
+        class="occupancy-value"> {{element.current}} / {{element.max}}</td>
+    <td class="occupancy-unit">{{element.unit}}</td>
+  </tr>
+</table>

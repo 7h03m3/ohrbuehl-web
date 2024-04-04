@@ -1,0 +1,21 @@
+<button *ngIf="!hasChildren()" mat-icon-button routerLink="{{menuEntry.routerLink}}">
+  <mat-icon color="{{color}}">
+    {{menuEntry.icon}}
+  </mat-icon>
+</button>
+
+<ng-container *ngIf="hasChildren()">
+  <button [matMenuTriggerFor]="menu" mat-icon-button>
+    <mat-icon color="{{color}}">
+      {{menuEntry.icon}}
+    </mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <div *ngFor="let subEntry of menuEntry.subs">
+      <button (click)="onMenuClick(subEntry)" mat-menu-item>
+        {{subEntry.name}}
+      </button>
+    </div>
+  </mat-menu>
+</ng-container>

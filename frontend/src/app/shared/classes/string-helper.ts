@@ -142,9 +142,9 @@ export class StringHelper {
       case ReservationFacilityType.Distance50mManuel:
         return '50m (manuell)';
       case ReservationFacilityType.Distance25mBlockManuel:
-        return '25m (Block manuell)';
+        return '25m (manuell)';
       case ReservationFacilityType.Distance25mBlockElectronic:
-        return '25m (Block elektronisch)';
+        return '25m (elektronisch)';
     }
   }
 

@@ -10,8 +10,10 @@
 
 <br>
 
-<business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
-                                [reservationList]="reservationList"></business-hour-reservation-list>
+<div class="reservation-list">
+  <business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
+                                  [reservationList]="reservationList"></business-hour-reservation-list>
+</div>
 
 
 

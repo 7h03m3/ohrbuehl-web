@@ -62,7 +62,7 @@ export class SingleShooterReservationListComponent {
           const reservation = result as BusinessHourReservationDto;
           reservation.ownerId = this.authService.getUserId();
 
-          this.triggerRequest(this.reservationApi.createReservation(reservation));
+          this.triggerRequest(this.reservationApi.createReservation(reservation), 'Reservation wurde hinzugefügt');
         }
       });
     });
@@ -85,7 +85,7 @@ export class SingleShooterReservationListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.triggerRequest(this.reservationApi.deleteReservation(element.id));
+        this.triggerRequest(this.reservationApi.deleteReservation(element.id), 'Reservation wurde gelöscht');
       }
     });
   }
@@ -103,8 +103,8 @@ export class SingleShooterReservationListComponent {
     }
   }
 
-  private triggerRequest(obervable: Observable<any>) {
-    obervable
+  private triggerRequest(observable: Observable<any>, successMessage = '') {
+    observable
       .pipe(
         catchError((response) => {
           this.snackBar.open('Fehler: "' + response.error.message + '"', 'Okay', { duration: 10000 });
@@ -113,6 +113,9 @@ export class SingleShooterReservationListComponent {
         }),
       )
       .subscribe(() => {
+        if (successMessage.length != 0) {
+          this.snackBar.open(successMessage, 'Okay', { duration: 5000 });
+        }
         this.fetch();
       });
   }

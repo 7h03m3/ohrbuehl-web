@@ -20,7 +20,18 @@ export class PublicAllowedCaliberComponent {
     '.45 ACP',
     '.45 Long Colt',
   ];
-  public listCaliber100m: string[] = [];
+  public listCaliber100m: string[] = [
+    '.22 Magnum',
+    '.17 HMR',
+    '.243 Winchester',
+    '.223 Remington',
+    '.303 British',
+    '7,5x55 (GP 11)',
+    '.308 Winchester',
+    '.30.06 Springfield',
+    '8x57 IS',
+    '7,62x39',
+  ];
   public listCaliber300m: string[] = [];
 
   public constructor() {

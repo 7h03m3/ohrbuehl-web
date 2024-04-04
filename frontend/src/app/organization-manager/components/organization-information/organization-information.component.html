@@ -14,7 +14,7 @@ Distanzen:
   <li *ngIf="organizationData.distance_25m">25m</li>
 </ul>
 <br>
-<p *ngIf="authService.isAdmin()">
+<ng-container *appShowAdmin>
   <mat-form-field appearance="outline">
     <mat-label>Verein</mat-label>
     <mat-select (valueChange)="onOrganizationChange($event)" [(ngModel)]="organizationId" name="manager">
@@ -23,7 +23,7 @@ Distanzen:
       </mat-option>
     </mat-select>
   </mat-form-field>
-</p>
+</ng-container>
 
 <mat-card *ngIf="reservationList.length != 0" class="reservation-card">
   <mat-card-header>
@@ -31,6 +31,6 @@ Distanzen:
     <mat-icon class="mat-card-icon" color="primary" mat-card-avatar>donut_large</mat-icon>
   </mat-card-header>
   <mat-card-content>
-    <business-hour-next-reservations [reservationList]="reservationList"></business-hour-next-reservations>
+    <business-hour-next-reservations [reservationList]="reservationList"/>
   </mat-card-content>
 </mat-card>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
+import { catchError, EMPTY, map, Observable, Subject } from 'rxjs';
 import { Role } from '../shared/enums/role.enum';
 import { JwtLoginInformation } from '../shared/dtos/jwt-login-information.dto';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -14,12 +14,31 @@ export class AuthService {
   private readonly baseUrl;
   private readonly accessTokenKey = 'accessToken';
   private readonly userIdKey = 'userId';
+  private readonly userNameKey = 'userName';
   private readonly userRolesKey = 'userRoles';
   private readonly userAssignedOrganizationKey = 'userAssignedOrganizationId';
   private managingOrganizationId = 0;
+  private loginSubject = new Subject<JwtLoginInformation>();
+  private loginInformation: JwtLoginInformation | null;
 
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {
     this.baseUrl = environment.backendBaseUrl;
+    this.loginInformation = null;
+  }
+
+  public getLogin() {
+    if (this.loginInformation == null) {
+      this.loginInformation = new JwtLoginInformation();
+      this.loginInformation.userName = this.getUserName();
+      this.loginInformation.id = this.getUserId();
+      this.loginInformation.roles = this.getUserRoll();
+      this.loginInformation.access_token = this.getUserAccessToken();
+    }
+    return this.loginInformation;
+  }
+
+  public getLoginSubject() {
+    return this.loginSubject;
   }
 
   public login(username: string, password: string): Observable<JwtLoginInformation> {
@@ -56,18 +75,17 @@ export class AuthService {
   }
 
   public getUserId(): number {
-    const idString = localStorage.getItem(this.userIdKey);
-    if (idString == null) {
-      return 0;
-    }
+    const id = sessionStorage.getItem(this.userIdKey);
+    return id != null ? +id : 0;
+  }
 
-    return +idString;
+  public getUserName(): string {
+    const name = sessionStorage.getItem(this.userNameKey);
+    return name != null ? name : '';
   }
 
   public isUserAccessTokenSet(): boolean {
-    const accessToken = this.getUserAccessToken();
-
-    return !!accessToken;
+    return this.getUserAccessToken().length != 0;
   }
 
   public logout() {
@@ -76,7 +94,7 @@ export class AuthService {
 
   public isLoggedIn() {
     const accessToken = this.getUserAccessToken();
-    if (accessToken) {
+    if (accessToken.length != 0) {
       return !this.jwtHelper.isTokenExpired(accessToken);
     }
 
@@ -111,12 +129,13 @@ export class AuthService {
     return this.isRole(Role.SingleShooter);
   }
 
-  public getUserAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
+  public getUserAccessToken(): string {
+    const token = sessionStorage.getItem(this.accessTokenKey);
+    return token != null ? token : '';
   }
 
   public getAssignedOrganizationId(): number {
-    const idString = localStorage.getItem(this.userAssignedOrganizationKey);
+    const idString = sessionStorage.getItem(this.userAssignedOrganizationKey);
     if (idString != null) {
       return Number.parseInt(idString);
     }
@@ -125,44 +144,33 @@ export class AuthService {
   }
 
   private getUserRoll(): Role {
-    const role = localStorage.getItem(this.userRolesKey);
+    const role = sessionStorage.getItem(this.userRolesKey);
     if (!role) {
       return Role.Anonymous;
     }
 
-    switch (role) {
-      case Role.User:
-        return Role.User;
-      case Role.ShootingRangeManager:
-        return Role.ShootingRangeManager;
-      case Role.OrganizationManager:
-        return Role.OrganizationManager;
-      case Role.EventOrganizer:
-        return Role.EventOrganizer;
-      case Role.Admin:
-        return Role.Admin;
-      case Role.Cashier:
-        return Role.Cashier;
-      case Role.SingleShooter:
-        return Role.SingleShooter;
-      default:
-        return Role.Anonymous;
-    }
+    return role as Role;
   }
 
   private destroySession() {
+    this.loginInformation = new JwtLoginInformation();
+    this.loginSubject.next(this.loginInformation);
     this.managingOrganizationId = 0;
-    localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem(this.userIdKey);
-    localStorage.removeItem(this.userRolesKey);
-    localStorage.removeItem(this.userAssignedOrganizationKey);
+    sessionStorage.removeItem(this.accessTokenKey);
+    sessionStorage.removeItem(this.userIdKey);
+    sessionStorage.removeItem(this.userNameKey);
+    sessionStorage.removeItem(this.userRolesKey);
+    sessionStorage.removeItem(this.userAssignedOrganizationKey);
   }
 
   private setSession(loginInformation: JwtLoginInformation) {
-    localStorage.setItem(this.accessTokenKey, loginInformation.access_token);
-    localStorage.setItem(this.userIdKey, loginInformation.id.toString());
-    localStorage.setItem(this.userRolesKey, loginInformation.roles);
-    localStorage.setItem(this.userAssignedOrganizationKey, loginInformation.assignedOrganizationId.toString());
+    this.loginInformation = loginInformation;
+    this.loginSubject.next(this.loginInformation);
+    sessionStorage.setItem(this.accessTokenKey, loginInformation.access_token);
+    sessionStorage.setItem(this.userIdKey, loginInformation.id.toString());
+    sessionStorage.setItem(this.userNameKey, loginInformation.userName);
+    sessionStorage.setItem(this.userRolesKey, loginInformation.roles);
+    sessionStorage.setItem(this.userAssignedOrganizationKey, loginInformation.assignedOrganizationId.toString());
   }
 
   private isRole(requiredRole: Role): boolean {

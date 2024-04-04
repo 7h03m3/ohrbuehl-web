@@ -1,4 +1,4 @@
-<div *ngIf="userInformation != undefined">
+<ng-container *ngIf="userInformation != undefined">
   <h1>{{userInformation!.firstName}} {{userInformation!.lastName}} </h1>
 
   <section>
@@ -18,10 +18,10 @@
     <div class="section-label">Benutzername</div>
     <div class="section-content-row">{{userInformation!.userName}} ({{getUserRole()}})</div>
   </section>
-</div>
+</ng-container>
 <br>
 
-<p *ngIf="authService.isAdmin()">
+<ng-container *appShowAdmin>
   <mat-form-field appearance="outline" class="select-width">
     <mat-label>Benutzer</mat-label>
     <mat-select (valueChange)="onUserChange($event)" [(ngModel)]="userId" required>
@@ -30,13 +30,15 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-</p>
+</ng-container>
+
 <mat-card *ngIf="reservationList.length != 0" class="reservation-card">
   <mat-card-header>
     <mat-card-title>Nächste Reservationen</mat-card-title>
     <mat-icon class="mat-card-icon" color="primary" mat-card-avatar>donut_large</mat-icon>
   </mat-card-header>
   <mat-card-content>
-    <business-hour-next-reservations [reservationList]="reservationList"></business-hour-next-reservations>
+    <business-hour-next-reservations [reservationList]="reservationList"/>
   </mat-card-content>
 </mat-card>
+

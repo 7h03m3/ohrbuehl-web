@@ -1,6 +1,6 @@
 .sidenav-container {
   width: auto;
-  height: 93%;
+  height: 100%;
 }
 
 .sidenav {
@@ -16,7 +16,7 @@
   flex: auto;
   height: auto;
   width: auto;
-  margin: 10px;
+  margin: 1em;
   display: flex;
   justify-content: center;
 }

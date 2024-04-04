@@ -1,20 +1,15 @@
 table {
-  min-width: 30em;
+  width: 100%;
 }
 
 .mat-column-date {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  min-width: 15em;
+  flex: 0 0 50% !important;
 }
 
 .mat-column-day {
-  min-width: 10em;
+  flex: 0 0 20% !important;
 }
 
-.mat-column-comment {
-  min-width: 10em;
-}
 
 .align-right {
   text-align: right;

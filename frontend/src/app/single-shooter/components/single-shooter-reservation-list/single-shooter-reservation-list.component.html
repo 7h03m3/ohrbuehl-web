@@ -5,7 +5,7 @@
     Hinzufügen
   </button>
 </h1>
-<p *ngIf="authService.isAdmin()">
+<p *appShowAdmin>
   <mat-form-field appearance="outline" class="select-width">
     <mat-label>Benutzer</mat-label>
     <mat-select (valueChange)="onUserChange($event)" [(ngModel)]="userId" required>
@@ -24,8 +24,10 @@
 
 <br>
 
-<business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
-                                [reservationList]="reservationList"></business-hour-reservation-list>
+<div class="reservation-list">
+  <business-hour-reservation-list (deleteEvent)="onDelete($event)" (editEvent)="onEdit($event)" [dateList]="dateList"
+                                  [reservationList]="reservationList"/>
+</div>
 
 
 

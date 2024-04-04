@@ -1,6 +1,18 @@
 mat-card {
-  width: 30em;
+  max-width: 35em;
   margin: 2em auto;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between
+}
+
+.form-field {
+  flow-grow: 1;
+  width: 100%;
 }
 
 .common-form-field {

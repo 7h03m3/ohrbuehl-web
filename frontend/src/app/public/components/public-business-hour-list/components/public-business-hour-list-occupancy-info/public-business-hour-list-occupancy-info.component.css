@@ -1,16 +1,13 @@
 .occupancy-label {
-  display: table-cell;
-  min-width: 20em;
 }
 
 .occupancy-value {
-  display: table-cell;
-  min-width: 4em;
+  padding-left: 2em;
   font-weight: bold;
 }
 
 .occupancy-unit {
-  display: table-cell;
+  padding-left: 2em;
 }
 
 .occupancy-red-text {

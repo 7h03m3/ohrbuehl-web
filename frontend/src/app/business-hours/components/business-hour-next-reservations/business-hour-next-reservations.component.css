@@ -1,10 +1,12 @@
+table {
+  width: 100%
+}
+
 .mat-column-date {
-    white-space: nowrap;
-    min-width: 15em;
+  flex: 0 0 28% !important;
 }
 
 .mat-column-count {
-    white-space: nowrap;
-    min-width: 9em;
+  flex: 0 0 28% !important;
 }
 

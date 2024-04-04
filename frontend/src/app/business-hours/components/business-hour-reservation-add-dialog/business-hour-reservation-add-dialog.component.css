@@ -4,10 +4,26 @@
 
 .form-element {
   margin-right: 0.5em;
-  min-width: 20em;
+  width: 100%;
 }
 
 button.add-date-class {
   background: lightgreen;
   border-radius: 100%;
+}
+
+.occupancy-label {
+  padding-right: 2em
+}
+
+.occupancy-value {
+  font-weight: bold;
+}
+
+.occupancy-red-text {
+  color: red;
+}
+
+.occupancy-green-text {
+  color: green;
 }

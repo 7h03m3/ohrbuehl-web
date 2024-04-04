@@ -12,3 +12,19 @@ body {
 .full-width {
   width: 100%;
 }
+
+.icon-black {
+  color: black;
+}
+
+.icon-white {
+  color: white;
+}
+
+.icon-green {
+  color: green;
+}
+
+.icon-red {
+  color: red;
+}

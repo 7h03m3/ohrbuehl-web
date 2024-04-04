@@ -16,10 +16,21 @@ import { UrlService } from './shared/services/url.service';
 import { environment } from '../environments/environment';
 import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { MaterialModule } from './shared/material.module';
+import { ToolbarMenuButtonComponent } from './shared/components/toolbar-menu-button/toolbar-menu-button.component';
+import { ToolbarMenuIconComponent } from './shared/components/toolbar-menu-icon/toolbar-menu-icon.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, CdkTreeModule, HttpClientModule, MaterialModule, AppRoutingModule],
+  declarations: [AppComponent, ToolbarMenuButtonComponent, ToolbarMenuIconComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CdkTreeModule,
+    HttpClientModule,
+    MaterialModule,
+    AppRoutingModule,
+    SharedModule,
+  ],
   providers: [
     DatePipe,
     {
@@ -43,6 +54,7 @@ import { MaterialModule } from './shared/material.module';
     },
   ],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {
   constructor(private urlService: UrlService) {}

@@ -114,7 +114,7 @@ export class BusinessHourAdminViewComponent {
     return occupancy.current + ' / ' + occupancy.max;
   }
 
-  getOccupancyUnitString(data: TableData): string {
+  public getOccupancyUnitString(data: TableData): string {
     return StringHelper.getOccupancyUnitString(data.facilityType, data.occupancy.max);
   }
 

@@ -1,13 +1,9 @@
 table {
-  min-width: 40em;
+  width: 100%;
 }
 
 .min-width {
   width: 1%;
-}
-
-mat-card {
-  min-width: 40em;
 }
 
 .mat-icon {

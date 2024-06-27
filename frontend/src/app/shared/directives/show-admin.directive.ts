@@ -8,6 +8,7 @@ import { Role } from '../enums/role.enum';
   selector: '[appShowAdmin]',
 })
 export class ShowAdminDirective implements OnInit, OnDestroy {
+  private hasView = false;
   private subscription: Subscription;
 
   constructor(
@@ -30,8 +31,12 @@ export class ShowAdminDirective implements OnInit, OnDestroy {
 
   private checkRights(login: JwtLoginInformation) {
     if (login.roles == Role.Admin) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+      if (!this.hasView) {
+        this.hasView = true;
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
     } else {
+      this.hasView = false;
       this.viewContainer.clear();
     }
   }

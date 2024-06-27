@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
   selector: '[appShowLoggedOut]',
 })
 export class ShowLoggedOutDirective implements OnInit, OnDestroy {
+  private hasView = false;
   private subscription: Subscription;
 
   constructor(
@@ -29,8 +30,12 @@ export class ShowLoggedOutDirective implements OnInit, OnDestroy {
 
   private checkRights(login: JwtLoginInformation) {
     if (login.id == 0) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+      if (!this.hasView) {
+        this.hasView = true;
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
     } else {
+      this.hasView = false;
       this.viewContainer.clear();
     }
   }

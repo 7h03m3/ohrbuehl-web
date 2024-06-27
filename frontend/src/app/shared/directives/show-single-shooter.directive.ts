@@ -8,6 +8,7 @@ import { Role } from '../enums/role.enum';
   selector: '[appShowSingleShooter]',
 })
 export class ShowSingleShooterDirective implements OnInit, OnDestroy {
+  private hasView = false;
   private subscription: Subscription;
 
   constructor(
@@ -32,8 +33,12 @@ export class ShowSingleShooterDirective implements OnInit, OnDestroy {
     const isAdmin = login.roles == Role.Admin;
     const isContentManager = login.roles == Role.SingleShooter;
     if (isAdmin || isContentManager) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+      if (!this.hasView) {
+        this.hasView = true;
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
     } else {
+      this.hasView = false;
       this.viewContainer.clear();
     }
   }

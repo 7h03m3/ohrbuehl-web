@@ -1,10 +1,4 @@
-import {
-  Directive,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { JwtLoginInformation } from '../dtos/jwt-login-information.dto';
 import { Subscription } from 'rxjs';
@@ -13,18 +7,17 @@ import { Subscription } from 'rxjs';
   selector: '[appShowLoggedIn]',
 })
 export class ShowLoggedInDirective implements OnInit, OnDestroy {
+  private hasView = false;
   private subscription: Subscription;
 
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
-    this.subscription = this.authService
-      .getLoginSubject()
-      .subscribe((information) => {
-        this.checkRights(information);
-      });
+    this.subscription = this.authService.getLoginSubject().subscribe((information) => {
+      this.checkRights(information);
+    });
   }
 
   public ngOnInit(): void {
@@ -37,8 +30,12 @@ export class ShowLoggedInDirective implements OnInit, OnDestroy {
 
   private checkRights(login: JwtLoginInformation) {
     if (login.id != 0) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+      if (!this.hasView) {
+        this.hasView = true;
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
     } else {
+      this.hasView = false;
       this.viewContainer.clear();
     }
   }

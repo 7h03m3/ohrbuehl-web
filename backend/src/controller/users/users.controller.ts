@@ -21,8 +21,6 @@ import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 import { AuthService } from '../../auth/auth.service';
 import { UserDto } from '../../shared/dtos/user.dto';
 import { BusinessHoursHelperService } from '../business-hours/helpers/business-hours-helper.service';
-import { MailService } from '../../mail/mail.service';
-import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Controller('users/')
 export class UsersController {
@@ -30,8 +28,6 @@ export class UsersController {
     private readonly userService: UsersService,
     private businessHourService: BusinessHoursHelperService,
     private authService: AuthService,
-    private mailService: MailService,
-    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   @Roles(Role.Admin)
@@ -85,6 +81,13 @@ export class UsersController {
     }
 
     return this.userService.updateAccountInformation(userDto);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Put('set-disabled-state')
+  public async setUserDisabledState(@Body() userDto: UserDto): Promise<any> {
+    return await this.userService.setDisabledState(userDto);
   }
 
   @Roles(Role.Admin)

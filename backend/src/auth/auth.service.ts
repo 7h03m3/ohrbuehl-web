@@ -18,6 +18,10 @@ export class AuthService {
       return null;
     }
 
+    if (user.disabled) {
+      return null;
+    }
+
     const isMatch = await this.comparePassword(password, user.password);
     if (isMatch) {
       const { password, ...result } = user;

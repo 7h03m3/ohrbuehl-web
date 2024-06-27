@@ -31,6 +31,18 @@
         <td *matCellDef="let element" mat-cell> {{getAssignedOrganizationText(element)}}</td>
       </ng-container>
 
+      <ng-container matColumnDef="disabled">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let element" mat-cell>
+          <button (click)="toggleUserState(element)" [matTooltip]="element.disabled ? 'aktivieren' : 'deaktivieren'"
+                  mat-icon-button>
+            <mat-icon [ngClass]="element.disabled ? 'user-disabled' : 'user-enabled'">
+              do_not_disturb_on
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell>
           <span>

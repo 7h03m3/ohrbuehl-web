@@ -39,6 +39,9 @@ export class UserEntity {
   @Column()
   roles: string;
 
+  @Column({ default: false })
+  disabled: boolean;
+
   @OneToMany((type) => InvoiceEntity, (invoice) => invoice.creator)
   invoices: InvoiceEntity[];
 

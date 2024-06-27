@@ -41,3 +41,13 @@ tr.mat-footer-row {
 .header-span {
   margin-left: 0.5rem;
 }
+
+.user-disabled {
+  font-size: 1em;
+  color: red;
+}
+
+.user-enabled {
+  font-size: 1em;
+  color: lightgray;
+}

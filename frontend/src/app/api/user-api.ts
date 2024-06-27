@@ -33,6 +33,10 @@ export class UserApi extends BaseApi {
     return this.http.put<UserDto>(this.url + '/account-information', user);
   }
 
+  public setDisabledState(user: UserDto): Observable<UserDto> {
+    return this.http.put<UserDto>(this.url + '/set-disabled-state', user);
+  }
+
   public delete(id: string): Observable<any> {
     return this.http.delete(this.url + '/' + id);
   }

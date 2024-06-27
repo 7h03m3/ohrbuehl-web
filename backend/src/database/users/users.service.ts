@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,7 +9,7 @@ import { UserDto } from '../../shared/dtos/user.dto';
 import { UserCreateDto } from '../../shared/dtos/user-create.dto';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnApplicationBootstrap {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
@@ -33,6 +33,7 @@ export class UsersService {
         lastName: true,
         roles: true,
         password: false,
+        disabled: true,
       },
       relations: {
         assignedOrganization: true,
@@ -61,6 +62,7 @@ export class UsersService {
         street: true,
         zip: true,
         location: true,
+        disabled: true,
       },
     });
   }
@@ -109,6 +111,17 @@ export class UsersService {
         mobile: user.mobile,
         roles: user.roles,
         assignedOrganization: organization,
+      })
+      .where('id = :id', { id: user.id })
+      .execute();
+  }
+
+  public async setDisabledState(user: UserDto): Promise<any> {
+    await this.usersRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({
+        disabled: user.disabled,
       })
       .where('id = :id', { id: user.id })
       .execute();

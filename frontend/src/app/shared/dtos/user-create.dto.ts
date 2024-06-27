@@ -4,16 +4,8 @@ import { OrganizationDto } from './organization.dto';
 import { UserRegisterDto } from './user-register.dto';
 
 export class UserCreateDto extends UserRegisterDto {
-  roles: Role;
-  invoices: InvoiceDto[];
-  assignedOrganization: OrganizationDto;
-  assignedOrganizationId: number;
-
-  public constructor() {
-    super();
-    this.roles = Role.Anonymous;
-    this.invoices = new Array<InvoiceDto>();
-    this.assignedOrganization = new OrganizationDto();
-    this.assignedOrganizationId = 0;
-  }
+  roles: Role = Role.Anonymous;
+  invoices: InvoiceDto[] = new Array<InvoiceDto>();
+  assignedOrganization: OrganizationDto = new OrganizationDto();
+  assignedOrganizationId = 0;
 }

@@ -14,7 +14,16 @@ import { UserDto } from '../../../shared/dtos/user.dto';
 })
 export class AdminUserListComponent implements OnInit {
   userList$ = new Observable<UserDto[]>();
-  displayedColumns: string[] = ['id', 'username', 'firstname', 'lastname', 'role', 'assignedOrganization', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'username',
+    'firstname',
+    'lastname',
+    'role',
+    'assignedOrganization',
+    'disabled',
+    'action',
+  ];
 
   constructor(private userApi: UserApi, public dialog: MatDialog, private router: Router) {}
 
@@ -51,6 +60,14 @@ export class AdminUserListComponent implements OnInit {
     }
 
     return '';
+  }
+
+  public toggleUserState(user: UserDto) {
+    user.disabled = !user.disabled;
+
+    this.userApi.setDisabledState(user).subscribe(() => {
+      this.fetch();
+    });
   }
 
   private fetch() {

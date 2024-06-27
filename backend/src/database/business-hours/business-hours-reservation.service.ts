@@ -171,6 +171,7 @@ export class BusinessHoursReservationService {
 
   public async getNextByUser(id: number): Promise<BusinessHourReservationEntity[]> {
     const start = DateHelper.getDayStart(Date.now());
+
     return this.repository.find({
       where: {
         ownerId: id,

@@ -32,7 +32,22 @@ export class PublicAllowedCaliberComponent {
     '8x57 IS',
     '7,62x39',
   ];
-  public listCaliber300m: string[] = [];
+  public listCaliber300m: string[] = [
+    '.223 Remington (GP 90)',
+    '7,5x55 Swiss (GP 11)',
+    '.308 Winchester',
+    '.303 British',
+    '.30-06 Springfield',
+    '8x57 IS',
+    '7,62x39',
+    '7,62x54R',
+    '5,45x39,5',
+    '.243 Winchester',
+    '6x47',
+    '6mmBR',
+    '6,5x55',
+    '6,5mm Creedmore',
+  ];
 
   public constructor() {
     this.listCaliber25m.sort((a, b) => a.localeCompare(b));

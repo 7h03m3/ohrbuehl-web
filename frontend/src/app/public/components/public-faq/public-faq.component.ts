@@ -88,6 +88,10 @@ export class PublicFaqComponent {
       'Warum kriegt man nicht sofort eine Antwort?',
       'Wir sind ehrenamtliche Mitarbeiter und meist berufstätig. Wir tun unsere Möglichstes zeitnahe eine Antwort zu senden.',
     );
+    this.addFaq(
+      'Kann ich Munition kaufen?',
+      'Es kann in der Schiessanlage keine Munition gekauft werden. Daher muss die Munition selber mitgebracht werden.',
+    );
 
     this.faqList.sort((a, b) => a.title.localeCompare(b.title));
   }

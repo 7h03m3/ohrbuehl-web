@@ -19,6 +19,8 @@ import { PublicPricesComponent } from './components/public-prices/public-prices.
 import { PublicRegistrationComponent } from './components/public-registration/public-registration.component';
 import { PublicGeneralBusinessTermsComponent } from './components/public-general-business-terms/public-general-business-terms.component';
 import { PublicSafetyRegulationsComponent } from './components/public-safety-regulations/public-safety-regulations.component';
+import { PublicApplicationComponent } from './components/public-application/public-application.component';
+import { PublicApplicationUploadDialogComponent } from './components/public-application/components/public-application-upload-dialog/public-application-upload-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { PublicSafetyRegulationsComponent } from './components/public-safety-reg
     PublicRegistrationComponent,
     PublicGeneralBusinessTermsComponent,
     PublicSafetyRegulationsComponent,
+    PublicApplicationComponent,
+    PublicApplicationUploadDialogComponent,
   ],
   imports: [CommonModule, MaterialModule, PublicRoutingModule, SharedModule, RecaptchaV3Module],
 })

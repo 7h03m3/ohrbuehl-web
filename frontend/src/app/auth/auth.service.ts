@@ -95,7 +95,12 @@ export class AuthService {
   public isLoggedIn() {
     const accessToken = this.getUserAccessToken();
     if (accessToken.length != 0) {
-      return !this.jwtHelper.isTokenExpired(accessToken);
+      const isExpired = this.jwtHelper.isTokenExpired(accessToken);
+      if (isExpired) {
+        this.destroySession();
+      }
+
+      return !isExpired;
     }
 
     return false;
@@ -153,24 +158,24 @@ export class AuthService {
   }
 
   private destroySession() {
-    this.loginInformation = new JwtLoginInformation();
-    this.loginSubject.next(this.loginInformation);
-    this.managingOrganizationId = 0;
     sessionStorage.removeItem(this.accessTokenKey);
     sessionStorage.removeItem(this.userIdKey);
     sessionStorage.removeItem(this.userNameKey);
     sessionStorage.removeItem(this.userRolesKey);
     sessionStorage.removeItem(this.userAssignedOrganizationKey);
+    this.loginInformation = new JwtLoginInformation();
+    this.loginSubject.next(this.loginInformation);
+    this.managingOrganizationId = 0;
   }
 
   private setSession(loginInformation: JwtLoginInformation) {
-    this.loginInformation = loginInformation;
-    this.loginSubject.next(this.loginInformation);
     sessionStorage.setItem(this.accessTokenKey, loginInformation.access_token);
     sessionStorage.setItem(this.userIdKey, loginInformation.id.toString());
     sessionStorage.setItem(this.userNameKey, loginInformation.userName);
     sessionStorage.setItem(this.userRolesKey, loginInformation.roles);
     sessionStorage.setItem(this.userAssignedOrganizationKey, loginInformation.assignedOrganizationId.toString());
+    this.loginInformation = loginInformation;
+    this.loginSubject.next(this.loginInformation);
   }
 
   private isRole(requiredRole: Role): boolean {

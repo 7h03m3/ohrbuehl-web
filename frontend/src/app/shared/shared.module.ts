@@ -14,6 +14,7 @@ import { ShowSingleShooterDirective } from './directives/show-single-shooter.dir
 import { ShowShootingRangeManagerDirective } from './directives/show-shooting-range-manager.directive';
 import { ShowOrganizationManagerDirective } from './directives/show-organization-manager.directive';
 import { ShowEventOrganizerDirective } from './directives/show-event-organizer.directive';
+import { TimeLeftPipe } from './pipes/time-left.pipe';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ShowEventOrganizerDirective } from './directives/show-event-organizer.d
     ShowShootingRangeManagerDirective,
     ShowOrganizationManagerDirective,
     ShowEventOrganizerDirective,
+    TimeLeftPipe,
   ],
   exports: [
     SidenavComponent,
@@ -40,6 +42,7 @@ import { ShowEventOrganizerDirective } from './directives/show-event-organizer.d
     ShowShootingRangeManagerDirective,
     ShowOrganizationManagerDirective,
     ShowEventOrganizerDirective,
+    TimeLeftPipe,
   ],
   imports: [CommonModule, MaterialModule, RouterModule],
   providers: [SidenavService],

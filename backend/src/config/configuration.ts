@@ -1,7 +1,9 @@
+import * as Path from 'path';
+
 export default () => ({
   port: parseInt(process.env.PORT, 10) || 3000,
   timeZone: process.env.TIMEZONE || 'Europe/Zurich',
-  hostUrl: process.env.HOST_URL || 'http://localhost:4200',
+  hostUrl: process.env.HOST_URL || 'https://ohrbuehl.info',
   database: {
     host: process.env.DATABASE_HOST || 'localhost',
     port: parseInt(process.env.DATABASE_PORT, 10) || 3306,
@@ -26,5 +28,8 @@ export default () => ({
     distance100mCount: 5,
     distance300mCount: 64,
     singleShooterEventLimit: 2,
+  },
+  paths: {
+    applications: process.env.APPLICATIONS_PATH || Path.resolve(__dirname, '../../../', 'data/files/applications'),
   },
 });

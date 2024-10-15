@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Datei raufladen</h2>
+<mat-dialog-content class="mat-typography">
+
+  <button (click)="fileUpload.click()" color="accent" mat-stroked-button>
+    <mat-icon matDatepickerToggleIcon>file_copy</mat-icon>
+    Datei auswählen
+  </button>
+  <input #fileUpload (change)="onFileSelect($event)" class="file-input" type="file">
+  <ng-container *ngIf="file!=undefined">
+    <br>
+    {{fileDto.filename}}
+  </ng-container>
+  <br>
+  <br>
+  <mat-form-field appearance="outline">
+    <mat-label>Dateitype</mat-label>
+    <mat-select [(ngModel)]="fileDto.category" required>
+      <mat-option *ngFor="let category of fileCategories" value="{{category}}">{{category}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="onCancel()" color="warn" mat-button>Abbrechen</button>
+  <span class="spacer"></span>
+  <button (click)="onSubmit()" [disabled]="!isValid()" color="primary" mat-stroked-button>Hinzufügen</button>
+</mat-dialog-actions>

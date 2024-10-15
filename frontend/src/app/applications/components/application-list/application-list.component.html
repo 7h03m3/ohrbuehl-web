@@ -1,0 +1,74 @@
+<h1>Anträge</h1>
+
+<div class="mat-elevation-z8">
+  <table [dataSource]="dataSource" mat-table matSort>
+
+    <ng-container matColumnDef="lastname">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Nachname</th>
+      <td *matCellDef="let element" mat-cell>{{element.lastname}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Vorname</th>
+      <td *matCellDef="let element" mat-cell>{{element.firstname}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Zustand</th>
+      <td *matCellDef="let element" [style.color]="getStateColor(element)" mat-cell><b>{{getStateText(element)}}</b>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expirationDate">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Ablaufdatum</th>
+      <td *matCellDef="let element" mat-cell>{{element.dates.expiration | date}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="timeLeft">
+      <th *matHeaderCellDef mat-header-cell>Restzeit</th>
+      <td *matCellDef="let element" mat-cell>{{element.dates.expiration | timeLeft}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef mat-header-cell></th>
+      <td *matCellDef="let element" mat-cell>
+        <button (click)="downloadSheet(element)" mat-icon-button matTooltip="Daten herunterladen">
+          <mat-icon>download</mat-icon>
+        </button>
+
+        <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" mat-icon-button>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button (click)="onSetAccept(element)" *ngIf="element.state != ApplicationState.Accepted" mat-menu-item>
+            <mat-icon>check</mat-icon>
+            <span>Akzeptieren</span>
+          </button>
+          <button (click)="onSetSubmit(element)" *ngIf="element.state != ApplicationState.Submitted" mat-menu-item>
+            <mat-icon>add</mat-icon>
+            <span>Einreichen</span>
+          </button>
+          <button (click)="onSetReject(element)" *ngIf="element.state != ApplicationState.Rejected" mat-menu-item>
+            <mat-icon>restart_alt</mat-icon>
+            <span>Zurückweisen</span>
+          </button>
+
+          <button (click)="onEdit(element)" mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Bearbeiten</span>
+          </button>
+
+          <button (click)="onDelete(element)" mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Löschen</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</div>

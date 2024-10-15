@@ -19,6 +19,11 @@ import { AccountingAddMessage } from './message/accounting-add-message.class';
 import { ConfigService } from '@nestjs/config';
 import { ContactMessageService } from '../database/contact-message/contact-message.service';
 import { ContactMessageAddMessage } from './message/contact-message-add-message.class';
+import { ApplicationDto } from '../shared/dtos/application.dto';
+import { ApplicationUpdateMessage } from './message/application-update-message.class';
+import { ApplicationUpdateAdminMessage } from './message/application-update-admin-message.class';
+import { ApplicationDeleteMessage } from './message/application-delete-message';
+import { ApplicationDeleteAdminMessage } from './message/application-delete-admin-message';
 
 @Injectable()
 export class MailService {
@@ -97,6 +102,23 @@ export class MailService {
     await this.sendMailBulk(message, receiverList);
   }
 
+  public async sendApplicationUpdate(application: ApplicationDto, receiverList: NotificationReceiverEntity[]) {
+    const hostUrl = this.configService.get('hostUrl');
+    const message = new ApplicationUpdateMessage(application, hostUrl);
+    await this.sendMail(application.firstname + ' ' + application.lastname, application.email, message);
+
+    const adminMessage = new ApplicationUpdateAdminMessage(application, hostUrl);
+    await this.sendMailBulk(adminMessage, receiverList);
+  }
+
+  public async sendApplicationDelete(application: ApplicationDto, receiverList: NotificationReceiverEntity[]) {
+    const message = new ApplicationDeleteMessage();
+    await this.sendMail(application.firstname + ' ' + application.lastname, application.email, message);
+
+    const adminMessage = new ApplicationDeleteAdminMessage(application);
+    await this.sendMailBulk(adminMessage, receiverList);
+  }
+
   private async getInvoiceData(id: number): Promise<[InvoiceEntity, PdfFile, Buffer]> {
     const invoice = await this.invoiceService.findOne(id);
     if (!invoice) {
@@ -129,7 +151,6 @@ export class MailService {
 
   private async sendMail(name: string, email: string, message: Message) {
     const prependText = 'Hallo ' + name;
-
     await this.mailerService
       .sendMail({
         to: email,

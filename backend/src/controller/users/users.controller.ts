@@ -37,6 +37,14 @@ export class UsersController {
     return this.userService.findAll();
   }
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('/check/:username')
+  public async checkUsername(@Param('username') username: string): Promise<boolean> {
+    const entity = await this.userService.findOneByUsername(username);
+    return entity != null;
+  }
+
   @Roles(Role.Admin, Role.SingleShooter, Role.ShootingRangeManager, Role.OrganizationManager, Role.EventOrganizer)
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get(':id')

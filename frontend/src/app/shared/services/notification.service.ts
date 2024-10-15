@@ -6,7 +6,7 @@ import { ContactMessageApi } from '../../api/contact-message-api';
 @Injectable({
   providedIn: 'root',
 })
-export class ContactMessageService {
+export class NotificationService {
   private messageCount = 0;
 
   constructor(public authService: AuthService, private contactMessageApi: ContactMessageApi) {}

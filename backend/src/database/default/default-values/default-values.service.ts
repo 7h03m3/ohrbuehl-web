@@ -43,6 +43,7 @@ export class DefaultValuesService {
     distance_100m: boolean,
     distance_50m: boolean,
     distance_25m: boolean,
+    position: number,
     repository: Repository<OrganizationEntity>,
   ) {
     const entity = new OrganizationEntity();
@@ -50,10 +51,12 @@ export class DefaultValuesService {
     entity.abbreviation = abbreviation;
     entity.native = native;
     entity.color = color;
+    entity.vvaId = '';
     entity.distance_300m = distance_300m;
     entity.distance_100m = distance_100m;
     entity.distance_50m = distance_50m;
     entity.distance_25m = distance_25m;
+    entity.position = position;
 
     await repository.save(entity);
   }
@@ -151,6 +154,7 @@ export class DefaultValuesService {
       true,
       true,
       true,
+      0,
       repository,
     );
     await DefaultValuesService.addNewOrganization(
@@ -162,6 +166,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      2,
       repository,
     );
 
@@ -174,6 +179,7 @@ export class DefaultValuesService {
       false,
       true,
       true,
+      7,
       repository,
     );
 
@@ -186,6 +192,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      6,
       repository,
     );
 
@@ -198,6 +205,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      10,
       repository,
     );
 
@@ -210,6 +218,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      1,
       repository,
     );
 
@@ -222,20 +231,10 @@ export class DefaultValuesService {
       true,
       true,
       true,
+      9,
       repository,
     );
 
-    await DefaultValuesService.addNewOrganization(
-      'Edelweiss Long Range',
-      'ELR',
-      true,
-      '#A2FF33',
-      true,
-      true,
-      true,
-      true,
-      repository,
-    );
     await DefaultValuesService.addNewOrganization(
       'Pistolenklub Seen',
       'PKS',
@@ -245,6 +244,7 @@ export class DefaultValuesService {
       false,
       true,
       true,
+      0,
       repository,
     );
     await DefaultValuesService.addNewOrganization(
@@ -256,6 +256,7 @@ export class DefaultValuesService {
       true,
       true,
       true,
+      5,
       repository,
     );
     await DefaultValuesService.addNewOrganization(
@@ -267,6 +268,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      4,
       repository,
     );
     await DefaultValuesService.addNewOrganization(
@@ -278,6 +280,7 @@ export class DefaultValuesService {
       false,
       false,
       false,
+      3,
       repository,
     );
     await DefaultValuesService.addNewOrganization(
@@ -289,6 +292,7 @@ export class DefaultValuesService {
       true,
       true,
       true,
+      0,
       repository,
     );
   }

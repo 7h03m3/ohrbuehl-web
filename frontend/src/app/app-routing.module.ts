@@ -66,6 +66,14 @@ const routes: Routes = [
       expectedRole: Role.SingleShooter,
     },
   },
+  {
+    path: 'applications',
+    loadChildren: () => import('./applications/applications.module').then((m) => m.ApplicationsModule),
+    canActivate: [RoleGuardService],
+    data: {
+      expectedRole: [Role.Admin, Role.ShootingRangeManager],
+    },
+  },
 ];
 
 @NgModule({

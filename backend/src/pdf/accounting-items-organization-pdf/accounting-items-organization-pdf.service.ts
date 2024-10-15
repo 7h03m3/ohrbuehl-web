@@ -12,6 +12,11 @@ type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
 export class AccountingItemsOrganizationPdfService extends PdfBase {
+  private marginTop = this.mm2Pt(35);
+  private marginBottom = this.mm2Pt(25);
+  private marginLeft = this.mm2Pt(25);
+  private marginRight = this.mm2Pt(25);
+
   constructor() {
     super();
   }
@@ -27,10 +32,20 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     const title = 'Schusszahlen ' + firstEntry.organization.name + ' ' + year;
     const currentDateString = DateHelper.getDateTimeString(Date.now());
 
-    const doc = new PDFDocument({ margin: 30, size: 'A4' });
+    const doc = new PDFDocument({
+      margin: {
+        top: this.marginTop,
+        bottom: this.marginBottom,
+        left: this.marginLeft,
+        right: this.marginRight,
+      },
+      size: 'A4',
+    });
     const fileStream = fs.createWriteStream(tempFilename);
     await doc.pipe(fileStream);
 
+    this.addPageHeader(doc);
+    this.addNewLine(doc);
     this.addText(title, 18, true, doc);
     this.addText('Stand: ' + currentDateString, 10, false, doc);
     this.addNewLine(doc);
@@ -94,14 +109,14 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
   }
 
   private addSummaryTableHeader(table: any) {
-    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 250));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 250));
+    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 225));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 225));
   }
 
   private addTableHeader(table: any) {
     table.headers.push(this.getTableHeaderItem(' Datum', 'date', 'left', 150));
-    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 250));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 100));
+    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 225));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 75));
   }
 
   private addSummaryTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {

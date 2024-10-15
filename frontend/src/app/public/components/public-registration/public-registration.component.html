@@ -60,9 +60,13 @@
         <mat-checkbox formControlName="confirmGeneralTerms" value="true">Ich akzeptiere die
           <a routerLink="/public/general-business-terms" target="_blank">Allgemeine Geschäftsbedingungen</a>
         </mat-checkbox>
+
+        <mat-checkbox *ngIf="isSingleShooter()" formControlName="confirmDocumentsReady" value="true">
+          Ich habe alle nötigen Dokumente bereit
+        </mat-checkbox>
       </section>
       <br>
-      <button [disabled]="registrationForm.invalid || !antiBotValid" color="primary" mat-raised-button type="submit">
+      <button [disabled]="!isValid() || submitButtonDisabled" color="primary" mat-raised-button type="submit">
         Einreichen
       </button>
     </form>

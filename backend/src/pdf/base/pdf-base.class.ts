@@ -100,11 +100,45 @@ export class PdfBase {
     });
   }
 
+  protected add2Text(text1: string, text2: string, fontSize: number, bold: boolean, offset: number, pdf: PDFDocument) {
+    pdf.fontSize(fontSize);
+    if (bold) {
+      pdf.font('Helvetica-Bold');
+    } else {
+      pdf.font('Helvetica');
+    }
+
+    const x = pdf.x;
+    const y = pdf.y;
+    pdf.text(text1, {
+      width: 170,
+      align: 'left',
+      lineGap: 10,
+    });
+
+    pdf.text(text2, x, y, {
+      align: 'left',
+      indent: this.mm2Pt(offset),
+      lineGap: this.mm2Pt(5),
+    });
+  }
+
   protected addNewLine(pdf: PDFDocument) {
     pdf.moveDown();
   }
 
   protected getCurrentDate(): string {
     return DateHelper.getDateTimeString(Date.now());
+  }
+
+  protected addPageHeader(doc: any) {
+    const pages = doc.bufferedPageRange();
+    for (let i = 0; i < pages.count; i++) {
+      doc.switchToPage(i);
+      doc.image(__dirname + '/../images/Logo_OBV_A4.jpg', this.mm2Pt(25), this.mm2Pt(10), {
+        width: this.mm2Pt(160),
+        height: this.mm2Pt(15),
+      });
+    }
   }
 }

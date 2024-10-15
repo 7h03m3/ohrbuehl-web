@@ -64,6 +64,7 @@ export class InvoicePdfService extends PdfBase {
     this.addTable(invoiceData.items, totalAmount, pdf);
 
     pdf.addQRBill('A4');
+    this.addPageHeader(pdf);
 
     return this.returnFile(pdf, invoiceData.filename, tempFilename);
   }
@@ -96,7 +97,7 @@ export class InvoicePdfService extends PdfBase {
     pdf.fontSize(12);
     pdf.fillColor('black');
     pdf.font('Helvetica');
-    pdf.text(creditorAddress, this.mm2Pt(20), this.mm2Pt(25), {
+    pdf.text(creditorAddress, this.mm2Pt(20), this.mm2Pt(30), {
       width: this.mm2Pt(100),
       height: this.mm2Pt(50),
       align: 'left',

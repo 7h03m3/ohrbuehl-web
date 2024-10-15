@@ -1,0 +1,20 @@
+.action-buttons {
+  margin-right: 0.5rem;
+}
+
+.expansion-panel-headers-align .mat-expansion-panel-header-description {
+  justify-content: right;
+}
+
+.mat-action-row {
+  place-content: space-between;
+}
+
+.form-element {
+  width: 100%;
+}
+
+.comment {
+  font-weight: bold;
+  color: red;
+}

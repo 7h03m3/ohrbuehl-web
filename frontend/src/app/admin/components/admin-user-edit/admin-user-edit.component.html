@@ -11,9 +11,14 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Benutzername</mat-label>
-        <input [(ngModel)]="user.userName" matInput name="userName" required>
+        <ng-container *ngIf="user.id == 0">
+          <input [(ngModel)]="user.userName" appUserNameValid matInput name="userName" required>
+        </ng-container>
+        <ng-container *ngIf="user.id != 0">
+          <input [(ngModel)]="user.userName" matInput name="userName" required>
+        </ng-container>
         <mat-error>
-          Bitte einen Spitznamen angeben.
+          Bitte einen Benutzername angeben / Benutzername existiert bereits.
         </mat-error>
       </mat-form-field>
       <br>

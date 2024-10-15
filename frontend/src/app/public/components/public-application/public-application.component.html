@@ -1,0 +1,170 @@
+<h1>Antrag von {{application.firstname}} {{application.lastname}}</h1>
+
+<ng-container *ngIf="application.comment.length != 0">
+  <p class="comment">
+    {{application.comment}}
+  </p>
+</ng-container>
+
+<p>
+  Sie haben noch {{application.dates.expiration | timeLeft}} Zeit um den Antrag zu bearbeiten. Bitte beachten Sie,
+  dass alle Angaben mit einem Dokument belegt werden müssen.
+</p>
+<br>
+
+<mat-accordion class="expansion-panel-headers-align" multi>
+  <mat-expansion-panel #miscExpansionPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Waffenerwerbsschein / Strafregisterauszug</mat-panel-title>
+      <mat-panel-description>
+        <mat-icon *ngIf="miscForm.valid" [style.color]="'green'">check</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="miscForm">
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Ausstellungsdatum</mat-label>
+        <input [matDatepicker]="miscPicker" formControlName="miscIssueDate" matInput readonly>
+        <mat-datepicker-toggle [for]="miscPicker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #miscPicker startView="multi-year"></mat-datepicker>
+        <mat-error>Ist älter als 2 Jahre</mat-error>
+      </mat-form-field>
+    </form>
+    <mat-action-row>
+      <button (click)="onSaveMisc()" [disabled]="isSaveButtonDisabled(miscForm)" color="primary" mat-raised-button>
+        <mat-icon matDatepickerToggleIcon>save</mat-icon>
+        Speichern
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #idExpansionPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Ausweis</mat-panel-title>
+      <mat-panel-description>
+        <mat-icon *ngIf="idForm.valid" [style.color]="'green'">check</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="idForm">
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Ausweisart</mat-label>
+        <input formControlName="idType" matInput placeholder="ID / Pass etc." type="string">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Ausweisnummer</mat-label>
+        <input formControlName="idNumber" matInput type="string">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Gültig bis</mat-label>
+        <input [matDatepicker]="idPicker" formControlName="idExpirationDate" matInput readonly>
+        <mat-datepicker-toggle [for]="idPicker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #idPicker startView="multi-year"></mat-datepicker>
+        <mat-error>Der Ausweis is abgelaufen</mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Geburtsdatum</mat-label>
+        <input [matDatepicker]="birthdayPicker" formControlName="idBirthDate" matInput readonly>
+        <mat-datepicker-toggle [for]="birthdayPicker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #birthdayPicker startView="multi-year"></mat-datepicker>
+        <mat-error>Man muss volljährig sein</mat-error>
+      </mat-form-field>
+    </form>
+    <mat-action-row>
+      <button (click)="onSaveId()" [disabled]="isSaveButtonDisabled(idForm)" color="primary" mat-raised-button>
+        <mat-icon matDatepickerToggleIcon>save</mat-icon>
+        Speichern
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #insuranceExpansionPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Privathaftpflicht-Versicherung</mat-panel-title>
+      <mat-panel-description>
+        <mat-icon *ngIf="insuranceForm.valid" [style.color]="'green'">check</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="insuranceForm">
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Versicherungsname</mat-label>
+        <input formControlName="insuranceName" matInput placeholder="z.B. AXA, Mobiliar" type="string">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Policennummer</mat-label>
+        <input formControlName="insuranceNumber" matInput type="string">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Grunddeckung</mat-label>
+        <span matSuffix>CHF&nbsp;</span>
+        <input formControlName="insuranceCoverage" matInput min="5000000" type="number">
+
+        <mat-error>Unter 5Mio CHF</mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Ablaufdatum</mat-label>
+        <input [matDatepicker]="insuranceExpirationPicker" formControlName="insuranceExpirationDate" matInput
+               readonly>
+        <mat-datepicker-toggle [for]="insuranceExpirationPicker" matIconSuffix></mat-datepicker-toggle>
+        <mat-datepicker #insuranceExpirationPicker startView="multi-year"></mat-datepicker>
+        <mat-error>Die Versicherung is abgelaufen</mat-error>
+      </mat-form-field>
+    </form>
+    <mat-action-row>
+      <button (click)="onSaveInsurance()" [disabled]="isSaveButtonDisabled(insuranceForm)" color="primary"
+              mat-raised-button>
+        <mat-icon matDatepickerToggleIcon>save</mat-icon>
+        Speichern
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel #fileExpansionPanel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Dateien</mat-panel-title>
+      <mat-panel-description>
+        <mat-icon *ngIf="fileCount.isValid()" [style.color]="'green'">check</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <table *ngIf="application.files.length != 0" [dataSource]="application.files" mat-table>
+      <ng-container matColumnDef="filename">
+        <th *matHeaderCellDef mat-header-cell>Dateiname</th>
+        <td *matCellDef="let element" mat-cell> {{element.filename}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th *matHeaderCellDef mat-header-cell>Typ</th>
+        <td *matCellDef="let element" mat-cell> {{element.category}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let element" mat-cell>
+          <button (click)="onFileDelete(element)" mat-icon-button matTooltip="Löschen">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+    <mat-action-row>
+      <button (click)="onUpload()" color="primary" mat-raised-button>
+        <mat-icon matDatepickerToggleIcon>upload</mat-icon>
+        Datei hochladen
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<br>
+<button (click)="onSubmit()" [disabled]="isSubmitButtonDisabled()" class="action-buttons" color="primary"
+        mat-raised-button>
+  Einreichen
+</button>
+

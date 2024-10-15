@@ -1,0 +1,116 @@
+<mat-accordion class="expansion-panel-headers-align" multi>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Antragsdaten</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-application-edit-date-picker [(date)]="application.dates.create" label="Erstelldatum" width="40rem"/>
+    <br>
+    <app-application-edit-date-picker [(date)]="application.dates.submit" label="Einreichdatum" width="40rem"/>
+    <br>
+    <app-application-edit-date-picker [(date)]="application.dates.expiration" label="Ablaufdatum" width="40rem"/>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <textarea [(ngModel)]="application.comment" matInput rows="5" type="text"></textarea>
+    </mat-form-field>
+    <mat-action-row>
+      <button (click)="onSave()" [disabled]="disableSaveButton" color="primary" mat-raised-button>Speichern</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!-- Persönliche Informationen -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Persönliche Informationen</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="outline" class="form-first-element">
+      <mat-label>Vorname</mat-label>
+      <input [(ngModel)]="application.firstname" matInput type="text">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-second-element">
+      <mat-label>Nachname</mat-label>
+      <input [(ngModel)]="application.lastname" matInput type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Strasse</mat-label>
+      <input [(ngModel)]="application.street" matInput type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-first-element">
+      <mat-label>PLZ</mat-label>
+      <input [(ngModel)]="application.zip" matInput type="number">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-second-element">
+      <mat-label>Ort</mat-label>
+      <input [(ngModel)]="application.location" matInput type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-first-element">
+      <mat-label>E-Mail</mat-label>
+      <input [(ngModel)]="application.email" matInput type="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-second-element">
+      <mat-label>Telefonnummer</mat-label>
+      <input [(ngModel)]="application.mobile" matInput type="text">
+    </mat-form-field>
+    <mat-action-row>
+      <button (click)="onSave()" [disabled]="disableSaveButton" color="primary" mat-raised-button>Speichern</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!-- Waffenerwerbsschein / Strafregisterauszug -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Waffenerwerbsschein / Strafregisterauszug</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-application-edit-date-picker [(date)]="application.misc.issue" label="Ausstelldatum" width="40rem"/>
+  </mat-expansion-panel>
+  <!-- Ausweis -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Ausweis</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="outline" class="form-first-element">
+      <mat-label>Typ</mat-label>
+      <input [(ngModel)]="application.identification.type" matInput type="text">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-second-element">
+      <mat-label>Nummer</mat-label>
+      <input [(ngModel)]="application.identification.number" matInput type="text">
+    </mat-form-field>
+    <br>
+    <app-application-edit-date-picker [(date)]="application.identification.expirationDate" label="Ablaufdatum"
+                                      width="40rem"/>
+    <br>
+    <app-application-edit-date-picker [(date)]="application.identification.birthDate" label="Geburtsdatum"
+                                      width="40rem"/>
+    <mat-action-row>
+      <button (click)="onSave()" [disabled]="disableSaveButton" color="primary" mat-raised-button>Speichern</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+  <!-- Versicherung -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Versicherung</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="outline" class="form-first-element">
+      <mat-label>Name</mat-label>
+      <input [(ngModel)]="application.insurance.name" matInput type="text">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-second-element">
+      <mat-label>Police</mat-label>
+      <input [(ngModel)]="application.insurance.number" matInput type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="form-element">
+      <mat-label>Grunddeckung</mat-label>
+      <input [(ngModel)]="application.insurance.coverage" matInput type="number">
+      <span matSuffix>CHF&nbsp;</span>
+    </mat-form-field>
+    <br>
+    <app-application-edit-date-picker [(date)]="application.insurance.expirationDate" label="Ablaufdatum"
+                                      width="40rem"/>
+    <mat-action-row>
+      <button (click)="onSave()" [disabled]="disableSaveButton" color="primary" mat-raised-button>Speichern</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+

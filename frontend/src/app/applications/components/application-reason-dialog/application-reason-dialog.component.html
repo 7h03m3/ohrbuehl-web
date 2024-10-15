@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Begründung eingeben</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="outline" class="input-element">
+    <textarea [(ngModel)]="reason" cols="500" matInput rows="5" type="text"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="onCancel()" mat-button>Abbrechen</button>
+  <button (click)="onSubmit()" mat-button>Okay</button>
+</mat-dialog-actions>

@@ -19,4 +19,30 @@ export class DownloadHelper {
       anchor.click();
     }
   }
+
+  public downloadFile(response: HttpResponse<Blob>) {
+    const contentDisposition = response.headers.get('Content-Disposition');
+
+    let filename = 'file.txt';
+    if (contentDisposition) {
+      const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+      const matches = fileNameRegex.exec(contentDisposition);
+      if (matches != null && matches[1]) {
+        filename = matches[1].replace(/['"]/g, '');
+      }
+    }
+
+    if (response.body) {
+      this.triggerDownload(response.body, filename);
+    }
+  }
+
+  private triggerDownload(body: Blob, filename: string) {
+    const blob = new Blob([body]);
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.download = filename;
+    anchor.href = url;
+    anchor.click();
+  }
 }

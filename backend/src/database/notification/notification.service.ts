@@ -50,6 +50,14 @@ export class NotificationService {
     return this.receiverRepository.find();
   }
 
+  public async getAllReceiverByTriggers(trigger: NotificationSource): Promise<NotificationReceiverEntity[]> {
+    const list = await this.receiverRepository.find();
+
+    return list.filter((current) => {
+      return current.triggers.includes(trigger);
+    });
+  }
+
   public async createReceiver(dto: NotificationReceiverDto): Promise<NotificationReceiverEntity> {
     const entity = new NotificationReceiverEntity();
     dto.id = 0;

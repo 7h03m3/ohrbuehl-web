@@ -8,7 +8,7 @@ import { StringHelper } from '../../../shared/classes/string-helper';
 import { ContactMessageStatus } from '../../../shared/enums/contact-message-status.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactMessageDialogComponent } from '../contact-message-dialog/contact-message-dialog.component';
-import { ContactMessageService } from '../../../shared/services/contact-message.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-contact-message-list',
@@ -25,7 +25,7 @@ export class ContactMessageListComponent implements OnInit, AfterViewInit {
   constructor(
     private messageApi: ContactMessageApi,
     private dialog: MatDialog,
-    private contactMessageService: ContactMessageService,
+    private notificationService: NotificationService,
   ) {}
 
   public ngOnInit() {
@@ -99,7 +99,7 @@ export class ContactMessageListComponent implements OnInit, AfterViewInit {
   private loadData() {
     this.messageApi.getAll().subscribe((response) => {
       this.dataSource.data = response;
-      this.contactMessageService.update();
+      this.notificationService.update();
     });
   }
 }

@@ -3,7 +3,7 @@ import { AuthService } from './auth/auth.service';
 
 import { Router } from '@angular/router';
 import { UserLocalData } from './shared/classes/user-local-data';
-import { ContactMessageService } from './shared/services/contact-message.service';
+import { NotificationService } from './shared/services/notification.service';
 import { appMainMenuEntries } from './app-main-menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AppSubmenuEntry } from './app-menu-entry';
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
-    public contactMessageService: ContactMessageService,
+    public notificationService: NotificationService,
     private responsive: BreakpointObserver,
   ) {}
 
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
       this.isMobileView = result.matches;
     });
 
-    this.contactMessageService.update();
+    this.notificationService.update();
   }
 
   public getRoleText(): string {

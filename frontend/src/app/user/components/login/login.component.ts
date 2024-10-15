@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,12 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private notificationService: NotificationService,
     private recaptchaV3Service: ReCaptchaV3Service,
   ) {}
 
   public async onSubmit() {
     this.loginValid = true;
-
     this.recaptchaV3Service.execute('login').subscribe({
       next: (token) => {
         if (token) {
@@ -38,9 +39,10 @@ export class LoginComponent {
   private doLogin() {
     this.authService.login(this.username, this.password).subscribe({
       complete: () => {
-        if (this.authService.isLoggedIn() == false) {
+        if (!this.authService.isLoggedIn()) {
           this.loginValid = false;
         } else {
+          this.notificationService.update();
           this.router.navigateByUrl('/');
         }
       },

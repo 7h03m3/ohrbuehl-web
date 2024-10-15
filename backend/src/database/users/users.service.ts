@@ -67,7 +67,7 @@ export class UsersService implements OnApplicationBootstrap {
     });
   }
 
-  public async findOneByUsername(username: string): Promise<UserEntity> | undefined {
+  public async findOneByUsername(username: string): Promise<UserEntity | null> | undefined {
     return this.usersRepository.findOneBy({ userName: username });
   }
 

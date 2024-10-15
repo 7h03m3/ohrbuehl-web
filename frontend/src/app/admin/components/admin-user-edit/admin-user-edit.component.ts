@@ -67,13 +67,13 @@ export class AdminUserEditComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.user.id == 0) {
-      this.userApi.create(this.user).subscribe(() => {
-        this.openSnackBar(this.user.firstName + ' ' + this.user.lastName + ' wurde erstellt');
+      this.userApi.create(this.user).subscribe((data) => {
+        this.openSnackBar(data.firstName + ' ' + data.lastName + ' wurde erstellt');
         this.user = new UserDto();
       });
     } else {
       this.userApi.update(this.user).subscribe((data) => {
-        this.openSnackBar(this.user.firstName + ' ' + this.user.lastName + ' gespeichert');
+        this.openSnackBar(data.firstName + ' ' + data.lastName + ' gespeichert');
         this.user = new UserDto();
       });
     }

@@ -13,6 +13,7 @@ import { PublicPricesComponent } from './components/public-prices/public-prices.
 import { PublicRegistrationComponent } from './components/public-registration/public-registration.component';
 import { PublicGeneralBusinessTermsComponent } from './components/public-general-business-terms/public-general-business-terms.component';
 import { PublicSafetyRegulationsComponent } from './components/public-safety-regulations/public-safety-regulations.component';
+import { PublicApplicationComponent } from './components/public-application/public-application.component';
 
 const routes: Routes = [
   {
@@ -71,6 +72,10 @@ const routes: Routes = [
       {
         path: 'safety-regulations',
         component: PublicSafetyRegulationsComponent,
+      },
+      {
+        path: 'application/:requestId',
+        component: PublicApplicationComponent,
       },
     ],
   },

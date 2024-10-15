@@ -17,6 +17,10 @@ export class UserApi extends BaseApi {
     return this.http.get<UserDto[]>(this.url);
   }
 
+  public checkUsername(username: string): Observable<boolean> {
+    return this.http.get<boolean>(this.url + '/check/' + username);
+  }
+
   public getById(id: number): Observable<UserDto> {
     return this.http.get<UserDto>(this.url + '/' + id);
   }

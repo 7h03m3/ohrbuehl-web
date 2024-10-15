@@ -1,0 +1,24 @@
+<table [dataSource]="files" class="mat-elevation-z8" mat-table>
+  <ng-container matColumnDef="filename">
+    <th *matHeaderCellDef mat-header-cell>Dateiname</th>
+    <td *matCellDef="let element" mat-cell> {{element.filename}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th *matHeaderCellDef mat-header-cell>Typ</th>
+    <td *matCellDef="let element" mat-cell> {{element.category}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th *matHeaderCellDef mat-header-cell></th>
+    <td *matCellDef="let element" mat-cell>
+      <button (click)="onDownload(element)" mat-icon-button>
+        <mat-icon>download</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>

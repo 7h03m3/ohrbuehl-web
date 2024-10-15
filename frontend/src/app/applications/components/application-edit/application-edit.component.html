@@ -1,0 +1,10 @@
+<h1>Antrag von {{application.firstname}} {{application.lastname}}
+  <button (click)="openApplication()" mat-icon-button>
+    <mat-icon>link</mat-icon>
+  </button>
+</h1>
+
+<app-application-edit-information [(application)]="application"/>
+<br>
+<br>
+<app-application-edit-file-list [files]="application.files"/>

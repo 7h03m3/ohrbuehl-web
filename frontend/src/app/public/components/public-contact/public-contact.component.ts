@@ -5,7 +5,7 @@ import { ContactMessageDto } from '../../../shared/dtos/contact-message.dto';
 import { InfoDialogComponent } from '../../../shared/components/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ContactMessageService } from '../../../shared/services/contact-message.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -23,7 +23,7 @@ export class PublicContactComponent implements OnInit {
     private contactApi: ContactMessageApi,
     private dialog: MatDialog,
     private router: Router,
-    private contactMessageService: ContactMessageService,
+    private notificationService: NotificationService,
     private recaptchaV3Service: ReCaptchaV3Service,
     private snackBar: MatSnackBar,
   ) {}
@@ -81,7 +81,7 @@ export class PublicContactComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.contactMessageService.update();
+      this.notificationService.update();
       this.router.navigateByUrl('/');
     });
   }

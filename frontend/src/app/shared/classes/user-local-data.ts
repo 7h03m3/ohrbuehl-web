@@ -21,6 +21,8 @@ export class UserLocalData {
         return 'Schussgeld';
       case NotificationSource.ContactMessage:
         return 'Kontakt-Nachrichten';
+      case NotificationSource.Application:
+        return 'Anträge';
       default:
         return '';
     }

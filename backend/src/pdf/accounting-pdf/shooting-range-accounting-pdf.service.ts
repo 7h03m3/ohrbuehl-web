@@ -71,6 +71,7 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
 
     pdf.pipe(fs.createWriteStream(tempFilename));
 
+    this.addPageHeader(pdf);
     this.addTitle(
       'Schusszahlen ' +
         ShootingRangeAccountingPdfService.getTypeString(accountingData.type) +
@@ -82,6 +83,7 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
         DateHelper.getTimeString(accountingData.end),
       pdf,
     );
+
     this.addTable(accountingData.items, accountingData.total, pdf);
 
     return this.returnFile(pdf, filename, tempFilename);
@@ -90,7 +92,7 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
   private addTitle(title: string, pdf: PDF) {
     pdf.fontSize(14);
     pdf.font('Helvetica-Bold');
-    pdf.text(title, this.mm2Pt(20), this.mm2Pt(20), {
+    pdf.text(title, this.mm2Pt(20), this.mm2Pt(35), {
       width: this.mm2Pt(170),
       align: 'left',
     });
@@ -104,7 +106,7 @@ export class ShootingRangeAccountingPdfService extends PdfBase {
     const table: PDFTable = {
       width: this.mm2Pt(170),
       x: this.mm2Pt(20),
-      y: this.mm2Pt(30),
+      y: this.mm2Pt(45),
       lineWidth: 1,
       rows: [
         {

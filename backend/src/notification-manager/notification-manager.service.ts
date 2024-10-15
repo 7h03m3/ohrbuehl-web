@@ -6,6 +6,7 @@ import { NotificationEntity } from '../database/entities/notification.entity';
 import { NotificationReceiverEntity } from '../database/entities/notification-receiver.entity';
 import { MailService } from '../mail/mail.service';
 import { Cron } from '@nestjs/schedule';
+import { ApplicationEntity } from '../database/entities/application.entity';
 
 @Injectable()
 export class NotificationManagerService {
@@ -24,6 +25,16 @@ export class NotificationManagerService {
 
   public async deleteEvent(source: NotificationSource, targetId: number, comment: string) {
     await this.notifications.create(source, NotificationAction.Delete, targetId, comment);
+  }
+
+  public async updateApplication(application: ApplicationEntity) {
+    const receiverList = await this.notifications.getAllReceiverByTriggers(NotificationSource.Application);
+    await this.mailService.sendApplicationUpdate(application, receiverList);
+  }
+
+  public async deleteApplication(application: ApplicationEntity) {
+    const receiverList = await this.notifications.getAllReceiverByTriggers(NotificationSource.Application);
+    await this.mailService.sendApplicationDelete(application, receiverList);
   }
 
   @Cron('0 */15 * * * *')

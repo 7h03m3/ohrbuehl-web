@@ -11,21 +11,18 @@ services:
   ohrbuehl-web-backend:
     build: ../../backend
     image: ohrbuehl-backend
+    entrypoint: "/bin/sh -c 'DATABASE_USER=`cat /run/secrets/db_user` DATABASE_PASSWORD=`cat /run/secrets/db_user_password` MAIL_USER=`cat /run/secrets/mail_user` MAIL_PASSWORD=`cat /run/secrets/mail_password`   node dist/main.js'"
     restart: always
     environment:
       PORT: 3000
       HOST_URL: https://ohrbuehl.info
       DATABASE_HOST: ohrbuehl-web-mysql-db
       DATABASE_PORT: 3306
-      DATABASE_USER: admin
-      DATABASE_PASSWORD: 12345
       DATABASE_NAME: ohrbuehl-web
       MAIL_HOST: smtp.gmail.com
       MAIL_PORT: 465
       MAIL_IGNORE_TLS: "true"
       MAIL_SECURE: "true"
-      MAIL_USER: ohrbuehl@gmail.com
-      MAIL_PASSWORD: XXX
       APPLICATIONS_PATH: /var/backend/files/applications
     volumes:
       - ../../data/files/applications:/var/backend/files/applications
@@ -33,6 +30,11 @@ services:
       - ohrbuehl-web-mysql-db
     depends_on:
       - ohrbuehl-web-mysql-db
+    secrets:
+      - db_user
+      - db_user_password
+      - mail_user
+      - mail_password        
     networks:
       - proxynet
       
@@ -40,14 +42,30 @@ services:
     image: mysql:8.0.29
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 2beer4me@ohrbuehl
       MYSQL_DATABASE: ohrbuehl-web
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: 12345
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER_FILE: /run/secrets/db_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_user_password
     volumes:
       - ../../data/db-data:/var/lib/mysql
+    secrets:
+      - db_root_password
+      - db_user
+      - db_user_password      
     networks:
       - proxynet
+
+secrets:
+  db_root_password:
+    file: ../../data/secrets/db_root_password.txt
+  db_user:
+    file: ../../data/secrets/db_user.txt
+  db_user_password:
+    file: ../../data/secrets/db_user_password.txt
+  mail_user:
+    file: ../../data/secrets/mail_user.txt
+  mail_password:
+    file: ../../data/secrets/mail_password.txt
       
 networks:
   proxynet:

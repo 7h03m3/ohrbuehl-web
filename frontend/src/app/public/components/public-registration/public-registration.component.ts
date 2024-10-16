@@ -42,16 +42,16 @@ export class PublicRegistrationComponent implements OnInit {
   public ngOnInit() {
     this.registrationForm = new FormGroup({
       clubName: new FormControl('', []),
-      email: new FormControl('thomas.stanger@staswiss.ch', [Validators.required, Validators.email]),
-      mobile: new FormControl('078 667 78 60', [
+      email: new FormControl('', [Validators.required, Validators.email]),
+      mobile: new FormControl('', [
         Validators.required,
         Validators.pattern(/(\b(0041|0)|\B\+41)(\s?\(0\))?(\s)?[1-9]{2}(\s)?[0-9]{3}(\s)?[0-9]{2}(\s)?[0-9]{2}\b/),
       ]),
-      firstname: new FormControl('Thomas', [Validators.required]),
-      lastname: new FormControl('Stanger', [Validators.required]),
-      street: new FormControl('Street', [Validators.required]),
-      zip: new FormControl('8000', [Validators.required, Validators.min(1000)]),
-      location: new FormControl('Zurich', [Validators.required]),
+      firstname: new FormControl('', [Validators.required]),
+      lastname: new FormControl('', [Validators.required]),
+      street: new FormControl('', [Validators.required]),
+      zip: new FormControl('', [Validators.required, Validators.min(1000)]),
+      location: new FormControl('', [Validators.required]),
       confirmReservationInfo: new FormControl('', [Validators.required]),
       confirmGeneralTerms: new FormControl('', [Validators.required]),
       confirmDocumentsReady: new FormControl(''),

@@ -1,0 +1,9 @@
+mat-form-field {
+  display: block;
+  min-width: 15em;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+

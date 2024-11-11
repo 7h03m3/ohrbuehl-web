@@ -83,6 +83,19 @@ export class EventShiftDownloadsComponent {
       });
   }
 
+  public onShiftStaffEvaluationReportDownload() {
+    this.eventApi
+      .getOrganizationShiftEvaluationReport(this.organizationId, this.useLocalData.getCurrentYear())
+      .pipe(
+        catchError(() => {
+          return this.catchReportError();
+        }),
+      )
+      .subscribe((response) => {
+        this.downloadHelper.downloadPdfFile(response);
+      });
+  }
+
   private catchReportError() {
     this.openSnackBar('Report nicht vorhanden oder enthält keine Daten');
     return EMPTY;

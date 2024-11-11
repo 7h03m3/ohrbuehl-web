@@ -141,4 +141,10 @@ export class PdfBase {
       });
     }
   }
+
+  protected getFilename(title: string, suffix = '.pdf'): string {
+    let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
+    filename += suffix;
+    return filename;
+  }
 }

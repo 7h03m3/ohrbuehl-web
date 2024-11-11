@@ -20,6 +20,16 @@ export class ReportApi extends BaseApi {
     });
   }
 
+  public getShootingRangeAccountingOverview(year: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/shooting-range-accounting/' + year, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
+
   public getBusinessHourDayReport(businessHourId: number) {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');

@@ -34,6 +34,58 @@ export class SummarizeHelper {
     return resultArray;
   }
 
+  public static summarizeShootingRangeAccountingByOrganization(
+    source: ShootingRangeAccountingUnitEntity[],
+  ): ShootingRangeAccountingUnitEntity[] {
+    const resultArray = new Array<ShootingRangeAccountingUnitEntity>();
+
+    source.forEach((item) => {
+      if (item.price.id != 0) {
+        const existingItem = resultArray.find((searchItem: ShootingRangeAccountingUnitEntity) => {
+          return searchItem.organization.id == item.organization.id;
+        });
+
+        if (existingItem != undefined) {
+          existingItem.amount = existingItem.amount + item.amount;
+        } else {
+          const newItem = structuredClone(item);
+          newItem.track = 0;
+          resultArray.push(newItem);
+        }
+      }
+    });
+
+    SortHelper.sortAccountingUnitsByOrganization(resultArray);
+
+    return resultArray;
+  }
+
+  public static summarizeShootingRangeAccountingByPriceAndComment(
+    source: ShootingRangeAccountingUnitEntity[],
+  ): ShootingRangeAccountingUnitEntity[] {
+    const resultArray = new Array<ShootingRangeAccountingUnitEntity>();
+
+    source.forEach((item) => {
+      if (item.price.id != 0) {
+        const existingItem = resultArray.find((searchItem: ShootingRangeAccountingUnitEntity) => {
+          return searchItem.price.id == item.price.id && searchItem.comment == item.comment;
+        });
+
+        if (existingItem != undefined) {
+          existingItem.amount = existingItem.amount + item.amount;
+        } else {
+          const newItem = structuredClone(item);
+          newItem.track = 0;
+          resultArray.push(newItem);
+        }
+      }
+    });
+
+    SortHelper.sortAccountingUnitsByComment(resultArray);
+
+    return resultArray;
+  }
+
   public static summarizeShootingRangeDaysAccounting(source: ShootingRangeAccountingUnitEntity[]) {
     const resultArray = new Array<ShootingRangeAccountingUnitEntity>();
 

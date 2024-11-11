@@ -46,7 +46,7 @@ export class EventOrganizationReportPdfService extends PdfBase {
 
     title = title + ' ' + fullYear;
 
-    const filename = this.getFilename(title);
+    const filename = this.getFilename(title, '_schichten.pdf');
 
     const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' });
     const fileStream = fs.createWriteStream(tempFilename);
@@ -194,12 +194,6 @@ export class EventOrganizationReportPdfService extends PdfBase {
       const propertyString = 'event' + event.id;
       table.headers.push(this.getTableHeaderItem(headerString, propertyString, 'center', 40));
     });
-  }
-
-  private getFilename(title: string): string {
-    let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '_schichten.pdf';
-    return filename;
   }
 
   private getFullYear(eventList: EventEntity[]): string {

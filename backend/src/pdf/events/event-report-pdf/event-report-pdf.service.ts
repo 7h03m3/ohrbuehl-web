@@ -17,7 +17,11 @@ export class EventReportPdfService extends PdfBase {
 
   async generatePdf(eventData: EventEntity, @Res() response) {
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
-    const filename = this.getFilename(eventData.title, eventData.start);
+
+    const filename = this.getFilename(
+      eventData.title,
+      '_' + DateHelper.getDateFileName(eventData.start) + '_schichten.pdf',
+    );
 
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
     const fileStream = fs.createWriteStream(tempFilename);
@@ -75,11 +79,5 @@ export class EventReportPdfService extends PdfBase {
     });
 
     this.finishDocument(doc, fileStream, tempFilename, filename, response);
-  }
-
-  private getFilename(title: string, date: number): string {
-    let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '_' + DateHelper.getDateFileName(date) + '_schichten.pdf';
-    return filename;
   }
 }

@@ -16,12 +16,14 @@ import { EventOrganizationReportPdfService } from '../../pdf/events/event-organi
 import { OrganizationsService } from '../../database/organizations/organizations.service';
 import { EventsStaffPoolService } from '../../database/events/events-staff-pool.service';
 import { EventReportPdfService } from '../../pdf/events/event-report-pdf/event-report-pdf.service';
+import { EventOrganizationStaffEvaluationReportPdfService } from '../../pdf/events/event-organization-staff-evaluation-report-pdf/event-organization-staff-evaluation-report-pdf.service';
 
 @Controller('events/report')
 export class EventsReportController {
   constructor(
     private readonly eventService: EventsService,
     private readonly eventOrganizationStaffReportPdfService: EventOrganizationStaffReportPdfService,
+    private readonly eventOrganizationStaffEvaluationReportPdfService: EventOrganizationStaffEvaluationReportPdfService,
     private readonly shiftService: EventsShiftService,
     private readonly organizationMemberService: OrganizationMemberService,
     private readonly authService: AuthService,
@@ -100,7 +102,31 @@ export class EventsReportController {
     @Request() req: any,
   ): Promise<any> {
     await this.authService.checkOrganizationAccess(organizationId, req);
+    const staffList = await this.getStaffShiftList(organizationId, year);
+    await this.eventOrganizationStaffReportPdfService.generatePdf(staffList[0].organization, staffList, response);
+  }
 
+  @Roles(Role.Admin, Role.OrganizationManager)
+  @UseGuards(JwtAuthGuard, RoleAuthGuard)
+  @Get('organization/shifts/evaluation/:organizationId/:year')
+  async downloadOrganizationStaffEvaluationReport(
+    @Param('organizationId') organizationId: number,
+    @Param('year') year: number,
+    @Res() response: any,
+    @Request() req: any,
+  ): Promise<any> {
+    await this.authService.checkOrganizationAccess(organizationId, req);
+
+    const staffList = await this.getStaffShiftList(organizationId, year);
+
+    await this.eventOrganizationStaffEvaluationReportPdfService.generatePdf(
+      staffList[0].organization,
+      staffList,
+      response,
+    );
+  }
+
+  private async getStaffShiftList(organizationId: number, year: number) {
     const staffList = await this.organizationMemberService.findAllDetailedByOrganizationId(organizationId, year);
     if (staffList.length == 0) {
       const errorMessage = 'no staff list found';
@@ -114,7 +140,7 @@ export class EventsReportController {
       }
     }
 
-    await this.eventOrganizationStaffReportPdfService.generatePdf(staffList[0].organization, staffList, response);
+    return staffList;
   }
 
   private async generateOrganizationReport(

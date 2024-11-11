@@ -55,12 +55,6 @@ export class EventOrganizationStaffReportPdfService extends PdfBase {
     this.finishDocument(doc, fileStream, tempFilename, filename, response);
   }
 
-  private getFilename(title: string): string {
-    let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
-    filename += '.pdf';
-    return filename;
-  }
-
   private getFullYear(staffList: OrganizationMemberEntity[]): string {
     const firstShift = this.getFirstShift(staffList);
     const date = firstShift != undefined ? firstShift.start : new Date().getTime();

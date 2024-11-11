@@ -1,9 +1,9 @@
 import { Injectable, Res } from '@nestjs/common';
 import { PdfBase } from '../base/pdf-base.class';
 import { ShootingRangeAccountingUnitEntity } from '../../database/entities/shooting-range-accounting-unit.entity';
-import { PdfTableRowItem } from '../base/classes/pdf-table-row-item';
 import { DateHelper } from '../../shared/classes/date-helper';
 import { SummarizeHelper } from '../../shared/classes/summarize-helper';
+import { PdfTableRowItem } from '../base/classes/pdf-table-row-item';
 
 const PDFDocument = require('pdfkit-table');
 
@@ -11,7 +11,7 @@ const fs = require('fs');
 type Row = Record<string, PdfTableRowItem>;
 
 @Injectable()
-export class AccountingItemsOrganizationPdfService extends PdfBase {
+export class AccountingItemsOverviewPdfService extends PdfBase {
   private marginTop = this.mm2Pt(35);
   private marginBottom = this.mm2Pt(25);
   private marginLeft = this.mm2Pt(25);
@@ -26,10 +26,9 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     accountingUnitData: ShootingRangeAccountingUnitEntity[],
     @Res() response: any,
   ) {
-    const firstEntry = accountingUnitData[0];
     const tempFilename: string = './' + this.getRandomFilename() + '.pdf';
-    const filename = 'Schusszahlen_' + firstEntry.organization.abbreviation + '_' + year + '.pdf';
-    const title = 'Schusszahlen ' + firstEntry.organization.name + ' ' + year;
+    const filename = 'Schusszahlen_' + year + '.pdf';
+    const title = 'Schusszahlen ' + year;
     const currentDateString = DateHelper.getDateTimeString(Date.now());
 
     const doc = new PDFDocument({
@@ -52,46 +51,25 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     this.addText('Stand: ' + currentDateString, 10, false, doc);
     this.addNewLine(doc);
 
-    const totalData = SummarizeHelper.summarizeShootingRangeAccounting(accountingUnitData);
-    let table = this.createTable('', 18);
-    this.addSummaryTableHeader(table);
-    for (const current of totalData) {
-      this.addSummaryTableRow(current, table);
+    const organizationData = SummarizeHelper.summarizeShootingRangeAccountingByOrganization(accountingUnitData);
+    const organizationTable = this.createTable('', 18);
+
+    this.addOrganizationTableHeader(organizationTable);
+    for (const current of organizationData) {
+      this.addOrganizationTableRow(current, organizationTable);
     }
-    await this.addTableToDocument(table, doc);
+    await this.addTableToDocument(organizationTable, doc);
 
-    const summarizedDays = SummarizeHelper.summarizeShootingRangeDaysAccounting(accountingUnitData);
+    doc.addPage();
 
-    summarizedDays.sort((a, b) => {
-      if (a.price.name > b.price.name) {
-        return 1;
-      }
-
-      if (a.price.name < b.price.name) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    this.addNewLine(doc);
-
-    table = null;
-    let priceId = 0;
-    for (const current of summarizedDays) {
-      if (priceId != current.price.id || table == null) {
-        if (table != null) {
-          await this.addTableToDocument(table, doc);
-          this.addNewLine(doc);
-        }
-        table = this.createTable(current.price.name, 12);
-        this.addTableHeader(table);
-        priceId = current.price.id;
-      }
-      this.addTableRow(current, table);
+    const priceData = SummarizeHelper.summarizeShootingRangeAccountingByPriceAndComment(accountingUnitData);
+    const priceTable = this.createTable('', 18);
+    this.addPriceTableHeader(priceTable);
+    for (const current of priceData) {
+      this.addPriceTableRow(current, priceTable);
     }
+    await this.addTableToDocument(priceTable, doc);
 
-    await this.addTableToDocument(table, doc);
     this.finishDocument(doc, fileStream, tempFilename, filename, response);
   }
 
@@ -110,21 +88,13 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     });
   }
 
-  private addSummaryTableHeader(table: any) {
+  private addPriceTableHeader(table: any) {
     table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 225));
     table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 225));
   }
 
-  private addTableHeader(table: any) {
-    table.headers.push(this.getTableHeaderItem(' Datum', 'date', 'left', 150));
-    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 225));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 75));
-  }
-
-  private addSummaryTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
+  private addPriceTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
     const row: Row = {};
-
-    const accounting = entry.accountingEntry;
 
     let priceText = entry.price.name;
     if (entry.comment.length != 0) {
@@ -136,18 +106,15 @@ export class AccountingItemsOrganizationPdfService extends PdfBase {
     table.datas.push(row);
   }
 
-  private addTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
+  private addOrganizationTableHeader(table: any) {
+    table.headers.push(this.getTableHeaderItem(' Verein', 'organization', 'left', 225));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 225));
+  }
+
+  private addOrganizationTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
     const row: Row = {};
 
-    const accounting = entry.accountingEntry;
-
-    let priceText = entry.price.name;
-    if (entry.comment.length != 0) {
-      priceText += ' (' + entry.comment + ')';
-    }
-
-    row['date'] = this.getTableRowItem(DateHelper.getStartEndDateString(accounting.start, accounting.end));
-    row['price'] = this.getTableRowItem(priceText);
+    row['organization'] = this.getTableRowItem(entry.organization.name);
     row['count'] = this.getTableRowItem(entry.amount.toString());
     table.datas.push(row);
   }

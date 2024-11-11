@@ -17,7 +17,7 @@ export class ShootingRangeAccountingService {
     private accountingUnitRepository: Repository<ShootingRangeAccountingUnitEntity>,
   ) {}
 
-  findAllByYear(year: number): Promise<ShootingRangeAccountingEntity[]> {
+  public findAllByYear(year: number): Promise<ShootingRangeAccountingEntity[]> {
     const timeStart = DateHelper.getYearStart(year).getTime();
     const timeEnd = DateHelper.getYearEnd(year).getTime();
 
@@ -29,7 +29,7 @@ export class ShootingRangeAccountingService {
     });
   }
 
-  findAllItemsByYearAndOrganization(
+  public findAllItemsByYearAndOrganization(
     year: number,
     organizationId: number,
   ): Promise<ShootingRangeAccountingUnitEntity[]> {
@@ -61,7 +61,33 @@ export class ShootingRangeAccountingService {
     });
   }
 
-  findAllDetailed(year: number): Promise<ShootingRangeAccountingEntity[]> {
+  public findAllItemsByYear(year: number): Promise<ShootingRangeAccountingUnitEntity[]> {
+    const timeStart = DateHelper.getYearStart(year).getTime();
+    const timeEnd = DateHelper.getYearEnd(year).getTime();
+
+    return this.accountingUnitRepository.find({
+      order: { price: { name: 'ASC' }, accountingEntry: { start: 'DESC' }, comment: 'ASC' },
+      where: {
+        accountingEntry: {
+          start: Between(timeStart, timeEnd),
+        },
+      },
+      relations: {
+        accountingEntry: true,
+        organization: true,
+        price: true,
+      },
+      select: {
+        organization: {
+          id: true,
+          name: true,
+          abbreviation: true,
+        },
+      },
+    });
+  }
+
+  public findAllDetailed(year: number): Promise<ShootingRangeAccountingEntity[]> {
     const timeStart = DateHelper.getYearStart(year).getTime();
     const timeEnd = DateHelper.getYearEnd(year).getTime();
 
@@ -79,7 +105,7 @@ export class ShootingRangeAccountingService {
     });
   }
 
-  async findOne(id: number): Promise<ShootingRangeAccountingEntity> {
+  public async findOne(id: number): Promise<ShootingRangeAccountingEntity> {
     return await this.accountingRepository.findOne({
       where: { id },
       relations: {
@@ -91,7 +117,7 @@ export class ShootingRangeAccountingService {
     });
   }
 
-  async create(createDto: ShootingRangeAccountingCreateDto): Promise<ShootingRangeAccountingEntity> {
+  public async create(createDto: ShootingRangeAccountingCreateDto): Promise<ShootingRangeAccountingEntity> {
     const entity = new ShootingRangeAccountingEntity();
     entity.loadFromCreateDto(createDto);
     entity.total = this.getTotal(createDto.items);
@@ -106,7 +132,7 @@ export class ShootingRangeAccountingService {
     return entity;
   }
 
-  async update(dto: ShootingRangeAccountingDto): Promise<ShootingRangeAccountingEntity> {
+  public async update(dto: ShootingRangeAccountingDto): Promise<ShootingRangeAccountingEntity> {
     const entity = new ShootingRangeAccountingEntity();
     entity.loadFromDto(dto);
     entity.total = this.getTotal(dto.items);
@@ -121,7 +147,7 @@ export class ShootingRangeAccountingService {
     return entity;
   }
 
-  async delete(id: number): Promise<void> {
+  public async delete(id: number): Promise<void> {
     const entry = await this.findOne(id);
 
     if (entry != null) {

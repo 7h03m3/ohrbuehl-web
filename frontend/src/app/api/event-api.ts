@@ -95,4 +95,14 @@ export class EventApi extends BaseApi {
       responseType: 'blob',
     });
   }
+
+  public getOrganizationShiftEvaluationReport(organizationId: number, year: number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    return this.http.get(this.url + '/report/organization/shifts/evaluation/' + organizationId + '/' + year, {
+      observe: 'response',
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
 }

@@ -2,8 +2,8 @@
 
 <mat-card class="mat-elevation-z1" style="width: 30em">
   <mat-card-content>
-    <mat-radio-group>
-      <mat-radio-button *ngFor="let type of reportTypes">
+    <mat-radio-group [(ngModel)]="selectedType">
+      <mat-radio-button *ngFor="let type of reportTypes" [value]="type">
         {{getReportString(type)}}
       </mat-radio-button>
     </mat-radio-group>

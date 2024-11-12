@@ -34,6 +34,32 @@ export class SummarizeHelper {
     return resultArray;
   }
 
+  public static summarizeShootingRangeAccountingByCategories(
+    source: ShootingRangeAccountingUnitEntity[],
+  ): ShootingRangeAccountingUnitEntity[] {
+    const resultArray = new Array<ShootingRangeAccountingUnitEntity>();
+
+    source.forEach((item) => {
+      if (item.price.id != 0) {
+        const existingItem = resultArray.find((searchItem) => {
+          return searchItem.price.id == item.price.id;
+        });
+
+        if (existingItem != undefined) {
+          existingItem.amount = existingItem.amount + item.amount;
+        } else {
+          const newItem = structuredClone(item);
+          newItem.track = 0;
+          resultArray.push(newItem);
+        }
+      }
+    });
+
+    SortHelper.sortAccountingUnitsByPrice(resultArray);
+
+    return resultArray;
+  }
+
   public static summarizeShootingRangeAccountingByOrganization(
     source: ShootingRangeAccountingUnitEntity[],
   ): ShootingRangeAccountingUnitEntity[] {

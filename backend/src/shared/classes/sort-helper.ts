@@ -21,6 +21,12 @@ export class SortHelper {
     });
   }
 
+  public static sortAccountingUnitsByPrice(unitsList: ShootingRangeAccountingUnitEntity[]) {
+    unitsList.sort((a: ShootingRangeAccountingUnitEntity, b: ShootingRangeAccountingUnitEntity) => {
+      return a.price.name > b.price.name ? 1 : a.price.name < b.price.name ? 1 : 0;
+    });
+  }
+
   public static sortAccountingUnitsByComment(unitsList: ShootingRangeAccountingUnitEntity[]) {
     unitsList.sort((a: ShootingRangeAccountingUnitEntity, b: ShootingRangeAccountingUnitEntity) => {
       return a.price.name > b.price.name

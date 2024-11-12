@@ -271,12 +271,4 @@ export class InvoicePdfService extends PdfBase {
 
     table.rows.push(rowItem);
   }
-
-  private getPriceString(price: number): string {
-    return price.toLocaleString('de-CH', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      useGrouping: true,
-    });
-  }
 }

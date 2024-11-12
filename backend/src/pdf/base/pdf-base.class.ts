@@ -65,10 +65,12 @@ export class PdfBase {
     return table;
   }
 
-  protected getTableRowItem(label: string, fontSize = 10): PdfTableRowItem {
+  protected getTableRowItem(label: string, fontSize = 10, bold = false, separation = true): PdfTableRowItem {
     const rowItem = new PdfTableRowItem();
     rowItem.label = ' ' + label;
     rowItem.options.fontSize = fontSize;
+    rowItem.options.fontFamily = bold ? 'Helvetica-Bold' : 'Helvetica';
+    rowItem.options.separation = separation;
 
     return rowItem;
   }
@@ -146,5 +148,13 @@ export class PdfBase {
     let filename = title.toLowerCase().replace(/[^a-z0-9\u00fc\u00e4\u00f6\-]/gi, '_');
     filename += suffix;
     return filename;
+  }
+
+  protected getPriceString(price: number): string {
+    return price.toLocaleString('de-CH', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: true,
+    });
   }
 }

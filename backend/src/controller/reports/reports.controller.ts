@@ -23,7 +23,6 @@ export class ReportsController {
   @UseGuards(JwtAuthGuard, RoleAuthGuard)
   @Get('shooting-range-accounting/:year')
   public async getShootingRangeAccountingOverview(@Param('year') year: number, @Res() response: any) {
-    console.log('overview');
     const data = await this.accounting.findAllItemsByYear(year);
     if (data) {
       await this.accountingOverviewPdf.generatePdf(year, data, response);

@@ -56,10 +56,20 @@ export class AccountingItemsOverviewPdfService extends PdfBase {
 
     this.addOrganizationTableHeader(organizationTable);
     for (const current of organizationData) {
-      this.addOrganizationTableRow(current, organizationTable);
+      this.addOrganizationTableRow(current, accountingUnitData, organizationTable);
     }
+    this.addOrganizationTableTotalRow(accountingUnitData, organizationTable);
     await this.addTableToDocument(organizationTable, doc);
 
+    doc.addPage();
+    const categoryData = SummarizeHelper.summarizeShootingRangeAccountingByCategories(accountingUnitData);
+    const categoryTable = this.createTable('', 18);
+    this.addCategoryTableHeader(categoryTable);
+    for (const current of categoryData) {
+      this.addCategoryTableRow(current, categoryTable);
+    }
+    this.addCategoryTableTotalRow(categoryData, categoryTable);
+    await this.addTableToDocument(categoryTable, doc);
     doc.addPage();
 
     const priceData = SummarizeHelper.summarizeShootingRangeAccountingByPriceAndComment(accountingUnitData);
@@ -88,9 +98,45 @@ export class AccountingItemsOverviewPdfService extends PdfBase {
     });
   }
 
+  private addCategoryTableHeader(table: any) {
+    table.headers.push(this.getTableHeaderItem(' Kategorie', 'category', 'left', 120));
+    table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 80));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'right', 125));
+    table.headers.push(this.getTableHeaderItem(' Betrag', 'amount', 'right', 125));
+  }
+
+  private addCategoryTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
+    const row: Row = {};
+
+    const total = entry.amount * entry.price.price;
+
+    row['category'] = this.getTableRowItem(entry.price.name);
+    row['price'] = this.getTableRowItem(this.getPriceString(entry.price.price) + ' CHF');
+    row['count'] = this.getTableRowItem(entry.amount + '');
+    row['amount'] = this.getTableRowItem(this.getPriceString(total) + ' CHF');
+    table.datas.push(row);
+  }
+
+  private addCategoryTableTotalRow(list: ShootingRangeAccountingUnitEntity[], table: any) {
+    const row: Row = {};
+
+    let totalAmount = 0;
+    let totalCount = 0;
+    list.forEach((entry) => {
+      totalAmount = totalAmount + entry.amount * entry.price.price;
+      totalCount = totalCount + entry.amount;
+    });
+
+    row['category'] = this.getTableRowItem('Total', 10, true, false);
+    row['price'] = this.getTableRowItem('', 10, false, false);
+    row['count'] = this.getTableRowItem(totalCount.toString(), 10, true, false);
+    row['amount'] = this.getTableRowItem(this.getPriceString(totalAmount) + ' CHF', 10, true, false);
+    table.datas.push(row);
+  }
+
   private addPriceTableHeader(table: any) {
     table.headers.push(this.getTableHeaderItem(' Preis', 'price', 'left', 225));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 225));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'right', 225));
   }
 
   private addPriceTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
@@ -103,19 +149,52 @@ export class AccountingItemsOverviewPdfService extends PdfBase {
 
     row['price'] = this.getTableRowItem(priceText);
     row['count'] = this.getTableRowItem(entry.amount.toString());
+
     table.datas.push(row);
   }
 
   private addOrganizationTableHeader(table: any) {
     table.headers.push(this.getTableHeaderItem(' Verein', 'organization', 'left', 225));
-    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'left', 225));
+    table.headers.push(this.getTableHeaderItem(' Schüsse', 'count', 'right', 100));
+    table.headers.push(this.getTableHeaderItem(' Betrag', 'amount', 'right', 125));
   }
 
-  private addOrganizationTableRow(entry: ShootingRangeAccountingUnitEntity, table: any) {
+  private addOrganizationTableRow(
+    entry: ShootingRangeAccountingUnitEntity,
+    allData: ShootingRangeAccountingUnitEntity[],
+    table: any,
+  ) {
     const row: Row = {};
+
+    const organizationData = allData.filter((value) => {
+      return value.organization.id == entry.organization.id;
+    });
+
+    let total = 0;
+
+    organizationData.forEach((value) => {
+      total = total + value.amount * value.price.price;
+    });
 
     row['organization'] = this.getTableRowItem(entry.organization.name);
     row['count'] = this.getTableRowItem(entry.amount.toString());
+    row['amount'] = this.getTableRowItem(this.getPriceString(total) + ' CHF');
+    table.datas.push(row);
+  }
+
+  private addOrganizationTableTotalRow(list: ShootingRangeAccountingUnitEntity[], table: any) {
+    const row: Row = {};
+
+    let totalAmount = 0;
+    let totalCount = 0;
+    list.forEach((entry) => {
+      totalAmount = totalAmount + entry.amount * entry.price.price;
+      totalCount = totalCount + entry.amount;
+    });
+
+    row['organization'] = this.getTableRowItem('Total', 10, true, false);
+    row['count'] = this.getTableRowItem(totalCount.toString(), 10, true, false);
+    row['amount'] = this.getTableRowItem(this.getPriceString(totalAmount) + ' CHF', 10, true, false);
     table.datas.push(row);
   }
 }
